@@ -1,0 +1,150 @@
+export const TRANSLATIONS = {
+  de: {
+    appTitle: 'ADO Firma Management',
+    tagline: 'All-in-One Enterprise Platform',
+    adminView: 'Chef / Admin Ansicht',
+    employeeView: 'Mitarbeiter Portal',
+    navDashboard: 'Dashboard',
+    navSuppliers: 'Lieferanten & Bestellungen',
+    navShifts: 'Schichtplan (2 Schichten)',
+    navTimeTracker: 'Stempeluhr & Zeiten',
+    navSickLeave: 'Krankmeldungen & Urlaub',
+    navEmployees: 'Mitarbeiter & HR',
+    navInvoices: 'Rechnungs-Scan & Belege',
+    navAccounting: 'Monatsbuchhaltung & Finanzen',
+    navDatabase: 'Lokale Datenbank & Backup',
+    
+    // Suppliers
+    supplierTitle: 'Intelligentes Bestell- & Lieferantenmanagement',
+    supplierSubtitle: 'Zentrale Einkaufssteuerung, automatisierte Kommunikation & Fehlerfreie Abläufe',
+    newOrder: 'Neue Bestellung aufgeben',
+    categories: 'Kategorien',
+    orderHistory: 'Bestellhistorie',
+    sendWhatsapp: 'Per WhatsApp senden',
+    copyOrder: 'Bestelltext kopieren',
+    orderSummary: 'Bestellübersicht',
+    deliveryDays: 'Liefertage',
+    minOrder: 'Mindestbestellwert',
+    
+    // Shifts & Planning
+    shiftTitle: 'Transparente Mitarbeiterplanung & Schichten',
+    shiftSubtitle: 'Digitale Einsatz- und Arbeitszeitverwaltung mit 2 Schichten (Früh & Spät)',
+    earlyShift: 'Frühschicht (08:00 - 16:30)',
+    lateShift: 'Spätschicht (16:00 - 00:30)',
+    fullDay: 'Ganztags / Zimmerstunde',
+    addShift: 'Schicht eintragen',
+    sickAlert: 'Krankheitsfall gemeldet! Ersatz erforderlich',
+    assignReplacement: 'Ersatzkraft zuweisen',
+    
+    // Time Tracker
+    timeTrackerTitle: 'Digitale Stempeluhr & Zeiterfassung',
+    clockIn: 'Einstempeln (Arbeitsbeginn)',
+    clockOut: 'Ausstempeln (Feierabend)',
+    breakStart: '30 Min Pause erfassen',
+    currentlyWorking: 'Aktuell im Dienst',
+    workedToday: 'Heute gearbeitet',
+    overtime: 'Überstunden Saldo',
+    
+    // Sick & Leave
+    sickTitle: 'Krankmeldungen & Absenzenverwaltung',
+    reportSick: 'Krankheit melden',
+    sickReason: 'Grund der Absenz',
+    uploadAttest: 'Arztzeugnis / Attest hochladen (Foto / Scan)',
+    leaveRequest: 'Urlaub beantragen',
+    vacationBalance: 'Verbleibender Urlaubsanspruch',
+    
+    // Invoices & Accounting
+    invoiceTitle: 'Automatisierte Buchhaltung & Rechnungs-Scan',
+    scanInvoice: 'Rechnung scannen / Foto hochladen',
+    dropInvoice: 'Rechnungsfoto oder PDF hier ablegen oder Kamera nutzen',
+    extractingData: 'KI-Extraktion der Rechnungsdaten läuft...',
+    invoiceNumber: 'Rechnungsnummer',
+    supplier: 'Lieferant',
+    dueDate: 'Fälligkeit',
+    taxRate: 'MwSt Satz',
+    totalAmount: 'Gesamtbetrag',
+    markAsPaid: 'Als bezahlt markieren',
+    statusPaid: 'Bezahlt',
+    statusPending: 'Offen',
+    statusOverdue: 'Überfällig',
+    
+    // Export
+    exportCsv: 'CSV / Excel Export',
+    monthlyReport: 'Monatsbericht herunterladen',
+    localDbStatus: 'Offline-First Lokale Datenbank aktiv'
+  },
+  tr: {
+    appTitle: 'ADO Firma Yönetimi',
+    tagline: 'Hepsi Bir Arada İşletme & Yönetim Platformu',
+    adminView: 'Yönetici / Chef Görünümü',
+    employeeView: 'Çalışan Portalı',
+    navDashboard: 'Genel Bakış',
+    navSuppliers: 'Tedarikçiler & Siparişler',
+    navShifts: 'Vardiya Planı (2 Vardiya)',
+    navTimeTracker: 'Giriş-Çıkış Saati (Stempeluhr)',
+    navSickLeave: 'Hastalık Bildirimi & İzinler',
+    navEmployees: 'Personel & İK Dosyaları',
+    navInvoices: 'Fatura Tarama & Resim Yükleme',
+    navAccounting: 'Aylık Muhasebe & Finans',
+    navDatabase: 'Yerel Veritabanı & Yedek',
+    
+    // Suppliers
+    supplierTitle: 'Akıllı Sipariş & Tedarikçi Yönetimi',
+    supplierSubtitle: 'Merkezi satın alma, otomatik tedarikçi iletişimi ve hatasız sipariş süreçleri',
+    newOrder: 'Yeni Sipariş Oluştur',
+    categories: 'Kategoriler',
+    orderHistory: 'Geçmiş Siparişler',
+    sendWhatsapp: 'WhatsApp ile Gönder',
+    copyOrder: 'Sipariş Metnini Kopyala',
+    orderSummary: 'Sipariş Özeti',
+    deliveryDays: 'Teslimat Günleri',
+    minOrder: 'Min. Sipariş Tutarı',
+    
+    // Shifts & Planning
+    shiftTitle: 'Şeffaf Personel Planlaması & Vardiyalar',
+    shiftSubtitle: 'Departman bazlı ve isteğe bağlı 2 Vardiyalı (Sabah & Akşam) dijital çalışma çizelgesi',
+    earlyShift: 'Sabah Vardiyası (08:00 - 16:30)',
+    lateShift: 'Akşam Vardiyası (16:00 - 00:30)',
+    fullDay: 'Tam Gün / Bölünmüş Mesai',
+    addShift: 'Vardiya Ata',
+    sickAlert: 'Hastalık Bildirimi! Yerine personel gerekiyor',
+    assignReplacement: 'Yedek Eleman Ata',
+    
+    // Time Tracker
+    timeTrackerTitle: 'Dijital Zaman Takibi & Stempeluhr',
+    clockIn: 'İşe Başla (Giriş Yap)',
+    clockOut: 'İşi Bitir (Çıkış Yap)',
+    breakStart: '30 Dk Mola Kaydet',
+    currentlyWorking: 'Şu An Çalışanlar',
+    workedToday: 'Bugün Çalışılan Süre',
+    overtime: 'Fazla Mesai Dengesi',
+    
+    // Sick & Leave
+    sickTitle: 'Hastalık Bildirimleri & İzin Yönetimi',
+    reportSick: 'Hastalık Bildir (Krankmeldung)',
+    sickReason: 'Hastalık / Gelmeme Nedeni',
+    uploadAttest: 'Doktor Raporu / Belge Yükle (Fotoğraf veya Tarama)',
+    leaveRequest: 'Tatil / İzin Talebi Oluştur',
+    vacationBalance: 'Kalan Yıllık İzin Hakkı',
+    
+    // Invoices & Accounting
+    invoiceTitle: 'Otomatik Muhasebe & Fatura Tarama',
+    scanInvoice: 'Fatura Tara / Fotoğraf Yükle',
+    dropInvoice: 'Fatura fotoğrafını veya dosyasını buraya sürükleyin ya da kamerayı açın',
+    extractingData: 'Akıllı Fatura Ayrıştırıcı verileri okuyor...',
+    invoiceNumber: 'Fatura No',
+    supplier: 'Tedarikçi',
+    dueDate: 'Vade Tarihi',
+    taxRate: 'KDV Oranı',
+    totalAmount: 'Toplam Tutar',
+    markAsPaid: 'Ödendi Olarak İşaretle',
+    statusPaid: 'Ödendi',
+    statusPending: 'Bekliyor',
+    statusOverdue: 'Vadesi Geçti',
+    
+    // Export
+    exportCsv: 'Excel / CSV Olarak İndir',
+    monthlyReport: 'Aylık Muhasebe Raporu Al',
+    localDbStatus: 'Offline-First Yerel Veritabanı Aktif'
+  }
+};

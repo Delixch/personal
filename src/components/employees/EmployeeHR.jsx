@@ -18,6 +18,7 @@ import confetti from 'canvas-confetti';
 import { StorageService } from '../../services/storage';
 import { SEED_DEPARTMENTS } from '../../services/seedData';
 import { formatCurrency, formatDate } from '../../utils/formatters';
+import { PersonalakteModal } from './PersonalakteModal';
 
 export const EmployeeHR = ({ lang, currentUser }) => {
   const [employees, setEmployees] = useState(StorageService.getEmployees());
@@ -136,11 +137,15 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 flex items-center gap-1.5">
                     <KeyRound className="w-3.5 h-3.5 text-emerald-600" />
-                    Passwort:
+                    Passwort / PIN:
                   </span>
-                  <span className="font-mono text-slate-800">
-                    {emp.password}
-                  </span>
+                  <div className="flex items-center gap-1.5 font-mono text-xs">
+                    <span className="text-slate-700">{emp.password}</span>
+                    <span className="text-slate-300">|</span>
+                    <span className="px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
+                      PIN: {emp.pin || '1001'}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -173,14 +178,36 @@ export const EmployeeHR = ({ lang, currentUser }) => {
             </div>
 
             <button
-              onClick={() => setSelectedEmployee(emp)}
-              className="mt-4 w-full py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 transition"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedEmployee(emp);
+              }}
+              className="mt-4 w-full py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-xs font-black text-emerald-900 border border-emerald-200 transition flex items-center justify-center gap-2 shadow-2xs group-hover:border-emerald-400"
             >
-              {lang === 'tr' ? 'Dosyayı İncele & Düzenle' : 'Personalakte öffnen'}
+              <FileText className="w-4 h-4 text-emerald-700" />
+              <span>{lang === 'tr' ? 'Özlük Dosyasını Aç (Personalakte)' : 'Personalakte öffnen (GAV Dossier)'}</span>
             </button>
           </div>
         ))}
       </div>
+
+      {/* Comprehensive Swiss Personalakte Dossier Modal */}
+      {selectedEmployee && (
+        <PersonalakteModal
+          employee={selectedEmployee}
+          lang={lang}
+          onClose={() => setSelectedEmployee(null)}
+          onSave={(updated) => {
+            StorageService.saveEmployee(updated);
+            setEmployees(StorageService.getEmployees());
+            setSelectedEmployee(updated);
+          }}
+          onSwitchUser={(emp) => {
+            StorageService.setCurrentUser(emp);
+            window.location.reload();
+          }}
+        />
+      )}
 
       {/* Add Employee Modal */}
       {showAddModal && (

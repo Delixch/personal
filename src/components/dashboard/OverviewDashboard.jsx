@@ -366,14 +366,18 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
             </button>
           )}
 
-          <div className="flex items-center gap-3 bg-slate-50 p-2.5 rounded-2xl border border-slate-200 shrink-0">
+          <div
+            onClick={() => onNavigate('employees')}
+            className="flex items-center gap-3 bg-slate-50 hover:bg-emerald-50/70 p-2.5 rounded-2xl border border-slate-200 hover:border-emerald-300 shrink-0 cursor-pointer transition shadow-2xs group"
+            title={lang === 'tr' ? 'Personel & Özlük Dosyalarına Git' : 'Zu Personalakten & Mitarbeiter'}
+          >
             <img
               src={currentUser?.avatar}
               alt={currentUser?.name}
-              className="w-11 h-11 rounded-xl object-cover ring-2 ring-emerald-300"
+              className="w-11 h-11 rounded-xl object-cover ring-2 ring-emerald-300 group-hover:ring-emerald-500 transition"
             />
             <div>
-              <p className="text-xs font-bold text-slate-900">{currentUser?.name}</p>
+              <p className="text-xs font-black text-slate-900 group-hover:text-emerald-900 transition">{currentUser?.name}</p>
               <p className="text-[11px] text-emerald-700 font-semibold">{currentUser?.jobTitle}</p>
             </div>
           </div>

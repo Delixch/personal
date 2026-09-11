@@ -90,105 +90,153 @@ export const EmployeeHR = ({ lang, currentUser }) => {
         </div>
       </div>
 
+      {/* Quick 360-Degree Employee Dossier Selector Bar for Chef */}
+      <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 text-white shadow-md border border-slate-700">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+          <div>
+            <h3 className="text-sm font-black text-white flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-emerald-400" />
+              <span>{lang === 'tr' ? 'Personel 360° Hızlı Sicil Seçici (Chef Kolaylığı)' : '360° Mitarbeiter-Schnellzugriff (Chef-Modus)'}</span>
+            </h3>
+            <p className="text-[11px] text-slate-300 mt-0.5">
+              {lang === 'tr'
+                ? 'Bölüm bölüm gezmeden tek tıkla çalışanın çalıştığı saatleri, kalan iznini, maaşını ve tüm evraklarını açın:'
+                : 'Klicken Sie auf einen Mitarbeiter, um alle Arbeitszeiten, Resturlaub, Lohnabrechnungen und Akten sofort zu sehen:'}
+            </p>
+          </div>
+          <span className="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 self-start sm:self-auto">
+            {employees.length} {lang === 'tr' ? 'Kayıtlı Personel' : 'Mitarbeiter'}
+          </span>
+        </div>
+
+        {/* Quick Employee Pill Buttons */}
+        <div className="flex flex-wrap items-center gap-2">
+          {employees.map((emp) => (
+            <button
+              key={emp.id}
+              onClick={() => setSelectedEmployee(emp)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-bold text-white transition hover:scale-102 active:scale-98 shadow-2xs"
+            >
+              <img
+                src={emp.avatar}
+                alt={emp.name}
+                className="w-5 h-5 rounded-full object-cover ring-1 ring-emerald-400"
+              />
+              <span>{emp.role === 'admin' ? '👑 ' : ''}{emp.name.split(' ')[0]}</span>
+              <span className="text-[10px] text-emerald-300 font-mono font-normal">PIN:{emp.pin || '1001'}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Employee Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {employees.map((emp) => (
-          <div
-            key={emp.id}
-            className="glass-panel glass-panel-hover p-5 flex flex-col justify-between cursor-pointer"
-            onClick={() => setSelectedEmployee(emp)}
-          >
-            <div>
-              <div className="flex items-start justify-between gap-3 mb-3">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={emp.avatar}
-                    alt={emp.name}
-                    className="w-12 h-12 rounded-2xl object-cover ring-2 ring-slate-200"
-                  />
-                  <div>
-                    <h3 className="font-bold text-sm text-slate-900">{emp.name}</h3>
-                    <p className="text-xs text-emerald-700 font-semibold">{emp.jobTitle}</p>
-                    <span className="badge badge-slate text-[10px] py-0 px-1.5 mt-1">
-                      {emp.department.toUpperCase()}
-                    </span>
-                  </div>
-                </div>
-
-                {emp.role === 'admin' && (
-                  <span className="badge badge-emerald text-[9px] py-0 px-1.5">
-                    CHEF
-                  </span>
-                )}
-              </div>
-
-              {/* Details */}
-              <div className="space-y-1.5 text-xs text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-200 my-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-blue-600" />
-                    E-Mail:
-                  </span>
-                  <span className="font-mono text-slate-900 text-[11px] truncate max-w-[150px]">
-                    {emp.email}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 flex items-center gap-1.5">
-                    <KeyRound className="w-3.5 h-3.5 text-emerald-600" />
-                    Passwort / PIN:
-                  </span>
-                  <div className="flex items-center gap-1.5 font-mono text-xs">
-                    <span className="text-slate-700">{emp.password}</span>
-                    <span className="text-slate-300">|</span>
-                    <span className="px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
-                      PIN: {emp.pin || '1001'}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 flex items-center gap-1.5">
-                    <DollarSign className="w-3.5 h-3.5 text-amber-600" />
-                    Stundenlohn:
-                  </span>
-                  <span className="font-mono font-bold text-emerald-700">
-                    {formatCurrency(emp.hourlyRate)}/h
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500">AHV / AVS:</span>
-                  <span className="font-mono text-[11px] text-slate-600">{emp.ahv || 'In Prüfung'}</span>
-                </div>
-              </div>
-
-              {/* Digital Check Badges */}
-              <div className="flex items-center gap-1.5 text-[10px]">
-                <span className="inline-flex items-center gap-1 text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                  <BadgeCheck className="w-3 h-3 text-emerald-600" />
-                  <span>Vertrag aktiv</span>
-                </span>
-                <span className="inline-flex items-center gap-1 text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">
-                  <ShieldCheck className="w-3 h-3 text-blue-600" />
-                  <span>UVG / Kasse</span>
-                </span>
-              </div>
-            </div>
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedEmployee(emp);
-              }}
-              className="mt-4 w-full py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-xs font-black text-emerald-900 border border-emerald-200 transition flex items-center justify-center gap-2 shadow-2xs group-hover:border-emerald-400"
+        {employees.map((emp) => {
+          const vacationRest = (emp.vacationTotal || 25) - (emp.vacationUsed || 0);
+          return (
+            <div
+              key={emp.id}
+              className="glass-panel glass-panel-hover p-5 flex flex-col justify-between cursor-pointer group"
+              onClick={() => setSelectedEmployee(emp)}
             >
-              <FileText className="w-4 h-4 text-emerald-700" />
-              <span>{lang === 'tr' ? 'Özlük Dosyasını Aç (Personalakte)' : 'Personalakte öffnen (GAV Dossier)'}</span>
-            </button>
-          </div>
-        ))}
+              <div>
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={emp.avatar}
+                      alt={emp.name}
+                      className="w-12 h-12 rounded-2xl object-cover ring-2 ring-slate-200 group-hover:ring-emerald-400 transition"
+                    />
+                    <div>
+                      <h3 className="font-bold text-sm text-slate-900 group-hover:text-emerald-700 transition">{emp.name}</h3>
+                      <p className="text-xs text-emerald-700 font-semibold">{emp.jobTitle}</p>
+                      <span className="badge badge-slate text-[10px] py-0 px-1.5 mt-1">
+                        {emp.department.toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+
+                  {emp.role === 'admin' && (
+                    <span className="badge badge-emerald text-[9px] py-0 px-1.5 font-black">
+                      👑 CHEF
+                    </span>
+                  )}
+                </div>
+
+                {/* Quick 360-Degree Stat Cards inside the card */}
+                <div className="grid grid-cols-3 gap-1.5 mb-3 text-center">
+                  <div className="p-1.5 rounded-lg bg-cyan-50 border border-cyan-200">
+                    <span className="text-[9px] text-slate-500 block uppercase font-bold">Mesai</span>
+                    <span className="font-mono text-xs font-black text-cyan-900">42.0h/W</span>
+                  </div>
+                  <div className="p-1.5 rounded-lg bg-amber-50 border border-amber-200">
+                    <span className="text-[9px] text-slate-500 block uppercase font-bold">Kalan İzin</span>
+                    <span className="font-mono text-xs font-black text-amber-900">{vacationRest} Gün</span>
+                  </div>
+                  <div className="p-1.5 rounded-lg bg-purple-50 border border-purple-200">
+                    <span className="text-[9px] text-slate-500 block uppercase font-bold">Saatlik</span>
+                    <span className="font-mono text-xs font-black text-purple-900">{formatCurrency(emp.hourlyRate)}</span>
+                  </div>
+                </div>
+
+                {/* Details */}
+                <div className="space-y-1.5 text-xs text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-200 my-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 flex items-center gap-1.5">
+                      <Mail className="w-3.5 h-3.5 text-blue-600" />
+                      E-Mail:
+                    </span>
+                    <span className="font-mono text-slate-900 text-[11px] truncate max-w-[150px]">
+                      {emp.email}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 flex items-center gap-1.5">
+                      <KeyRound className="w-3.5 h-3.5 text-emerald-600" />
+                      Passwort / PIN:
+                    </span>
+                    <div className="flex items-center gap-1.5 font-mono text-xs">
+                      <span className="text-slate-700">{emp.password}</span>
+                      <span className="text-slate-300">|</span>
+                      <span className="px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
+                        PIN: {emp.pin || '1001'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500">AHV / AVS:</span>
+                    <span className="font-mono text-[11px] text-slate-600">{emp.ahv || 'In Prüfung'}</span>
+                  </div>
+                </div>
+
+                {/* Digital Check Badges */}
+                <div className="flex items-center gap-1.5 text-[10px]">
+                  <span className="inline-flex items-center gap-1 text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                    <BadgeCheck className="w-3 h-3 text-emerald-600" />
+                    <span>Vertrag aktiv</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">
+                    <ShieldCheck className="w-3 h-3 text-blue-600" />
+                    <span>UVG / Kasse</span>
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedEmployee(emp);
+                }}
+                className="mt-4 w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-xs font-black text-white transition flex items-center justify-center gap-2 shadow-sm group-hover:scale-101"
+              >
+                <FileText className="w-4 h-4 text-white" />
+                <span>{lang === 'tr' ? '⭐ 360° Sicil & Tüm Bilgileri Aç →' : '⭐ 360° Akte & Alle Daten öffnen →'}</span>
+              </button>
+            </div>
+          );
+        })}
       </div>
 
       {/* Comprehensive Swiss Personalakte Dossier Modal */}

@@ -24,23 +24,106 @@ import {
   Home,
   HeartHandshake,
   Award,
-  Lock
+  Lock,
+  Palmtree,
+  HeartPulse,
+  ReceiptText,
+  Coins,
+  ChevronRight,
+  TrendingUp,
+  Briefcase,
+  Layers,
+  Check,
+  AlertTriangle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { StorageService } from '../../services/storage';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 
 export const PersonalakteModal = ({
-  employee,
+  employee: initialEmployee,
   onClose,
   onSave,
   onSwitchUser,
   lang = 'de'
 }) => {
-  if (!employee) return null;
+  if (!initialEmployee) return null;
 
-  const [activeTab, setActiveTab] = useState('stammdaten');
+  const allEmployees = StorageService.getEmployees();
+  const [currentEmployeeId, setCurrentEmployeeId] = useState(initialEmployee.id);
+  const employee = allEmployees.find(e => e.id === currentEmployeeId) || initialEmployee;
+
+  const [activeTab, setActiveTab] = useState('360');
   const [isEditing, setIsEditing] = useState(false);
   const [previewDoc, setPreviewDoc] = useState(null);
+
+  // Live data streams for this employee
+  const timeLogs = StorageService.getTimeLogs();
+  const shifts = StorageService.getShifts();
+  const sickReports = StorageService.getSickReports();
+  const leaveRequests = StorageService.getLeaveRequests();
+
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  // Filter for current employee
+  const empLogs = timeLogs.filter(l => l.employeeId === employee.id);
+  const empShifts = shifts.filter(s => s.employeeId === employee.id);
+  const empSick = sickReports.filter(r => r.employeeId === employee.id);
+  const empLeave = leaveRequests.filter(r => r.employeeId === employee.id);
+
+  // Live working status
+  const isCurrentlyWorking = empLogs.some(l => l.date === todayStr && !l.clockOut);
+  const todaysLog = empLogs.find(l => l.date === todayStr);
+
+  // Calculate actual worked hours
+  let totalWorkedMinutes = 0;
+  empLogs.forEach(l => {
+    if (l.clockIn && l.clockOut) {
+      const [hIn, mIn] = l.clockIn.split(':').map(Number);
+      const [hOut, mOut] = l.clockOut.split(':').map(Number);
+      let diff = (hOut * 60 + mOut) - (hIn * 60 + mIn);
+      if (diff < 0) diff += 24 * 60;
+      const net = Math.max(0, diff - (l.breakMinutes || 0));
+      totalWorkedMinutes += net;
+    }
+  });
+
+  const calculatedHours = +(totalWorkedMinutes / 60).toFixed(1);
+  const pensumPercent = employee.contractType?.includes('80%')
+    ? 80
+    : employee.contractType?.includes('60%')
+    ? 60
+    : employee.contractType?.includes('50%')
+    ? 50
+    : 100;
+
+  const targetMonthlyHours = Math.round(182 * (pensumPercent / 100));
+  const weeklyHours = ((42 * pensumPercent) / 100).toFixed(1);
+  
+  // Effective hours (for visual richness in demo)
+  const effectiveHours = calculatedHours > 0 
+    ? calculatedHours 
+    : (employee.role === 'admin' ? 182.5 : Math.round(targetMonthlyHours * 0.96));
+  const overtime = +(effectiveHours - targetMonthlyHours).toFixed(1);
+
+  // Swiss GAV Gastrosuisse Payroll Calculations
+  const hourlyRate = employee.hourlyRate || 30.0;
+  const grossMonthlySalary = +(effectiveHours * hourlyRate).toFixed(2);
+  const ahvDeduction = +(grossMonthlySalary * 0.053).toFixed(2); // 5.30%
+  const alvDeduction = +(grossMonthlySalary * 0.011).toFixed(2); // 1.10%
+  const bvgDeduction = +(grossMonthlySalary * 0.038).toFixed(2); // ~3.80%
+  const uvgKtgDeduction = +(grossMonthlySalary * 0.0158).toFixed(2); // 1.58%
+  const totalDeductions = +(ahvDeduction + alvDeduction + bvgDeduction + uvgKtgDeduction).toFixed(2);
+  const netMonthlySalary = +(grossMonthlySalary - totalDeductions).toFixed(2);
+  
+  const thirteentMonthAccrual = +(grossMonthlySalary * 0.0833).toFixed(2); // 13. Monatslohn 8.33%
+  const annualGrossEstimate = +(grossMonthlySalary * 12 + grossMonthlySalary * 12 * 0.0833).toFixed(2);
+  const annualNetPaidEstimate = +(netMonthlySalary * 9).toFixed(2); // Yılbaşından bugüne (Ocak-Eylül 9 ay)
+
+  // Vacation calculation
+  const vacationTotal = employee.vacationTotal || 25;
+  const vacationUsed = employee.vacationUsed || 8;
+  const vacationRemaining = Math.max(0, vacationTotal - vacationUsed);
 
   // Editable form state
   const [formData, setFormData] = useState({
@@ -81,18 +164,6 @@ export const PersonalakteModal = ({
       origin: { y: 0.6 }
     });
   };
-
-  // Swiss GAV Gastrosuisse Contract details
-  const pensumPercent = formData.contractType.includes('80%')
-    ? 80
-    : formData.contractType.includes('60%')
-    ? 60
-    : formData.contractType.includes('50%')
-    ? 50
-    : 100;
-  const weeklyHours = ((42 * pensumPercent) / 100).toFixed(1);
-  const monthlySalaryEstimate = (formData.hourlyRate * ((182 * pensumPercent) / 100)).toFixed(2);
-  const thirteentSalaryEstimate = ((monthlySalaryEstimate * 12 * 0.0833) / 12).toFixed(2);
 
   // Dossier Documents List
   const documents = [
@@ -135,8 +206,8 @@ export const PersonalakteModal = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-900/60 backdrop-blur-sm animate-in fade-in">
-      <div className="w-full max-w-4xl max-h-[92vh] rounded-3xl bg-white border border-slate-200 shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in">
+      <div className="w-full max-w-5xl max-h-[94vh] rounded-3xl bg-white border border-slate-200 shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-150">
         
         {/* Top Header Card */}
         <div className="p-5 sm:p-6 bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-700">
@@ -147,35 +218,77 @@ export const PersonalakteModal = ({
               className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover ring-4 ring-emerald-500/40 shadow-lg"
             />
             <div>
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
                 <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                   {employee.role === 'admin' ? '👑 CHEF / INHABER' : 'MITARBEITER / HR'}
                 </span>
                 <span className="text-[11px] font-mono text-slate-300">
                   ID: {employee.id.toUpperCase()}
                 </span>
+                {/* Live working badge */}
+                <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full flex items-center gap-1.5 ${
+                  isCurrentlyWorking 
+                    ? 'bg-cyan-500/30 text-cyan-300 border border-cyan-400/50 animate-pulse' 
+                    : 'bg-slate-700/60 text-slate-300 border border-slate-600'
+                }`}>
+                  <span className={`w-2 h-2 rounded-full ${isCurrentlyWorking ? 'bg-cyan-400' : 'bg-slate-400'}`}></span>
+                  <span>{isCurrentlyWorking ? (lang === 'tr' ? 'ŞU AN GÖREVDE' : 'IM DIENST') : (lang === 'tr' ? 'SERBEST / ÇIKTI' : 'FEIERABEND')}</span>
+                </span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white">
-                {formData.name}
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2">
+                <span>{formData.name}</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md bg-emerald-500/30 text-emerald-300 border border-emerald-500/40">
+                  PIN: {formData.pin}
+                </span>
               </h2>
               <p className="text-xs sm:text-sm text-emerald-300 font-semibold">
-                {formData.jobTitle} • {formData.department.toUpperCase()}
+                {formData.jobTitle} • {formData.department.toUpperCase()} • {formatCurrency(formData.hourlyRate)}/h
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 self-end sm:self-auto">
+          <div className="flex flex-wrap items-center gap-2 self-end sm:self-auto">
+            {/* Quick Switch Employee Dropdown right in the modal */}
+            <select
+              value={currentEmployeeId}
+              onChange={(e) => {
+                setCurrentEmployeeId(e.target.value);
+                const emp = allEmployees.find(x => x.id === e.target.value);
+                if (emp) {
+                  setFormData({
+                    ...formData,
+                    name: emp.name,
+                    jobTitle: emp.jobTitle,
+                    department: emp.department,
+                    hourlyRate: emp.hourlyRate,
+                    email: emp.email,
+                    password: emp.password,
+                    pin: emp.pin || '1001',
+                    phone: emp.phone,
+                    ahv: emp.ahv
+                  });
+                }
+              }}
+              className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/20 focus:outline-none"
+            >
+              {allEmployees.map(e => (
+                <option key={e.id} value={e.id} className="text-slate-900 bg-white">
+                  {e.role === 'admin' ? '👑 ' : '👤 '} {e.name}
+                </option>
+              ))}
+            </select>
+
             {/* Quick Switch User */}
             <button
               onClick={() => {
                 onSwitchUser(employee);
                 onClose();
               }}
-              className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black transition flex items-center gap-1.5 shadow-sm"
-              title="Bu personelin gözünden bak"
+              className="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black transition flex items-center gap-1.5 shadow-sm"
+              title="Bu personelin ekranına geç"
             >
-              <Fingerprint className="w-4 h-4" />
-              <span>{lang === 'tr' ? 'Bu Kullanıcıya Geç' : 'Als Benutzer wechseln'}</span>
+              <Fingerprint className="w-3.5 h-3.5" />
+              <span>{lang === 'tr' ? 'Bu Hesaba Geç' : 'Einloggen'}</span>
             </button>
 
             <button
@@ -188,8 +301,145 @@ export const PersonalakteModal = ({
           </div>
         </div>
 
+        {/* 4-KPI Executive Master Banner (Always Visible for Instant Overview) */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 p-3 sm:p-4 bg-slate-950 text-white border-b border-slate-800 text-xs">
+          
+          {/* KPI 1: Worked Hours & Overtime */}
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center shrink-0">
+              <Clock className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-[10px] text-slate-400 font-semibold block uppercase">
+                {lang === 'tr' ? 'Bu Ayki Mesai' : 'Arbeitszeit'}
+              </span>
+              <span className="font-mono font-black text-sm text-cyan-300">
+                {effectiveHours} Std.
+              </span>
+              <span className={`block text-[10px] font-bold ${overtime >= 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                {overtime >= 0 ? `+${overtime}h Mesai` : `${overtime}h Eksik`} (Soll: {targetMonthlyHours}h)
+              </span>
+            </div>
+          </div>
+
+          {/* KPI 2: Vacation Balance */}
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
+              <Palmtree className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-[10px] text-slate-400 font-semibold block uppercase">
+                {lang === 'tr' ? 'Kalan İzin (Tatil)' : 'Resturlaub'}
+              </span>
+              <span className="font-mono font-black text-sm text-amber-300">
+                {vacationRemaining} Gün Kaldı
+              </span>
+              <span className="block text-[10px] text-slate-400">
+                Toplam {vacationTotal} / {vacationUsed} Kullanıldı
+              </span>
+            </div>
+          </div>
+
+          {/* KPI 3: Monthly Net Salary */}
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
+              <DollarSign className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-[10px] text-slate-400 font-semibold block uppercase">
+                {lang === 'tr' ? 'Net Maaş (Son Ay)' : 'Nettolohn'}
+              </span>
+              <span className="font-mono font-black text-sm text-emerald-300">
+                {formatCurrency(netMonthlySalary)}
+              </span>
+              <span className="block text-[10px] text-emerald-400 font-bold">
+                ✓ Bankaya Yatırıldı (ZKB)
+              </span>
+            </div>
+          </div>
+
+          {/* KPI 4: Annual Indicator & Social Security */}
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0">
+              <TrendingUp className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-[10px] text-slate-400 font-semibold block uppercase">
+                {lang === 'tr' ? 'Senelik Gösterge' : 'Jahreslohn'}
+              </span>
+              <span className="font-mono font-black text-sm text-purple-300">
+                {formatCurrency(annualGrossEstimate)}
+              </span>
+              <span className="block text-[10px] text-slate-400">
+                13. Maaş Dahil • AHV/BVG ✓
+              </span>
+            </div>
+          </div>
+
+        </div>
+
         {/* Tab Navigation Strip */}
         <div className="flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-2.5 bg-slate-100 border-b border-slate-200 overflow-x-auto text-xs font-bold">
+          <button
+            onClick={() => setActiveTab('360')}
+            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+              activeTab === '360'
+                ? 'bg-slate-900 text-white shadow-xs font-black'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+            }`}
+          >
+            <Layers className="w-4 h-4 text-emerald-400" />
+            <span>{lang === 'tr' ? '⭐ 360° Sicil Özeti' : '⭐ 360° Chef-Übersicht'}</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('zeiterfassung')}
+            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+              activeTab === 'zeiterfassung'
+                ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-black'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+            }`}
+          >
+            <Clock className="w-4 h-4 text-cyan-600" />
+            <span>{lang === 'tr' ? 'Saatler & Stempeluhr' : 'Stempeluhr & Stunden'}</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('schichten')}
+            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+              activeTab === 'schichten'
+                ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-black'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+            }`}
+          >
+            <Calendar className="w-4 h-4 text-emerald-600" />
+            <span>{lang === 'tr' ? 'Vardiya Planı' : 'Schichtplan'}</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('lohn')}
+            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+              activeTab === 'lohn'
+                ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-black'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+            }`}
+          >
+            <DollarSign className="w-4 h-4 text-purple-600" />
+            <span>{lang === 'tr' ? 'Maaş, Bordro & Senelik' : 'Lohn & Abrechnung'}</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('absenzen')}
+            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+              activeTab === 'absenzen'
+                ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-black'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+            }`}
+          >
+            <HeartPulse className="w-4 h-4 text-rose-600" />
+            <span>{lang === 'tr' ? 'Hastalık & İzin Geçmişi' : 'Urlaub & Absenzen'}</span>
+          </button>
+
           <button
             onClick={() => setActiveTab('stammdaten')}
             className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
@@ -198,62 +448,470 @@ export const PersonalakteModal = ({
                 : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
             }`}
           >
-            <User className="w-4 h-4 text-emerald-600" />
-            <span>{lang === 'tr' ? '1. Temel Bilgiler & İletişim' : '1. Stammdaten & Kontakt'}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('vertrag')}
-            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-              activeTab === 'vertrag'
-                ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-black'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
-            }`}
-          >
             <FileText className="w-4 h-4 text-blue-600" />
-            <span>{lang === 'tr' ? '2. GAV İş Sözleşmesi & Maaş' : '2. Arbeitsvertrag & GAV'}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('sozial')}
-            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-              activeTab === 'sozial'
-                ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-black'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
-            }`}
-          >
-            <ShieldCheck className="w-4 h-4 text-purple-600" />
-            <span>{lang === 'tr' ? '3. Sosyal Güvenlik & Sigorta' : '3. Sozialversicherungen'}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('dokumente')}
-            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-              activeTab === 'dokumente'
-                ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-black'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
-            }`}
-          >
-            <FileCheck className="w-4 h-4 text-amber-600" />
-            <span>{lang === 'tr' ? '4. Dijital Evraklar (4)' : '4. Digitale Akten (4)'}</span>
+            <span>{lang === 'tr' ? 'Sözleşme, AHV & Evraklar' : 'Vertrag & Dokumente'}</span>
           </button>
         </div>
 
         {/* Scrollable Tab Content Body */}
         <div className="p-5 sm:p-6 overflow-y-auto flex-1 space-y-6">
 
-          {/* TAB 1: STAMMDATEN & KONTAKT */}
+          {/* TAB 1: 360° CHEF-ÜBERSICHT (THE MASTER SNAPSHOT) */}
+          {activeTab === '360' && (
+            <div className="space-y-6">
+              
+              {/* Executive Summary Banner */}
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-50 via-teal-50 to-blue-50 border border-emerald-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                    <Award className="w-5 h-5 text-emerald-700" />
+                    <span>{lang === 'tr' ? 'Personel 360° Sicil & Yönetici Karnesi' : 'Vollständiges Mitarbeiter-Dossier (Chef-Ansicht)'}</span>
+                  </h3>
+                  <p className="text-xs text-slate-600 mt-0.5">
+                    {lang === 'tr'
+                      ? 'Tüm modüllerden toplanan canlı veriler: Stempeluhr, vardiyalar, maaş dekontu, kalan izin ve resmi evraklar.'
+                      : 'Alle Daten aus Zeiterfassung, Schichtplanung, Lohnabrechnung und Absenzen auf einen Blick.'}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 rounded-full bg-emerald-600 text-white font-bold text-xs shadow-2xs">
+                    GAV Gastrosuisse Konform
+                  </span>
+                </div>
+              </div>
+
+              {/* 3-Pillars Side-by-Side Summary */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                {/* 1. Stempeluhr & Saatler Özeti */}
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                    <span className="text-xs font-black uppercase text-cyan-900 flex items-center gap-1.5">
+                      <Clock className="w-4 h-4 text-cyan-600" />
+                      {lang === 'tr' ? 'Çalışma Saatleri' : 'Zeiterfassung'}
+                    </span>
+                    <button 
+                      onClick={() => setActiveTab('zeiterfassung')} 
+                      className="text-[11px] font-bold text-cyan-700 hover:underline"
+                    >
+                      {lang === 'tr' ? 'Detay →' : 'Details →'}
+                    </button>
+                  </div>
+
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Hedef Saat (Soll):</span>
+                      <span className="font-mono font-bold text-slate-800">{targetMonthlyHours} Std. / Ay</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Çalışılan (Ist):</span>
+                      <span className="font-mono font-bold text-cyan-800">{effectiveHours} Std.</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Fazla Mesai:</span>
+                      <span className={`font-mono font-black ${overtime >= 0 ? 'text-emerald-700' : 'text-amber-700'}`}>
+                        {overtime >= 0 ? `+${overtime} Std.` : `${overtime} Std.`}
+                      </span>
+                    </div>
+                    <div className="flex justify-between pt-1 border-t border-slate-200 text-[11px]">
+                      <span className="text-slate-500">Bugünkü Durum:</span>
+                      <span className="font-bold text-slate-900">
+                        {isCurrentlyWorking ? `Giriş: ${todaysLog?.clockIn || '08:00'}` : 'Şu an görevde değil'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Maaş & Senelik Gösterge Özeti */}
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                    <span className="text-xs font-black uppercase text-purple-900 flex items-center gap-1.5">
+                      <DollarSign className="w-4 h-4 text-purple-600" />
+                      {lang === 'tr' ? 'Maaş & Bordro' : 'Lohnabrechnung'}
+                    </span>
+                    <button 
+                      onClick={() => setActiveTab('lohn')} 
+                      className="text-[11px] font-bold text-purple-700 hover:underline"
+                    >
+                      {lang === 'tr' ? 'Detay →' : 'Details →'}
+                    </button>
+                  </div>
+
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Saatlik Brüt:</span>
+                      <span className="font-mono font-bold text-slate-800">{formatCurrency(hourlyRate)}/h</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Aylık Brüt:</span>
+                      <span className="font-mono font-bold text-slate-800">{formatCurrency(grossMonthlySalary)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Net Ele Geçen:</span>
+                      <span className="font-mono font-black text-emerald-700">{formatCurrency(netMonthlySalary)}</span>
+                    </div>
+                    <div className="flex justify-between pt-1 border-t border-slate-200 text-[11px]">
+                      <span className="text-slate-500">Yıllık Brüt (13. dahil):</span>
+                      <span className="font-mono font-bold text-purple-900">{formatCurrency(annualGrossEstimate)}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. İzin, Rapor & Vardiya Özeti */}
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                    <span className="text-xs font-black uppercase text-amber-900 flex items-center gap-1.5">
+                      <Palmtree className="w-4 h-4 text-amber-600" />
+                      {lang === 'tr' ? 'İzin & Devamsızlık' : 'Urlaub & Absenzen'}
+                    </span>
+                    <button 
+                      onClick={() => setActiveTab('absenzen')} 
+                      className="text-[11px] font-bold text-amber-700 hover:underline"
+                    >
+                      {lang === 'tr' ? 'Detay →' : 'Details →'}
+                    </button>
+                  </div>
+
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Kalan İzin:</span>
+                      <span className="font-mono font-black text-amber-700">{vacationRemaining} Gün ({vacationRemaining / 5} Hafta)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Kullanılan İzin:</span>
+                      <span className="font-mono text-slate-700">{vacationUsed} Gün</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Hastalık Raporu:</span>
+                      <span className="font-bold text-slate-800">{empSick.length} Bildirim (Attest ✓)</span>
+                    </div>
+                    <div className="flex justify-between pt-1 border-t border-slate-200 text-[11px]">
+                      <span className="text-slate-500">Haftalık Vardiya:</span>
+                      <span className="font-bold text-emerald-800">{empShifts.length || 5} Gün Görevli</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Official Status Verification Seal */}
+              <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-slate-900">
+                      {lang === 'tr' ? 'İsviçre Resmi Kayıt & SGK Durumu (AHV/ALV/BVG)' : 'Amtlicher Status & Ausgleichskassen'}
+                    </h4>
+                    <p className="text-xs text-slate-500">
+                      AHV-Nr: <span className="font-mono text-slate-700 font-bold">{formData.ahv}</span> • 
+                      GastroSocial Pensionskasse • SUVA Unfallversicherung • Visana KTG
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    <span>{lang === 'tr' ? 'Tüm Primler Yatırıldı' : 'Beiträge aktuell'}</span>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {/* TAB 2: ZEITERFASSUNG & STEMPELUHR */}
+          {activeTab === 'zeiterfassung' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-base font-black text-slate-900">
+                    {lang === 'tr' ? 'Giriş-Çıkış Kayıtları & Çalışma Saatleri' : 'Stempeluhr-Protokoll & Arbeitszeiten'}
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    {lang === 'tr' ? 'Tablet terminalinden ve sistemden kaydedilen canlı saat hareketleri.' : 'Präzise Zeiterfassungsdaten und Pausenprotokolle.'}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <span className="font-mono font-black text-base text-cyan-800">{effectiveHours} Std. Total</span>
+                  <span className="block text-[11px] text-slate-500">Soll: {targetMonthlyHours} Std.</span>
+                </div>
+              </div>
+
+              {/* Time Logs Table */}
+              <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                    <tr>
+                      <th className="p-3">Datum (Tarih)</th>
+                      <th className="p-3">Kommen (Giriş)</th>
+                      <th className="p-3">Gehen (Çıkış)</th>
+                      <th className="p-3">Pause (Mola)</th>
+                      <th className="p-3">Netto Zeit</th>
+                      <th className="p-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 font-mono">
+                    {empLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan="6" className="p-4 text-center text-slate-400 font-sans">
+                          {lang === 'tr' ? 'Bu çalışan için henüz canlı log oluşmadı. Standart 42h sözleşme mesaisi baz alınıyor.' : 'Noch keine Stempelungen erfasst. Basis-Vollzeit hinterlegt.'}
+                        </td>
+                      </tr>
+                    ) : (
+                      empLogs.map((log) => (
+                        <tr key={log.id} className="hover:bg-slate-50">
+                          <td className="p-3 font-sans font-bold text-slate-900">{log.date}</td>
+                          <td className="p-3 text-emerald-700 font-bold">{log.clockIn}</td>
+                          <td className="p-3 text-slate-700">{log.clockOut || '● İŞTE'}</td>
+                          <td className="p-3 text-slate-500">{log.breakMinutes || 0} Min</td>
+                          <td className="p-3 font-bold text-slate-900">
+                            {log.clockOut ? '8.0 Std.' : 'Açık'}
+                          </td>
+                          <td className="p-3 font-sans">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                              log.clockOut ? 'bg-emerald-50 text-emerald-800' : 'bg-cyan-50 text-cyan-800 animate-pulse'
+                            }`}>
+                              {log.clockOut ? 'Abgeschlossen' : 'Im Dienst'}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: SCHICHTPLAN & EINSÄTZE */}
+          {activeTab === 'schichten' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-base font-black text-slate-900">
+                    {lang === 'tr' ? 'Vardiya Çizelgesi & Çalışma Günleri' : 'Dienstplan & Schichtübersicht'}
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    {lang === 'tr' ? 'Bu haftaki ve gelecek haftaki çalışma vardiyaları (Früh/Spät).' : 'Einsatzplanung mit 2 Schichten gemäss Wochenplan.'}
+                  </p>
+                </div>
+                <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
+                  {empShifts.length || 5} Schichten geplant
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                {['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'].map((day, idx) => {
+                  const isOff = idx === 5 || idx === 6; // Weekend/Ruhetag for demo
+                  return (
+                    <div 
+                      key={day} 
+                      className={`p-3.5 rounded-2xl border ${
+                        isOff 
+                          ? 'bg-slate-50 border-slate-200 text-slate-400' 
+                          : 'bg-white border-emerald-200 shadow-2xs'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="font-bold text-xs text-slate-800">{day}</span>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          isOff ? 'bg-slate-200 text-slate-600' : 'bg-emerald-100 text-emerald-800'
+                        }`}>
+                          {isOff ? 'Ruhetag' : 'Frühschicht'}
+                        </span>
+                      </div>
+                      <p className="font-mono text-xs font-black text-slate-900">
+                        {isOff ? 'Frei' : '08:00 – 16:30'}
+                      </p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        {isOff ? 'Wöchentlicher Ruhetag' : `Abteilung: ${formData.department.toUpperCase()}`}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: LOHN, ABRECHNUNG & JAHRESGÖSTERGE */}
+          {activeTab === 'lohn' && (
+            <div className="space-y-5">
+              
+              {/* Top Monthly vs Annual Indicator Banner */}
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-50 via-indigo-50 to-white border border-purple-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-base font-black text-purple-950 flex items-center gap-2">
+                    <ReceiptText className="w-5 h-5 text-purple-700" />
+                    <span>{lang === 'tr' ? 'Maaş Bordrosu & Yıllık Gösterge (GAV Gastrosuisse)' : 'Lohnabrechnung & Jahresausweis (L-GAV)'}</span>
+                  </h3>
+                  <p className="text-xs text-purple-800 mt-0.5">
+                    İsviçre Comatic ve Treuhand formatında net ele geçen, 13. maaş ve resmi sosyal kesintiler.
+                  </p>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs text-slate-500 block uppercase font-bold">Lohn-Status:</span>
+                  <span className="px-3 py-1 rounded-full bg-emerald-600 text-white font-black text-xs inline-flex items-center gap-1 shadow-xs">
+                    <Check className="w-3.5 h-3.5" />
+                    <span>{lang === 'tr' ? 'Eylül 2026: ÖDENDİ' : 'Sept 2026: Überwiesen'}</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* Monthly Paycheck Breakdown Table */}
+              <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-2xs">
+                <h4 className="text-xs font-black uppercase text-slate-700 tracking-wider">
+                  {lang === 'tr' ? 'Aylık Bordro Hesabı (Monatsabrechnung)' : 'Detaillierte Monatsberechnung:'}
+                </h4>
+
+                <div className="space-y-2 text-xs divide-y divide-slate-100">
+                  <div className="flex justify-between py-1.5">
+                    <span className="text-slate-600">Basis-Stundenlohn:</span>
+                    <span className="font-mono font-bold text-slate-900">{formatCurrency(hourlyRate)}/h</span>
+                  </div>
+                  <div className="flex justify-between py-1.5">
+                    <span className="text-slate-600">Abrechnungs-Stunden ({effectiveHours} Std.):</span>
+                    <span className="font-mono font-bold text-slate-900">{formatCurrency(grossMonthlySalary)}</span>
+                  </div>
+                  <div className="flex justify-between py-1.5 text-rose-700">
+                    <span>AHV / IV / EO (%5.30):</span>
+                    <span className="font-mono font-bold">-{formatCurrency(ahvDeduction)}</span>
+                  </div>
+                  <div className="flex justify-between py-1.5 text-rose-700">
+                    <span>ALV Arbeitslosenversicherung (%1.10):</span>
+                    <span className="font-mono font-bold">-{formatCurrency(alvDeduction)}</span>
+                  </div>
+                  <div className="flex justify-between py-1.5 text-rose-700">
+                    <span>BVG Pensionskasse GastroSocial (~%3.80):</span>
+                    <span className="font-mono font-bold">-{formatCurrency(bvgDeduction)}</span>
+                  </div>
+                  <div className="flex justify-between py-1.5 text-rose-700">
+                    <span>UVG (NBU 0.85%) & KTG Krankentaggeld (0.73%):</span>
+                    <span className="font-mono font-bold">-{formatCurrency(uvgKtgDeduction)}</span>
+                  </div>
+                  <div className="flex justify-between py-2 pt-3 border-t-2 border-slate-300 font-bold text-sm bg-emerald-50/60 px-3 rounded-xl">
+                    <span className="text-emerald-950 font-black">Nettolohn (Ele Geçen Net Maaş):</span>
+                    <span className="font-mono font-black text-emerald-800 text-base">{formatCurrency(netMonthlySalary)}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Annual Indicator & Accumulation Box */}
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <h4 className="text-xs font-black uppercase text-slate-700 tracking-wider flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-purple-600" />
+                  <span>{lang === 'tr' ? 'Senelik Gösterge & Yıllık Toplamlar (Jahresausweis)' : 'Jahreslohn & Kumulierte Werte 2026'}</span>
+                </h4>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                  <div className="p-3 rounded-xl bg-white border border-slate-200">
+                    <span className="text-slate-500 block">Yıl İçi Ödenen Net (Jan-Sep):</span>
+                    <span className="text-base font-mono font-black text-slate-900 mt-1 block">
+                      {formatCurrency(annualNetPaidEstimate)}
+                    </span>
+                    <span className="text-[10px] text-emerald-700 font-bold">✓ 9 Ay Tam Ödendi</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-white border border-slate-200">
+                    <span className="text-slate-500 block">13. Maaş Birikimi (%8.33):</span>
+                    <span className="text-base font-mono font-black text-purple-700 mt-1 block">
+                      {formatCurrency(thirteentMonthAccrual * 9)}
+                    </span>
+                    <span className="text-[10px] text-slate-500">Aralık ayında ödenecek</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-white border border-slate-200">
+                    <span className="text-slate-500 block">Yıllık Tahmini Brüt (Jahreslohn):</span>
+                    <span className="text-base font-mono font-black text-slate-900 mt-1 block">
+                      {formatCurrency(annualGrossEstimate)}
+                    </span>
+                    <span className="text-[10px] text-slate-500">Comatic Treuhand hazır</span>
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between text-xs">
+                  <div>
+                    <span className="text-slate-500">Banka & IBAN Hesabı:</span>
+                    <p className="font-mono font-bold text-slate-900">{formData.iban}</p>
+                  </div>
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-slate-700 font-bold text-[11px]">
+                    Zürcher Kantonalbank
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {/* TAB 5: URLAUB & ABSENZEN (HASTALIK & İZİN) */}
+          {activeTab === 'absenzen' && (
+            <div className="space-y-5">
+              
+              {/* Vacation Balance Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200">
+                  <span className="text-[11px] font-bold text-amber-900 uppercase">Yıllık İzin Hakkı (Total):</span>
+                  <p className="text-2xl font-mono font-black text-amber-950 mt-1">{vacationTotal} Gün</p>
+                  <p className="text-[11px] text-amber-800 mt-0.5">{vacationTotal / 5} Hafta Tatil</p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                  <span className="text-[11px] font-bold text-slate-500 uppercase">Kullanılan İzin (Bezogen):</span>
+                  <p className="text-2xl font-mono font-black text-slate-800 mt-1">{vacationUsed} Gün</p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Onaylı İzinler</p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
+                  <span className="text-[11px] font-bold text-emerald-900 uppercase">Kalan Tatil (Resturlaub):</span>
+                  <p className="text-2xl font-mono font-black text-emerald-700 mt-1">{vacationRemaining} Gün</p>
+                  <p className="text-[11px] text-emerald-800 font-semibold mt-0.5">Kullanılabilir Bakiye</p>
+                </div>
+              </div>
+
+              {/* Sick Leave & Attest History */}
+              <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-3">
+                <h4 className="text-xs font-black uppercase text-slate-700 tracking-wider flex items-center gap-2">
+                  <HeartPulse className="w-4 h-4 text-rose-600" />
+                  <span>{lang === 'tr' ? 'Hastalık Bildirimleri & Doktor Raporları (Attest)' : 'Krankmeldungen & Arztzeugnisse:'}</span>
+                </h4>
+
+                {empSick.length === 0 ? (
+                  <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    <span>{lang === 'tr' ? 'Bu çalışanın kayıtlı bir hastalık veya devamsızlık raporu bulunmamaktadır (Sicil Temiz).' : 'Keine Krankmeldungen vorhanden. 100% Anwesenheit.'}</span>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {empSick.map((r) => (
+                      <div key={r.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
+                        <div>
+                          <p className="font-bold text-slate-900">{r.reason || 'Grippaler Infekt'}</p>
+                          <p className="text-[11px] text-slate-500">{r.startDate} bis {r.endDate || r.startDate}</p>
+                        </div>
+                        <span className="px-2 py-0.5 rounded bg-rose-50 text-rose-800 border border-rose-200 text-[10px] font-bold">
+                          Attest hinterlegt
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+            </div>
+          )}
+
+          {/* TAB 6: STAMMDATEN, VERTRAG & DOKUMENTE */}
           {activeTab === 'stammdaten' && (
             <div className="space-y-5">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-base font-black text-slate-900">
-                    {lang === 'tr' ? 'Kişisel Bilgiler, İletişim & Tablet PIN Kodu' : 'Persönliche Stammdaten & Tablet-PIN'}
+                    {lang === 'tr' ? 'Sözleşme, AHV, Şifre & Resmi Belgeler' : 'Vertrag, AHV & Dokumentenablage'}
                   </h3>
                   <p className="text-xs text-slate-500">
-                    {lang === 'tr'
-                      ? 'Tablet giriş-çıkış terminali için PIN kodu ve resmi kimlik bilgileri.'
-                      : 'Verwaltung der Login-Daten, Kontaktdaten und Kiosk-Stempel-PIN.'}
+                    {lang === 'tr' ? 'Resmi kimlik, PIN kodu, İsviçre L-GAV sözleşmesi ve arşiv evrakları.' : 'Offizielle Dokumente, PIN-Code und Schweizer Arbeitsvertrag.'}
                   </p>
                 </div>
 
@@ -318,28 +976,6 @@ export const PersonalakteModal = ({
                     </div>
 
                     <div>
-                      <label className="block font-bold text-slate-700 mb-1">E-Mail (Giriş):</label>
-                      <input
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-900"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block font-bold text-slate-700 mb-1">Şifre (Passwort):</label>
-                      <input
-                        type="text"
-                        value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-900 font-mono"
-                        required
-                      />
-                    </div>
-
-                    <div>
                       <label className="block font-bold text-slate-700 mb-1">AHV / AVS Numarası:</label>
                       <input
                         type="text"
@@ -381,7 +1017,7 @@ export const PersonalakteModal = ({
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   
-                  {/* Left Column: Essential Identifiers */}
+                  {/* Left Column: Identifiers */}
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                     <h4 className="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                       <Lock className="w-3.5 h-3.5 text-emerald-600" />
@@ -420,310 +1056,42 @@ export const PersonalakteModal = ({
                       </div>
 
                       <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-slate-200">
-                        <span className="text-slate-500 flex items-center gap-1.5">
-                          <Phone className="w-4 h-4 text-emerald-600" />
-                          Telefon:
-                        </span>
-                        <span className="font-mono text-slate-900 font-bold">
-                          {formData.phone}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right Column: Personal & Official Identifiers */}
-                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-                    <h4 className="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                      <Award className="w-3.5 h-3.5 text-blue-600" />
-                      <span>{lang === 'tr' ? 'Resmi İsviçre Kimlik & Adres' : 'Amtliche Daten & Wohnort'}</span>
-                    </h4>
-
-                    <div className="space-y-2 text-xs">
-                      <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-slate-200">
                         <span className="text-slate-500">AHV / AVS-Nr:</span>
                         <span className="font-mono font-bold text-slate-900 px-2 py-0.5 rounded bg-slate-100">
                           {formData.ahv}
                         </span>
                       </div>
+                    </div>
+                  </div>
 
-                      <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-slate-200">
-                        <span className="text-slate-500">Geburtsdatum:</span>
-                        <span className="font-bold text-slate-800">{formData.birthDate}</span>
-                      </div>
+                  {/* Right Column: Digital Documents Archive */}
+                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                    <h4 className="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                      <FileCheck className="w-3.5 h-3.5 text-blue-600" />
+                      <span>{lang === 'tr' ? 'Resmi Evraklar & Önizleme' : 'Dokumentenablage'}</span>
+                    </h4>
 
-                      <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-slate-200">
-                        <span className="text-slate-500">Nationalität:</span>
-                        <span className="font-bold text-slate-800">{formData.nationality}</span>
-                      </div>
-
-                      <div className="p-2.5 rounded-xl bg-white border border-slate-200">
-                        <span className="text-slate-500 block mb-1">Wohnadresse:</span>
-                        <span className="font-bold text-slate-900">{formData.address}</span>
-                      </div>
-
-                      <div className="p-2.5 rounded-xl bg-white border border-slate-200">
-                        <span className="text-slate-500 block mb-1">Notfallkontakt (Acil Durum):</span>
-                        <span className="font-semibold text-rose-800">{formData.emergencyContact}</span>
-                      </div>
+                    <div className="space-y-2">
+                      {documents.map((doc) => (
+                        <div key={doc.id} className="p-2.5 rounded-xl bg-white border border-slate-200 flex items-center justify-between text-xs">
+                          <div>
+                            <p className="font-bold text-slate-900">{doc.title}</p>
+                            <p className="text-[10px] text-slate-500">{doc.date} • {doc.status}</p>
+                          </div>
+                          <button
+                            onClick={() => setPreviewDoc(doc)}
+                            className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center gap-1 text-[11px]"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                            <span>Önizle</span>
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
                 </div>
               )}
-            </div>
-          )}
-
-          {/* TAB 2: ARBEITSVERTRAG & GAV GASTROSUISSE */}
-          {activeTab === 'vertrag' && (
-            <div className="space-y-5">
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 flex items-center justify-between gap-4">
-                <div>
-                  <h3 className="text-base font-black text-blue-950 flex items-center gap-2">
-                    <Building className="w-5 h-5 text-blue-700" />
-                    <span>L-GAV Gastgewerbe Arbeitsvertrag (İsviçre Gastronomi Sözleşmesi)</span>
-                  </h3>
-                  <p className="text-xs text-blue-800 mt-0.5">
-                    GastroSuisse ve Hotel & Gastro Union standartlarına tam uyumlu dijital sözleşme dökümü.
-                  </p>
-                </div>
-                <span className="px-3 py-1 rounded-full bg-blue-600 text-white font-black text-xs shrink-0 shadow-xs">
-                  GAV 2025 AKTIV
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                  <span className="text-[11px] font-bold text-slate-500 uppercase">Vertragsart:</span>
-                  <p className="text-sm font-black text-slate-900 mt-1">{formData.contractType}</p>
-                  <p className="text-[11px] text-emerald-700 font-semibold mt-0.5">Pensum: {pensumPercent}%</p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                  <span className="text-[11px] font-bold text-slate-500 uppercase">Stundenlohn / Ansatz:</span>
-                  <p className="text-base font-mono font-black text-emerald-700 mt-1">
-                    {formatCurrency(formData.hourlyRate)}/h
-                  </p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Monatlich ca. CHF {monthlySalaryEstimate}</p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                  <span className="text-[11px] font-bold text-slate-500 uppercase">Soll-Arbeitszeit:</span>
-                  <p className="text-sm font-black text-slate-900 mt-1">{weeklyHours} Std / Woche</p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Basis 42h (Vollzeit)</p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                  <span className="text-[11px] font-bold text-slate-500 uppercase">Ferienanspruch:</span>
-                  <p className="text-sm font-black text-slate-900 mt-1">{formData.vacationTotal} Tage / Jahr</p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Verbraucht: {formData.vacationUsed} Tage</p>
-                </div>
-              </div>
-
-              {/* Legal GAV Checklist Table */}
-              <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-3">
-                <h4 className="text-xs font-black uppercase text-slate-700 tracking-wider">
-                  Gesetzliche Vertragsklauseln & GAV-Bestimmungen:
-                </h4>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                  <div className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-bold text-slate-900">13. Monatslohn (8.33%):</p>
-                      <p className="text-slate-600 text-[11px] mt-0.5">
-                        L-GAV Art. 12 konform hinterlegt. Monatliche Rückstellung ca. CHF {thirteentSalaryEstimate}.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-bold text-slate-900">Ruhetage & Wochenfeiertage:</p>
-                      <p className="text-slate-600 text-[11px] mt-0.5">
-                        2 Ruhetage pro Woche (durchschnittlich) gemäss Dienstplan garantiert.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-bold text-slate-900">Kündigungsfristen:</p>
-                      <p className="text-slate-600 text-[11px] mt-0.5">
-                        Probezeit 1 Monat, im 1. Dienstjahr 1 Monat, ab 2. Dienstjahr 2 Monate auf Monatsende.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-bold text-slate-900">Überstundenregelung (L-GAV Art. 15):</p>
-                      <p className="text-slate-600 text-[11px] mt-0.5">
-                        Kompensation durch Freizeit gleicher Dauer oder Auszahlung mit +25% Zuschlag.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 3: SOZIALVERSICHERUNGEN & VORSORGE */}
-          {activeTab === 'sozial' && (
-            <div className="space-y-5">
-              <div>
-                <h3 className="text-base font-black text-slate-900">
-                  {lang === 'tr' ? 'İsviçre Sosyal Güvenlik & Sigorta Kayıtları' : 'Schweizer Sozialversicherungen & Kassen'}
-                </h3>
-                <p className="text-xs text-slate-500">
-                  {lang === 'tr'
-                    ? 'AHV, ALV, BVG GastroSocial, SUVA kaza ve KTG hastalık sigortası bildirimleri.'
-                    : 'Alle obligatorischen Abzüge und Meldungen an die kantonalen Ausgleichskassen.'}
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <div className="p-4 rounded-2xl bg-white border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-black">
-                      AHV
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm text-slate-900">AHV / IV / EO (Alters- und Hinterlassenenversicherung)</h4>
-                      <p className="text-xs text-slate-500">SVA Zürich • Ausgleichskasse GastroSocial</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="font-mono font-bold text-slate-900 text-sm">5.30% Arbeitnehmer</span>
-                    <span className="block text-[11px] text-emerald-700 font-bold">✓ Aktiv gemeldet</span>
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-white border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-black">
-                      BVG
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm text-slate-900">BVG Pensionskasse (2. Säule Berufliche Vorsorge)</h4>
-                      <p className="text-xs text-slate-500">GastroSocial Pensionskasse • Koordinierter Lohn</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="font-mono font-bold text-slate-900 text-sm">ca. 7.00% Altersgutschrift</span>
-                    <span className="block text-[11px] text-emerald-700 font-bold">✓ Beitragszahler</span>
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-white border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-black">
-                      UVG
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm text-slate-900">UVG Unfallversicherung (Berufs- & Nichtberufsunfall)</h4>
-                      <p className="text-xs text-slate-500">SUVA • BU 100% Arbeitgeber, NBU 0.85% Arbeitnehmer</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="font-mono font-bold text-slate-900 text-sm">0.85% NBU</span>
-                    <span className="block text-[11px] text-emerald-700 font-bold">✓ Vollumfänglich versichert</span>
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-white border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-black">
-                      KTG
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm text-slate-900">KTG Krankentaggeldversicherung (Kollekiv)</h4>
-                      <p className="text-xs text-slate-500">Visana / Swica • 80% Lohnfortzahlung ab 3. Krankheitstag</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="font-mono font-bold text-slate-900 text-sm">0.73% Anteil</span>
-                    <span className="block text-[11px] text-emerald-700 font-bold">✓ Attestpflicht ab Tag 3</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 4: DIGITALE DOKUMENTE & AKTEN */}
-          {activeTab === 'dokumente' && (
-            <div className="space-y-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-base font-black text-slate-900">
-                    {lang === 'tr' ? 'Dijital Dosyalar & Resmi Belgeler' : 'Digitale Dokumentenablage & Nachweise'}
-                  </h3>
-                  <p className="text-xs text-slate-500">
-                    {lang === 'tr'
-                      ? 'İmzalı sözleşmeler, kimlik taramaları, hijyen belgeleri ve banka bilgileri.'
-                      : 'Rechtssicher archivierte PDF-Akten dieses Mitarbeiters.'}
-                  </p>
-                </div>
-
-                <button
-                  onClick={() => alert(lang === 'tr' ? 'Demo: Yeni belge yükleme simülasyonu aktif.' : 'Demo: Dokumentenupload erfolgreich simuliert.')}
-                  className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
-                >
-                  <FileText className="w-3.5 h-3.5" />
-                  <span>{lang === 'tr' ? '+ Belge Yükle' : '+ Dokument hochladen'}</span>
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {documents.map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between hover:border-emerald-400 transition"
-                  >
-                    <div>
-                      <div className="flex items-start justify-between gap-3 mb-2">
-                        <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center font-bold text-xs">
-                          {doc.type}
-                        </div>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
-                          {doc.status}
-                        </span>
-                      </div>
-
-                      <h4 className="font-bold text-sm text-slate-900 mb-0.5">
-                        {doc.title}
-                      </h4>
-                      <p className="text-xs text-slate-500 line-clamp-2">
-                        {doc.description}
-                      </p>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                      <span className="text-[11px] text-slate-400 font-mono">
-                        {doc.date} • {doc.fileSize}
-                      </span>
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={() => setPreviewDoc(doc)}
-                          className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center gap-1 text-[11px]"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                          <span>{lang === 'tr' ? 'Önizle' : 'Vorschau'}</span>
-                        </button>
-                        <button
-                          onClick={() => alert(lang === 'tr' ? `${doc.title} indirildi!` : `${doc.title} heruntergeladen!`)}
-                          className="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
-                          title="Download"
-                        >
-                          <Download className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
           )}
 
@@ -733,18 +1101,16 @@ export const PersonalakteModal = ({
         <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>{lang === 'tr' ? 'İsviçre nDSG veri koruma standartlarına uygun şifreli yerel arşiv.' : 'DSGVO / Schweizer nDSG konform verschlüsselte Personalakte.'}</span>
+            <span>{lang === 'tr' ? 'İsviçre nDSG standartlarında şifrelenmiş 360° personel karnesi.' : 'Schweizer nDSG konforme Mitarbeiterakte mit Vollzugriff.'}</span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => {
-                window.print();
-              }}
+              onClick={() => window.print()}
               className="px-3.5 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs"
             >
               <Printer className="w-3.5 h-3.5 text-slate-600" />
-              <span>{lang === 'tr' ? 'Dossier Yazdır' : 'Akte drucken'}</span>
+              <span>{lang === 'tr' ? 'Kayıtları Yazdır' : 'Akte drucken'}</span>
             </button>
             <button
               onClick={onClose}
@@ -774,7 +1140,7 @@ export const PersonalakteModal = ({
               </button>
             </div>
 
-            {/* Simulated Official Swiss Contract View */}
+            {/* Official Swiss Contract View */}
             <div className="p-6 bg-amber-50/40 rounded-2xl border border-amber-200/80 font-serif text-slate-800 text-xs space-y-4 shadow-inner">
               <div className="flex justify-between items-start border-b border-slate-300 pb-4">
                 <div>
@@ -793,7 +1159,7 @@ export const PersonalakteModal = ({
 
               <div className="space-y-2">
                 <h5 className="font-bold font-sans text-xs text-slate-900 uppercase">
-                  Arbeitsvertrag / Personalnachweis für {formData.name}
+                  Arbeitsvertrag & Personaldossier für {formData.name}
                 </h5>
                 <p className="leading-relaxed">
                   Zwischen der ADO Firma Enterprise GmbH (Arbeitgeber) und <strong>{formData.name}</strong>, geb. {formData.birthDate}, 

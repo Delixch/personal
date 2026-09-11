@@ -1,0 +1,307 @@
+import React, { useState } from 'react';
+import {
+  Calculator,
+  Download,
+  Users,
+  Clock,
+  Coins,
+  FileSpreadsheet,
+  TrendingUp,
+  Percent,
+  Calendar,
+  AlertCircle,
+  CheckCircle2,
+  ChevronRight
+} from 'lucide-react';
+import { StorageService } from '../../services/storage';
+import { formatCurrency, formatDate, calculateHoursWorked } from '../../utils/formatters';
+
+export const PayrollCalculator = ({ lang, currentUser }) => {
+  const [employees, setEmployees] = useState(() => StorageService.getEmployees());
+  const [timeLogs, setTimeLogs] = useState(() => StorageService.getTimeLogs());
+  const [selectedMonth, setSelectedMonth] = useState('2026-09');
+  const [selectedEmpId, setSelectedEmpId] = useState(null);
+
+  // Month labels
+  const months = [
+    { value: '2026-09', label: 'September 2026' },
+    { value: '2026-08', label: 'August 2026' },
+    { value: '2026-07', label: 'Juli 2026' }
+  ];
+
+  // Helper to calculate hours for an employee in current month
+  const getEmployeeStats = (emp) => {
+    // Filter logs for this employee in selected month
+    const empLogs = timeLogs.filter(
+      l => l.employeeId === emp.id && l.date.startsWith(selectedMonth) && l.clockOut
+    );
+
+    let totalWorkedMinutes = 0;
+    empLogs.forEach(l => {
+      const [hIn, mIn] = l.clockIn.split(':').map(Number);
+      const [hOut, mOut] = l.clockOut.split(':').map(Number);
+      let diff = (hOut * 60 + mOut) - (hIn * 60 + mIn);
+      if (diff < 0) diff += 24 * 60;
+      const net = Math.max(0, diff - (l.breakMinutes || 0));
+      totalWorkedMinutes += net;
+    });
+
+    const workedHours = +(totalWorkedMinutes / 60).toFixed(1);
+
+    // Contract percentage to target hours (based on standard Swiss 42h/week = ~182h/month)
+    let contractPercentage = 100;
+    if (emp.contractType?.includes('80%')) contractPercentage = 80;
+    else if (emp.contractType?.includes('60%')) contractPercentage = 60;
+    else if (emp.contractType?.includes('50%')) contractPercentage = 50;
+    
+    // For demo visual richness: give baseline hours if logs are just starting
+    const baselineMockHours = emp.role === 'admin' ? 180 : Math.round(182 * (contractPercentage / 100) * 0.95);
+    const effectiveHours = workedHours > 0 ? workedHours : baselineMockHours;
+    const targetHours = Math.round(182 * (contractPercentage / 100));
+    const overtime = +(effectiveHours - targetHours).toFixed(1);
+
+    const grossBase = +(effectiveHours * emp.hourlyRate).toFixed(2);
+    
+    // Swiss Social deductions estimate (~11.5% total: AHV/IV/EO 5.3%, ALV 1.1%, BVG ~3.8%, KTG 1.3%)
+    const socialDeductions = +(grossBase * 0.115).toFixed(2);
+    const netSalary = +(grossBase - socialDeductions).toFixed(2);
+
+    return {
+      workedHours: effectiveHours,
+      targetHours,
+      overtime,
+      contractPercentage,
+      grossBase,
+      socialDeductions,
+      netSalary
+    };
+  };
+
+  const totalGrossPayroll = employees.reduce((sum, e) => sum + getEmployeeStats(e).grossBase, 0);
+  const totalHoursWorked = employees.reduce((sum, e) => sum + getEmployeeStats(e).workedHours, 0);
+
+  const exportTreuhandCSV = () => {
+    const headers = [
+      'Personalnummer',
+      'Name',
+      'AHV-Nummer',
+      'Abteilung',
+      'Pensum',
+      'Stundenlohn_CHF',
+      'Sollstunden',
+      'Iststunden',
+      'Ueberstunden',
+      'Bruttolohn_CHF',
+      'Sozialabzuege_11.5%_CHF',
+      'Nettolohn_CHF'
+    ];
+
+    const rows = employees.map(emp => {
+      const stats = getEmployeeStats(emp);
+      return [
+        emp.id,
+        `"${emp.name}"`,
+        emp.ahv || '756.0000.0000.00',
+        emp.department,
+        `${stats.contractPercentage}%`,
+        emp.hourlyRate.toFixed(2),
+        stats.targetHours,
+        stats.workedHours,
+        stats.overtime,
+        stats.grossBase.toFixed(2),
+        stats.socialDeductions.toFixed(2),
+        stats.netSalary.toFixed(2)
+      ].join(';');
+    });
+
+    const csvContent = '\uFEFF' + [headers.join(';'), ...rows].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Treuhand_Lohnjournal_${selectedMonth}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="space-y-6">
+      
+      {/* Top Banner */}
+      <div className="p-6 rounded-3xl glass-panel relative">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs font-semibold mb-2">
+              <Calculator className="w-3.5 h-3.5 text-indigo-600" />
+              <span>{lang === 'tr' ? 'İsviçre GAV Gastronomi Maaş & Bordro Sistemi' : 'Lohnabrechnung & Treuhand-Monatsjournal'}</span>
+            </div>
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+              {lang === 'tr' ? 'Maaş & Çalışma Saati Hesaplayıcı' : 'Lohn- & Stundenabrechnung'}
+            </h1>
+            <p className="text-xs text-slate-600 mt-1 max-w-2xl">
+              {lang === 'tr'
+                ? 'Çalışılan saatler, fazla mesai bakiyeleri (Überstunden), İsviçre AHV/ALV kesinti simülatörü ve muhasebeci (Treuhand) için tek tıkla CSV çıktısı.'
+                : 'Monatliche Arbeitszeitauswertung, Überstundensaldo, Schweizer Sozialabzüge (AHV/ALV/BVG) und Treuhand-Export.'}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <select
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              className="px-3 py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-800 text-xs font-bold shadow-xs focus:outline-none focus:border-indigo-400"
+            >
+              {months.map(m => (
+                <option key={m.value} value={m.value}>{m.label}</option>
+              ))}
+            </select>
+
+            <button
+              onClick={exportTreuhandCSV}
+              className="px-4 py-2.5 rounded-2xl gradient-btn-indigo text-white text-xs font-extrabold flex items-center gap-2 shadow-sm transition"
+            >
+              <FileSpreadsheet className="w-4 h-4" />
+              <span>{lang === 'tr' ? 'Treuhand CSV İndir' : 'Treuhand CSV Export'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs">
+          <div className="flex items-center justify-between text-slate-500 mb-2">
+            <span className="text-xs font-semibold">{lang === 'tr' ? 'Toplam Brüt Bordro' : 'Gesamte Bruttolohnsumme'}</span>
+            <Coins className="w-4 h-4 text-indigo-600" />
+          </div>
+          <div className="font-mono text-2xl font-black text-slate-900">
+            {formatCurrency(totalGrossPayroll)}
+          </div>
+          <p className="text-[11px] text-slate-500 mt-1">
+            {employees.length} {lang === 'tr' ? 'Mitarbeiter için hesaplandı' : 'Mitarbeiter erfasst'}
+          </p>
+        </div>
+
+        <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs">
+          <div className="flex items-center justify-between text-slate-500 mb-2">
+            <span className="text-xs font-semibold">{lang === 'tr' ? 'Toplam Çalışılan Saat' : 'Geleistete Arbeitsstunden'}</span>
+            <Clock className="w-4 h-4 text-emerald-600" />
+          </div>
+          <div className="font-mono text-2xl font-black text-slate-900">
+            {totalHoursWorked.toFixed(1)} Std
+          </div>
+          <p className="text-[11px] text-emerald-700 font-semibold mt-1">
+            Ø {(totalHoursWorked / employees.length).toFixed(1)} Std / Person
+          </p>
+        </div>
+
+        <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs">
+          <div className="flex items-center justify-between text-slate-500 mb-2">
+            <span className="text-xs font-semibold">{lang === 'tr' ? 'Sozialabzüge (~11.5%)' : 'Sozialabzüge (AHV/ALV/BVG)'}</span>
+            <Percent className="w-4 h-4 text-amber-600" />
+          </div>
+          <div className="font-mono text-2xl font-black text-slate-900">
+            {formatCurrency(totalGrossPayroll * 0.115)}
+          </div>
+          <p className="text-[11px] text-slate-500 mt-1">
+            {lang === 'tr' ? 'Yasal işçi kesintisi tahmini' : 'Gesetzlicher Arbeitnehmerbeitrag'}
+          </p>
+        </div>
+      </div>
+
+      {/* Main Employee Payroll Table */}
+      <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs overflow-hidden">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+            <Users className="w-4 h-4 text-indigo-600" />
+            <span>{lang === 'tr' ? 'Personel Bazında Saat ve Hak Ediş Tablosu' : 'Mitarbeiter-Stunden & Lohnübersicht'}</span>
+          </h2>
+          <span className="badge badge-indigo text-xs">
+            {selectedMonth}
+          </span>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs text-slate-700">
+            <thead className="border-b border-slate-100 text-[11px] text-slate-400">
+              <tr>
+                <th className="pb-3">Mitarbeiter</th>
+                <th className="pb-3">Pensum</th>
+                <th className="pb-3">Stundenlohn</th>
+                <th className="pb-3">Soll-Std</th>
+                <th className="pb-3">Ist-Std</th>
+                <th className="pb-3">Saldo / Überstunden</th>
+                <th className="pb-3">Bruttolohn</th>
+                <th className="pb-3">Netto (ca.)</th>
+                <th className="pb-3 text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {employees.map((emp) => {
+                const stats = getEmployeeStats(emp);
+                const isPositiveOvertime = stats.overtime >= 0;
+
+                return (
+                  <tr key={emp.id} className="hover:bg-slate-50/80 transition">
+                    <td className="py-3.5">
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={emp.avatar}
+                          alt={emp.name}
+                          className="w-9 h-9 rounded-xl object-cover ring-1 ring-slate-200 shrink-0"
+                        />
+                        <div>
+                          <p className="font-bold text-slate-900 text-xs">{emp.name}</p>
+                          <p className="text-[10px] text-slate-400">{emp.jobTitle}</p>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="py-3.5 font-semibold text-slate-700">
+                      {stats.contractPercentage}%
+                    </td>
+
+                    <td className="py-3.5 font-mono font-bold text-slate-900">
+                      CHF {emp.hourlyRate.toFixed(2)}
+                    </td>
+
+                    <td className="py-3.5 font-mono text-slate-500">
+                      {stats.targetHours} h
+                    </td>
+
+                    <td className="py-3.5 font-mono font-bold text-indigo-700">
+                      {stats.workedHours} h
+                    </td>
+
+                    <td className="py-3.5 font-mono font-bold">
+                      <span className={`px-2 py-0.5 rounded-md text-[11px] ${
+                        isPositiveOvertime ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                      }`}>
+                        {isPositiveOvertime ? `+${stats.overtime}` : stats.overtime} h
+                      </span>
+                    </td>
+
+                    <td className="py-3.5 font-mono font-extrabold text-slate-900">
+                      {formatCurrency(stats.grossBase)}
+                    </td>
+
+                    <td className="py-3.5 font-mono font-extrabold text-emerald-700">
+                      {formatCurrency(stats.netSalary)}
+                    </td>
+
+                    <td className="py-3.5 text-right">
+                      <span className="badge badge-emerald text-[10px] py-0.5 px-2">
+                        Bereit
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  );
+};

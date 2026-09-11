@@ -141,6 +141,7 @@ export const SEED_EMPLOYEES = [
     name: 'ADO Chef / Geschäftsführer',
     email: 'admin@firma.ch',
     password: 'admin',
+    pin: '9999',
     role: 'admin',
     department: 'all',
     jobTitle: 'Geschäftsführer & Inhaber',
@@ -159,6 +160,7 @@ export const SEED_EMPLOYEES = [
     name: 'Canan Yılmaz',
     email: 'canan@firma.ch',
     password: '1234',
+    pin: '1001',
     role: 'employee',
     department: 'kuche',
     jobTitle: 'Chefköchin (Mutfak Şefi)',
@@ -177,6 +179,7 @@ export const SEED_EMPLOYEES = [
     name: 'Mehmet Demir',
     email: 'mehmet@firma.ch',
     password: '1234',
+    pin: '1002',
     role: 'employee',
     department: 'service',
     jobTitle: 'Serviceleiter & Sommelier',
@@ -195,6 +198,7 @@ export const SEED_EMPLOYEES = [
     name: 'Sarah Schmid',
     email: 'sarah@firma.ch',
     password: '1234',
+    pin: '1003',
     role: 'employee',
     department: 'bar',
     jobTitle: 'Head Bartender & Barista',
@@ -213,6 +217,7 @@ export const SEED_EMPLOYEES = [
     name: 'Ali Kaya',
     email: 'ali@firma.ch',
     password: '1234',
+    pin: '1004',
     role: 'employee',
     department: 'kuche',
     jobTitle: 'Beikoch & Grillmeister',
@@ -231,6 +236,7 @@ export const SEED_EMPLOYEES = [
     name: 'David Keller',
     email: 'david@firma.ch',
     password: '1234',
+    pin: '1005',
     role: 'employee',
     department: 'lager',
     jobTitle: 'Lagerleiter & Wareneingang',
@@ -249,6 +255,7 @@ export const SEED_EMPLOYEES = [
     name: 'Fatma Öztürk',
     email: 'fatma@firma.ch',
     password: '1234',
+    pin: '1006',
     role: 'employee',
     department: 'reinigung',
     jobTitle: 'Hygienemanagerin & Housekeeping',
@@ -479,3 +486,161 @@ export const SEED_TIME_LOGS = [
     status: 'working'
   }
 ];
+
+export const SEED_HACCP_CHECKLISTS = [
+  {
+    id: 'chk-1',
+    category: 'morning',
+    title: 'Kaffeemaschine Reinigung & Spülung',
+    titleTr: 'Kahve makinesi temizliği ve durulama',
+    done: true,
+    completedBy: 'Sarah Schmid',
+    time: '07:15',
+    date: new Date().toISOString().split('T')[0]
+  },
+  {
+    id: 'chk-2',
+    category: 'morning',
+    title: 'Brotregale & Theke desinfizieren',
+    titleTr: 'Ekmek rafları & tezgah dezenfeksiyonu',
+    done: true,
+    completedBy: 'Canan Yılmaz',
+    time: '06:30',
+    date: new Date().toISOString().split('T')[0]
+  },
+  {
+    id: 'chk-3',
+    category: 'morning',
+    title: 'Verfallsdaten & Frische prüfen (MHD)',
+    titleTr: 'Son kullanma tarihi ve tazelik kontrolü',
+    done: true,
+    completedBy: 'Canan Yılmaz',
+    time: '06:45',
+    date: new Date().toISOString().split('T')[0]
+  },
+  {
+    id: 'chk-4',
+    category: 'morning',
+    title: 'Handwaschstationen (Seife, Papier) auffüllen',
+    titleTr: 'Lavabo sabun ve kağıt havlu tamamlama',
+    done: true,
+    completedBy: 'Fatma Öztürk',
+    time: '07:00',
+    date: new Date().toISOString().split('T')[0]
+  },
+  {
+    id: 'chk-5',
+    category: 'evening',
+    title: 'Backöfen & Backbleche gründlich reinigen',
+    titleTr: 'Fırın ve fırın tepsilerini temizleme',
+    done: false,
+    completedBy: null,
+    time: null,
+    date: new Date().toISOString().split('T')[0]
+  },
+  {
+    id: 'chk-6',
+    category: 'evening',
+    title: 'Kühlraum- & Tiefkühltüren Dichtungen prüfen',
+    titleTr: 'Soğuk oda & derin dondurucu kapak kilit kontrolü',
+    done: false,
+    completedBy: null,
+    time: null,
+    date: new Date().toISOString().split('T')[0]
+  },
+  {
+    id: 'chk-7',
+    category: 'evening',
+    title: 'Mülltrennung & Container verschliessen',
+    titleTr: 'Çöp ayrıştırma ve konteynerleri kilitleme',
+    done: false,
+    completedBy: null,
+    time: null,
+    date: new Date().toISOString().split('T')[0]
+  },
+  {
+    id: 'chk-8',
+    category: 'evening',
+    title: 'Tageskassenabschluss & Tresorverschluss',
+    titleTr: 'Günlük kasa sayımı ve çelik kasa kilidi',
+    done: false,
+    completedBy: null,
+    time: null,
+    date: new Date().toISOString().split('T')[0]
+  }
+];
+
+export const SEED_TEMPERATURE_LOGS = [
+  {
+    id: 'temp-1',
+    location: 'Kühlraum 1 (Molkerei & Fleisch)',
+    locationTr: 'Soğuk Oda 1 (Süt & Et)',
+    targetRange: '2.0°C - 4.0°C',
+    currentTemp: 3.2,
+    status: 'ok',
+    checkedBy: 'Canan Yılmaz',
+    checkedAt: '06:15',
+    date: new Date().toISOString().split('T')[0]
+  },
+  {
+    id: 'temp-2',
+    location: 'Kühlraum 2 (Teiglinge & Bäckerei)',
+    locationTr: 'Soğuk Oda 2 (Hamur & Fırın)',
+    targetRange: '4.0°C - 6.0°C',
+    currentTemp: 4.8,
+    status: 'ok',
+    checkedBy: 'Ali Kaya',
+    checkedAt: '06:20',
+    date: new Date().toISOString().split('T')[0]
+  },
+  {
+    id: 'temp-3',
+    location: 'Tiefkühler Hauptlager',
+    locationTr: 'Derin Dondurucu Ana Depo',
+    targetRange: '-18.0°C bis -22.0°C',
+    currentTemp: -19.4,
+    status: 'ok',
+    checkedBy: 'David Keller',
+    checkedAt: '07:30',
+    date: new Date().toISOString().split('T')[0]
+  },
+  {
+    id: 'temp-4',
+    location: 'Kühlvitrine Verkauf / Service',
+    locationTr: 'Satış & Servis Soğuk Vitrini',
+    targetRange: '3.0°C - 5.0°C',
+    currentTemp: 3.9,
+    status: 'ok',
+    checkedBy: 'Mehmet Demir',
+    checkedAt: '07:50',
+    date: new Date().toISOString().split('T')[0]
+  }
+];
+
+export const SEED_BULLETINS = [
+  {
+    id: 'bul-1',
+    title: 'Kantonale Lebensmittelkontrolle (HACCP Inspektion)',
+    titleTr: 'Kanton Gıda Denetimi (HACCP İncelemesi)',
+    category: 'urgent',
+    date: new Date().toISOString().split('T')[0],
+    author: 'Geschäftsleitung / Kadir',
+    content: 'Liebes Team, am kommenden Dienstag findet die jährliche Lebensmittelkontrolle statt. Bitte alle Kühlraum-Temperaturlisten und Reinigungspläne lückenlos ausfüllen.',
+    contentTr: 'Değerli ekip, önümüzdeki Salı günü yıllık kanton gıda denetimi yapılacaktır. Lütfen tüm soğutucu sıcaklık listelerini ve temizlik çizelgelerini eksiksiz doldurun.',
+    pinned: true,
+    views: 12
+  },
+  {
+    id: 'bul-2',
+    title: 'Sonntagszuschlag & Oster-Wochenende Einsatzplan',
+    titleTr: 'Pazar Mesai Zammı & Bayram Vardiya Planı',
+    category: 'info',
+    date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+    author: 'Geschäftsleitung / Kadir',
+    content: 'Der Schichtplan für das kommende Feiertags-Wochenende ist online. Für Einsätze am Sonntag gilt der reguläre GAV-Sonntagszuschlag (+50%).',
+    contentTr: 'Önümüzdeki tatil haftasonunun vardiya planı yayınlandı. Pazar günü çalışanlar için İsviçre GAV kuralı gereği %50 ek zam uygulanacaktır.',
+    pinned: false,
+    views: 16
+  }
+];
+

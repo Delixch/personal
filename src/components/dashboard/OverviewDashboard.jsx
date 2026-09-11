@@ -13,7 +13,10 @@ import {
   Database,
   Building2,
   Sparkles,
-  Palmtree
+  Palmtree,
+  Calculator,
+  Megaphone,
+  Thermometer
 } from 'lucide-react';
 import { StorageService } from '../../services/storage';
 import { formatCurrency, formatDate } from '../../utils/formatters';
@@ -128,6 +131,45 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
       stat: lang === 'tr' ? 'İK & Girişler' : 'Onboarding'
     },
     {
+      id: 'payroll',
+      title: lang === 'tr' ? 'Maaş & Saat Hesaplayıcı' : 'Lohn- & Stundenabrechnung',
+      subtitle: lang === 'tr' ? 'İsviçre GAV, fazla mesai & Treuhand CSV bordro dökümü' : 'Arbeitszeitabrechnung, Überstunden & Treuhand-Journal',
+      icon: Calculator,
+      color: 'indigo',
+      badge: 'GAV Konform',
+      cardBg: 'bg-violet-50/40 hover:bg-violet-50/80 border-violet-200/80 hover:border-violet-400',
+      iconBg: 'bg-violet-100 text-violet-700 border-violet-200',
+      badgeBg: 'bg-violet-100 text-violet-800 border-violet-200',
+      textColor: 'text-violet-900',
+      stat: lang === 'tr' ? 'Treuhand Hazır' : 'Treuhand Export'
+    },
+    {
+      id: 'haccp',
+      title: lang === 'tr' ? 'HACCP & Hijyen Kontrolleri' : 'HACCP & Hygiene-Check',
+      subtitle: lang === 'tr' ? 'Soğuk oda sıcaklıkları, sabah/akşam temizlik listesi' : 'Kühlraum-Temperaturen, Morgen- & Abendschliessung',
+      icon: ShieldCheck,
+      color: 'teal',
+      badge: 'Lebensmittelrecht',
+      cardBg: 'bg-teal-50/40 hover:bg-teal-50/80 border-teal-200/80 hover:border-teal-400',
+      iconBg: 'bg-teal-100 text-teal-700 border-teal-200',
+      badgeBg: 'bg-teal-100 text-teal-800 border-teal-200',
+      textColor: 'text-teal-900',
+      stat: lang === 'tr' ? 'Denetime Uygun' : 'LMG Konform'
+    },
+    {
+      id: 'bulletin',
+      title: lang === 'tr' ? 'Duyuru Panosu & Notlar' : 'Schwarzes Brett & Infos',
+      subtitle: lang === 'tr' ? 'Patron duyuruları, talimatlar ve şirket bildirimleri' : 'Team-Mitteilungen, Arbeitsanweisungen & Termine',
+      icon: Megaphone,
+      color: 'amber',
+      badge: 'Team Info',
+      cardBg: 'bg-amber-50/40 hover:bg-amber-50/80 border-amber-200/80 hover:border-amber-400',
+      iconBg: 'bg-amber-100 text-amber-700 border-amber-200',
+      badgeBg: 'bg-amber-100 text-amber-800 border-amber-200',
+      textColor: 'text-amber-900',
+      stat: lang === 'tr' ? 'Şirket Panosu' : 'Digitaler Aushang'
+    },
+    {
       id: 'database',
       title: lang === 'tr' ? 'Yerel Veritabanı & Yedek' : 'Lokale Datenbank & Backup',
       subtitle: lang === 'tr' ? 'Tek tıkla JSON yedek indir / geri yükle' : 'Offline-First Datensicherung & JSON Export',
@@ -165,6 +207,28 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
       iconBg: 'bg-emerald-100 text-emerald-700 border-emerald-200',
       badgeBg: 'bg-emerald-100 text-emerald-800 border-emerald-200',
       textColor: 'text-emerald-900'
+    },
+    {
+      id: 'haccp',
+      title: lang === 'tr' ? 'HACCP & Hijyen Görevleri' : 'HACCP & Hygiene-Check',
+      subtitle: lang === 'tr' ? 'Dolap sıcaklıkları ve açılış/kapanış temizlik kontrolleri' : 'Temperatur messen & tägliche Checklisten abhaken',
+      icon: ShieldCheck,
+      badge: 'Täglich',
+      cardBg: 'bg-teal-50/60 hover:bg-teal-100/70 border-teal-200 hover:border-teal-400',
+      iconBg: 'bg-teal-100 text-teal-700 border-teal-200',
+      badgeBg: 'bg-teal-100 text-teal-800 border-teal-200',
+      textColor: 'text-teal-900'
+    },
+    {
+      id: 'bulletin',
+      title: lang === 'tr' ? 'Duyuru Panosu & Kurallar' : 'Schwarzes Brett & Mitteilungen',
+      subtitle: lang === 'tr' ? 'Şirket içi önemli duyuruları ve mesajları görün' : 'Wichtige Mitteilungen der Geschäftsleitung lesen',
+      icon: Megaphone,
+      badge: 'Aushang',
+      cardBg: 'bg-violet-50/60 hover:bg-violet-100/70 border-violet-200 hover:border-violet-400',
+      iconBg: 'bg-violet-100 text-violet-700 border-violet-200',
+      badgeBg: 'bg-violet-100 text-violet-800 border-violet-200',
+      textColor: 'text-violet-900'
     },
     {
       id: 'sickLeave',

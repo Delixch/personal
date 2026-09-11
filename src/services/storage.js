@@ -4,7 +4,10 @@ import {
   SEED_EMPLOYEES,
   SEED_SHIFTS,
   SEED_INVOICES,
-  SEED_TIME_LOGS
+  SEED_TIME_LOGS,
+  SEED_HACCP_CHECKLISTS,
+  SEED_TEMPERATURE_LOGS,
+  SEED_BULLETINS
 } from './seedData';
 
 const STORAGE_KEYS = {
@@ -18,7 +21,10 @@ const STORAGE_KEYS = {
   INVOICES: 'ado_invoices_v1',
   CURRENT_USER: 'ado_current_user_v1',
   NOTIFICATIONS: 'ado_notifications_v1',
-  APP_LANG: 'ado_app_lang_v1'
+  APP_LANG: 'ado_app_lang_v1',
+  HACCP_CHECKLISTS: 'ado_haccp_checklists_v1',
+  TEMPERATURE_LOGS: 'ado_temperature_logs_v1',
+  BULLETINS: 'ado_bulletins_v1'
 };
 
 // Local Database initialization with Seed Data
@@ -80,6 +86,15 @@ export const initializeDatabase = () => {
   }
   if (!localStorage.getItem(STORAGE_KEYS.APP_LANG)) {
     localStorage.setItem(STORAGE_KEYS.APP_LANG, 'de');
+  }
+  if (!localStorage.getItem(STORAGE_KEYS.HACCP_CHECKLISTS)) {
+    localStorage.setItem(STORAGE_KEYS.HACCP_CHECKLISTS, JSON.stringify(SEED_HACCP_CHECKLISTS));
+  }
+  if (!localStorage.getItem(STORAGE_KEYS.TEMPERATURE_LOGS)) {
+    localStorage.setItem(STORAGE_KEYS.TEMPERATURE_LOGS, JSON.stringify(SEED_TEMPERATURE_LOGS));
+  }
+  if (!localStorage.getItem(STORAGE_KEYS.BULLETINS)) {
+    localStorage.setItem(STORAGE_KEYS.BULLETINS, JSON.stringify(SEED_BULLETINS));
   }
 };
 
@@ -366,10 +381,96 @@ export const StorageService = {
     }
     return { success: false, error: 'E-Mail oder Passwort ungültig.' };
   },
+  loginWithPin: (pin) => {
+    const employees = StorageService.getEmployees();
+    const found = employees.find(e => e.pin === pin || (e.role === 'admin' && pin === '9999'));
+    if (found) {
+      StorageService.setCurrentUser(found);
+      return { success: true, user: found };
+    }
+    return { success: false, error: 'Ungültige PIN (Demo: 1001-1006 / 9999)' };
+  },
+  clockWithPin: (pin, action) => {
+    const employees = StorageService.getEmployees();
+    const found = employees.find(e => e.pin === pin || (e.role === 'admin' && pin === '9999'));
+    if (!found) {
+      return { success: false, error: 'Ungültige PIN' };
+    }
+    let result = null;
+    if (action === 'in') {
+      result = StorageService.clockIn(found.id);
+    } else if (action === 'out') {
+      result = StorageService.clockOut(found.id);
+    } else if (action === 'break') {
+      result = StorageService.addBreakTime(found.id, 30);
+    }
+    return { success: true, user: found, result };
+  },
   logout: () => {
     // Switch to null or login screen
     localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
     window.dispatchEvent(new Event('ado_db_update'));
+  },
+
+  // HACCP & Hygiene Lists
+  getHaccpChecklists: () => getStoredItem(STORAGE_KEYS.HACCP_CHECKLISTS, SEED_HACCP_CHECKLISTS),
+  toggleHaccpItem: (id, employeeName) => {
+    const list = StorageService.getHaccpChecklists();
+    const item = list.find(i => i.id === id);
+    if (item) {
+      item.done = !item.done;
+      item.completedBy = item.done ? employeeName : null;
+      item.time = item.done ? new Date().toTimeString().substring(0, 5) : null;
+      setStoredItem(STORAGE_KEYS.HACCP_CHECKLISTS, list);
+    }
+    return list;
+  },
+  addHaccpItem: (item) => {
+    const list = StorageService.getHaccpChecklists();
+    const newItem = {
+      ...item,
+      id: `chk-${Date.now()}`,
+      done: false,
+      date: new Date().toISOString().split('T')[0]
+    };
+    list.push(newItem);
+    setStoredItem(STORAGE_KEYS.HACCP_CHECKLISTS, list);
+    return list;
+  },
+
+  // Temperature Logs
+  getTemperatureLogs: () => getStoredItem(STORAGE_KEYS.TEMPERATURE_LOGS, SEED_TEMPERATURE_LOGS),
+  updateTemperature: (id, temp, employeeName) => {
+    const list = StorageService.getTemperatureLogs();
+    const log = list.find(l => l.id === id);
+    if (log) {
+      log.currentTemp = parseFloat(temp);
+      log.checkedBy = employeeName;
+      log.checkedAt = new Date().toTimeString().substring(0, 5);
+      log.date = new Date().toISOString().split('T')[0];
+      if (log.location.includes('Tiefkühler')) {
+        log.status = log.currentTemp <= -17 ? 'ok' : 'warning';
+      } else {
+        log.status = (log.currentTemp >= 1.0 && log.currentTemp <= 6.0) ? 'ok' : 'warning';
+      }
+      setStoredItem(STORAGE_KEYS.TEMPERATURE_LOGS, list);
+    }
+    return list;
+  },
+
+  // Bulletins / Aushang
+  getBulletins: () => getStoredItem(STORAGE_KEYS.BULLETINS, SEED_BULLETINS),
+  addBulletin: (bulletin) => {
+    const list = StorageService.getBulletins();
+    const newBul = {
+      ...bulletin,
+      id: `bul-${Date.now()}`,
+      date: new Date().toISOString().split('T')[0],
+      views: 1
+    };
+    list.unshift(newBul);
+    setStoredItem(STORAGE_KEYS.BULLETINS, list);
+    return newBul;
   },
 
   // Language

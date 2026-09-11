@@ -12,6 +12,9 @@ import { InvoiceScanner } from './components/invoices/InvoiceScanner';
 import { AccountingDashboard } from './components/accounting/AccountingDashboard';
 import { DatabaseManager } from './components/database/DatabaseManager';
 import { EmployeePortal } from './components/portal/EmployeePortal';
+import { HaccpChecklists } from './components/haccp/HaccpChecklists';
+import { PayrollCalculator } from './components/payroll/PayrollCalculator';
+import { CompanyBulletin } from './components/bulletin/CompanyBulletin';
 import { ArrowLeft, Home, ChevronRight } from 'lucide-react';
 
 export function App() {
@@ -67,6 +70,12 @@ export function App() {
         return lang === 'tr' ? 'Aylık Muhasebe & Finans' : 'Monatsbuchhaltung & Finanzen';
       case 'employees':
         return lang === 'tr' ? 'Personel & HR Dosyaları' : 'Mitarbeiter & Personalakten';
+      case 'payroll':
+        return lang === 'tr' ? 'Maaş & Saat Hesaplayıcı' : 'Lohn- & Stundenabrechnung';
+      case 'haccp':
+        return lang === 'tr' ? 'HACCP & Hijyen Kontrolleri' : 'HACCP & Hygiene-Check';
+      case 'bulletin':
+        return lang === 'tr' ? 'Duyuru Panosu & Notlar' : 'Schwarzes Brett & Mitteilungen';
       case 'database':
         return lang === 'tr' ? 'Yerel Veritabanı & Yedek' : 'Lokale Datenbank & Backup';
       default:
@@ -94,6 +103,12 @@ export function App() {
         return <SickLeaveManager lang={lang} currentUser={currentUser} />;
       case 'employees':
         return <EmployeeHR lang={lang} currentUser={currentUser} />;
+      case 'payroll':
+        return <PayrollCalculator lang={lang} currentUser={currentUser} />;
+      case 'haccp':
+        return <HaccpChecklists lang={lang} currentUser={currentUser} />;
+      case 'bulletin':
+        return <CompanyBulletin lang={lang} currentUser={currentUser} />;
       case 'invoices':
         return <InvoiceScanner lang={lang} currentUser={currentUser} />;
       case 'accounting':

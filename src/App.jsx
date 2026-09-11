@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { initializeDatabase, StorageService } from './services/storage';
 import { Navbar } from './components/layout/Navbar';
-import { Sidebar } from './components/layout/Sidebar';
 import { LoginModal } from './components/auth/LoginModal';
 import { OverviewDashboard } from './components/dashboard/OverviewDashboard';
 import { SupplierManagement } from './components/suppliers/SupplierManagement';
@@ -13,9 +12,9 @@ import { InvoiceScanner } from './components/invoices/InvoiceScanner';
 import { AccountingDashboard } from './components/accounting/AccountingDashboard';
 import { DatabaseManager } from './components/database/DatabaseManager';
 import { EmployeePortal } from './components/portal/EmployeePortal';
+import { ArrowLeft, Home, ChevronRight } from 'lucide-react';
 
 export function App() {
-  // Initialize offline-first database
   useEffect(() => {
     initializeDatabase();
   }, []);
@@ -26,7 +25,6 @@ export function App() {
   const [notifications, setNotifications] = useState(() => StorageService.getNotifications());
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  // Sync state with storage updates
   useEffect(() => {
     const handleDbUpdate = () => {
       setCurrentUser(StorageService.getCurrentUser());
@@ -50,24 +48,33 @@ export function App() {
 
   const handleUserChange = (user) => {
     setCurrentUser(user);
-    if (user.role === 'employee' && activeTab === 'employees') {
-      setActiveTab('dashboard');
+    setActiveTab('dashboard'); // Always go back to clean dashboard on persona switch
+  };
+
+  const getActiveTabTitle = () => {
+    switch (activeTab) {
+      case 'suppliers':
+        return lang === 'tr' ? 'Tedarikçiler & Sipariş' : 'Lieferanten & Einkauf';
+      case 'shifts':
+        return lang === 'tr' ? 'Vardiya Planı (2 Vardiya)' : 'Schichtplan (2 Schichten)';
+      case 'timeTracker':
+        return lang === 'tr' ? 'Giriş-Çıkış (Stempeluhr)' : 'Stempeluhr & Zeiterfassung';
+      case 'sickLeave':
+        return lang === 'tr' ? 'Hastalık Bildirimi & İzin' : 'Krankmeldungen & Urlaub';
+      case 'invoices':
+        return lang === 'tr' ? 'Fatura Tarama & Fotoğraf' : 'Rechnungs-Scan & Belege';
+      case 'accounting':
+        return lang === 'tr' ? 'Aylık Muhasebe & Finans' : 'Monatsbuchhaltung & Finanzen';
+      case 'employees':
+        return lang === 'tr' ? 'Personel & HR Dosyaları' : 'Mitarbeiter & Personalakten';
+      case 'database':
+        return lang === 'tr' ? 'Yerel Veritabanı & Yedek' : 'Lokale Datenbank & Backup';
+      default:
+        return '';
     }
   };
 
-  // Render current tab component
   const renderTabContent = () => {
-    // If the logged in user is regular employee and clicks dashboard or portal, we can provide EmployeePortal
-    if (currentUser?.role === 'employee' && activeTab === 'dashboard') {
-      return (
-        <EmployeePortal
-          lang={lang}
-          currentUser={currentUser}
-          onNavigate={(tab) => setActiveTab(tab)}
-        />
-      );
-    }
-
     switch (activeTab) {
       case 'dashboard':
         return (
@@ -78,61 +85,21 @@ export function App() {
           />
         );
       case 'suppliers':
-        return (
-          <SupplierManagement
-            lang={lang}
-            currentUser={currentUser}
-          />
-        );
+        return <SupplierManagement lang={lang} currentUser={currentUser} />;
       case 'shifts':
-        return (
-          <ShiftScheduler
-            lang={lang}
-            currentUser={currentUser}
-          />
-        );
+        return <ShiftScheduler lang={lang} currentUser={currentUser} />;
       case 'timeTracker':
-        return (
-          <TimeTracker
-            lang={lang}
-            currentUser={currentUser}
-          />
-        );
+        return <TimeTracker lang={lang} currentUser={currentUser} />;
       case 'sickLeave':
-        return (
-          <SickLeaveManager
-            lang={lang}
-            currentUser={currentUser}
-          />
-        );
+        return <SickLeaveManager lang={lang} currentUser={currentUser} />;
       case 'employees':
-        return (
-          <EmployeeHR
-            lang={lang}
-            currentUser={currentUser}
-          />
-        );
+        return <EmployeeHR lang={lang} currentUser={currentUser} />;
       case 'invoices':
-        return (
-          <InvoiceScanner
-            lang={lang}
-            currentUser={currentUser}
-          />
-        );
+        return <InvoiceScanner lang={lang} currentUser={currentUser} />;
       case 'accounting':
-        return (
-          <AccountingDashboard
-            lang={lang}
-            currentUser={currentUser}
-          />
-        );
+        return <AccountingDashboard lang={lang} currentUser={currentUser} />;
       case 'database':
-        return (
-          <DatabaseManager
-            lang={lang}
-            currentUser={currentUser}
-          />
-        );
+        return <DatabaseManager lang={lang} currentUser={currentUser} />;
       default:
         return (
           <OverviewDashboard
@@ -143,6 +110,8 @@ export function App() {
         );
     }
   };
+
+  const isModuleOpen = activeTab !== 'dashboard';
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans">
@@ -156,26 +125,42 @@ export function App() {
         notifications={notifications}
         onNotificationsRead={handleNotificationsRead}
         onOpenLoginModal={() => setIsLoginModalOpen(true)}
+        onGoHome={() => setActiveTab('dashboard')}
       />
 
-      {/* Main Body */}
-      <div className="flex-1 flex flex-col md:flex-row">
+      {/* Main Body - Focused and spacious without distracting side menus */}
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
         
-        {/* Sidebar */}
-        <Sidebar
-          activeTab={activeTab}
-          onTabChange={(tab) => setActiveTab(tab)}
-          lang={lang}
-          currentUser={currentUser}
-        />
+        {/* Navigation Bar when inside a specific module */}
+        {isModuleOpen && (
+          <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-200">
+            <button
+              onClick={() => setActiveTab('dashboard')}
+              className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-slate-200 hover:bg-slate-100/80 text-slate-800 font-bold text-xs shadow-xs hover:shadow transition group"
+            >
+              <ArrowLeft className="w-4 h-4 text-slate-500 group-hover:-translate-x-0.5 transition" />
+              <span>{lang === 'tr' ? '← Ana Menüye Dön' : '← Zurück zum Dashboard'}</span>
+            </button>
 
-        {/* Content View Area */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto overflow-y-auto">
-          {renderTabContent()}
-        </main>
-      </div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+              <span
+                onClick={() => setActiveTab('dashboard')}
+                className="cursor-pointer hover:text-slate-800 flex items-center gap-1"
+              >
+                <Home className="w-3.5 h-3.5" />
+                <span>Dashboard</span>
+              </span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+              <span className="text-slate-900 font-extrabold">{getActiveTabTitle()}</span>
+            </div>
+          </div>
+        )}
 
-      {/* Login / Switch Modal */}
+        {/* Current Active Screen */}
+        {renderTabContent()}
+      </main>
+
+      {/* Login Modal */}
       <LoginModal
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
@@ -189,4 +174,5 @@ export function App() {
     </div>
   );
 }
+
 export default App;

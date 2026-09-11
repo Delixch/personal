@@ -20,7 +20,8 @@ export const Navbar = ({
   onLangChange,
   notifications,
   onNotificationsRead,
-  onOpenLoginModal
+  onOpenLoginModal,
+  onGoHome
 }) => {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showNotifDropdown, setShowNotifDropdown] = useState(false);
@@ -49,11 +50,15 @@ export const Navbar = ({
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/95 backdrop-blur-md">
-      <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         
-        {/* Brand & Status */}
-        <div className="flex items-center gap-3">
-          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-600 text-white font-black shadow-sm">
+        {/* Brand & Status (Click to go Home) */}
+        <div
+          onClick={onGoHome}
+          className="flex items-center gap-3 cursor-pointer group"
+          title={lang === 'tr' ? 'Ana Menüye Git' : 'Zum Dashboard'}
+        >
+          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-600 text-white font-black shadow-sm group-hover:bg-emerald-700 transition">
             <Building2 className="w-5 h-5 text-white" />
             <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>

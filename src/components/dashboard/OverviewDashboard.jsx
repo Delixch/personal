@@ -23,9 +23,11 @@ import {
 } from 'lucide-react';
 import { StorageService } from '../../services/storage';
 import { formatCurrency, formatDate } from '../../utils/formatters';
+import { PersonalakteModal } from '../employees/PersonalakteModal';
 
 export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
   const [activeCategoryFilter, setActiveCategoryFilter] = useState('all');
+  const [showChefModal, setShowChefModal] = useState(false);
 
   const suppliers = StorageService.getSuppliers();
   const employees = StorageService.getEmployees();
@@ -300,88 +302,155 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       
-      {/* Top Welcome Hub Banner with Quick Live Highlights */}
-      <div className="p-6 md:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
-            <span className="text-xs font-black uppercase tracking-wider text-slate-500">
+      {/* Top Executive Welcome Hub Banner */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white border border-slate-700/80 shadow-xl relative overflow-hidden">
+        {/* Ambient Decorative Lighting */}
+        <div className="absolute -right-16 -top-16 w-64 h-64 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        {/* Top Header Row: Welcome & Chef Identity */}
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-black tracking-wider uppercase">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>
+                {isAdmin
+                  ? (lang === 'tr' ? 'YÖNETİM KONTROL MERKEZİ • ZÜRİH' : 'BETRIEBSLEITUNG AKTIV • ZÜRICH')
+                  : (lang === 'tr' ? 'PERSONEL HIZLI İŞLEM PANELİ' : 'MITARBEITER SCHNELLZUGRIFF')}
+              </span>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
+              {lang === 'tr'
+                ? `Hoş Geldiniz, ${currentUser?.name.split(' ')[0]}`
+                : `Willkommen, ${currentUser?.name.split(' ')[0]}`}
+            </h1>
+
+            <p className="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
               {isAdmin
-                ? (lang === 'tr' ? 'YÖNETİCİ KONTROL MERKEZİ' : 'CHEF / BETRIEBSLEITUNG PORTAL')
-                : (lang === 'tr' ? 'PERSONEL HIZLI İŞLEM PANELİ' : 'MITARBEITER SCHNELLZUGRIFF')}
-            </span>
+                ? (lang === 'tr'
+                    ? 'İsviçre L-GAV Gastgewerbe ve HACCP gıda hijyen standartlarına tam uyumlu dijital yönetim platformu.'
+                    : 'Zentrales Management & Schweizer Betriebskontrolle nach L-GAV und Lebensmittelrecht (HACCP).')
+                : (lang === 'tr'
+                    ? 'İşe giriş-çıkış yapabilir, vardiyalarınızı görebilir veya hastalık ve tatil talebi oluşturabilirsiniz.'
+                    : 'Hier können Sie sich einstempeln, Ihre Schichten einsehen oder Absenzen melden.')}
+            </p>
           </div>
 
-          <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-            {lang === 'tr'
-              ? `Hoş Geldiniz, ${currentUser?.name.split(' ')[0]}`
-              : `Willkommen, ${currentUser?.name.split(' ')[0]}`}
-          </h1>
-          <p className="text-xs md:text-sm text-slate-500 mt-1 max-w-xl leading-relaxed">
-            {isAdmin
-              ? (lang === 'tr'
-                  ? 'Bölümler kategorilere ayrılarak yan yana dizilmiştir. Renkli kartlara tıklayarak doğrudan çalışabilirsiniz.'
-                  : 'Bereiche sind thematisch geordnet nebeneinander aufgeteilt. Klicken Sie auf eine farbige Karte, um direkt loszulegen.')
-              : (lang === 'tr'
-                  ? 'İşe giriş-çıkış yapabilir, vardiyalarınızı görebilir veya hastalık ve tatil talebi oluşturabilirsiniz.'
-                  : 'Hier können Sie sich einstempeln, Ihre Schichten einsehen oder Absenzen melden.')}
-          </p>
+          {/* Right: Symmetrical Executive Profile Card */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 shrink-0">
+            {!isAdmin && (
+              <button
+                onClick={() => {
+                  const adminUser = employees.find(e => e.role === 'admin') || employees[0];
+                  StorageService.setCurrentUser(adminUser);
+                  window.location.reload();
+                }}
+                className="px-4 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-md flex items-center gap-2 transition"
+              >
+                <ShieldCheck className="w-4 h-4" />
+                <span>{lang === 'tr' ? '👑 Patron Ekranına Geç' : '👑 Zum Chef-Modus'}</span>
+              </button>
+            )}
 
-          {/* Quick Real-Time Status Chips for Quick Scanning */}
-          {isAdmin && (
-            <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-slate-100 text-xs">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-800 font-bold border border-blue-200">
-                <Truck className="w-3.5 h-3.5 text-blue-600" />
-                {suppliers.length} {lang === 'tr' ? 'Tedarikçi' : 'Lieferanten'}
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
-                <Users2 className="w-3.5 h-3.5 text-emerald-600" />
-                {employees.length} {lang === 'tr' ? 'Personel' : 'Mitarbeiter'}
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 text-cyan-800 font-bold border border-cyan-200">
-                <Clock className="w-3.5 h-3.5 text-cyan-600" />
-                {activeTimeLogs.length} {lang === 'tr' ? 'Şu An Görevde' : 'Im Dienst'}
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-purple-800 font-bold border border-purple-200">
-                <ReceiptText className="w-3.5 h-3.5 text-purple-600" />
-                {unpaidInvoices.length} {lang === 'tr' ? 'Açık Fatura' : 'Offene Belege'} ({formatCurrency(totalUnpaid)})
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* Quick Identity & Return to Boss Button */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-          {!isAdmin && (
-            <button
-              onClick={() => {
-                const adminUser = employees.find(e => e.role === 'admin') || employees[0];
-                StorageService.setCurrentUser(adminUser);
-                window.location.reload();
-              }}
-              className="px-4 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-md flex items-center gap-2 transition"
+            <div
+              onClick={() => setShowChefModal(true)}
+              className="p-3.5 rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 transition cursor-pointer flex items-center gap-3.5 shadow-lg group"
+              title={lang === 'tr' ? 'Özlük Dosyasını Aç (GAV Dossier)' : 'Personalakte öffnen (GAV Dossier)'}
             >
-              <ShieldCheck className="w-4 h-4" />
-              <span>{lang === 'tr' ? '👑 Patron Ekranına Geç' : '👑 Zum Chef-Modus'}</span>
-            </button>
-          )}
-
-          <div
-            onClick={() => onNavigate('employees')}
-            className="flex items-center gap-3 bg-slate-50 hover:bg-emerald-50/70 p-2.5 rounded-2xl border border-slate-200 hover:border-emerald-300 shrink-0 cursor-pointer transition shadow-2xs group"
-            title={lang === 'tr' ? 'Personel & Özlük Dosyalarına Git' : 'Zu Personalakten & Mitarbeiter'}
-          >
-            <img
-              src={currentUser?.avatar}
-              alt={currentUser?.name}
-              className="w-11 h-11 rounded-xl object-cover ring-2 ring-emerald-300 group-hover:ring-emerald-500 transition"
-            />
-            <div>
-              <p className="text-xs font-black text-slate-900 group-hover:text-emerald-900 transition">{currentUser?.name}</p>
-              <p className="text-[11px] text-emerald-700 font-semibold">{currentUser?.jobTitle}</p>
+              <img
+                src={currentUser?.avatar}
+                alt={currentUser?.name}
+                className="w-12 h-12 rounded-xl object-cover ring-2 ring-emerald-400 group-hover:scale-105 transition"
+              />
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="text-xs font-black text-white">{currentUser?.name}</p>
+                  <span className="text-[10px] font-black px-1.5 py-0.2 rounded bg-emerald-500/30 text-emerald-300 border border-emerald-500/40">
+                    PIN: {currentUser?.pin || '9999'}
+                  </span>
+                </div>
+                <p className="text-[11px] text-emerald-300 font-semibold">{currentUser?.jobTitle}</p>
+                <span className="inline-flex items-center gap-1 text-[10px] text-slate-300 group-hover:text-white font-bold mt-1 transition">
+                  <span>{lang === 'tr' ? 'Özlük Dosyasını Aç →' : 'Personalakte öffnen →'}</span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Bottom Metrics Bar: Symmetrical 4-Card KPI Grid */}
+        {isAdmin && (
+          <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-3.5 mt-6 pt-5 border-t border-white/10">
+            {/* KPI 1: Lieferanten */}
+            <div
+              onClick={() => onNavigate('suppliers')}
+              className="p-3.5 rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 transition cursor-pointer hover:-translate-y-0.5 group"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                  {lang === 'tr' ? 'Tedarikçiler' : 'Lieferanten'}
+                </span>
+                <div className="w-7 h-7 rounded-lg bg-blue-500/30 border border-blue-400/40 flex items-center justify-center text-blue-300">
+                  <Truck className="w-3.5 h-3.5" />
+                </div>
+              </div>
+              <p className="text-lg font-black text-white">{suppliers.length} Partner</p>
+              <p className="text-[10px] text-blue-200 mt-0.5">Prodega, Hiestand, Pistor</p>
+            </div>
+
+            {/* KPI 2: Mitarbeiter */}
+            <div
+              onClick={() => onNavigate('employees')}
+              className="p-3.5 rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 transition cursor-pointer hover:-translate-y-0.5 group"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                  {lang === 'tr' ? 'Personel' : 'Mitarbeiter'}
+                </span>
+                <div className="w-7 h-7 rounded-lg bg-emerald-500/30 border border-emerald-400/40 flex items-center justify-center text-emerald-300">
+                  <Users2 className="w-3.5 h-3.5" />
+                </div>
+              </div>
+              <p className="text-lg font-black text-white">{employees.length} {lang === 'tr' ? 'Çalışan' : 'Personen'}</p>
+              <p className="text-[10px] text-emerald-200 mt-0.5">5 Departman Aktif</p>
+            </div>
+
+            {/* KPI 3: Stempeluhr Live */}
+            <div
+              onClick={() => onNavigate('timeTracker')}
+              className="p-3.5 rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 transition cursor-pointer hover:-translate-y-0.5 group"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                  {lang === 'tr' ? 'Canlı Mesai' : 'Stempeluhr'}
+                </span>
+                <div className="w-7 h-7 rounded-lg bg-cyan-500/30 border border-cyan-400/40 flex items-center justify-center text-cyan-300">
+                  <Clock className="w-3.5 h-3.5" />
+                </div>
+              </div>
+              <p className="text-lg font-black text-white">{activeTimeLogs.length} {lang === 'tr' ? 'Görevde' : 'Im Dienst'}</p>
+              <p className="text-[10px] text-cyan-200 mt-0.5">Tablet Kiosk Terminali</p>
+            </div>
+
+            {/* KPI 4: Offene Rechnungen */}
+            <div
+              onClick={() => onNavigate('invoices')}
+              className="p-3.5 rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 transition cursor-pointer hover:-translate-y-0.5 group"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                  {lang === 'tr' ? 'Açık Faturalar' : 'Offene Belege'}
+                </span>
+                <div className="w-7 h-7 rounded-lg bg-purple-500/30 border border-purple-400/40 flex items-center justify-center text-purple-300">
+                  <ReceiptText className="w-3.5 h-3.5" />
+                </div>
+              </div>
+              <p className="text-lg font-black text-white">{formatCurrency(totalUnpaid)}</p>
+              <p className="text-[10px] text-purple-200 mt-0.5">{unpaidInvoices.length} {lang === 'tr' ? 'Fatura bekliyor' : 'Belege offen'}</p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Admin View: 3 Distinct Categorized Pillars Side-by-Side */}
@@ -572,6 +641,25 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
             })}
           </div>
         </div>
+      )}
+
+      {/* Chef Personalakte Dossier Modal */}
+      {showChefModal && (
+        <PersonalakteModal
+          employee={currentUser}
+          lang={lang}
+          onClose={() => setShowChefModal(false)}
+          onSave={(updated) => {
+            StorageService.saveEmployee(updated);
+            StorageService.setCurrentUser(updated);
+            setShowChefModal(false);
+            window.location.reload();
+          }}
+          onSwitchUser={(emp) => {
+            StorageService.setCurrentUser(emp);
+            window.location.reload();
+          }}
+        />
       )}
 
     </div>

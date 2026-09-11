@@ -8,113 +8,200 @@ export const SEED_DEPARTMENTS = [
 
 export const SEED_SUPPLIERS = [
   {
-    id: 'sup-1',
-    name: 'Metzgerei Keller & Söhne',
-    category: 'Metzgerei / Fleischerei (Kasap)',
-    contactPerson: 'Hans Keller',
-    phone: '+41 44 211 40 20',
-    email: 'bestellung@metzgerei-keller.ch',
-    whatsapp: '+41791234567',
-    deliveryDays: ['Dienstag', 'Donnerstag', 'Samstag'],
-    minOrderChf: 200,
-    rating: 4.9,
-    address: 'Zürich West Str. 42, 8005 Zürich',
-    notes: 'Frische Schweizer Fleischwaren, Vorbestellung bis 18:00 Uhr',
-    catalog: [
-      { id: 'p1', name: 'Rindsfilet CH Premium (kg)', price: 68.50, unit: 'kg' },
-      { id: 'p2', name: 'Kalbskotelett Schweiz (kg)', price: 48.00, unit: 'kg' },
-      { id: 'p3', name: 'Pouletbrust Schweiz (kg)', price: 24.50, unit: 'kg' },
-      { id: 'p4', name: 'Hackfleisch Rind/Schwein (kg)', price: 18.90, unit: 'kg' },
-      { id: 'p5', name: 'Bacon Streifen geräuchert (kg)', price: 22.00, unit: 'kg' },
-      { id: 'p5b', name: 'Lammkoteletts mariniert (kg)', price: 38.50, unit: 'kg' }
-    ]
-  },
-  {
-    id: 'sup-2',
-    name: 'Prodega Transgourmet Zürich',
+    id: 'sup-prodega',
+    name: 'Prodega CC Dietikon (Transgourmet)',
     category: 'Grosshandel & C&C (Toptan Grossmarkt)',
-    contactPerson: 'Marco Bellini',
+    contactPerson: 'Marco Bellini / Kundendienst',
     phone: '+41 44 809 11 00',
-    email: 'orders.zh@prodega.ch',
-    whatsapp: '+41798765432',
+    email: 'dietikon@prodega.ch',
+    whatsapp: '+41798091100',
     deliveryDays: ['Montag', 'Mittwoch', 'Freitag'],
     minOrderChf: 400,
-    rating: 4.8,
+    rating: 4.9,
     address: 'Industriestrasse 18, 8305 Dietlikon',
-    notes: 'Grossgebinde, Trockensortiment, Molkerei & Non-Food',
+    notes: 'Hauptlieferant Trockensortiment, Molkerei, Öle & Gastro-Grossgebinde',
     catalog: [
-      { id: 'p6', name: 'Olivenöl Extra Vergine 5L Kanister', price: 64.00, unit: 'Kanister' },
-      { id: 'p7', name: 'Basmati Reis Premium 20kg Sack', price: 42.50, unit: 'Sack' },
-      { id: 'p8', name: 'Pasta Penne Rigate Barilla 5kg', price: 14.20, unit: 'Packung' },
-      { id: 'p9', name: 'Mozzarella di Bufala DOP (1kg)', price: 19.80, unit: 'kg' },
-      { id: 'p10', name: 'Parmigiano Reggiano 24M (kg)', price: 34.00, unit: 'kg' },
-      { id: 'p10b', name: 'Bratbutter Gastro 5kg Eimer', price: 46.00, unit: 'Eimer' }
+      { id: 'prd-1', name: 'Olivenöl Extra Vergine 5L Kanister', price: 64.00, unit: 'Kanister' },
+      { id: 'prd-2', name: 'Basmati Reis Premium 20kg Sack', price: 42.50, unit: 'Sack' },
+      { id: 'prd-3', name: 'Pasta Penne Rigate Barilla 5kg', price: 14.20, unit: 'Packung' },
+      { id: 'prd-4', name: 'Mozzarella di Bufala DOP (1kg)', price: 19.80, unit: 'kg' },
+      { id: 'prd-5', name: 'Parmigiano Reggiano 24M (kg)', price: 34.00, unit: 'kg' },
+      { id: 'prd-6', name: 'Bratbutter Gastro 5kg Eimer', price: 46.00, unit: 'Eimer' },
+      { id: 'prd-7', name: 'Frittieröl Gastro Sun 10L Kanister', price: 38.50, unit: 'Kanister' }
     ]
   },
   {
-    id: 'sup-3',
+    id: 'sup-hiestand',
+    name: 'HIESTAND Schweiz AG',
+    category: 'Tiefkühl-Backwaren & Gipfeli (Dondurulmuş Hamur)',
+    contactPerson: 'Beat Brunner (Gastro-Beratung)',
+    phone: '+41 44 738 41 11',
+    email: 'order.ch@hiestand.ch',
+    whatsapp: '+41797384111',
+    deliveryDays: ['Dienstag', 'Donnerstag', 'Samstag früh'],
+    minOrderChf: 250,
+    rating: 5.0,
+    address: 'Würzbrunnenstrasse 2, 8952 Schlieren',
+    notes: 'Premium Schweizer Buttergipfeli, Laugengebäck & Baguettes tiefgekühlt',
+    catalog: [
+      { id: 'hie-1', name: 'Buttergipfel CH Teigling 70g (120 Stk)', price: 89.00, unit: 'Karton' },
+      { id: 'hie-2', name: 'Laugengipfel Premium 80g (100 Stk)', price: 82.50, unit: 'Karton' },
+      { id: 'hie-3', name: 'Pain au Chocolat Butter 75g (90 Stk)', price: 76.00, unit: 'Karton' },
+      { id: 'hie-4', name: 'Baguette Parisienne vorgebacken (30 Stk)', price: 44.00, unit: 'Karton' },
+      { id: 'hie-5', name: 'Rustico Bürli gemischt 90g (80 Stk)', price: 58.00, unit: 'Karton' },
+      { id: 'hie-6', name: 'Vanille-Plunder mit Himbeeren (60 Stk)', price: 68.00, unit: 'Karton' }
+    ]
+  },
+  {
+    id: 'sup-pistor',
+    name: 'Pistor AG Bäckerei- & Gastrobedarf',
+    category: 'Bäckereirohstoffe & Konditorei (Fırın & Pastacılık)',
+    contactPerson: 'Kundenbetreuung Ostschweiz / Zürich',
+    phone: '+41 41 289 89 89',
+    email: 'bestellung@pistor.ch',
+    whatsapp: '+41792898989',
+    deliveryDays: ['Montag', 'Mittwoch', 'Freitag'],
+    minOrderChf: 300,
+    rating: 4.9,
+    address: 'Hasenmoosstrasse 31, 6023 Rothenburg',
+    notes: 'Zucker, Spezialmehle, Kuvertüre, Backfette & Bäckereiverpackungen',
+    catalog: [
+      { id: 'pis-1', name: 'Kristallzucker Schweizer Fein 25kg Sack', price: 32.50, unit: 'Sack' },
+      { id: 'pis-2', name: 'Pistor Bäckermargarine Gold 10kg Block', price: 42.00, unit: 'Karton' },
+      { id: 'pis-3', name: 'Felchlin Kuvertüre Maracaibo 65% (5kg Drops)', price: 86.00, unit: 'Packung' },
+      { id: 'pis-4', name: 'Vollei pasteurisiert CH 10L Bag-in-Box', price: 48.00, unit: 'Box' },
+      { id: 'pis-5', name: 'Vanillecreme Pulver Kaltcreme 5kg', price: 36.50, unit: 'Eimer' },
+      { id: 'pis-6', name: 'Bäckerseidenpapier 50x75cm (10kg)', price: 38.00, unit: 'Pack' }
+    ]
+  },
+  {
+    id: 'sup-meyerhans',
+    name: 'MEYERHANS MÜHLEN AG',
+    category: 'Mühlen & Getreidemehle (Un Fabrikası / Değirmen)',
+    contactPerson: 'Lukas Meyerhans',
+    phone: '+41 52 723 34 34',
+    email: 'muehle@meyerhans.ch',
+    whatsapp: '+41797233434',
+    deliveryDays: ['Montag', 'Donnerstag'],
+    minOrderChf: 500,
+    rating: 5.0,
+    address: 'Rheinstrasse 18, 8500 Frauenfeld',
+    notes: 'Aylık sözleşmeli un sevkiyatı (Dauervertrag). Schweizer Qualitätsmehle IP-Suisse',
+    catalog: [
+      { id: 'mey-1', name: 'Weissmehl Type 550 Schweizer IP-Suisse 25kg', price: 28.50, unit: 'Sack' },
+      { id: 'mey-2', name: 'Halbweissmehl Type 720 Schweiz 25kg', price: 29.00, unit: 'Sack' },
+      { id: 'mey-3', name: 'Ruchmehl dunkel Type 1100 25kg', price: 29.80, unit: 'Sack' },
+      { id: 'mey-4', name: 'Dinkelmehl hell Urdinkel 25kg', price: 42.00, unit: 'Sack' },
+      { id: 'mey-5', name: 'Roggenmehl Type 1150 25kg', price: 34.00, unit: 'Sack' },
+      { id: 'mey-6', name: 'Hartweizengriess fein (Semola) 25kg', price: 36.50, unit: 'Sack' }
+    ]
+  },
+  {
+    id: 'sup-swissbaeck',
+    name: 'SwissBäck & Daroz Fladen (Inh. Akinci)',
+    category: 'Fladenbrot, Lavaş & Pide (Lavaş & Fırın Ürünleri)',
+    contactPerson: 'Ali Akinci',
+    phone: '+41 44 830 55 60',
+    email: 'order@swissbaeck.ch',
+    whatsapp: '+41789901122',
+    deliveryDays: ['Täglich (Mo-Sa frühmorgens)'],
+    minOrderChf: 100,
+    rating: 4.9,
+    address: 'Industrie West, 8304 Wallisellen',
+    notes: 'Taze günlük lavaş, kebap ekmeği, Ramazan pidesi ve susamlı somun',
+    catalog: [
+      { id: 'swb-1', name: 'Dürüm Lavaş Teiglinge 30cm (100er)', price: 38.00, unit: 'Karton' },
+      { id: 'swb-2', name: 'Pidebrot frisch mit Sesam (50 Stk)', price: 42.50, unit: 'Kiste' },
+      { id: 'swb-3', name: 'Daroz Fladenbrot 40cm traditionell (30 Stk)', price: 36.00, unit: 'Packung' },
+      { id: 'swb-4', name: 'Tombik Döner Brot 16cm gebacken (60 Stk)', price: 39.00, unit: 'Karton' }
+    ]
+  },
+  {
+    id: 'sup-coca-cola',
+    name: 'COCA-COLA HBC SCHWEIZ AG',
+    category: 'Getränke, Mineral & Softdrinks (İçecekler)',
+    contactPerson: 'Gastro-Service Zürich',
+    phone: '+41 44 835 91 11',
+    email: 'gastro.orders@coca-cola.ch',
+    whatsapp: '+41798359111',
+    deliveryDays: ['Dienstag', 'Freitag'],
+    minOrderChf: 250,
+    rating: 4.8,
+    address: 'Stationsstrasse 33, 8306 Brüttisellen',
+    notes: 'Gastro Glasflaschen & Harassen. Leergut-Gutschrift direkt auf Rechnung',
+    catalog: [
+      { id: 'cok-1', name: 'Coca-Cola Original Gastro Glas (24x33cl)', price: 22.50, unit: 'Harass' },
+      { id: 'cok-2', name: 'Coca-Cola Zero Gastro Glas (24x33cl)', price: 22.50, unit: 'Harass' },
+      { id: 'cok-3', name: 'Valser Prickelnd mit Kohlensäure (24x33cl)', price: 17.80, unit: 'Harass' },
+      { id: 'cok-4', name: 'Valser Silence ohne Kohlensäure (24x33cl)', price: 17.80, unit: 'Harass' },
+      { id: 'cok-5', name: 'Fanta Orange Gastro Glas (24x33cl)', price: 22.50, unit: 'Harass' },
+      { id: 'cok-6', name: 'Sprite Gastro Glas (24x33cl)', price: 22.50, unit: 'Harass' },
+      { id: 'cok-7', name: 'Fusetea Lemon & Peach Glas (24x33cl)', price: 24.00, unit: 'Harass' }
+    ]
+  },
+  {
+    id: 'sup-agrano',
+    name: 'Agrano AG Bäckereizutaten',
+    category: 'Backhefe, Sauerteig & Aromen (Maya & Katkılar)',
+    contactPerson: 'Reto Schmid',
+    phone: '+41 61 487 72 72',
+    email: 'bestellung@agrano.ch',
+    whatsapp: '+41794877272',
+    deliveryDays: ['Mittwoch'],
+    minOrderChf: 200,
+    rating: 4.9,
+    address: 'Ringstrasse 19, 4123 Allschwil',
+    notes: 'Frischhefe Würfel 500g, Bio-Sauerteig & Bäckermalz',
+    catalog: [
+      { id: 'agr-1', name: 'Backhefe frisch Schweizer Würfel 500g (12er Block)', price: 24.00, unit: 'Karton' },
+      { id: 'agr-2', name: 'Bio Weizensauerteig flüssig 5kg Kanister', price: 34.50, unit: 'Kanister' },
+      { id: 'agr-3', name: 'Backmalz aktiv flüssig 10kg Eimer', price: 46.00, unit: 'Eimer' },
+      { id: 'agr-4', name: 'Glanza Glanzstreiche für Gipfeli 5L', price: 29.50, unit: 'Kanister' }
+    ]
+  },
+  {
+    id: 'sup-aligro',
+    name: 'Aligro Grossmarkt Schlieren',
+    category: 'Fleisch, Fisch, Gastro C&C (Et, Balık & Taze Gıda)',
+    contactPerson: 'Kundendienst Schlieren',
+    phone: '+41 44 738 22 22',
+    email: 'info@aligro.ch',
+    whatsapp: '+41797382222',
+    deliveryDays: ['Montag', 'Mittwoch', 'Freitag'],
+    minOrderChf: 300,
+    rating: 4.8,
+    address: 'Bernstrasse 38, 8952 Schlieren',
+    notes: 'Frische Fleischwaren, Geflügel, Schweizer Käse & Gemüse',
+    catalog: [
+      { id: 'ali-1', name: 'Pouletbrust Schweiz Gastro 5kg Vakuum', price: 62.50, unit: 'Packung' },
+      { id: 'ali-2', name: 'Rindshackfleisch CH 5kg Vakuum', price: 54.00, unit: 'Packung' },
+      { id: 'ali-3', name: 'Emmentaler AOP mild Block ca. 3kg', price: 48.00, unit: 'Block' },
+      { id: 'ali-4', name: 'Gruyère AOP 12M Block ca. 3kg', price: 56.00, unit: 'Block' }
+    ]
+  },
+  {
+    id: 'sup-gemuese',
     name: 'Frische Paradies / Yeşil Vadi',
     category: 'Obst & Gemüse (Taze Meyve-Sebze)',
     contactPerson: 'Ali Vural',
     phone: '+41 44 322 15 80',
     email: 'order@frische-gemuese.ch',
     whatsapp: '+41785551234',
-    deliveryDays: ['Täglich (Mo-Sa)'],
+    deliveryDays: ['Täglich (Mo-Sa morgens)'],
     minOrderChf: 100,
     rating: 5.0,
     address: 'Engrosmarkt Aargauerstrasse 1, 8048 Zürich',
     notes: 'Tägliche Morgenlieferung direkt vom Grossmarkt um 06:30 Uhr',
     catalog: [
-      { id: 'p11', name: 'Strauchtomaten CH Kl. 1 (kg)', price: 4.80, unit: 'kg' },
-      { id: 'p12', name: 'Salatgurken Schweiz (Stk)', price: 1.40, unit: 'Stück' },
-      { id: 'p13', name: 'Rucola & Baby-Spinat gewaschen (kg)', price: 14.50, unit: 'kg' },
-      { id: 'p14', name: 'Kartoffeln Bintje festkochend 25kg', price: 28.00, unit: 'Sack' },
-      { id: 'p15', name: 'Avocado Hass Ready-to-Eat (Kiste 16er)', price: 32.00, unit: 'Kiste' },
-      { id: 'p15b', name: 'Zwiebeln Gelb Schweiz 10kg', price: 16.00, unit: 'Sack' }
+      { id: 'gem-1', name: 'Strauchtomaten CH Kl. 1 (kg)', price: 4.80, unit: 'kg' },
+      { id: 'gem-2', name: 'Salatgurken Schweiz (Stk)', price: 1.40, unit: 'Stück' },
+      { id: 'gem-3', name: 'Rucola gewaschen 1kg Kiste', price: 14.50, unit: 'Kiste' },
+      { id: 'gem-4', name: 'Kartoffeln Bintje festkochend 25kg', price: 28.00, unit: 'Sack' },
+      { id: 'gem-5', name: 'Zwiebeln Gelb Schweiz 10kg', price: 16.00, unit: 'Sack' }
     ]
   },
   {
-    id: 'sup-4',
-    name: 'Feldschlösschen Getränke AG',
-    category: 'Getränke, Bier & Wein (İçecekler)',
-    contactPerson: 'Stefan Meyer',
-    phone: '+41 848 125 000',
-    email: 'gastro@feldschloesschen.ch',
-    whatsapp: '+41793339900',
-    deliveryDays: ['Dienstag', 'Freitag'],
-    minOrderChf: 300,
-    rating: 4.7,
-    address: 'Depot Oerlikon, 8050 Zürich',
-    notes: 'Leergut-Rücknahme bei jeder Anlieferung',
-    catalog: [
-      { id: 'p16', name: 'Feldschlösschen Original Fass 20L', price: 82.00, unit: 'Fass' },
-      { id: 'p17', name: 'Valser Mineralwasser mit Kohlensäure (24x0.5L)', price: 18.50, unit: 'Harass' },
-      { id: 'p18', name: 'Coca Cola Original Gastro Glas (24x33cl)', price: 21.00, unit: 'Harass' },
-      { id: 'p19', name: 'Primitivo di Manduria DOC (6x75cl)', price: 78.00, unit: 'Karton' }
-    ]
-  },
-  {
-    id: 'sup-5',
-    name: 'Bäckerei Merz & Rustico',
-    category: 'Bäckerei & Teigwaren (Fırın & Unlu Mamüller)',
-    contactPerson: 'Reto Merz',
-    phone: '+41 44 710 44 22',
-    email: 'baeckerei@merz-gastro.ch',
-    whatsapp: '+41794441122',
-    deliveryDays: ['Täglich (Mo-So früh)'],
-    minOrderChf: 50,
-    rating: 4.9,
-    address: 'Limmatquai 88, 8001 Zürich',
-    notes: 'Ofenfrisch bis 07:00 Uhr morgens geliefert',
-    catalog: [
-      { id: 'p20', name: 'Buttergipfeli Gourmet (20 Stück)', price: 26.00, unit: 'Karton' },
-      { id: 'p21', name: 'Rustico Bürli gemischt (30 Stück)', price: 32.00, unit: 'Korb' },
-      { id: 'p22', name: 'Burger Buns Brioche getoastet (24 Stück)', price: 28.50, unit: 'Karton' },
-      { id: 'p23', name: 'Pide & Sesam Fladenbrot frisch', price: 2.40, unit: 'Stück' }
-    ]
-  },
-  {
-    id: 'sup-6',
+    id: 'sup-cleancare',
     name: 'HygieneProfi & CleanCare AG',
     category: 'Hygiene, HACCP & Verpackung (Temizlik & Sarf)',
     contactPerson: 'Ursula Graf',
@@ -125,12 +212,12 @@ export const SEED_SUPPLIERS = [
     minOrderChf: 150,
     rating: 4.8,
     address: 'Gewerbestrasse 7, 8600 Dübendorf',
-    notes: 'HACCP-zertifizierte Desinfektionsmittel & Papierwaren',
+    notes: 'HACCP-zertifizierte Desinfektionsmittel & Gastro-Papierwaren',
     catalog: [
-      { id: 'p24', name: 'Gastro Geschirrspülmittel Konzentrat 10L', price: 48.00, unit: 'Kanister' },
-      { id: 'p25', name: 'Küchenrollen 3-lagig reissfest (32 Rollen)', price: 34.50, unit: 'Pack' },
-      { id: 'p26', name: 'Flächendesinfektion HACCP 5L Kanister', price: 39.00, unit: 'Kanister' },
-      { id: 'p27', name: 'Einweghandschuhe Nitril Schwarz (100er)', price: 12.50, unit: 'Box' }
+      { id: 'cln-1', name: 'Gastro Geschirrspülmittel Konzentrat 10L', price: 48.00, unit: 'Kanister' },
+      { id: 'cln-2', name: 'Küchenrollen 3-lagig reissfest (32 Rollen)', price: 34.50, unit: 'Pack' },
+      { id: 'cln-3', name: 'Flächendesinfektion HACCP 5L Kanister', price: 39.00, unit: 'Kanister' },
+      { id: 'cln-4', name: 'Einweghandschuhe Nitril Schwarz (100er Box)', price: 12.50, unit: 'Box' }
     ]
   }
 ];

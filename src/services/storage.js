@@ -29,7 +29,8 @@ const STORAGE_KEYS = {
 
 // Local Database initialization with Seed Data
 export const initializeDatabase = () => {
-  if (!localStorage.getItem(STORAGE_KEYS.SUPPLIERS)) {
+  const currentSuppliers = localStorage.getItem(STORAGE_KEYS.SUPPLIERS);
+  if (!currentSuppliers || !currentSuppliers.includes('sup-prodega')) {
     localStorage.setItem(STORAGE_KEYS.SUPPLIERS, JSON.stringify(SEED_SUPPLIERS));
   }
   if (!localStorage.getItem(STORAGE_KEYS.EMPLOYEES)) {

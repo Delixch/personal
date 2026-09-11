@@ -84,6 +84,26 @@ export const Navbar = ({
         {/* Right Tools */}
         <div className="flex items-center gap-2 sm:gap-3">
           
+          {/* Quick Patron / Personel Direct Switch Button */}
+          {currentUser?.role !== 'admin' ? (
+            <button
+              onClick={() => {
+                const adminUser = employees.find(e => e.role === 'admin') || employees[0];
+                handleSelectUser(adminUser);
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-sm transition animate-pulse"
+              title="Patron / Yönetici Ekranına Geç"
+            >
+              <ShieldCheck className="w-4 h-4 text-slate-950" />
+              <span>{lang === 'tr' ? '👑 Patron Ekranına Dön' : '👑 Zum Chef-Modus'}</span>
+            </button>
+          ) : (
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 font-bold text-xs">
+              <ShieldCheck className="w-4 h-4 text-emerald-700" />
+              <span>{lang === 'tr' ? 'Patron / Yönetici' : 'Chef-Modus aktiv'}</span>
+            </div>
+          )}
+
           {/* Language Switcher */}
           <button
             onClick={() => onLangChange(lang === 'de' ? 'tr' : 'de')}

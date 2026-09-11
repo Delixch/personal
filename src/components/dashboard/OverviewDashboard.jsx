@@ -215,24 +215,40 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
           <p className="text-xs md:text-sm text-slate-500 mt-1 max-w-xl">
             {isAdmin
               ? (lang === 'tr'
-                  ? 'Lütfen işlem yapmak istediğiniz bölümü seçin. Seçtiğiniz bölüme girdiğinizde diğer menüler gizlenerek tam odaklanma sağlanır.'
+                  ? 'İşlem yapmak istediğiniz renkli kartı seçin. Bölüme girdiğinizde diğer menüler gizlenerek ferah bir çalışma alanı açılır.'
                   : 'Wählen Sie einen Bereich. Im geöffneten Modul wird das Menü automatisch ausgeblendet, damit Sie übersichtlich und ungestört arbeiten können.')
               : (lang === 'tr'
-                  ? 'Giriş-çıkış yapabilir, bu haftaki vardiyalarınızı görebilir veya hastalık bildirimi yapabilirsiniz.'
+                  ? 'Şu an personel gözüyle bakıyorsunuz. İşe giriş-çıkış yapabilir, vardiyalarınızı görebilir veya hastalık bildirebilirsiniz.'
                   : 'Hier können Sie sich einstempeln, Ihre Schichten einsehen oder Absenzen melden.')}
           </p>
         </div>
 
-        {/* Quick Identity Pill */}
-        <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-200 shrink-0">
-          <img
-            src={currentUser?.avatar}
-            alt={currentUser?.name}
-            className="w-11 h-11 rounded-xl object-cover ring-2 ring-emerald-200"
-          />
-          <div>
-            <p className="text-xs font-bold text-slate-900">{currentUser?.name}</p>
-            <p className="text-[11px] text-emerald-700 font-semibold">{currentUser?.jobTitle}</p>
+        {/* Quick Identity & Return to Boss Button */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          {!isAdmin && (
+            <button
+              onClick={() => {
+                const adminUser = employees.find(e => e.role === 'admin') || employees[0];
+                StorageService.setCurrentUser(adminUser);
+                window.location.reload();
+              }}
+              className="px-4 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs shadow-md flex items-center gap-2 transition"
+            >
+              <ShieldCheck className="w-4 h-4" />
+              <span>{lang === 'tr' ? '👑 Patron Ekranına Geç' : '👑 Zum Chef-Modus'}</span>
+            </button>
+          )}
+
+          <div className="flex items-center gap-3 bg-slate-50 p-2.5 rounded-2xl border border-slate-200 shrink-0">
+            <img
+              src={currentUser?.avatar}
+              alt={currentUser?.name}
+              className="w-10 h-10 rounded-xl object-cover ring-2 ring-emerald-200"
+            />
+            <div>
+              <p className="text-xs font-bold text-slate-900">{currentUser?.name}</p>
+              <p className="text-[11px] text-emerald-700 font-semibold">{currentUser?.jobTitle}</p>
+            </div>
           </div>
         </div>
       </div>

@@ -86,7 +86,7 @@ export const Navbar = ({
 
           {isSupabaseConfigured && (
             <div 
-              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-md card-inner border border-line text-[11px] font-bold text-emerald-400 select-none"
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-md card-inner border border-line text-xs font-bold text-emerald-400 select-none"
               title="Zentrale Supabase Cloud-Datenbank ist online und aktiv synchronisiert"
             >
               <span className="relative flex h-2 w-2">

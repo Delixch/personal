@@ -206,11 +206,11 @@ export const PersonalakteModal = ({
             <img
               src={employee.avatar}
               alt={employee.name}
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover ring-4 ring-brand-border"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover ring-2 ring-brand/40"
             />
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-1">
-                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-brand-light text-brand border border-brand-border">
+                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full card-inner text-brand border border-brand/40">
                   {employee.role === 'admin' ? '👑 CHEF / INHABER' : 'MITARBEITER / HR'}
                 </span>
                 <span className="text-[11px] font-mono font-bold text-ink-muted">
@@ -219,16 +219,16 @@ export const PersonalakteModal = ({
                 {/* Live working badge */}
                 <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full flex items-center gap-1.5 ${
                   isCurrentlyWorking 
-                    ? 'bg-brand-light text-brand border border-brand-border' 
-                    : 'bg-subtle text-ink-muted border border-line'
+                    ? 'card-inner text-emerald-400 border border-emerald-500/40' 
+                    : 'card-inner text-ink-muted border border-line'
                 }`}>
-                  <span className={`w-2 h-2 rounded-full ${isCurrentlyWorking ? 'bg-brand' : 'bg-ink-muted'}`}></span>
+                  <span className={`w-2 h-2 rounded-full ${isCurrentlyWorking ? 'bg-emerald-400' : 'bg-ink-muted'}`}></span>
                   <span>{isCurrentlyWorking ? (lang === 'tr' ? 'ŞU AN GÖREVDE' : 'IM DIENST') : (lang === 'tr' ? 'SERBEST / ÇIKTI' : 'FEIERABEND')}</span>
                 </span>
               </div>
               <h2 className="text-xl sm:text-2xl font-black tracking-tight text-ink flex items-center gap-2">
                 <span>{formData.name}</span>
-                <span className="text-xs font-mono px-2 py-0.5 rounded-md bg-subtle text-ink-muted border border-line font-bold">
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md card-inner text-brand border border-brand/30 font-bold">
                   PIN: {formData.pin}
                 </span>
               </h2>
@@ -603,8 +603,8 @@ export const PersonalakteModal = ({
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-emerald-50 text-ink border border-line font-bold text-xs flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-ink" />
+                  <span className="badge badge-emerald font-bold text-xs py-1 px-3 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4" />
                     <span>{lang === 'tr' ? 'Tüm Primler Yatırıldı' : 'Beiträge aktuell'}</span>
                   </span>
                 </div>
@@ -644,7 +644,7 @@ export const PersonalakteModal = ({
                       <th className="p-3">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 font-mono">
+                  <tbody className="divide-y divide-line font-mono">
                     {empLogs.length === 0 ? (
                       <tr>
                         <td colSpan="6" className="p-4 text-center text-ink-muted font-sans">
@@ -653,7 +653,7 @@ export const PersonalakteModal = ({
                       </tr>
                     ) : (
                       empLogs.map((log) => (
-                        <tr key={log.id} className="">
+                        <tr key={log.id} className="hover:bg-subtle/50 transition">
                           <td className="p-3 font-sans font-bold text-ink">{log.date}</td>
                           <td className="p-3 text-ink font-bold">{log.clockIn}</td>
                           <td className="p-3 text-ink-soft">{log.clockOut || '● İŞTE'}</td>
@@ -662,9 +662,9 @@ export const PersonalakteModal = ({
                             {log.clockOut ? '8.0 Std.' : 'Açık'}
                           </td>
                           <td className="p-3 font-sans">
-                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                              log.clockOut ? 'bg-emerald-50 text-ink' : 'bg-cyan-50 text-ink '
-                            }`}>
+                            <span className={`badge ${
+                              log.clockOut ? 'badge-emerald' : 'badge-sky'
+                            } text-[10px] font-bold py-0.5 px-2`}>
                               {log.clockOut ? 'Abgeschlossen' : 'Im Dienst'}
                             </span>
                           </td>
@@ -709,7 +709,7 @@ export const PersonalakteModal = ({
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="font-bold text-xs text-ink">{day}</span>
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          isOff ? 'bg-slate-200 text-ink-soft' : 'bg-subtle text-ink'
+                          isOff ? 'card-inner text-ink-muted' : 'badge badge-brand'
                         }`}>
                           {isOff ? 'Ruhetag' : 'Frühschicht'}
                         </span>
@@ -757,7 +757,7 @@ export const PersonalakteModal = ({
                   {lang === 'tr' ? 'Aylık Bordro Hesabı (Monatsabrechnung)' : 'Detaillierte Monatsberechnung:'}
                 </h4>
 
-                <div className="space-y-2 text-xs divide-y divide-slate-100">
+                <div className="space-y-2 text-xs divide-y divide-line">
                   <div className="flex justify-between py-1.5">
                     <span className="text-ink-soft">Basis-Stundenlohn:</span>
                     <span className="font-mono font-bold text-ink">{formatCurrency(hourlyRate)}/h</span>
@@ -842,10 +842,10 @@ export const PersonalakteModal = ({
               
               {/* Vacation Balance Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="p-4 rounded-2xl bg-amber-50 border border-line">
+                <div className="p-4 rounded-2xl card-inner border border-line">
                   <span className="text-[11px] font-bold text-brand uppercase">Yıllık İzin Hakkı (Total):</span>
                   <p className="text-2xl font-mono font-black text-brand mt-1">{vacationTotal} Gün</p>
-                  <p className="text-[11px] text-brand mt-0.5">{vacationTotal / 5} Hafta Tatil</p>
+                  <p className="text-[11px] text-ink-soft mt-0.5">{vacationTotal / 5} Hafta Tatil</p>
                 </div>
 
                 <div className="p-4 rounded-2xl card-inner border border-line">
@@ -854,10 +854,10 @@ export const PersonalakteModal = ({
                   <p className="text-[11px] text-ink-soft mt-0.5">Onaylı İzinler</p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-emerald-50 border border-line">
-                  <span className="text-[11px] font-bold text-ink uppercase">Kalan Tatil (Resturlaub):</span>
-                  <p className="text-2xl font-mono font-black text-ink mt-1">{vacationRemaining} Gün</p>
-                  <p className="text-[11px] text-ink font-semibold mt-0.5">Kullanılabilir Bakiye</p>
+                <div className="p-4 rounded-2xl card-inner border border-line">
+                  <span className="text-[11px] font-bold text-emerald-400 uppercase">Kalan Tatil (Resturlaub):</span>
+                  <p className="text-2xl font-mono font-black text-emerald-400 mt-1">{vacationRemaining} Gün</p>
+                  <p className="text-[11px] text-ink-soft font-semibold mt-0.5">Kullanılabilir Bakiye</p>
                 </div>
               </div>
 
@@ -881,7 +881,7 @@ export const PersonalakteModal = ({
                           <p className="font-bold text-ink">{r.reason || 'Grippaler Infekt'}</p>
                           <p className="text-[11px] text-ink-soft">{r.startDate} bis {r.endDate || r.startDate}</p>
                         </div>
-                        <span className="px-2 py-0.5 rounded bg-rose-50 text-brand border border-line text-[10px] font-bold">
+                        <span className="badge badge-rose text-[10px] font-bold py-0.5 px-2">
                           Attest hinterlegt
                         </span>
                       </div>
@@ -910,8 +910,8 @@ export const PersonalakteModal = ({
                   onClick={() => setIsEditing(!isEditing)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                     isEditing
-                      ? 'bg-slate-200 text-ink'
-                      : 'bg-emerald-50 text-ink  border border-line'
+                      ? 'btn-ghost text-ink'
+                      : 'btn-brand text-white font-bold'
                   }`}
                 >
                   <Edit3 className="w-3.5 h-3.5" />

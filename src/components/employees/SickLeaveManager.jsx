@@ -261,16 +261,16 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                       <>
                         <button
                           onClick={() => handleLeaveDecision(req.id, 'approved')}
-                          className="px-3 py-1.5 rounded-xl bg-emerald-50 text-ink border border-line text-xs font-bold flex items-center gap-1 transition"
+                          className="px-3 py-1.5 rounded-xl card-inner border border-emerald-500/40 text-emerald-400 hover:bg-emerald-600 hover:text-white text-xs font-bold flex items-center gap-1 transition"
                         >
-                          <CheckCircle2 className="w-3.5 h-3.5 text-ink" />
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                           <span>Genehmigen</span>
                         </button>
                         <button
                           onClick={() => handleLeaveDecision(req.id, 'rejected')}
-                          className="px-3 py-1.5 rounded-xl bg-rose-50 text-brand border border-line text-xs font-bold flex items-center gap-1 transition"
+                          className="px-3 py-1.5 rounded-xl card-inner border border-rose-500/40 text-rose-400 hover:bg-rose-600 hover:text-white text-xs font-bold flex items-center gap-1 transition"
                         >
-                          <XCircle className="w-3.5 h-3.5 text-brand" />
+                          <XCircle className="w-3.5 h-3.5 text-rose-400" />
                           <span>Ablehnen</span>
                         </button>
                       </>

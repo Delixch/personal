@@ -309,7 +309,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       {inv.status !== 'paid' && (
                         <button
                           onClick={() => handleMarkAsPaid(inv.id)}
-                          className="px-2.5 py-1.5 rounded-lg bg-emerald-50 text-ink border border-line text-[11px] font-bold flex items-center gap-1 transition"
+                          className="px-2.5 py-1.5 rounded-xl card-inner border border-emerald-500/40 text-emerald-400 hover:bg-emerald-600 hover:text-white text-[11px] font-bold flex items-center gap-1 transition"
                         >
                           <Check className="w-3.5 h-3.5" />
                           <span>{lang === 'tr' ? 'Ödendi Yap' : 'Als bezahlt'}</span>

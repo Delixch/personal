@@ -52,7 +52,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
       <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line text-ink card-inner">
 
         <button

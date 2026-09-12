@@ -367,7 +367,7 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
 
       {/* Modal to add custom task */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
           <div className="w-full max-w-md bg-surface text-ink rounded-3xl p-6 border border-line card-inner">
             <h3 className="font-bold text-base text-ink mb-1">
               {lang === 'tr' ? 'Yeni Hijyen / Kontrol Maddesi' : 'Neuen HACCP-Prüfpunkt erfassen'}

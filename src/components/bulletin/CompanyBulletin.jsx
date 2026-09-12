@@ -193,7 +193,7 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
       </div>
 
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
           <div className="w-full max-w-lg bg-surface rounded-3xl p-6 border border-line card-inner">
             <h3 className="font-bold text-base text-ink mb-1">
               {lang === 'tr' ? 'Yeni Duyuru Yayınla' : 'Neue Team-Mitteilung'}
@@ -226,10 +226,10 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
                 >
-                  <option value="info">ℹ️ Information (Genel Bilgi)</option>
-                  <option value="urgent">🚨 Dringend (Acil Duyuru)</option>
-                  <option value="rule">📋 Regel / Vorschrift (Kural)</option>
-                  <option value="event">🎉 Event / Anlass (Etkinlik)</option>
+                  <option className="text-ink bg-white" value="info">ℹ️ Information (Genel Bilgi)</option>
+                  <option className="text-ink bg-white" value="urgent">🚨 Dringend (Acil Duyuru)</option>
+                  <option className="text-ink bg-white" value="rule">📋 Regel / Vorschrift (Kural)</option>
+                  <option className="text-ink bg-white" value="event">🎉 Event / Anlass (Etkinlik)</option>
                 </select>
               </div>
 

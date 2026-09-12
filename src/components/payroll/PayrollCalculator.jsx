@@ -141,7 +141,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
               className="px-3 py-2.5 rounded-2xl card-inner border border-line text-ink text-xs font-bold focus:outline-none focus:border-brand"
             >
               {months.map(m => (
-                <option key={m.value} value={m.value}>{m.label}</option>
+                <option className="text-ink bg-white" key={m.value} value={m.value}>{m.label}</option>
               ))}
             </select>
 

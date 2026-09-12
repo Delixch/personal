@@ -326,7 +326,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
       </div>
 
       {showScanModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
           <div className="w-full max-w-3xl rounded-3xl bg-white p-6 relative border border-line max-h-[90vh] overflow-y-auto">
             
             <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
@@ -503,9 +503,9 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       }}
                       className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                     >
-                      <option value="2.6">2.6% (Lebensmittel CH)</option>
-                      <option value="8.1">8.1% (Normalsatz CH)</option>
-                      <option value="0">0% (Befreit)</option>
+                      <option className="text-ink bg-white" value="2.6">2.6% (Lebensmittel CH)</option>
+                      <option className="text-ink bg-white" value="8.1">8.1% (Normalsatz CH)</option>
+                      <option className="text-ink bg-white" value="0">0% (Befreit)</option>
                     </select>
                   </div>
                   <div>
@@ -540,7 +540,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
       )}
 
       {selectedInvoice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
           <div className="w-full max-w-md rounded-3xl bg-white p-6 relative border border-line">
             <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
               <div>

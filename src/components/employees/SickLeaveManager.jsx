@@ -291,7 +291,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
       )}
 
       {showSickModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
           <div className="w-full max-w-lg rounded-3xl bg-white p-6 relative border border-line">
             <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
               <h2 className="text-base font-bold text-ink flex items-center gap-2">
@@ -318,7 +318,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                     className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                   >
                     {employees.map(emp => (
-                      <option key={emp.id} value={emp.id}>
+                      <option className="text-ink bg-white" key={emp.id} value={emp.id}>
                         {emp.name} ({emp.jobTitle})
                       </option>
                     ))}
@@ -336,7 +336,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                   className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                 >
                   {SICK_REASONS.map((r, i) => (
-                    <option key={i} value={r}>
+                    <option className="text-ink bg-white" key={i} value={r}>
                       {r}
                     </option>
                   ))}
@@ -440,7 +440,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
       )}
 
       {showLeaveModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
           <div className="w-full max-w-md rounded-3xl bg-white p-6 relative border border-line">
             <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
               <h2 className="text-base font-bold text-ink flex items-center gap-2">
@@ -492,10 +492,10 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                   onChange={(e) => setLeaveData({ ...leaveData, type: e.target.value })}
                   className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                 >
-                  <option value="Erholungsurlaub (Yıllık İzin)">Erholungsurlaub (Yıllık İzin)</option>
-                  <option value="Kompensation Überstunden (Fazla Mesai İzni)">Kompensation Überstunden (Fazla Mesai İzni)</option>
-                  <option value="Sonderurlaub (Özel İzin)">Sonderurlaub (Özel İzin)</option>
-                  <option value="Unbezahlter Urlaub (Ücretsiz İzin)">Unbezahlter Urlaub (Ücretsiz İzin)</option>
+                  <option className="text-ink bg-white" value="Erholungsurlaub (Yıllık İzin)">Erholungsurlaub (Yıllık İzin)</option>
+                  <option className="text-ink bg-white" value="Kompensation Überstunden (Fazla Mesai İzni)">Kompensation Überstunden (Fazla Mesai İzni)</option>
+                  <option className="text-ink bg-white" value="Sonderurlaub (Özel İzin)">Sonderurlaub (Özel İzin)</option>
+                  <option className="text-ink bg-white" value="Unbezahlter Urlaub (Ücretsiz İzin)">Unbezahlter Urlaub (Ücretsiz İzin)</option>
                 </select>
               </div>
 

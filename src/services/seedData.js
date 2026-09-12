@@ -389,7 +389,6 @@ export const SICK_REASONS = [
 ];
 
 export const SEED_SHIFTS = [
-  // Bugün ve bu hafta için örnek vardiya kayıtları
   {
     id: 'sh-1',
     employeeId: 'emp-1',
@@ -397,7 +396,7 @@ export const SEED_SHIFTS = [
     shiftType: 'frueh',
     department: 'kuche',
     notes: 'Mise-en-place & Mittagsmenü Vorbereitung',
-    status: 'confirmed' // confirmed, sick, swapped, completed
+    status: 'confirmed'
   },
   {
     id: 'sh-2',
@@ -446,11 +445,11 @@ export const SEED_INVOICES = [
     date: '2026-09-08',
     dueDate: '2026-09-22',
     subtotal: 1342.10,
-    taxRate: 2.6, // Lebensmittel MWST Schweiz
+    taxRate: 2.6,
     taxAmount: 34.89,
     totalAmount: 1376.99,
     category: 'Fleisch & Geflügel',
-    status: 'paid', // paid, pending, review, overdue
+    status: 'paid',
     paidDate: '2026-09-09',
     imageUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=80',
     items: [
@@ -466,7 +465,7 @@ export const SEED_INVOICES = [
     date: '2026-09-09',
     dueDate: '2026-09-23',
     subtotal: 3120.40,
-    taxRate: 8.1, // Mischsteuersatz
+    taxRate: 8.1,
     taxAmount: 252.75,
     totalAmount: 3373.15,
     category: 'Grosshandelswaren & Molkerei',
@@ -549,7 +548,7 @@ export const SEED_TIME_LOGS = [
     employeeId: 'emp-1',
     date: new Date().toISOString().split('T')[0],
     clockIn: '07:55',
-    clockOut: null, // Halen işte
+    clockOut: null,
     breakMinutes: 15,
     status: 'working'
   },

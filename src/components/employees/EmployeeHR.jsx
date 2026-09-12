@@ -63,13 +63,9 @@ export const EmployeeHR = ({ lang, currentUser }) => {
     <div className="space-y-6">
       
       {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
-              <Users2 className="w-3.5 h-3.5 text-brand icon-brand" />
-              <span>Digitale Personal- & HR-Verwaltung</span>
-            </div>
             <h1 className="page-title text-ink">
               {lang === 'tr' ? 'Personel Dosyaları, Sözleşmeler & Girişler' : 'Mitarbeiterakten, Verträge & Zugänge'}
             </h1>
@@ -115,7 +111,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
             <button
               key={emp.id}
               onClick={() => setSelectedEmployee(emp)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-subtle border border-line text-xs font-bold text-white transition active:scale-98"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface card-inner border border-line text-xs font-bold text-white transition active:scale-98"
             >
               <img
                 src={emp.avatar}
@@ -229,7 +225,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                   e.stopPropagation();
                   setSelectedEmployee(emp);
                 }}
-                className="mt-4 w-full py-2.5 rounded-xl bg-subtle text-xs font-black text-white transition flex items-center justify-center gap-2 group-"
+                className="mt-4 w-full py-2.5 rounded-xl bg-surface card-inner text-xs font-black text-white transition flex items-center justify-center gap-2 group-"
               >
                 <FileText className="w-4 h-4 text-white" />
                 <span>{lang === 'tr' ? '⭐ 360° Sicil & Tüm Bilgileri Aç →' : '⭐ 360° Akte & Alle Daten öffnen →'}</span>

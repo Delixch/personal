@@ -45,7 +45,6 @@ export function App() {
   const [notifications, setNotifications] = useState(() => StorageService.getNotifications());
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  // Tarayıcı Geri/İleri (Edge Back/Forward) butonlarını dinle
   useEffect(() => {
     const handlePopState = () => {
       const hash = window.location.hash.replace('#', '');
@@ -79,7 +78,6 @@ export function App() {
     return () => window.removeEventListener('ado_db_update', handleDbUpdate);
   }, []);
 
-  // Modül değişince sayfayı başa al
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [activeTab]);
@@ -290,7 +288,13 @@ export function App() {
         )}
 
         {/* Aktif Ekran */}
-        {renderTabContent()}
+        {isModuleOpen ? (
+          <div className="bg-surface rounded-3xl border border-line p-6 sm:p-8 space-y-6">
+            {renderTabContent()}
+          </div>
+        ) : (
+          renderTabContent()
+        )}
       </main>
 
       {/* Login Modal */}

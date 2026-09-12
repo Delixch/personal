@@ -67,13 +67,9 @@ export const AccountingDashboard = ({ lang, currentUser }) => {
     <div className="space-y-6">
       
       {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
-              <ReceiptText className="w-3.5 h-3.5 text-brand icon-brand" />
-              <span>Automatisierte Buchhaltung & Finanzsteuerung</span>
-            </div>
             <h1 className="page-title text-ink">
               {lang === 'tr' ? 'Aylık Muhasebe & Finansal Raporlama' : 'Monatsbuchhaltung & Finanzübersicht'}
             </h1>
@@ -94,7 +90,7 @@ export const AccountingDashboard = ({ lang, currentUser }) => {
             </button>
             <button
               onClick={() => window.print()}
-              className="p-2 rounded-xl border border-line bg-surface text-ink transition"
+              className="p-2 rounded-xl border border-line bg-surface text-ink transition card-inner"
               title="Drucken / PDF"
             >
               <Printer className="w-4 h-4" />
@@ -104,7 +100,7 @@ export const AccountingDashboard = ({ lang, currentUser }) => {
 
         {/* 4 Financial KPIs */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 pt-4 border-t border-line-soft">
-          <div className="p-4 rounded-2xl bg-ground border border-line">
+          <div className="p-4 rounded-2xl bg-surface card-inner border border-line">
             <div className="flex items-center justify-between text-subhead text-xs mb-1">
               <span>{lang === 'tr' ? 'Toplam Fatura Gideri' : 'Wareneinkauf Total'}</span>
               <CreditCard className="w-4 h-4 text-brand icon-brand" />
@@ -115,7 +111,7 @@ export const AccountingDashboard = ({ lang, currentUser }) => {
             <span className="text-[10px] text-brand font-semibold">100% Belege verbucht</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-ground border border-line">
+          <div className="p-4 rounded-2xl bg-surface card-inner border border-line">
             <div className="flex items-center justify-between text-subhead text-xs mb-1">
               <span>{lang === 'tr' ? 'Offene Verbindlichkeiten' : 'Offene Rechnungen'}</span>
               <Calendar className="w-4 h-4 text-brand" />
@@ -126,7 +122,7 @@ export const AccountingDashboard = ({ lang, currentUser }) => {
             <span className="text-[10px] text-ink-muted">Zur Zahlung fällig</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-ground border border-line">
+          <div className="p-4 rounded-2xl bg-surface card-inner border border-line">
             <div className="flex items-center justify-between text-subhead text-xs mb-1">
               <span>{lang === 'tr' ? 'Tahmini Personel Maaşları' : 'Geschätzte Lohnkosten'}</span>
               <DollarSign className="w-4 h-4 text-brand icon-brand" />
@@ -137,7 +133,7 @@ export const AccountingDashboard = ({ lang, currentUser }) => {
             <span className="text-[10px] text-ink-muted">{employees.length} Mitarbeiter angestellt</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-ground border border-line">
+          <div className="p-4 rounded-2xl bg-surface card-inner border border-line">
             <div className="flex items-center justify-between text-subhead text-xs mb-1">
               <span>{lang === 'tr' ? 'KDV / MwSt Vorsteuer' : 'MwSt Rückforderung'}</span>
               <Percent className="w-4 h-4 text-ink" />

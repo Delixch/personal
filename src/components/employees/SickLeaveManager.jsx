@@ -92,13 +92,9 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
     <div className="space-y-6">
       
       {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
-              <HeartPulse className="w-3.5 h-3.5 text-brand icon-brand" />
-              <span>Absenzen-, Krankheits- & Urlaubsverwaltung</span>
-            </div>
             <h1 className="page-title text-ink">
               {t.sickTitle}
             </h1>
@@ -112,7 +108,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setShowSickModal(true)}
-              className="px-4 py-2 rounded-xl bg-subtle text-ink border border-line text-xs font-bold flex items-center gap-1.5 transition"
+              className="px-4 py-2 rounded-xl bg-surface card-inner text-ink border border-line text-xs font-bold flex items-center gap-1.5 transition"
             >
               <HeartPulse className="w-4 h-4 text-brand icon-brand" />
               <span>{t.reportSick}</span>
@@ -149,7 +145,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
           </div>
 
           {/* Tab switchers */}
-          <div className="flex items-center gap-2 bg-ground p-1 rounded-2xl border border-line">
+          <div className="flex items-center gap-2 bg-surface card-inner p-1 rounded-2xl border border-line">
             <button
               onClick={() => setActiveTab('sick')}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${

@@ -72,13 +72,9 @@ export const DatabaseManager = ({ lang, currentUser }) => {
     <div className="space-y-6">
       
       {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
-              <Database className="w-3.5 h-3.5 text-brand icon-brand" />
-              <span>Offline-First Lokale Datenbankarchitektur</span>
-            </div>
             <h1 className="page-title text-ink">
               {lang === 'tr' ? 'Yerel Veritabanı & Yedekleme Yönetimi' : 'Lokale Datenbank & Datensicherung'}
             </h1>
@@ -102,23 +98,23 @@ export const DatabaseManager = ({ lang, currentUser }) => {
 
         {/* Database Metrics */}
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-6 pt-4 border-t border-line-soft">
-          <div className="p-3.5 rounded-2xl bg-ground border border-line text-center">
+          <div className="p-3.5 rounded-2xl bg-surface card-inner border border-line text-center">
             <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">Lieferanten</p>
             <p className="text-lg font-bold text-ink font-mono">{dbState.suppliersCount}</p>
           </div>
-          <div className="p-3.5 rounded-2xl bg-ground border border-line text-center">
+          <div className="p-3.5 rounded-2xl bg-surface card-inner border border-line text-center">
             <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">Mitarbeiter</p>
             <p className="text-lg font-bold text-ink font-mono">{dbState.employeesCount}</p>
           </div>
-          <div className="p-3.5 rounded-2xl bg-ground border border-line text-center">
+          <div className="p-3.5 rounded-2xl bg-surface card-inner border border-line text-center">
             <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">Schichten</p>
             <p className="text-lg font-bold text-ink font-mono">{dbState.shiftsCount}</p>
           </div>
-          <div className="p-3.5 rounded-2xl bg-ground border border-line text-center">
+          <div className="p-3.5 rounded-2xl bg-surface card-inner border border-line text-center">
             <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">Rechnungen</p>
             <p className="text-lg font-bold text-ink font-mono">{dbState.invoicesCount}</p>
           </div>
-          <div className="p-3.5 rounded-2xl bg-ground border border-line text-center col-span-2 sm:col-span-1">
+          <div className="p-3.5 rounded-2xl bg-surface card-inner border border-line text-center col-span-2 sm:col-span-1">
             <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">Stempelzeiten</p>
             <p className="text-lg font-bold text-ink font-mono">{dbState.timeLogsCount}</p>
           </div>
@@ -129,7 +125,7 @@ export const DatabaseManager = ({ lang, currentUser }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Restore from JSON */}
-        <div className="p-6 rounded-3xl bg-surface border border-line">
+        <div className="p-6 rounded-3xl bg-surface border border-line card-inner">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 rounded-xl icon-box flex items-center justify-center shrink-0">
               <Upload className="w-5 h-5" />
@@ -144,7 +140,7 @@ export const DatabaseManager = ({ lang, currentUser }) => {
             </div>
           </div>
 
-          <label className="mt-4 block w-full p-6 rounded-2xl border-2 border-dashed border-line text-center cursor-pointer transition bg-subtle">
+          <label className="mt-4 block w-full p-6 rounded-2xl border-2 border-dashed border-line text-center cursor-pointer transition bg-surface card-inner">
             <FileJson className="w-6 h-6 text-ink mx-auto mb-2" />
             <span className="text-xs font-semibold text-ink">
               JSON-Backup auswählen
@@ -165,7 +161,7 @@ export const DatabaseManager = ({ lang, currentUser }) => {
         </div>
 
         {/* Factory Reset */}
-        <div className="p-6 rounded-3xl bg-surface border border-line flex flex-col justify-between">
+        <div className="p-6 rounded-3xl bg-surface border border-line flex flex-col justify-between card-inner">
           <div>
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-xl icon-box flex items-center justify-center shrink-0">
@@ -190,7 +186,7 @@ export const DatabaseManager = ({ lang, currentUser }) => {
 
           <button
             onClick={handleResetDefaults}
-            className="mt-6 w-full py-2.5 rounded-xl bg-subtle text-ink border border-line text-xs font-bold transition flex items-center justify-center gap-2"
+            className="mt-6 w-full py-2.5 rounded-xl bg-surface card-inner text-ink border border-line text-xs font-bold transition flex items-center justify-center gap-2"
           >
             <RefreshCw className="w-4 h-4" />
             <span>{lang === 'tr' ? 'Fabrika Ayarlarına Dön (Reset)' : 'Auf Werkseinstellungen zurücksetzen'}</span>
@@ -200,9 +196,9 @@ export const DatabaseManager = ({ lang, currentUser }) => {
       </div>
 
       {/* Future Cloud Ready Card */}
-      <div className="p-6 rounded-3xl bg-surface border border-line flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-3xl bg-surface border border-line flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 card-inner">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-subtle flex items-center justify-center text-ink shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-surface card-inner flex items-center justify-center text-ink shrink-0">
             <Server className="w-5 h-5" />
           </div>
           <div>

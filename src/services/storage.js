@@ -27,7 +27,6 @@ const STORAGE_KEYS = {
   BULLETINS: 'ado_bulletins_v1'
 };
 
-// Local Database initialization with Seed Data
 export const initializeDatabase = () => {
   const currentSuppliers = localStorage.getItem(STORAGE_KEYS.SUPPLIERS);
   if (!currentSuppliers || !currentSuppliers.includes('sup-prodega')) {
@@ -82,7 +81,6 @@ export const initializeDatabase = () => {
     ]));
   }
   if (!localStorage.getItem(STORAGE_KEYS.CURRENT_USER)) {
-    // Default to admin for first view, easily switchable
     localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(SEED_EMPLOYEES[0]));
   }
   if (!localStorage.getItem(STORAGE_KEYS.APP_LANG)) {
@@ -99,7 +97,6 @@ export const initializeDatabase = () => {
   }
 };
 
-// Generic Helpers
 export const getStoredItem = (key, fallback = []) => {
   try {
     const data = localStorage.getItem(key);
@@ -119,9 +116,7 @@ export const setStoredItem = (key, value) => {
   }
 };
 
-// Storage Service API
 export const StorageService = {
-  // Suppliers
   getSuppliers: () => getStoredItem(STORAGE_KEYS.SUPPLIERS, SEED_SUPPLIERS),
   saveSupplier: (supplier) => {
     const list = StorageService.getSuppliers();
@@ -135,7 +130,6 @@ export const StorageService = {
     return list;
   },
 
-  // Orders
   getOrders: () => getStoredItem(STORAGE_KEYS.ORDERS, []),
   addOrder: (order) => {
     const list = StorageService.getOrders();
@@ -147,7 +141,6 @@ export const StorageService = {
     list.unshift(newOrder);
     setStoredItem(STORAGE_KEYS.ORDERS, list);
     
-    // Add notification
     StorageService.addNotification({
       type: 'order',
       title: `Neue Bestellung an ${newOrder.supplierName}`,
@@ -166,7 +159,6 @@ export const StorageService = {
     return list;
   },
 
-  // Employees
   getEmployees: () => getStoredItem(STORAGE_KEYS.EMPLOYEES, SEED_EMPLOYEES),
   saveEmployee: (employee) => {
     const list = StorageService.getEmployees();
@@ -180,7 +172,6 @@ export const StorageService = {
     return list;
   },
 
-  // Shifts
   getShifts: () => getStoredItem(STORAGE_KEYS.SHIFTS, SEED_SHIFTS),
   saveShift: (shift) => {
     const list = StorageService.getShifts();
@@ -199,14 +190,12 @@ export const StorageService = {
     return list;
   },
 
-  // Time Logs (Stempeluhr)
   getTimeLogs: () => getStoredItem(STORAGE_KEYS.TIME_LOGS, []),
   clockIn: (employeeId) => {
     const list = StorageService.getTimeLogs();
     const today = new Date().toISOString().split('T')[0];
     const nowTime = new Date().toTimeString().split(' ')[0].substring(0, 5);
     
-    // Check if open session exists
     const existing = list.find(l => l.employeeId === employeeId && l.date === today && !l.clockOut);
     if (existing) return existing;
 
@@ -248,7 +237,6 @@ export const StorageService = {
     return active;
   },
 
-  // Sick Reports (Krankmeldung)
   getSickReports: () => getStoredItem(STORAGE_KEYS.SICK_REPORTS, []),
   addSickReport: (report) => {
     const list = StorageService.getSickReports();
@@ -261,7 +249,6 @@ export const StorageService = {
     list.unshift(newReport);
     setStoredItem(STORAGE_KEYS.SICK_REPORTS, list);
 
-    // Automatically update shifts of this employee during the sick range!
     const shifts = StorageService.getShifts();
     shifts.forEach(s => {
       if (s.employeeId === report.employeeId && s.date >= report.startDate && s.date <= report.endDate) {
@@ -271,7 +258,6 @@ export const StorageService = {
     });
     setStoredItem(STORAGE_KEYS.SHIFTS, shifts);
 
-    // Create high-priority notification for Admin
     StorageService.addNotification({
       type: 'warning',
       title: `🚨 KRANKMELDUNG: ${report.employeeName}`,
@@ -281,7 +267,6 @@ export const StorageService = {
     return newReport;
   },
 
-  // Leave Requests (Urlaub & Frei)
   getLeaveRequests: () => getStoredItem(STORAGE_KEYS.LEAVE_REQUESTS, []),
   addLeaveRequest: (req) => {
     const list = StorageService.getLeaveRequests();
@@ -310,7 +295,6 @@ export const StorageService = {
       setStoredItem(STORAGE_KEYS.LEAVE_REQUESTS, list);
 
       if (status === 'approved') {
-        // deduct from vacation days
         const employees = StorageService.getEmployees();
         const emp = employees.find(e => e.id === req.employeeId);
         if (emp) {
@@ -322,7 +306,6 @@ export const StorageService = {
     return list;
   },
 
-  // Invoices (Rechnungen & Scan)
   getInvoices: () => getStoredItem(STORAGE_KEYS.INVOICES, SEED_INVOICES),
   addInvoice: (invoice) => {
     const list = StorageService.getInvoices();
@@ -353,7 +336,6 @@ export const StorageService = {
     return list;
   },
 
-  // Notifications
   getNotifications: () => getStoredItem(STORAGE_KEYS.NOTIFICATIONS, []),
   addNotification: (notif) => {
     const list = StorageService.getNotifications();
@@ -370,7 +352,6 @@ export const StorageService = {
     setStoredItem(STORAGE_KEYS.NOTIFICATIONS, list);
   },
 
-  // Authentication & Session
   getCurrentUser: () => getStoredItem(STORAGE_KEYS.CURRENT_USER, SEED_EMPLOYEES[0]),
   setCurrentUser: (user) => setStoredItem(STORAGE_KEYS.CURRENT_USER, user),
   login: (email, password) => {
@@ -408,12 +389,10 @@ export const StorageService = {
     return { success: true, user: found, result };
   },
   logout: () => {
-    // Switch to null or login screen
     localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
     window.dispatchEvent(new Event('ado_db_update'));
   },
 
-  // HACCP & Hygiene Lists
   getHaccpChecklists: () => getStoredItem(STORAGE_KEYS.HACCP_CHECKLISTS, SEED_HACCP_CHECKLISTS),
   toggleHaccpItem: (id, employeeName) => {
     const list = StorageService.getHaccpChecklists();
@@ -439,7 +418,6 @@ export const StorageService = {
     return list;
   },
 
-  // Temperature Logs
   getTemperatureLogs: () => getStoredItem(STORAGE_KEYS.TEMPERATURE_LOGS, SEED_TEMPERATURE_LOGS),
   updateTemperature: (id, temp, employeeName) => {
     const list = StorageService.getTemperatureLogs();
@@ -459,7 +437,6 @@ export const StorageService = {
     return list;
   },
 
-  // Bulletins / Aushang
   getBulletins: () => getStoredItem(STORAGE_KEYS.BULLETINS, SEED_BULLETINS),
   addBulletin: (bulletin) => {
     const list = StorageService.getBulletins();
@@ -474,14 +451,12 @@ export const StorageService = {
     return newBul;
   },
 
-  // Language
   getLanguage: () => localStorage.getItem(STORAGE_KEYS.APP_LANG) || 'de',
   setLanguage: (lang) => {
     localStorage.setItem(STORAGE_KEYS.APP_LANG, lang);
     window.dispatchEvent(new Event('ado_db_update'));
   },
 
-  // Database Backup & Reset
   exportDatabaseJSON: () => {
     const dump = {
       version: '1.0',

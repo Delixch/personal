@@ -14,7 +14,6 @@ export const TRANSLATIONS = {
     navAccounting: 'Monatsbuchhaltung & Finanzen',
     navDatabase: 'Lokale Datenbank & Backup',
     
-    // Suppliers
     supplierTitle: 'Intelligentes Bestell- & Lieferantenmanagement',
     supplierSubtitle: 'Zentrale Einkaufssteuerung, automatisierte Kommunikation & Fehlerfreie Abläufe',
     newOrder: 'Neue Bestellung aufgeben',
@@ -25,7 +24,6 @@ export const TRANSLATIONS = {
     orderSummary: 'Bestellübersicht',
     deliveryDays: 'Liefertage',
     
-    // Shifts & Planning
     shiftTitle: 'Transparente Mitarbeiterplanung & Schichten',
     shiftSubtitle: 'Digitale Einsatz- und Arbeitszeitverwaltung mit 2 Schichten (Früh & Spät)',
     earlyShift: 'Frühschicht (08:00 - 16:30)',
@@ -35,7 +33,6 @@ export const TRANSLATIONS = {
     sickAlert: 'Krankheitsfall gemeldet! Ersatz erforderlich',
     assignReplacement: 'Ersatzkraft zuweisen',
     
-    // Time Tracker
     timeTrackerTitle: 'Digitale Stempeluhr & Zeiterfassung',
     clockIn: 'Einstempeln (Arbeitsbeginn)',
     clockOut: 'Ausstempeln (Feierabend)',
@@ -44,7 +41,6 @@ export const TRANSLATIONS = {
     workedToday: 'Heute gearbeitet',
     overtime: 'Überstunden Saldo',
     
-    // Sick & Leave
     sickTitle: 'Krankmeldungen & Absenzenverwaltung',
     reportSick: 'Krankheit melden',
     sickReason: 'Grund der Absenz',
@@ -52,7 +48,6 @@ export const TRANSLATIONS = {
     leaveRequest: 'Urlaub beantragen',
     vacationBalance: 'Verbleibender Urlaubsanspruch',
     
-    // Invoices & Accounting
     invoiceTitle: 'Automatisierte Buchhaltung & Rechnungs-Scan',
     scanInvoice: 'Rechnung scannen / Foto hochladen',
     dropInvoice: 'Rechnungsfoto oder PDF hier ablegen oder Kamera nutzen',
@@ -67,7 +62,6 @@ export const TRANSLATIONS = {
     statusPending: 'Offen',
     statusOverdue: 'Überfällig',
     
-    // Export
     exportCsv: 'CSV / Excel Export',
     monthlyReport: 'Monatsbericht herunterladen',
     localDbStatus: 'Offline-First Lokale Datenbank aktiv'
@@ -87,7 +81,6 @@ export const TRANSLATIONS = {
     navAccounting: 'Aylık Muhasebe & Finans',
     navDatabase: 'Yerel Veritabanı & Yedek',
     
-    // Suppliers
     supplierTitle: 'Akıllı Sipariş & Tedarikçi Yönetimi',
     supplierSubtitle: 'Merkezi satın alma, otomatik tedarikçi iletişimi ve hatasız sipariş süreçleri',
     newOrder: 'Yeni Sipariş Oluştur',
@@ -98,7 +91,6 @@ export const TRANSLATIONS = {
     orderSummary: 'Sipariş Özeti',
     deliveryDays: 'Teslimat Günleri',
     
-    // Shifts & Planning
     shiftTitle: 'Şeffaf Personel Planlaması & Vardiyalar',
     shiftSubtitle: 'Departman bazlı ve isteğe bağlı 2 Vardiyalı (Sabah & Akşam) dijital çalışma çizelgesi',
     earlyShift: 'Sabah Vardiyası (08:00 - 16:30)',
@@ -108,7 +100,6 @@ export const TRANSLATIONS = {
     sickAlert: 'Hastalık Bildirimi! Yerine personel gerekiyor',
     assignReplacement: 'Yedek Eleman Ata',
     
-    // Time Tracker
     timeTrackerTitle: 'Dijital Zaman Takibi & Stempeluhr',
     clockIn: 'İşe Başla (Giriş Yap)',
     clockOut: 'İşi Bitir (Çıkış Yap)',
@@ -117,7 +108,6 @@ export const TRANSLATIONS = {
     workedToday: 'Bugün Çalışılan Süre',
     overtime: 'Fazla Mesai Dengesi',
     
-    // Sick & Leave
     sickTitle: 'Hastalık Bildirimleri & İzin Yönetimi',
     reportSick: 'Hastalık Bildir (Krankmeldung)',
     sickReason: 'Hastalık / Gelmeme Nedeni',
@@ -125,7 +115,6 @@ export const TRANSLATIONS = {
     leaveRequest: 'Tatil / İzin Talebi Oluştur',
     vacationBalance: 'Kalan Yıllık İzin Hakkı',
     
-    // Invoices & Accounting
     invoiceTitle: 'Otomatik Muhasebe & Fatura Tarama',
     scanInvoice: 'Fatura Tara / Fotoğraf Yükle',
     dropInvoice: 'Fatura fotoğrafını veya dosyasını buraya sürükleyin ya da kamerayı açın',
@@ -140,7 +129,6 @@ export const TRANSLATIONS = {
     statusPending: 'Bekliyor',
     statusOverdue: 'Vadesi Geçti',
     
-    // Export
     exportCsv: 'Excel / CSV Olarak İndir',
     monthlyReport: 'Aylık Muhasebe Raporu Al',
     localDbStatus: 'Offline-First Yerel Veritabanı Aktif'

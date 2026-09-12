@@ -172,13 +172,9 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
     <div className="space-y-6">
       
       {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
-              <ScanLine className="w-3.5 h-3.5 text-brand icon-brand" />
-              <span>KI-gestützter Rechnungs-Scan & Belegerfassung</span>
-            </div>
             <h1 className="page-title text-ink">
               {t.invoiceTitle}
             </h1>
@@ -200,21 +196,21 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
 
         {/* Quick KPI Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 pt-4 border-t border-line-soft">
-          <div className="p-3.5 rounded-2xl bg-ground border border-line">
+          <div className="p-3.5 rounded-2xl bg-surface card-inner border border-line">
             <p className="text-[11px] text-subhead">{lang === 'tr' ? 'Ödenen Faturalar' : 'Bezahlte Rechnungen'}</p>
             <p className="text-lg font-black font-mono text-brand">
               {formatCurrency(totalPaid)}
             </p>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-ground border border-line">
+          <div className="p-3.5 rounded-2xl bg-surface card-inner border border-line">
             <p className="text-[11px] text-subhead">{lang === 'tr' ? 'Açık / Bekleyen Borç' : 'Offene Verbindlichkeiten'}</p>
             <p className="text-lg font-black font-mono text-brand font-semibold">
               {formatCurrency(totalUnpaid)}
             </p>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-ground border border-line col-span-2 sm:col-span-1">
+          <div className="p-3.5 rounded-2xl bg-surface card-inner border border-line col-span-2 sm:col-span-1">
             <p className="text-[11px] text-subhead">{lang === 'tr' ? 'Toplam Kayıtlı Fatura' : 'Gesamtzahl Belege'}</p>
             <p className="text-lg font-black font-mono text-ink">
               {invoices.length} {lang === 'tr' ? 'Adet' : 'Stück'}
@@ -245,7 +241,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
       </div>
 
       {/* Invoices List */}
-      <div className="bg-surface border border-line rounded-3xl p-6">
+      <div className="bg-surface border border-line rounded-3xl p-6 card-inner">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-ink">
             <thead className="border-b border-line text-[11px] text-subhead uppercase tracking-wider">
@@ -412,7 +408,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       <p className="text-[10px] text-slate-500 mb-4">
                         JPG, PNG, PDF oder Smartphone-Foto
                       </p>
-                      <label className="px-4 py-2 rounded-xl bg-subtle text-ink text-xs font-bold cursor-pointer transition">
+                      <label className="px-4 py-2 rounded-xl bg-surface card-inner text-ink text-xs font-bold cursor-pointer transition">
                         <span>Datei auswählen</span>
                         <input
                           type="file"

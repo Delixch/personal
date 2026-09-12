@@ -16,10 +16,11 @@
   --ink-soft:   #4A4A4A;     /* İkincil Yazı (Belirgin Koyu Gri) */
   --ink-muted:  #787878;     /* Soluk Yazı (Orta Gri) */
 
-  /* ── Zemin & Yüzey Renkleri (TEK KART TANIMI: #F6EEDB) ───────── */
-  --ground:     #F6EEDB;     /* En Arka Sayfa Zemini (#F6EEDB Kum Rengi) */
-  --surface:    #F6EEDB;     /* TÜM KARTLAR (ÜST VE ALT KARTLAR TEK RENK: #F6EEDB) */
-  --subtle:     #EADCBF;     /* Kart İçi Dolgular (#EADCBF Kum Dolgu) */
+  /* ── Zemin & Yüzey Renkleri ──────────────────────────────────── */
+  --ground:        #F6EEDB;     /* En Arka Sayfa Zemini (#F6EEDB Sıcak Kum Rengi) */
+  --surface:       #FFFFFF;     /* Dış Kartlar & Genel Yüzey (#FFFFFF) */
+  --surface-inner: #EBE4D1;     /* İÇ KARTLAR ÖZEL YÜZEY RENK TANIMI (#EBE4D1) */
+  --subtle:        #FAF6EE;     /* Kart İçi Dolgular (#FAF6EE Açık Krem Dolgu) */
 
   /* ── Kenarlık Renkleri ────────────────────────────────────────── */
   --line:       #E2D7C3;     /* Ana Border (Kum Uyumlu Kenarlık) */
@@ -273,4 +274,27 @@ svg.lucide,
 input:focus, textarea:focus, select:focus {
   outline: none;
   border-color: var(--brand) !important;
+}
+
+/* ================================================================
+   MERKEZİ ZEMİN VE YÜZEY SINIFLARI
+================================================================ */
+.bg-ground {
+  background-color: var(--ground) !important;
+}
+
+.bg-surface {
+  background-color: var(--surface) !important;
+}
+
+.card-inner {
+  background-color: var(--surface-inner) !important;
+}
+
+.bg-subtle {
+  background-color: var(--subtle) !important;
+}
+
+.border-line {
+  border-color: var(--line) !important;
 }

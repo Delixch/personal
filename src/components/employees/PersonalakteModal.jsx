@@ -57,7 +57,6 @@ export const PersonalakteModal = ({
   const [isEditing, setIsEditing] = useState(false);
   const [previewDoc, setPreviewDoc] = useState(null);
 
-  // Live data streams for this employee
   const timeLogs = StorageService.getTimeLogs();
   const shifts = StorageService.getShifts();
   const sickReports = StorageService.getSickReports();
@@ -65,17 +64,14 @@ export const PersonalakteModal = ({
 
   const todayStr = new Date().toISOString().split('T')[0];
 
-  // Filter for current employee
   const empLogs = timeLogs.filter(l => l.employeeId === employee.id);
   const empShifts = shifts.filter(s => s.employeeId === employee.id);
   const empSick = sickReports.filter(r => r.employeeId === employee.id);
   const empLeave = leaveRequests.filter(r => r.employeeId === employee.id);
 
-  // Live working status
   const isCurrentlyWorking = empLogs.some(l => l.date === todayStr && !l.clockOut);
   const todaysLog = empLogs.find(l => l.date === todayStr);
 
-  // Calculate actual worked hours
   let totalWorkedMinutes = 0;
   empLogs.forEach(l => {
     if (l.clockIn && l.clockOut) {
@@ -100,32 +96,28 @@ export const PersonalakteModal = ({
   const targetMonthlyHours = Math.round(182 * (pensumPercent / 100));
   const weeklyHours = ((42 * pensumPercent) / 100).toFixed(1);
   
-  // Effective hours (for visual richness in demo)
   const effectiveHours = calculatedHours > 0 
     ? calculatedHours 
     : (employee.role === 'admin' ? 182.5 : Math.round(targetMonthlyHours * 0.96));
   const overtime = +(effectiveHours - targetMonthlyHours).toFixed(1);
 
-  // Swiss GAV Gastrosuisse Payroll Calculations
   const hourlyRate = employee.hourlyRate || 30.0;
   const grossMonthlySalary = +(effectiveHours * hourlyRate).toFixed(2);
-  const ahvDeduction = +(grossMonthlySalary * 0.053).toFixed(2); // 5.30%
-  const alvDeduction = +(grossMonthlySalary * 0.011).toFixed(2); // 1.10%
-  const bvgDeduction = +(grossMonthlySalary * 0.038).toFixed(2); // ~3.80%
-  const uvgKtgDeduction = +(grossMonthlySalary * 0.0158).toFixed(2); // 1.58%
+  const ahvDeduction = +(grossMonthlySalary * 0.053).toFixed(2);
+  const alvDeduction = +(grossMonthlySalary * 0.011).toFixed(2);
+  const bvgDeduction = +(grossMonthlySalary * 0.038).toFixed(2);
+  const uvgKtgDeduction = +(grossMonthlySalary * 0.0158).toFixed(2);
   const totalDeductions = +(ahvDeduction + alvDeduction + bvgDeduction + uvgKtgDeduction).toFixed(2);
   const netMonthlySalary = +(grossMonthlySalary - totalDeductions).toFixed(2);
   
-  const thirteentMonthAccrual = +(grossMonthlySalary * 0.0833).toFixed(2); // 13. Monatslohn 8.33%
+  const thirteentMonthAccrual = +(grossMonthlySalary * 0.0833).toFixed(2);
   const annualGrossEstimate = +(grossMonthlySalary * 12 + grossMonthlySalary * 12 * 0.0833).toFixed(2);
-  const annualNetPaidEstimate = +(netMonthlySalary * 9).toFixed(2); // Yılbaşından bugüne (Ocak-Eylül 9 ay)
+  const annualNetPaidEstimate = +(netMonthlySalary * 9).toFixed(2);
 
-  // Vacation calculation
   const vacationTotal = employee.vacationTotal || 25;
   const vacationUsed = employee.vacationUsed || 8;
   const vacationRemaining = Math.max(0, vacationTotal - vacationUsed);
 
-  // Editable form state
   const [formData, setFormData] = useState({
     name: employee.name || '',
     jobTitle: employee.jobTitle || '',
@@ -165,7 +157,6 @@ export const PersonalakteModal = ({
     });
   };
 
-  // Dossier Documents List
   const documents = [
     {
       id: 'doc-contract',
@@ -269,7 +260,7 @@ export const PersonalakteModal = ({
                   });
                 }
               }}
-              className="px-3 py-1.5 rounded-xl bg-subtle text-white text-xs font-bold border border-line focus:outline-none"
+              className="px-3 py-1.5 rounded-xl bg-surface card-inner text-white text-xs font-bold border border-line focus:outline-none"
             >
               {allEmployees.map(e => (
                 <option key={e.id} value={e.id} className="text-slate-900 bg-white">
@@ -284,7 +275,7 @@ export const PersonalakteModal = ({
                 onSwitchUser(employee);
                 onClose();
               }}
-              className="px-3 py-2 rounded-xl bg-subtle text-white text-xs font-black transition flex items-center gap-1.5"
+              className="px-3 py-2 rounded-xl bg-surface card-inner text-white text-xs font-black transition flex items-center gap-1.5"
               title="Bu personelin ekranına geç"
             >
               <Fingerprint className="w-3.5 h-3.5" />
@@ -293,7 +284,7 @@ export const PersonalakteModal = ({
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl bg-subtle text-white transition"
+              className="p-2 rounded-xl bg-surface card-inner text-white transition"
               title="Schliessen"
             >
               <X className="w-5 h-5" />
@@ -305,7 +296,7 @@ export const PersonalakteModal = ({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 p-3 sm:p-4 bg-slate-950 text-white border-b border-slate-800 text-xs">
           
           {/* KPI 1: Worked Hours & Overtime */}
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-subtle border border-line flex items-center gap-3">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-surface card-inner border border-line flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
               <Clock className="w-4 h-4" />
             </div>
@@ -323,7 +314,7 @@ export const PersonalakteModal = ({
           </div>
 
           {/* KPI 2: Vacation Balance */}
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-subtle border border-line flex items-center gap-3">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-surface card-inner border border-line flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
               <Palmtree className="w-4 h-4" />
             </div>
@@ -341,7 +332,7 @@ export const PersonalakteModal = ({
           </div>
 
           {/* KPI 3: Monthly Net Salary */}
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-subtle border border-line flex items-center gap-3">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-surface card-inner border border-line flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
               <DollarSign className="w-4 h-4" />
             </div>
@@ -359,7 +350,7 @@ export const PersonalakteModal = ({
           </div>
 
           {/* KPI 4: Annual Indicator & Social Security */}
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-subtle border border-line flex items-center gap-3">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-surface card-inner border border-line flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
               <TrendingUp className="w-4 h-4" />
             </div>
@@ -597,7 +588,7 @@ export const PersonalakteModal = ({
               {/* Official Status Verification Seal */}
               <div className="p-4 rounded-2xl bg-white border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-subtle text-ink flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-surface card-inner text-ink flex items-center justify-center shrink-0">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div>
@@ -705,7 +696,7 @@ export const PersonalakteModal = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                 {['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'].map((day, idx) => {
-                  const isOff = idx === 5 || idx === 6; // Weekend/Ruhetag for demo
+                  const isOff = idx === 5 || idx === 6;
                   return (
                     <div 
                       key={day} 
@@ -791,7 +782,7 @@ export const PersonalakteModal = ({
                     <span>UVG (NBU 0.85%) & KTG Krankentaggeld (0.73%):</span>
                     <span className="font-mono font-bold">-{formatCurrency(uvgKtgDeduction)}</span>
                   </div>
-                  <div className="flex justify-between py-2 pt-3 border-t-2 border-slate-300 font-bold text-sm bg-subtle px-3 rounded-xl">
+                  <div className="flex justify-between py-2 pt-3 border-t-2 border-slate-300 font-bold text-sm bg-surface card-inner px-3 rounded-xl">
                     <span className="text-ink font-black">Nettolohn (Ele Geçen Net Maaş):</span>
                     <span className="font-mono font-black text-ink text-base">{formatCurrency(netMonthlySalary)}</span>
                   </div>
@@ -1007,7 +998,7 @@ export const PersonalakteModal = ({
                     </button>
                     <button
                       type="submit"
-                      className="px-5 py-2 rounded-xl bg-subtle text-white text-xs font-black flex items-center gap-1.5"
+                      className="px-5 py-2 rounded-xl bg-surface card-inner text-white text-xs font-black flex items-center gap-1.5"
                     >
                       <Save className="w-4 h-4" />
                       <span>{lang === 'tr' ? 'Değişiklikleri Kaydet' : 'Änderungen speichern'}</span>
@@ -1141,7 +1132,7 @@ export const PersonalakteModal = ({
             </div>
 
             {/* Official Swiss Contract View */}
-            <div className="p-6 bg-subtle rounded-2xl border border-line font-serif text-slate-800 text-xs space-y-4">
+            <div className="p-6 bg-surface card-inner rounded-2xl border border-line font-serif text-slate-800 text-xs space-y-4">
               <div className="flex justify-between items-start border-b border-slate-300 pb-4">
                 <div>
                   <h4 className="font-black text-sm tracking-wide uppercase font-sans text-slate-900">

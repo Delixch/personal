@@ -22,16 +22,13 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
   const [selectedMonth, setSelectedMonth] = useState('2026-09');
   const [selectedEmpId, setSelectedEmpId] = useState(null);
 
-  // Month labels
   const months = [
     { value: '2026-09', label: 'September 2026' },
     { value: '2026-08', label: 'August 2026' },
     { value: '2026-07', label: 'Juli 2026' }
   ];
 
-  // Helper to calculate hours for an employee in current month
   const getEmployeeStats = (emp) => {
-    // Filter logs for this employee in selected month
     const empLogs = timeLogs.filter(
       l => l.employeeId === emp.id && l.date.startsWith(selectedMonth) && l.clockOut
     );
@@ -48,13 +45,11 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
 
     const workedHours = +(totalWorkedMinutes / 60).toFixed(1);
 
-    // Contract percentage to target hours (based on standard Swiss 42h/week = ~182h/month)
     let contractPercentage = 100;
     if (emp.contractType?.includes('80%')) contractPercentage = 80;
     else if (emp.contractType?.includes('60%')) contractPercentage = 60;
     else if (emp.contractType?.includes('50%')) contractPercentage = 50;
     
-    // For demo visual richness: give baseline hours if logs are just starting
     const baselineMockHours = emp.role === 'admin' ? 180 : Math.round(182 * (contractPercentage / 100) * 0.95);
     const effectiveHours = workedHours > 0 ? workedHours : baselineMockHours;
     const targetHours = Math.round(182 * (contractPercentage / 100));
@@ -62,7 +57,6 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
 
     const grossBase = +(effectiveHours * emp.hourlyRate).toFixed(2);
     
-    // Swiss Social deductions estimate (~11.5% total: AHV/IV/EO 5.3%, ALV 1.1%, BVG ~3.8%, KTG 1.3%)
     const socialDeductions = +(grossBase * 0.115).toFixed(2);
     const netSalary = +(grossBase - socialDeductions).toFixed(2);
 
@@ -128,13 +122,9 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
     <div className="space-y-6">
       
       {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
-              <Calculator className="w-3.5 h-3.5 text-brand icon-brand" />
-              <span>{lang === 'tr' ? 'İsviçre GAV Gastronomi Maaş & Bordro Sistemi' : 'Lohnabrechnung & Treuhand-Monatsjournal'}</span>
-            </div>
             <h1 className="page-title text-ink">
               {lang === 'tr' ? 'Maaş & Çalışma Saati Hesaplayıcı' : 'Lohn- & Stundenabrechnung'}
             </h1>
@@ -149,7 +139,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
             <select
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
-              className="px-3 py-2.5 rounded-2xl bg-ground border border-line text-ink text-xs font-bold focus:outline-none focus:border-brand"
+              className="px-3 py-2.5 rounded-2xl bg-surface card-inner border border-line text-ink text-xs font-bold focus:outline-none focus:border-brand"
             >
               {months.map(m => (
                 <option key={m.value} value={m.value}>{m.label}</option>

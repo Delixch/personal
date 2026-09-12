@@ -22,7 +22,6 @@ export const SupplierManagement = ({ lang, currentUser }) => {
   const [suppliers] = useState(StorageService.getSuppliers());
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // Order Modal State
   const [selectedSupplierForOrder, setSelectedSupplierForOrder] = useState(null);
   const [orderQuantities, setOrderQuantities] = useState({});
   const [orderNotes, setOrderNotes] = useState('');
@@ -129,13 +128,9 @@ export const SupplierManagement = ({ lang, currentUser }) => {
     <div className="space-y-5">
 
       {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
-              <Truck className="w-3.5 h-3.5 text-brand icon-brand" />
-              <span>{lang === 'tr' ? 'Tedarikçiler & İletişim' : 'Lieferanten & Kontakte'}</span>
-            </div>
             <h1 className="page-title text-ink">
               {t.supplierTitle}
             </h1>
@@ -171,7 +166,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
           <div
             key={supplier.id}
             onClick={(e) => handleOpenOrderModal(supplier, e)}
-            className="bg-surface border border-line rounded-2xl p-5 flex flex-col gap-4 transition cursor-pointer group relative"
+            className="bg-surface border border-line rounded-2xl p-5 flex flex-col gap-4 transition cursor-pointer group relative card-inner"
           >
             {/* Kart başlığı */}
             <div>
@@ -188,7 +183,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
             </div>
 
             {/* Teslimat günleri */}
-            <div className="flex items-start gap-2 bg-ground border border-line-soft rounded-xl p-3">
+            <div className="flex items-start gap-2 bg-surface card-inner border border-line-soft rounded-xl p-3">
               <Clock className="w-3.5 h-3.5 text-brand icon-brand shrink-0 mt-0.5" />
               <div>
                 <span className="text-[10px] font-black uppercase tracking-wider text-ink-muted block mb-0.5">
@@ -214,7 +209,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
               {supplier.whatsapp && (
                 <button
                   onClick={(e) => handleWhatsApp(supplier, e)}
-                  className="flex-1 py-2 rounded-xl bg-subtle text-ink font-bold text-xs flex items-center justify-center gap-1.5 border border-line"
+                  className="flex-1 py-2 rounded-xl bg-surface card-inner text-ink font-bold text-xs flex items-center justify-center gap-1.5 border border-line"
                   title="WhatsApp"
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
@@ -223,14 +218,14 @@ export const SupplierManagement = ({ lang, currentUser }) => {
               )}
               <button
                 onClick={(e) => handleCall(supplier, e)}
-                className="py-2 px-3 rounded-xl border border-line bg-surface icon-brand text-ink transition"
+                className="py-2 px-3 rounded-xl border border-line bg-surface icon-brand text-ink transition card-inner"
                 title={supplier.phone}
               >
                 <Phone className="w-4 h-4" />
               </button>
               <button
                 onClick={(e) => handleEmail(supplier, e)}
-                className="py-2 px-3 rounded-xl border border-line bg-surface icon-brand text-ink transition"
+                className="py-2 px-3 rounded-xl border border-line bg-surface icon-brand text-ink transition card-inner"
                 title={supplier.email}
               >
                 <Mail className="w-4 h-4" />
@@ -265,7 +260,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
               </div>
               <button
                 onClick={() => setSelectedSupplierForOrder(null)}
-                className="p-2 rounded-xl bg-subtle text-ink transition border border-line"
+                className="p-2 rounded-xl bg-surface card-inner text-ink transition border border-line"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -273,7 +268,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
 
             {/* Success Notification Alert inside Modal */}
             {orderSentSuccess ? (
-              <div className="p-6 rounded-2xl bg-surface border border-line text-center space-y-3">
+              <div className="p-6 rounded-2xl bg-surface border border-line text-center space-y-3 card-inner">
                 <CheckCircle2 className="w-12 h-12 text-ink mx-auto" />
                 <h3 className="text-base font-black text-ink">
                   {lang === 'tr' ? 'Siparişiniz Başarıyla Oluşturuldu!' : 'Bestellung erfolgreich übermittelt!'}
@@ -287,7 +282,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
             ) : (
               <>
                 {/* Information Bar */}
-                <div className="flex items-center justify-between gap-2 p-3.5 rounded-2xl bg-subtle border border-line text-xs">
+                <div className="flex items-center justify-between gap-2 p-3.5 rounded-2xl bg-surface card-inner border border-line text-xs">
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-ink shrink-0" />
                     <span>
@@ -322,7 +317,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                           <div className="flex items-center gap-2 shrink-0">
                             <button
                               onClick={() => handleQtyChange(item.id, -1)}
-                              className="w-8 h-8 rounded-xl bg-subtle text-ink font-bold flex items-center justify-center border border-line"
+                              className="w-8 h-8 rounded-xl bg-surface card-inner text-ink font-bold flex items-center justify-center border border-line"
                             >
                               <Minus className="w-3.5 h-3.5" />
                             </button>
@@ -331,7 +326,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                             </span>
                             <button
                               onClick={() => handleQtyChange(item.id, 1)}
-                              className="w-8 h-8 rounded-xl bg-subtle text-ink font-bold flex items-center justify-center border border-line"
+                              className="w-8 h-8 rounded-xl bg-surface card-inner text-ink font-bold flex items-center justify-center border border-line"
                             >
                               <Plus className="w-3.5 h-3.5" />
                             </button>
@@ -358,7 +353,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                     onChange={(e) => setOrderNotes(e.target.value)}
                     placeholder={lang === 'tr' ? 'Örn: Saat 07:00 öncesi teslim edilsin, vakum ambalaj...' : 'z.B. Lieferung bis 07:00 Uhr, Rampe 2...'}
                     rows={2}
-                    className="w-full p-3 rounded-2xl bg-ground border border-line text-xs text-ink placeholder:text-ink-muted focus:outline-none"
+                    className="w-full p-3 rounded-2xl bg-surface card-inner border border-line text-xs text-ink placeholder:text-ink-muted focus:outline-none"
                   />
                 </div>
 
@@ -376,7 +371,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                   <div className="flex items-center gap-2.5 w-full sm:w-auto">
                     <button
                       onClick={() => setSelectedSupplierForOrder(null)}
-                      className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-subtle text-ink text-xs font-bold border border-line"
+                      className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-surface card-inner text-ink text-xs font-bold border border-line"
                     >
                       {lang === 'tr' ? 'İptal' : 'Abbrechen'}
                     </button>

@@ -121,13 +121,9 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
     <div className="space-y-6">
       
       {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
-              <CalendarDays className="w-3.5 h-3.5 text-brand icon-brand" />
-              <span>{lang === 'tr' ? '2 Vardiyalı Dinamik Personel Çizelgesi' : '2-Schichten Personaleinsatzplanung'}</span>
-            </div>
             <h1 className="page-title text-ink">
               {t.shiftTitle}
             </h1>
@@ -140,20 +136,20 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setWeekOffset(prev => prev - 1)}
-              className="p-2 rounded-xl border border-line bg-surface text-ink transition"
+              className="p-2 rounded-xl border border-line bg-surface text-ink transition card-inner"
               title="Vorherige Woche"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => setWeekOffset(0)}
-              className="px-3.5 py-2 rounded-xl border border-line bg-surface text-xs font-bold text-ink transition"
+              className="px-3.5 py-2 rounded-xl border border-line bg-surface text-xs font-bold text-ink transition card-inner"
             >
               {lang === 'tr' ? 'Bu Hafta' : 'Diese Woche'}
             </button>
             <button
               onClick={() => setWeekOffset(prev => prev + 1)}
-              className="p-2 rounded-xl border border-line bg-surface text-ink transition"
+              className="p-2 rounded-xl border border-line bg-surface text-ink transition card-inner"
               title="Nächste Woche"
             >
               <ChevronRight className="w-4 h-4" />
@@ -171,7 +167,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
         {/* Sick Alert Warning Bar if any */}
         {sickAlerts.length > 0 && (
-          <div className="mt-4 p-3.5 rounded-2xl bg-subtle border border-brand-border flex items-center justify-between gap-3 text-brand text-xs">
+          <div className="mt-4 p-3.5 rounded-2xl bg-surface card-inner border border-brand-border flex items-center justify-between gap-3 text-brand text-xs">
             <div className="flex items-center gap-2 font-bold">
               <ShieldAlert className="w-4 h-4 text-brand icon-brand shrink-0" />
               <span>
@@ -322,7 +318,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
       {/* Add Shift Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
-          <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line text-ink">
+          <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line text-ink card-inner">
             <div className="flex items-center justify-between border-b border-line-soft pb-3 mb-4">
               <h2 className="text-base font-bold text-ink flex items-center gap-2">
                 <CalendarDays className="w-4 h-4 text-brand icon-brand" />
@@ -344,7 +340,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                 <select
                   value={formData.employeeId}
                   onChange={(e) => setFormData({ ...formData, employeeId: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-ground border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                  className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                 >
                   {employees.map(emp => (
                     <option key={emp.id} value={emp.id}>
@@ -362,7 +358,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   <select
                     value={formData.shiftType}
                     onChange={(e) => setFormData({ ...formData, shiftType: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-ground border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                    className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                   >
                     <option value="frueh">Frühschicht (08:00 - 16:30)</option>
                     <option value="spaet">Spätschicht (16:00 - 00:30)</option>
@@ -377,7 +373,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   <select
                     value={formData.department}
                     onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-ground border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                    className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                   >
                     {SEED_DEPARTMENTS.map(d => (
                       <option key={d.id} value={d.id}>
@@ -397,7 +393,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   required
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-ground border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                  className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                 />
               </div>
 
@@ -410,7 +406,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   placeholder={lang === 'tr' ? 'Örn: Hazırlık & servis' : 'z.B. Vorbereitung & Abendservice'}
-                  className="w-full px-3 py-2 rounded-xl bg-ground border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                  className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                 />
               </div>
 
@@ -430,7 +426,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
       {/* Replace Employee Modal */}
       {showReplaceModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
-          <div className="w-full max-w-sm rounded-3xl bg-surface p-5 relative border border-line text-ink">
+          <div className="w-full max-w-sm rounded-3xl bg-surface p-5 relative border border-line text-ink card-inner">
             <h3 className="text-sm font-bold text-ink mb-2 flex items-center gap-2">
               <UserCheck className="w-4 h-4 text-brand icon-brand" />
               <span>{t.assignReplacement}</span>
@@ -448,7 +444,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   <button
                     key={emp.id}
                     onClick={() => handleReplaceEmployee(showReplaceModal, emp.id)}
-                    className="w-full flex items-center justify-between p-2.5 rounded-xl bg-ground border border-line text-left transition text-xs"
+                    className="w-full flex items-center justify-between p-2.5 rounded-xl bg-surface card-inner border border-line text-left transition text-xs"
                   >
                     <div className="flex items-center gap-2.5 truncate">
                       <img
@@ -468,7 +464,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
             <button
               onClick={() => setShowReplaceModal(null)}
-              className="w-full py-2 rounded-xl bg-subtle text-xs font-bold text-ink border border-line transition"
+              className="w-full py-2 rounded-xl bg-surface card-inner text-xs font-bold text-ink border border-line transition"
             >
               {lang === 'tr' ? 'İptal' : 'Abbrechen'}
             </button>

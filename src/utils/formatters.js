@@ -1,4 +1,3 @@
-// Currency & Date Formatters for Swiss / European Enterprise
 
 export const formatCurrency = (amount, currency = 'CHF') => {
   const num = typeof amount === 'number' ? amount : parseFloat(amount) || 0;

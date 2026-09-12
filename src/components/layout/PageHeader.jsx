@@ -13,18 +13,14 @@ import React from 'react';
  */
 export const PageHeader = ({ icon: Icon, label, title, subtitle, actions, children }) => {
   return (
-    <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+    <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
       {/* Üst satır: sol bilgi + sağ aksiyonlar */}
       <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
 
         {/* Sol: etiket + başlık + açıklama */}
         <div className="space-y-2">
           {label && (
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
-              {Icon && <Icon className="w-3.5 h-3.5 text-brand icon-brand" />}
-              <span>{label}</span>
-            </div>
-          )}
+            )}
           <h1 className="page-title text-ink">
             {title}
           </h1>

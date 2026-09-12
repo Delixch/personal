@@ -53,7 +53,6 @@ export const OverviewDashboard = ({
 
   const isAdmin = currentUser?.role === 'admin';
 
-  // Admin Categories: 3 distinct logical pillars placed side by side
   const adminCategories = [
     {
       id: 'hr',
@@ -228,7 +227,6 @@ export const OverviewDashboard = ({
     }
   ];
 
-  // Employee-only simplified view
   const employeeModules = [
     {
       id: 'timeTracker',
@@ -323,15 +321,7 @@ export const OverviewDashboard = ({
                   ? `Hoş Geldiniz, ${currentUser?.name.split(' ')[0]}`
                   : `Willkommen, ${currentUser?.name.split(' ')[0]}`}
               </h1>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink text-xs font-black tracking-wider uppercase">
-                <span className="w-2 h-2 rounded-full bg-brand"></span>
-                <span>
-                  {isAdmin
-                    ? (lang === 'tr' ? 'YÖNETİM KONTROL MERKEZİ • ZÜRİH' : 'BETRIEBSLEITUNG AKTIV • ZÜRICH')
-                    : (lang === 'tr' ? 'PERSONEL HIZLI İŞLEM PANELİ' : 'MITARBEITER SCHNELLZUGRIFF')}
-                </span>
               </div>
-            </div>
 
             <p className="text-subhead text-ink-soft max-w-xl leading-relaxed">
               {isAdmin
@@ -362,7 +352,7 @@ export const OverviewDashboard = ({
 
             <div
               onClick={() => setShowChefModal(true)}
-              className="p-3.5 rounded-2xl bg-surface border border-line transition cursor-pointer flex items-center gap-3.5 group"
+              className="p-3.5 rounded-2xl bg-surface card-inner border border-line transition cursor-pointer flex items-center gap-3.5 group"
               title={lang === 'tr' ? 'Özlük Dosyasını Aç (GAV Dossier)' : 'Personalakte öffnen (GAV Dossier)'}
             >
               <img
@@ -392,13 +382,13 @@ export const OverviewDashboard = ({
             {/* KPI 1: Lieferanten */}
             <div
               onClick={() => onNavigate('suppliers')}
-              className="p-3.5 rounded-2xl bg-surface border border-line transition cursor-pointer group"
+              className="p-3.5 rounded-2xl bg-surface card-inner border border-line transition cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
                   {lang === 'tr' ? 'Tedarikçiler' : 'Lieferanten'}
                 </span>
-                <div className="w-7 h-7 rounded-lg bg-brand-light border border-brand-border flex items-center justify-center text-brand">
+                <div className="w-7 h-7 rounded-lg icon-box flex items-center justify-center">
                   <Truck className="w-3.5 h-3.5" />
                 </div>
               </div>
@@ -409,13 +399,13 @@ export const OverviewDashboard = ({
             {/* KPI 2: Mitarbeiter */}
             <div
               onClick={() => onNavigate('employees')}
-              className="p-3.5 rounded-2xl bg-surface border border-line transition cursor-pointer group"
+              className="p-3.5 rounded-2xl bg-surface card-inner border border-line transition cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
                   {lang === 'tr' ? 'Personel' : 'Mitarbeiter'}
                 </span>
-                <div className="w-7 h-7 rounded-lg bg-brand-light border border-brand-border flex items-center justify-center text-brand">
+                <div className="w-7 h-7 rounded-lg icon-box flex items-center justify-center">
                   <Users2 className="w-3.5 h-3.5" />
                 </div>
               </div>
@@ -426,13 +416,13 @@ export const OverviewDashboard = ({
             {/* KPI 3: Stempeluhr Live */}
             <div
               onClick={() => onNavigate('timeTracker')}
-              className="p-3.5 rounded-2xl bg-surface border border-line transition cursor-pointer group"
+              className="p-3.5 rounded-2xl bg-surface card-inner border border-line transition cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
                   {lang === 'tr' ? 'Canlı Mesai' : 'Stempeluhr'}
                 </span>
-                <div className="w-7 h-7 rounded-lg bg-brand-light border border-brand-border flex items-center justify-center text-brand">
+                <div className="w-7 h-7 rounded-lg icon-box flex items-center justify-center">
                   <Clock className="w-3.5 h-3.5" />
                 </div>
               </div>
@@ -443,13 +433,13 @@ export const OverviewDashboard = ({
             {/* KPI 4: Offene Rechnungen */}
             <div
               onClick={() => onNavigate('invoices')}
-              className="p-3.5 rounded-2xl bg-surface border border-line transition cursor-pointer group"
+              className="p-3.5 rounded-2xl bg-surface card-inner border border-line transition cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
                   {lang === 'tr' ? 'Açık Faturalar' : 'Offene Belege'}
                 </span>
-                <div className="w-7 h-7 rounded-lg bg-brand-light border border-brand-border flex items-center justify-center text-brand">
+                <div className="w-7 h-7 rounded-lg icon-box flex items-center justify-center">
                   <ReceiptText className="w-3.5 h-3.5" />
                 </div>
               </div>
@@ -464,7 +454,7 @@ export const OverviewDashboard = ({
       {isAdmin ? (
         <div className="space-y-4">
           {/* Quick Category Filter Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 bg-surface p-2.5 rounded-2xl border border-line">
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-surface p-2.5 rounded-2xl border border-line card-inner">
             <div className="flex flex-wrap items-center gap-2">
               {/* Home Icon (Tüm Bölümleri Göster) */}
               <button
@@ -534,7 +524,7 @@ export const OverviewDashboard = ({
                         <div
                           key={mod.id + mod.title}
                           onClick={() => onNavigate(mod.id)}
-                          className={`p-4 rounded-2xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} group`}
+                          className={`p-4 rounded-2xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} card-inner group`}
                         >
                           <div>
                             <div className="flex items-start justify-between gap-3 mb-2.5">
@@ -588,7 +578,7 @@ export const OverviewDashboard = ({
                 <div
                   key={mod.id + mod.title}
                   onClick={() => onNavigate(mod.id)}
-                  className={`p-5 rounded-3xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} group`}
+                  className={`p-5 rounded-3xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} card-inner group`}
                 >
                   <div>
                     <div className="flex items-start justify-between gap-3 mb-3">

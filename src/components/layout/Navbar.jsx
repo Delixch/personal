@@ -99,7 +99,7 @@ export const Navbar = ({
               <span className="text-body-sm">{lang === 'tr' ? '👑 Patron Ekranına Dön' : '👑 Zum Chef-Modus'}</span>
             </button>
           ) : (
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-subtle border border-line text-ink font-bold text-xs">
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface card-inner border border-line text-ink font-bold text-xs">
               <ShieldCheck className="w-4 h-4 text-brand icon-brand" />
               <span className="text-body-sm">{lang === 'tr' ? 'Patron / Yönetici' : 'Chef-Modus aktiv'}</span>
             </div>
@@ -108,7 +108,7 @@ export const Navbar = ({
           {/* Dil Değiştirici */}
           <button
             onClick={() => onLangChange(lang === 'de' ? 'tr' : 'de')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line bg-surface icon-brand sub-title transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line bg-surface icon-brand sub-title transition card-inner"
             title="Sprache wechseln / Dil Değiştir"
           >
             <Globe className="w-3.5 h-3.5" />
@@ -122,7 +122,7 @@ export const Navbar = ({
                 setShowNotifDropdown(!showNotifDropdown);
                 if (!showNotifDropdown) onNotificationsRead();
               }}
-              className="relative p-2 rounded-xl border border-line bg-surface text-ink transition"
+              className="relative p-2 rounded-xl border border-line bg-surface text-ink transition card-inner"
               title="Benachrichtigungen"
             >
               <Bell className="w-4 h-4" />
@@ -134,7 +134,7 @@ export const Navbar = ({
             </button>
 
             {showNotifDropdown && (
-              <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl bg-surface border border-line p-4 z-50">
+              <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl bg-surface border border-line p-4 z-50 card-inner">
                 <div className="flex items-center justify-between border-b border-line-soft pb-3 mb-3">
                   <div className="flex items-center gap-2">
                     <Bell className="w-4 h-4 text-brand icon-brand" />
@@ -181,7 +181,7 @@ export const Navbar = ({
           <div className="relative">
             <button
               onClick={() => setShowUserDropdown(!showUserDropdown)}
-              className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border border-line bg-surface transition text-left"
+              className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border border-line bg-surface transition text-left card-inner"
             >
               <img
                 src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}
@@ -205,7 +205,7 @@ export const Navbar = ({
             </button>
 
             {showUserDropdown && (
-              <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-surface border border-line p-3 z-50">
+              <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-surface border border-line p-3 z-50 card-inner">
                 <div className="px-3 py-2 border-b border-line-soft mb-2">
                   <p className="text-[11px] font-bold text-ink-muted uppercase tracking-wider">
                     {lang === 'tr' ? 'Hızlı Rol Değiştirici (Demo)' : 'Schnellansicht Wechseln (Demo)'}
@@ -248,7 +248,7 @@ export const Navbar = ({
                       setShowUserDropdown(false);
                       onOpenLoginModal();
                     }}
-                    className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-ground text-xs font-semibold text-ink transition border border-line"
+                    className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-surface card-inner text-xs font-semibold text-ink transition border border-line"
                   >
                     <UserCheck className="w-3.5 h-3.5 text-brand icon-brand" />
                     <span className="text-body-sm">{lang === 'tr' ? 'Şifre ile Giriş Ekranı' : 'Mit Passwort einloggen'}</span>

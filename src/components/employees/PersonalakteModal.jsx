@@ -197,7 +197,7 @@ export const PersonalakteModal = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm modal-backdrop">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/20 backdrop-blur-sm modal-backdrop">
       <div className="w-full max-w-5xl max-h-[94vh] rounded-3xl bg-surface border border-line flex flex-col overflow-hidden text-ink shadow-2xl modal-container">
         
         {/* Top Header Card */}
@@ -586,7 +586,7 @@ export const PersonalakteModal = ({
               </div>
 
               {/* Official Status Verification Seal */}
-              <div className="p-4 rounded-2xl bg-white border border-line flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-4 rounded-2xl card-inner border border-line flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl card-inner text-ink flex items-center justify-center shrink-0">
                     <ShieldCheck className="w-5 h-5" />
@@ -752,7 +752,7 @@ export const PersonalakteModal = ({
               </div>
 
               {/* Monthly Paycheck Breakdown Table */}
-              <div className="p-4 rounded-2xl bg-white border border-line space-y-3">
+              <div className="p-4 rounded-2xl card-inner border border-line space-y-3">
                 <h4 className="text-xs font-black uppercase text-ink-soft tracking-wider">
                   {lang === 'tr' ? 'Aylık Bordro Hesabı (Monatsabrechnung)' : 'Detaillierte Monatsberechnung:'}
                 </h4>

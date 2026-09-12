@@ -115,7 +115,7 @@ export const PersonalakteModal = ({
   const annualNetPaidEstimate = +(netMonthlySalary * 9).toFixed(2);
 
   const vacationTotal = employee.vacationTotal || 25;
-  const vacationUsed = employee.vacationUsed || 8;
+  const vacationUsed = employee.vacationUsed || 0;
   const vacationRemaining = Math.max(0, vacationTotal - vacationUsed);
 
   const SWISS_BANKS = [
@@ -148,10 +148,10 @@ export const PersonalakteModal = ({
     ahv: employee.ahv || '756.0000.0000.00',
     contractType: employee.contractType || 'Festanstellung 100%',
     vacationTotal: employee.vacationTotal || 25,
-    vacationUsed: employee.vacationUsed || 5,
-    joinedDate: employee.joinedDate || '2023-01-01',
-    address: employee.address || 'Zürichstrasse 42, 8001 Zürich',
-    birthDate: employee.birthDate || '14.05.1988',
+    vacationUsed: employee.vacationUsed || 0,
+    joinedDate: employee.joinedDate || new Date().toISOString().split('T')[0],
+    address: employee.address || '',
+    birthDate: employee.birthDate || '',
     nationality: employee.nationality || (employee.role === 'admin' ? 'Schweiz (ZH)' : 'Türkei / Ausweis C'),
     emergencyContact: employee.emergencyContact || 'Leyla Yılmaz (Ehepartnerin) - +41 79 444 55 66',
     iban: employee.iban || '',

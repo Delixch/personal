@@ -118,6 +118,24 @@ export const PersonalakteModal = ({
   const vacationUsed = employee.vacationUsed || 8;
   const vacationRemaining = Math.max(0, vacationTotal - vacationUsed);
 
+  const SWISS_BANKS = [
+    'UBS Switzerland AG',
+    'Zürcher Kantonalbank (ZKB)',
+    'Credit Suisse (Schweiz) AG',
+    'Raiffeisen Schweiz',
+    'PostFinance AG',
+    'Migros Bank AG',
+    'Banque Cantonale Vaudoise (BCV)',
+    'Valiant Bank AG',
+    'Basler Kantonalbank (BKB)',
+    'Berner Kantonalbank (BEKB)',
+    'St.Galler Kantonalbank (SGKB)',
+    'Luzerner Kantonalbank (LUKB)',
+    'Aargauische Kantonalbank (AKB)',
+    'Bank Cler',
+    'Andere Bank / Yabancı Banka'
+  ];
+
   const [formData, setFormData] = useState({
     name: employee.name || '',
     jobTitle: employee.jobTitle || '',
@@ -136,7 +154,8 @@ export const PersonalakteModal = ({
     birthDate: employee.birthDate || '14.05.1988',
     nationality: employee.nationality || (employee.role === 'admin' ? 'Schweiz (ZH)' : 'Türkei / Ausweis C'),
     emergencyContact: employee.emergencyContact || 'Leyla Yılmaz (Ehepartnerin) - +41 79 444 55 66',
-    iban: employee.iban || 'CH93 0076 2011 6238 5295 7 (Zürcher Kantonalbank)'
+    iban: employee.iban || '',
+    bankName: employee.bankName || 'UBS Switzerland AG'
   });
 
   const handleSave = (e) => {
@@ -828,7 +847,7 @@ export const PersonalakteModal = ({
                     <p className="font-mono font-bold text-ink">{formData.iban}</p>
                   </div>
                   <span className="px-2.5 py-1 rounded bg-subtle text-ink-soft font-bold text-[11px]">
-                    Zürcher Kantonalbank
+                    {formData.bankName}
                   </span>
                 </div>
               </div>
@@ -987,15 +1006,29 @@ export const PersonalakteModal = ({
                       />
                     </div>
 
-                    <div className="col-span-1 md:col-span-2">
-                      <label className="block font-bold text-ink-soft mb-1">Banka & IBAN Hesabı:</label>
-                      <input
-                        type="text"
-                        value={formData.iban}
-                        onChange={(e) => setFormData({ ...formData, iban: e.target.value })}
-                        placeholder="Örn: CH93 0000 0000 0000 0000 0"
-                        className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink font-mono"
-                      />
+                    <div className="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block font-bold text-ink-soft mb-1">Maaş Bankası (Bank):</label>
+                        <select
+                          value={formData.bankName}
+                          onChange={(e) => setFormData({ ...formData, bankName: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink font-semibold"
+                        >
+                          {SWISS_BANKS.map(b => (
+                            <option key={b} value={b}>{b}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block font-bold text-ink-soft mb-1">IBAN Numarası:</label>
+                        <input
+                          type="text"
+                          value={formData.iban}
+                          onChange={(e) => setFormData({ ...formData, iban: e.target.value })}
+                          placeholder="Örn: CH93 0000 0000 0000 0000 0"
+                          className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink font-mono"
+                        />
+                      </div>
                     </div>
                   </div>
 

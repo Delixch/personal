@@ -52,6 +52,7 @@ export const SyncService = {
           phone:        m.telefon || local.phone || '',
           ahv:          m.ahv_nummer || local.ahv || '',
           iban:         m.iban || local.iban || '',
+          bankName:     m.bank_name || local.bankName || 'UBS Switzerland AG',
           avatar:       m.avatar || local.avatar || '',
           contractType: m.lohnart === 'monatslohn'
                           ? 'Festanstellung 100%'
@@ -86,6 +87,7 @@ export const SyncService = {
         telefon: emp.phone || null,
         ahv_nummer: emp.ahv || null,
         iban: emp.iban || null,
+        bank_name: emp.bankName || null,
         avatar: emp.avatar || null,
         lohnart: emp.contractType?.includes('Fest') ? 'monatslohn' : 'stundenlohn',
         urlaubsanspruch_tage: emp.vacationTotal || 25,

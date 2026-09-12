@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS mitarbeiter (
   -- İsviçre Resmi Bilgileri
   ahv_nummer TEXT,                                   -- 756.xxxx.xxxx.xx
   iban TEXT,                                         -- CHxx xxxx xxxx xxxx x
+  bank_name TEXT,
   geburtstag DATE,
   eintrittsdatum DATE DEFAULT CURRENT_DATE,
   austrittsdatum DATE,

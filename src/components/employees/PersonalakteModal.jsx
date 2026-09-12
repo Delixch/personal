@@ -986,6 +986,17 @@ export const PersonalakteModal = ({
                         className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink font-mono font-bold"
                       />
                     </div>
+
+                    <div className="col-span-1 md:col-span-2">
+                      <label className="block font-bold text-ink-soft mb-1">Banka & IBAN Hesabı:</label>
+                      <input
+                        type="text"
+                        value={formData.iban}
+                        onChange={(e) => setFormData({ ...formData, iban: e.target.value })}
+                        placeholder="Örn: CH93 0000 0000 0000 0000 0"
+                        className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink font-mono"
+                      />
+                    </div>
                   </div>
 
                   <div className="flex justify-end gap-2 pt-2">

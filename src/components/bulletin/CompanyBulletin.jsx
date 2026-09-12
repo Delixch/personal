@@ -71,7 +71,7 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Megaphone className="w-5 h-5 text-brand" />
-              <h1 className="text-xl sm:text-2xl font-black text-ink">
+              <h1 className="page-title text-ink">
                 {lang === 'tr' ? 'Şirket Duyuru Panosu' : 'Schwarzes Brett & Mitteilungen'}
               </h1>
             </div>

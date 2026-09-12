@@ -145,21 +145,19 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
           <div className="flex items-center gap-2 card-inner p-1 rounded-2xl border border-line">
             <button
               onClick={() => setActiveTab('sick')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
-                activeTab === 'sick'
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${activeTab === 'sick'
                   ? 'btn-brand font-black'
                   : 'text-ink-soft '
-              }`}
+                }`}
             >
               {lang === 'tr' ? 'Hastalık Bildirimleri' : 'Krankmeldungen'} ({sickReports.length})
             </button>
             <button
               onClick={() => setActiveTab('leave')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
-                activeTab === 'leave'
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${activeTab === 'leave'
                   ? 'btn-brand font-black'
                   : 'text-ink-soft '
-              }`}
+                }`}
             >
               {lang === 'tr' ? 'İzin Talepleri' : 'Urlaubsanträge'} ({leaveRequests.length})
             </button>
@@ -239,13 +237,12 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-sm text-ink">{req.employeeName}</span>
-                      <span className={`badge ${
-                        req.status === 'approved'
+                      <span className={`badge ${req.status === 'approved'
                           ? 'badge-emerald'
                           : req.status === 'rejected'
-                          ? 'badge-rose'
-                          : 'badge-amber'
-                      } text-[10px] py-0 px-2`}>
+                            ? 'badge-rose'
+                            : 'badge-amber'
+                        } text-[10px] py-0 px-2`}>
                         {req.status.toUpperCase()}
                       </span>
                     </div>

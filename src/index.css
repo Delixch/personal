@@ -12,45 +12,66 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   /* ── Yazı Renkleri ───────────────────────────────────────────── */
-  --ink:        #111111;     /* Ana Yazı (Saf Koyu Siyah) */
-  --ink-soft:   #1F2937;     /* İkincil Yazı (Derin Koyu Siyah) */
-  --ink-muted:  #374151;     /* Etiket & Alt Yazı (Koyu Kömür Gri) */
+  --ink: #111111;
+  /* Ana Yazı (Saf Koyu Siyah) */
+  --ink-soft: #1F2937;
+  /* İkincil Yazı (Derin Koyu Siyah) */
+  --ink-muted: #374151;
+  /* Etiket & Alt Yazı (Koyu Kömür Gri) */
 
   /* ── Zemin & Yüzey Renkleri ──────────────────────────────────── */
-  --ground:        #F6EEDB;     /* En Arka Sayfa Zemini (#F6EEDB Sıcak Kum Rengi) */
-  --surface:       #FFFFFF;     /* Dış Kartlar & Genel Yüzey (#FFFFFF) */
-  --surface-inner: #EBE4D1;     /* İÇ KARTLAR ÖZEL YÜZEY RENK TANIMI (#EBE4D1) */
-  --subtle:        #FAF6EE;     /* Kart İçi Dolgular (#FAF6EE Açık Krem Dolgu) */
+  --ground: #F6EEDB;
+  /* En Arka Sayfa Zemini (#F6EEDB Sıcak Kum Rengi) */
+  --surface: #FFFFFF;
+  /* Dış Kartlar & Genel Yüzey (#FFFFFF) */
+  --surface-inner: #EBE4D1;
+  /* İÇ KARTLAR ÖZEL YÜZEY RENK TANIMI (#EBE4D1) */
+  --subtle: #FAF6EE;
+  /* Kart İçi Dolgular (#FAF6EE Açık Krem Dolgu) */
 
   /* ── Kenarlık Renkleri ────────────────────────────────────────── */
-  --line:       #E2D7C3;     /* Ana Border (Kum Uyumlu Kenarlık) */
-  --line-soft:  #EFEFEF;     /* İnce Çizgi */
+  --line: #E2D7C3;
+  /* Ana Border (Kum Uyumlu Kenarlık) */
+  --line-soft: #EFEFEF;
+  /* İnce Çizgi */
 
   /* ── Marka / Aksan Renkleri (#FF5A1F Turuncu) ───────────────── */
-  --brand:        #FF5A1F;   /* Turuncu Marka */
-  --brand-hover:  #C23E10;   /* Hover Turuncu */
-  --brand-deep:   #532515;   /* Koyu Ton */
-  --brand-light:  #FFF0EB;   /* Açık Turuncu Tint */
-  --brand-border: #FFCAB4;   /* Açık Turuncu Border */
+  --brand: #FF5A1F;
+  /* Turuncu Marka */
+  --brand-hover: #C23E10;
+  /* Hover Turuncu */
+  --brand-deep: #532515;
+  /* Koyu Ton */
+  --brand-light: #FFF0EB;
+  /* Açık Turuncu Tint */
+  --brand-border: #FFCAB4;
+  /* Açık Turuncu Border */
 
   /* ── Koyu Zemin (Banner) ─────────────────────────────────────── */
-  --dark:         #111111;   /* Koyu Banner (#111111) */
+  --dark: #111111;
+  /* Koyu Banner (#111111) */
 
   /* ── İkon Renkleri (MERKEZİ TANIM) ────────────────────────────── */
-  --icon-bg:      #ECE4D2;   /* İkon Kutusu Arka Planı (#ECE4D2 — Dış Çizgisiz) */
-  --icon-color:   #32312F;   /* İkonun Kendi Rengi (#32312F) */
+  --icon-bg: #ECE4D2;
+  /* İkon Kutusu Arka Planı (#ECE4D2 — Dış Çizgisiz) */
+  --icon-color: #32312F;
+  /* İkonun Kendi Rengi (#32312F) */
 }
 
 /* ================================================================
    GLOBAL RESET & BODY
 ================================================================ */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   background-color: var(--ground) !important;
   min-height: 100vh;
   color: var(--ink) !important;
@@ -64,12 +85,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-input, textarea, select, button {
+input,
+textarea,
+select,
+button {
   font-family: inherit;
 }
 
 /* MERKEZİ BAŞLIK VE YAZI RENK EZİCİ */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--ink) !important;
 }
 
@@ -117,6 +146,7 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.025em;
   color: var(--ink);
 }
+
 @media (min-width: 640px) {
   .page-title {
     font-size: 1.5rem;
@@ -236,10 +266,23 @@ svg.lucide,
 /* ================================================================
    SCROLLBAR
 ================================================================ */
-::-webkit-scrollbar       { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: var(--subtle); }
-::-webkit-scrollbar-thumb { background: var(--ink-muted); border-radius: 9999px; }
-::-webkit-scrollbar-thumb:hover { background: var(--brand); }
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--subtle);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ink-muted);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand);
+}
 
 /* ================================================================
    BADGE
@@ -269,7 +312,9 @@ svg.lucide,
 /* ================================================================
    FORM INPUTS
 ================================================================ */
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
   border-color: var(--brand) !important;
 }
@@ -328,6 +373,7 @@ input:focus, textarea:focus, select:focus {
     opacity: 0;
     transform: scale(0.96) translateY(6px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -338,6 +384,7 @@ input:focus, textarea:focus, select:focus {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }

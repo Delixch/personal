@@ -247,7 +247,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
 
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 relative border border-line max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-lg rounded-3xl bg-surface p-6 relative border border-line max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
               <h2 className="text-base font-bold text-ink flex items-center gap-2">
                 <UserPlus className="w-4 h-4 text-ink" />

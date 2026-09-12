@@ -703,7 +703,7 @@ export const PersonalakteModal = ({
                       className={`p-3.5 rounded-2xl border ${
                         isOff 
                           ? 'card-inner border-line text-ink-muted' 
-                          : 'bg-white border-line '
+                          : 'card-inner border-line '
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1.5">
@@ -797,7 +797,7 @@ export const PersonalakteModal = ({
                 </h4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                  <div className="p-3 rounded-xl bg-white border border-line">
+                  <div className="p-3 rounded-xl card-inner border border-line">
                     <span className="text-ink-soft block">Yıl İçi Ödenen Net (Jan-Sep):</span>
                     <span className="text-base font-mono font-black text-ink mt-1 block">
                       {formatCurrency(annualNetPaidEstimate)}
@@ -805,7 +805,7 @@ export const PersonalakteModal = ({
                     <span className="text-[10px] text-ink font-bold">✓ 9 Ay Tam Ödendi</span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white border border-line">
+                  <div className="p-3 rounded-xl card-inner border border-line">
                     <span className="text-ink-soft block">13. Maaş Birikimi (%8.33):</span>
                     <span className="text-base font-mono font-black text-ink mt-1 block">
                       {formatCurrency(thirteentMonthAccrual * 9)}
@@ -813,7 +813,7 @@ export const PersonalakteModal = ({
                     <span className="text-[10px] text-ink-soft">Aralık ayında ödenecek</span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white border border-line">
+                  <div className="p-3 rounded-xl card-inner border border-line">
                     <span className="text-ink-soft block">Yıllık Tahmini Brüt (Jahreslohn):</span>
                     <span className="text-base font-mono font-black text-ink mt-1 block">
                       {formatCurrency(annualGrossEstimate)}
@@ -822,7 +822,7 @@ export const PersonalakteModal = ({
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-white border border-line flex items-center justify-between text-xs">
+                <div className="p-3 rounded-xl card-inner border border-line flex items-center justify-between text-xs">
                   <div>
                     <span className="text-ink-soft">Banka & IBAN Hesabı:</span>
                     <p className="font-mono font-bold text-ink">{formData.iban}</p>
@@ -862,14 +862,14 @@ export const PersonalakteModal = ({
               </div>
 
               {/* Sick Leave & Attest History */}
-              <div className="p-4 rounded-2xl bg-white border border-line space-y-3">
+              <div className="p-4 rounded-2xl card-inner border border-line space-y-3">
                 <h4 className="text-xs font-black uppercase text-ink-soft tracking-wider flex items-center gap-2">
                   <HeartPulse className="w-4 h-4 text-brand" />
                   <span>{lang === 'tr' ? 'Hastalık Bildirimleri & Doktor Raporları (Attest)' : 'Krankmeldungen & Arztzeugnisse:'}</span>
                 </h4>
 
                 {empSick.length === 0 ? (
-                  <div className="p-4 rounded-xl bg-emerald-50 border border-line text-xs text-ink flex items-center gap-2">
+                  <div className="p-4 rounded-xl card-inner border border-line text-xs text-ink flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-ink" />
                     <span>{lang === 'tr' ? 'Bu çalışanın kayıtlı bir hastalık veya devamsızlık raporu bulunmamaktadır (Sicil Temiz).' : 'Keine Krankmeldungen vorhanden. 100% Anwesenheit.'}</span>
                   </div>
@@ -928,7 +928,7 @@ export const PersonalakteModal = ({
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-white border border-line text-ink font-semibold"
+                        className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink font-semibold"
                         required
                       />
                     </div>
@@ -939,7 +939,7 @@ export const PersonalakteModal = ({
                         type="text"
                         value={formData.jobTitle}
                         onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-white border border-line text-ink font-semibold"
+                        className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink font-semibold"
                         required
                       />
                     </div>
@@ -951,7 +951,7 @@ export const PersonalakteModal = ({
                         maxLength="4"
                         value={formData.pin}
                         onChange={(e) => setFormData({ ...formData, pin: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-white border border-line text-ink font-mono font-bold text-sm tracking-widest"
+                        className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink font-mono font-bold text-sm tracking-widest"
                         required
                       />
                     </div>
@@ -962,7 +962,7 @@ export const PersonalakteModal = ({
                         type="text"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-white border border-line text-ink font-mono"
+                        className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink font-mono"
                       />
                     </div>
 
@@ -972,7 +972,7 @@ export const PersonalakteModal = ({
                         type="text"
                         value={formData.ahv}
                         onChange={(e) => setFormData({ ...formData, ahv: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-white border border-line text-ink font-mono"
+                        className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink font-mono"
                       />
                     </div>
 
@@ -983,7 +983,7 @@ export const PersonalakteModal = ({
                         step="0.5"
                         value={formData.hourlyRate}
                         onChange={(e) => setFormData({ ...formData, hourlyRate: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-white border border-line text-ink font-mono font-bold"
+                        className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink font-mono font-bold"
                       />
                     </div>
                   </div>
@@ -1016,17 +1016,17 @@ export const PersonalakteModal = ({
                     </h4>
 
                     <div className="space-y-2 text-xs">
-                      <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-line">
+                      <div className="flex items-center justify-between p-2.5 rounded-xl card-inner border border-line">
                         <span className="text-ink-soft flex items-center gap-1.5">
                           <Fingerprint className="w-4 h-4 text-ink" />
                           Tablet Kiosk PIN:
                         </span>
-                        <span className="font-mono font-black text-sm px-2.5 py-0.5 rounded-lg bg-emerald-50 text-ink border border-line">
+                        <span className="font-mono font-black text-sm px-2.5 py-0.5 rounded-lg card-inner text-ink border border-line">
                           {formData.pin}
                         </span>
                       </div>
 
-                      <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-line">
+                      <div className="flex items-center justify-between p-2.5 rounded-xl card-inner border border-line">
                         <span className="text-ink-soft flex items-center gap-1.5">
                           <Mail className="w-4 h-4 text-ink" />
                           E-Mail Login:
@@ -1036,7 +1036,7 @@ export const PersonalakteModal = ({
                         </span>
                       </div>
 
-                      <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-line">
+                      <div className="flex items-center justify-between p-2.5 rounded-xl card-inner border border-line">
                         <span className="text-ink-soft flex items-center gap-1.5">
                           <KeyRound className="w-4 h-4 text-brand" />
                           Passwort:
@@ -1046,7 +1046,7 @@ export const PersonalakteModal = ({
                         </span>
                       </div>
 
-                      <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-line">
+                      <div className="flex items-center justify-between p-2.5 rounded-xl card-inner border border-line">
                         <span className="text-ink-soft">AHV / AVS-Nr:</span>
                         <span className="font-mono font-bold text-ink px-2 py-0.5 rounded bg-subtle">
                           {formData.ahv}
@@ -1064,7 +1064,7 @@ export const PersonalakteModal = ({
 
                     <div className="space-y-2">
                       {documents.map((doc) => (
-                        <div key={doc.id} className="p-2.5 rounded-xl bg-white border border-line flex items-center justify-between text-xs">
+                        <div key={doc.id} className="p-2.5 rounded-xl card-inner border border-line flex items-center justify-between text-xs">
                           <div>
                             <p className="font-bold text-ink">{doc.title}</p>
                             <p className="text-[10px] text-ink-soft">{doc.date} • {doc.status}</p>
@@ -1098,7 +1098,7 @@ export const PersonalakteModal = ({
           <div className="flex items-center gap-2">
             <button
               onClick={() => window.print()}
-              className="px-3.5 py-2 rounded-xl bg-white border border-line text-ink text-xs font-bold transition flex items-center gap-1.5"
+              className="px-3.5 py-2 rounded-xl card-inner border border-line text-ink text-xs font-bold transition flex items-center gap-1.5"
             >
               <Printer className="w-3.5 h-3.5 text-ink-soft" />
               <span>{lang === 'tr' ? 'Kayıtları Yazdır' : 'Akte drucken'}</span>
@@ -1117,7 +1117,7 @@ export const PersonalakteModal = ({
       {/* DOCUMENT PREVIEW MODAL */}
       {previewDoc && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-dark">
-          <div className="w-full max-w-2xl bg-white rounded-3xl p-6 border border-line relative max-h-[85vh] overflow-y-auto">
+          <div className="w-full max-w-2xl bg-surface rounded-3xl p-6 border border-line relative max-h-[85vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
               <div className="flex items-center gap-2">
                 <FileText className="w-5 h-5 text-ink" />

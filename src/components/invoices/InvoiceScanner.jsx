@@ -226,11 +226,10 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
           <button
             key={tab.id}
             onClick={() => setActiveFilter(tab.id)}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition border ${
-              activeFilter === tab.id
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition border ${activeFilter === tab.id
                 ? 'btn-brand font-black'
                 : 'card-inner border-line text-ink'
-            }`}
+              }`}
           >
             {tab.label}
           </button>
@@ -328,7 +327,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
       {showScanModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
           <div className="w-full max-w-3xl rounded-3xl bg-white p-6 relative border border-line max-h-[90vh] overflow-y-auto">
-            
+
             <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
               <h2 className="text-base font-bold text-ink flex items-center gap-2">
                 <ScanLine className="w-5 h-5 text-ink" />
@@ -366,7 +365,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
+
               <div>
                 <label className="block text-xs font-semibold text-ink-soft mb-2">
                   {lang === 'tr' ? 'Fatura Görseli / Kamera' : 'Rechnungsfoto / Beleg'}:

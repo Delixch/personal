@@ -49,14 +49,14 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
     if (emp.contractType?.includes('80%')) contractPercentage = 80;
     else if (emp.contractType?.includes('60%')) contractPercentage = 60;
     else if (emp.contractType?.includes('50%')) contractPercentage = 50;
-    
+
     const baselineMockHours = emp.role === 'admin' ? 180 : Math.round(182 * (contractPercentage / 100) * 0.95);
     const effectiveHours = workedHours > 0 ? workedHours : baselineMockHours;
     const targetHours = Math.round(182 * (contractPercentage / 100));
     const overtime = +(effectiveHours - targetHours).toFixed(1);
 
     const grossBase = +(effectiveHours * emp.hourlyRate).toFixed(2);
-    
+
     const socialDeductions = +(grossBase * 0.115).toFixed(2);
     const netSalary = +(grossBase - socialDeductions).toFixed(2);
 
@@ -261,9 +261,8 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
                     </td>
 
                     <td className="py-3.5 font-mono font-bold">
-                      <span className={`px-2 py-0.5 rounded-md text-[11px] ${
-                        isPositiveOvertime ? 'bg-subtle text-ink' : 'btn-brand text-brand'
-                      }`}>
+                      <span className={`px-2 py-0.5 rounded-md text-[11px] ${isPositiveOvertime ? 'bg-subtle text-ink' : 'btn-brand text-brand'
+                        }`}>
                         {isPositiveOvertime ? `+${stats.overtime}` : stats.overtime} h
                       </span>
                     </td>

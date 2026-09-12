@@ -69,7 +69,18 @@ export function App() {
 
   useEffect(() => {
     const handleDbUpdate = () => {
-      setCurrentUser(StorageService.getCurrentUser());
+      const storedUser = StorageService.getCurrentUser();
+      if (storedUser) {
+        // Sync sonrası güncel employee listesinden aynı kişiyi bul (PIN veya ID ile)
+        setCurrentUser(prev => {
+          const employees = StorageService.getEmployees();
+          const refreshed = employees.find(e =>
+            (prev && (e.pin === prev.pin || e.id === prev.id)) ||
+            (storedUser && (e.pin === storedUser.pin || e.id === storedUser.id))
+          );
+          return refreshed || prev || storedUser;
+        });
+      }
       setNotifications(StorageService.getNotifications());
       setLang(StorageService.getLanguage());
     };

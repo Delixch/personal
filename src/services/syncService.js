@@ -30,27 +30,47 @@ export const SyncService = {
     const { data, error } = await supabase.from('mitarbeiter').select('*');
     if (error) throw error;
     if (data && data.length > 0) {
-      const mapped = data.map(m => ({
-        id: m.id,
-        name: m.name,
-        pin: m.pin,
-        role: m.rolle || 'employee',
-        hourlyRate: Number(m.stundenlohn) || 25,
-        pensum: m.pensum || 100,
-        email: m.email || '',
-        phone: m.telefon || '',
-        ahv: m.ahv_nummer || '',
-        iban: m.iban || '',
-        avatar: m.avatar || '',
-        contractType: m.lohnart === 'monatslohn' ? 'Festanstellung 100%' : `Stundenlohn (${m.pensum || 100}%)`,
-        vacationTotal: Number(m.urlaubsanspruch_tage) || 25,
-        vacationUsed: Number(m.urlaub_bezogen_tage) || 0,
-        joinedDate: m.eintrittsdatum || '2024-01-01',
-        status: m.aktiv ? 'active' : 'inactive'
-      }));
+      // Mevcut local veriyi oku — password, department, jobTitle gibi local alanları koru
+      let localList = [];
+      try {
+        const raw = localStorage.getItem('ado_employees_v1');
+        localList = raw ? JSON.parse(raw) : [];
+      } catch (_) {}
+
+      const mapped = data.map(m => {
+        // Aynı PIN veya ID'li local kaydı bul
+        const local = localList.find(e => e.pin === m.pin || e.id === m.id) || {};
+        return {
+          ...local,                          // local alanları önce yay (password, department, jobTitle vb.)
+          id:           m.id || local.id,
+          name:         m.name,
+          pin:          m.pin,
+          role:         m.rolle || local.role || 'employee',
+          hourlyRate:   Number(m.stundenlohn) || local.hourlyRate || 25,
+          pensum:       m.pensum || local.pensum || 100,
+          email:        m.email || local.email || '',
+          phone:        m.telefon || local.phone || '',
+          ahv:          m.ahv_nummer || local.ahv || '',
+          iban:         m.iban || local.iban || '',
+          avatar:       m.avatar || local.avatar || '',
+          contractType: m.lohnart === 'monatslohn'
+                          ? 'Festanstellung 100%'
+                          : `Stundenlohn (${m.pensum || 100}%)`,
+          vacationTotal: Number(m.urlaubsanspruch_tage) || local.vacationTotal || 25,
+          vacationUsed:  Number(m.urlaub_bezogen_tage)  || local.vacationUsed  || 0,
+          joinedDate:   m.eintrittsdatum || local.joinedDate || '2024-01-01',
+          status:       m.aktiv ? 'active' : 'inactive',
+          // Local-only alanlar — Supabase'den gelmez, local'den korunur:
+          password:     local.password || '1234',
+          department:   local.department || 'staff',
+          jobTitle:     local.jobTitle || m.rolle || '',
+          onboardingChecks: local.onboardingChecks || {}
+        };
+      });
       localStorage.setItem('ado_employees_v1', JSON.stringify(mapped));
     }
   },
+
 
   pushEmployee: async (emp) => {
     if (!SyncService.isLive() || !emp.pin) return;

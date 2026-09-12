@@ -263,7 +263,7 @@ export const PersonalakteModal = ({
               className="px-3 py-2 rounded-xl bg-subtle text-ink text-xs font-bold border border-line focus:outline-none hover:border-brand transition"
             >
               {allEmployees.map(e => (
-                <option key={e.id} value={e.id} className="text-ink bg-white">
+                <option key={e.id} value={e.id}>
                   {e.role === 'admin' ? '👑 ' : '👤 '} {e.name}
                 </option>
               ))}
@@ -307,8 +307,8 @@ export const PersonalakteModal = ({
               <span className="font-mono font-black text-sm text-ink block">
                 {effectiveHours} Std.
               </span>
-              <span className={`block text-[10px] font-bold ${overtime >= 0 ? 'text-ink' : 'text-brand'}`}>
-                {overtime >= 0 ? `+${overtime}h Mesai` : `${overtime}h Eksik`} (Soll: {targetMonthlyHours}h)
+              <span className={`block text-[10px] font-bold ${overtime === 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                {overtime === 0 ? '0h Denk' : overtime > 0 ? `+${overtime}h Fazla` : `${overtime}h Eksik`} (Soll: <span className="text-emerald-400">{targetMonthlyHours}h</span>)
               </span>
             </div>
           </div>
@@ -492,16 +492,16 @@ export const PersonalakteModal = ({
                   <div className="space-y-2 text-xs">
                     <div className="flex justify-between">
                       <span className="text-ink-soft">Hedef Saat (Soll):</span>
-                      <span className="font-mono font-bold text-ink">{targetMonthlyHours} Std. / Ay</span>
+                      <span className="font-mono font-bold text-emerald-400">{targetMonthlyHours} Std. / Ay</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-ink-soft">Çalışılan (Ist):</span>
                       <span className="font-mono font-bold text-ink">{effectiveHours} Std.</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-ink-soft">Fazla Mesai:</span>
-                      <span className={`font-mono font-black ${overtime >= 0 ? 'text-ink' : 'text-brand'}`}>
-                        {overtime >= 0 ? `+${overtime} Std.` : `${overtime} Std.`}
+                      <span className="text-ink-soft">Saldo / Fazla-Eksik:</span>
+                      <span className={`font-mono font-black ${overtime === 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                        {overtime > 0 ? `+${overtime} Std.` : `${overtime} Std.`}
                       </span>
                     </div>
                     <div className="flex justify-between pt-1 border-t border-line text-[11px]">

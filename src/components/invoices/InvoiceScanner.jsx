@@ -502,9 +502,9 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       }}
                       className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                     >
-                      <option className="text-ink bg-white" value="2.6">2.6% (Lebensmittel CH)</option>
-                      <option className="text-ink bg-white" value="8.1">8.1% (Normalsatz CH)</option>
-                      <option className="text-ink bg-white" value="0">0% (Befreit)</option>
+                      <option value="2.6">2.6% (Lebensmittel CH)</option>
+                      <option value="8.1">8.1% (Normalsatz CH)</option>
+                      <option value="0">0% (Befreit)</option>
                     </select>
                   </div>
                   <div>

@@ -1,5 +1,18 @@
 import React, { useState } from 'react';
-import { Megaphone, Pin, Plus, Calendar, User, Eye, CheckCircle2 } from 'lucide-react';
+import {
+  Megaphone,
+  Pin,
+  Plus,
+  Calendar,
+  User,
+  Eye,
+  CheckCircle2,
+  AlertTriangle,
+  FileText,
+  Info,
+  Sparkles,
+  Layers
+} from 'lucide-react';
 import { SEED_BULLETINS } from '../../services/seedData';
 
 export const CompanyBulletin = ({ lang, isAdmin }) => {
@@ -47,13 +60,37 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
   const getCategoryBadge = (cat) => {
     switch (cat) {
       case 'urgent':
-        return <span className="badge badge-rose font-bold text-[10px] uppercase">🚨 Dringend</span>;
+        return (
+          <span className="badge inline-flex items-center gap-1.5 font-black text-[10px] uppercase text-rose-400 animate-pulse">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+            </span>
+            <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+            <span className="tracking-wider">{lang === 'tr' ? 'ACİL' : 'DRINGEND'}</span>
+          </span>
+        );
       case 'rule':
-        return <span className="badge badge-amber font-bold text-[10px] uppercase">📋 Regel</span>;
+        return (
+          <span className="badge inline-flex items-center gap-1.5 font-extrabold text-[10px] uppercase text-amber-400">
+            <FileText className="w-3.5 h-3.5 text-amber-400" />
+            <span>{lang === 'tr' ? 'KURAL' : 'REGEL'}</span>
+          </span>
+        );
       case 'event':
-        return <span className="badge badge-purple font-bold text-[10px] uppercase">🎉 Event</span>;
+        return (
+          <span className="badge inline-flex items-center gap-1.5 font-extrabold text-[10px] uppercase text-purple-400">
+            <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+            <span>{lang === 'tr' ? 'ETKİNLİK' : 'EVENT'}</span>
+          </span>
+        );
       default:
-        return <span className="badge badge-sky font-bold text-[10px] uppercase">ℹ️ Info</span>;
+        return (
+          <span className="badge inline-flex items-center gap-1.5 font-extrabold text-[10px] uppercase text-sky-400">
+            <Info className="w-3.5 h-3.5 text-sky-400" />
+            <span>{lang === 'tr' ? 'BİLGİ' : 'INFO'}</span>
+          </span>
+        );
     }
   };
 
@@ -98,59 +135,68 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
         <div className="flex flex-wrap gap-2 mt-6 border-t border-line-soft pt-4">
           <button
             onClick={() => setFilterCategory('all')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
               filterCategory === 'all'
                 ? 'btn-brand text-white font-black'
-                : 'card-inner border border-line text-ink'
+                : 'card-inner text-ink'
             }`}
           >
-            {lang === 'tr' ? 'Tümü' : 'Alle Bekanntmachungen'} ({bulletins.length})
+            <Layers className="w-3.5 h-3.5" />
+            <span>{lang === 'tr' ? 'Tümü' : 'Alle Bekanntmachungen'} ({bulletins.length})</span>
           </button>
           <button
             onClick={() => setFilterCategory('urgent')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
               filterCategory === 'urgent'
                 ? 'btn-brand text-white font-black'
-                : 'card-inner border border-line text-ink'
+                : 'card-inner text-ink'
             }`}
           >
-            🚨 {lang === 'tr' ? 'Acil Duyurular' : 'Dringend'}
+            <AlertTriangle className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
+            <span className="animate-pulse">{lang === 'tr' ? 'Acil Duyurular' : 'Dringend'}</span>
           </button>
           <button
             onClick={() => setFilterCategory('rule')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
               filterCategory === 'rule'
                 ? 'btn-brand text-white font-black'
-                : 'card-inner border border-line text-ink'
+                : 'card-inner text-ink'
             }`}
           >
-            📋 {lang === 'tr' ? 'Kurallar & Talimatlar' : 'Regeln'}
+            <FileText className="w-3.5 h-3.5 text-amber-400" />
+            <span>{lang === 'tr' ? 'Kurallar & Talimatlar' : 'Regeln'}</span>
           </button>
           <button
             onClick={() => setFilterCategory('info')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
               filterCategory === 'info'
                 ? 'btn-brand text-white font-black'
-                : 'card-inner border border-line text-ink'
+                : 'card-inner text-ink'
             }`}
           >
-            ℹ️ {lang === 'tr' ? 'Genel Bilgi' : 'Infos'}
+            <Info className="w-3.5 h-3.5 text-sky-400" />
+            <span>{lang === 'tr' ? 'Genel Bilgi' : 'Infos'}</span>
           </button>
         </div>
       </div>
 
       <div className="space-y-4">
         {filteredBulletins.map((item) => {
+          const isUrgent = item.category === 'urgent';
           return (
             <div
               key={item.id}
-              className={`p-6 rounded-3xl card-inner border border-line transition relative overflow-hidden ${
-                item.pinned ? 'border-brand ring-2 ring-brand/20' : ''
+              className={`p-6 rounded-3xl card-inner transition relative overflow-hidden ${
+                isUrgent
+                  ? 'border-2 border-sky-500 shadow-[0_0_20px_rgba(14,165,233,0.15)]'
+                  : item.pinned
+                    ? 'border-2 border-brand'
+                    : 'border-2 border-line'
               }`}
             >
               {item.pinned && (
-                <div className="absolute top-4 right-4 flex items-center gap-1 text-[11px] font-bold text-brand bg-subtle px-2 py-0.5 rounded-md border border-line-soft">
-                  <Pin className="w-3 h-3 fill-brand text-brand" />
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 text-[11px] font-bold text-brand bg-ground px-3 py-1 rounded-xl border border-brand/40 shadow-sm">
+                  <Pin className="w-3.5 h-3.5 fill-brand text-brand" />
                   <span>{lang === 'tr' ? 'Sabitlenmiş' : 'Angepinnt'}</span>
                 </div>
               )}
@@ -226,10 +272,10 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
                 >
-                  <option className="text-ink bg-white" value="info">ℹ️ Information (Genel Bilgi)</option>
-                  <option className="text-ink bg-white" value="urgent">🚨 Dringend (Acil Duyuru)</option>
-                  <option className="text-ink bg-white" value="rule">📋 Regel / Vorschrift (Kural)</option>
-                  <option className="text-ink bg-white" value="event">🎉 Event / Anlass (Etkinlik)</option>
+                  <option value="info">{lang === 'tr' ? 'Genel Bilgi' : 'Information'}</option>
+                  <option value="urgent">{lang === 'tr' ? 'Acil Duyuru' : 'Dringend'}</option>
+                  <option value="rule">{lang === 'tr' ? 'Kural & Talimat' : 'Regel / Vorschrift'}</option>
+                  <option value="event">{lang === 'tr' ? 'Etkinlik' : 'Event / Anlass'}</option>
                 </select>
               </div>
 

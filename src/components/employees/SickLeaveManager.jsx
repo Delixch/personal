@@ -182,7 +182,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
               {sickReports.map((report) => (
                 <div
                   key={report.id}
-                  className="p-4 rounded-2xl bg-white border border-line transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+                  className="p-4 rounded-2xl card-inner border border-line transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
@@ -232,7 +232,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
               {leaveRequests.map((req) => (
                 <div
                   key={req.id}
-                  className="p-4 rounded-2xl bg-white border border-line transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+                  className="p-4 rounded-2xl card-inner border border-line transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
@@ -315,7 +315,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                     className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                   >
                     {employees.map(emp => (
-                      <option className="text-ink bg-white" key={emp.id} value={emp.id}>
+                      <option key={emp.id} value={emp.id}>
                         {emp.name} ({emp.jobTitle})
                       </option>
                     ))}
@@ -333,7 +333,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                   className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                 >
                   {SICK_REASONS.map((r, i) => (
-                    <option className="text-ink bg-white" key={i} value={r}>
+                    <option key={i} value={r}>
                       {r}
                     </option>
                   ))}
@@ -386,11 +386,11 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
 
                 {sickData.hasAttest && (
                   <div className="flex items-center gap-3 mt-2">
-                    <div className="flex-1 px-3 py-2 rounded-xl bg-white border border-line text-xs text-ink-soft flex items-center gap-2">
+                    <div className="flex-1 px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink-soft flex items-center gap-2">
                       <Camera className="w-4 h-4 text-ink" />
                       <span className="truncate font-mono">{sickData.attestFileName}</span>
                     </div>
-                    <label className="px-3 py-2 rounded-xl bg-slate-200 text-xs text-ink font-semibold cursor-pointer transition">
+                    <label className="px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink font-semibold cursor-pointer transition">
                       <span>Durchsuchen</span>
                       <input
                         type="file"
@@ -489,10 +489,10 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                   onChange={(e) => setLeaveData({ ...leaveData, type: e.target.value })}
                   className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                 >
-                  <option className="text-ink bg-white" value="Erholungsurlaub (Yıllık İzin)">Erholungsurlaub (Yıllık İzin)</option>
-                  <option className="text-ink bg-white" value="Kompensation Überstunden (Fazla Mesai İzni)">Kompensation Überstunden (Fazla Mesai İzni)</option>
-                  <option className="text-ink bg-white" value="Sonderurlaub (Özel İzin)">Sonderurlaub (Özel İzin)</option>
-                  <option className="text-ink bg-white" value="Unbezahlter Urlaub (Ücretsiz İzin)">Unbezahlter Urlaub (Ücretsiz İzin)</option>
+                  <option value="Erholungsurlaub (Yıllık İzin)">Erholungsurlaub (Yıllık İzin)</option>
+                  <option value="Kompensation Überstunden (Fazla Mesai İzni)">Kompensation Überstunden (Fazla Mesai İzni)</option>
+                  <option value="Sonderurlaub (Özel İzin)">Sonderurlaub (Özel İzin)</option>
+                  <option value="Unbezahlter Urlaub (Ücretsiz İzin)">Unbezahlter Urlaub (Ücretsiz İzin)</option>
                 </select>
               </div>
 

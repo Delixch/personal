@@ -367,7 +367,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                 >
                   {employees.map(emp => (
-                    <option className="text-ink bg-white" key={emp.id} value={emp.id}>
+                    <option key={emp.id} value={emp.id}>
                       {emp.name} ({emp.jobTitle})
                     </option>
                   ))}
@@ -384,9 +384,9 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                     onChange={(e) => setFormData({ ...formData, shiftType: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                   >
-                    <option className="text-ink bg-white" value="frueh">Frühschicht (08:00 - 16:30)</option>
-                    <option className="text-ink bg-white" value="spaet">Spätschicht (16:00 - 00:30)</option>
-                    <option className="text-ink bg-white" value="ganztag">Ganztags / Split (10:00 - 22:30)</option>
+                    <option value="frueh">Frühschicht (08:00 - 16:30)</option>
+                    <option value="spaet">Spätschicht (16:00 - 00:30)</option>
+                    <option value="ganztag">Ganztags / Split (10:00 - 22:30)</option>
                   </select>
                 </div>
 
@@ -400,7 +400,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                     className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                   >
                     {SEED_DEPARTMENTS.map(d => (
-                      <option className="text-ink bg-white" key={d.id} value={d.id}>
+                      <option key={d.id} value={d.id}>
                         {d.name}
                       </option>
                     ))}

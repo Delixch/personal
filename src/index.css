@@ -7,6 +7,7 @@
 ================================================================ */
 
 :root {
+  color-scheme: dark;
   /* ── Yazı Tipleri ──────────────────────────────────── */
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -333,9 +334,43 @@ svg.lucide,
   border: none !important;
 }
 
+.saldo-badge-danger {
+  background-color: #DC2626 !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.35) !important;
+}
+
+.saldo-badge-success {
+  background-color: #059669 !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.35) !important;
+}
+
 /* ================================================================
-   FORM INPUTS
+   FORM INPUTS & SELECT DROPDOWNS
 ================================================================ */
+select,
+option,
+optgroup {
+  color-scheme: dark !important;
+  background-color: var(--surface-inner) !important;
+  color: var(--ink) !important;
+}
+
+option {
+  background-color: var(--surface-inner) !important;
+  color: var(--ink) !important;
+}
+
+option:checked,
+option:hover,
+option:focus {
+  background-color: var(--surface) !important;
+  color: var(--brand) !important;
+}
+
 input:focus,
 textarea:focus,
 select:focus {
@@ -471,9 +506,23 @@ h6.text-ink,
 }
 
 .modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   animation: backdropFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .modal-container {
+  background-color: var(--surface) !important;
+  border-color: var(--line) !important;
+  color: var(--ink) !important;
   animation: modalPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-container input:not([type="checkbox"]):not([type="radio"]),
+.modal-container select,
+.modal-container textarea {
+  background-color: var(--surface-inner) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
 }

@@ -141,7 +141,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
               className="px-3 py-2.5 rounded-2xl card-inner border border-line text-ink text-xs font-bold focus:outline-none focus:border-brand"
             >
               {months.map(m => (
-                <option className="text-ink bg-white" key={m.value} value={m.value}>{m.label}</option>
+                <option key={m.value} value={m.value}>{m.label}</option>
               ))}
             </select>
 
@@ -157,7 +157,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 rounded-3xl bg-white border border-line">
+        <div className="p-5 rounded-3xl card-inner border border-line">
           <div className="flex items-center justify-between text-ink-soft mb-2">
             <span className="text-xs font-semibold">{lang === 'tr' ? 'Toplam Brüt Bordro' : 'Gesamte Bruttolohnsumme'}</span>
             <Coins className="w-4 h-4 text-indigo-600" />
@@ -170,7 +170,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
           </p>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white border border-line">
+        <div className="p-5 rounded-3xl card-inner border border-line">
           <div className="flex items-center justify-between text-ink-soft mb-2">
             <span className="text-xs font-semibold">{lang === 'tr' ? 'Toplam Çalışılan Saat' : 'Geleistete Arbeitsstunden'}</span>
             <Clock className="w-4 h-4 text-ink" />
@@ -183,7 +183,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
           </p>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white border border-line">
+        <div className="p-5 rounded-3xl card-inner border border-line">
           <div className="flex items-center justify-between text-ink-soft mb-2">
             <span className="text-xs font-semibold">{lang === 'tr' ? 'Sozialabzüge (~11.5%)' : 'Sozialabzüge (AHV/ALV/BVG)'}</span>
             <Percent className="w-4 h-4 text-brand" />
@@ -197,7 +197,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
         </div>
       </div>
 
-      <div className="p-6 rounded-3xl bg-white border border-line overflow-hidden">
+      <div className="p-6 rounded-3xl card-inner border border-line overflow-hidden">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-base font-bold text-ink flex items-center gap-2">
             <Users className="w-4 h-4 text-indigo-600" />
@@ -223,7 +223,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
                 <th className="pb-3 text-right">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-line">
               {employees.map((emp) => {
                 const stats = getEmployeeStats(emp);
                 const isPositiveOvertime = stats.overtime >= 0;
@@ -252,18 +252,23 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
                       CHF {emp.hourlyRate.toFixed(2)}
                     </td>
 
-                    <td className="py-3.5 font-mono text-ink-soft">
+                    <td className="py-3.5 font-mono font-bold text-emerald-400">
                       {stats.targetHours} h
                     </td>
 
-                    <td className="py-3.5 font-mono font-bold text-indigo-700">
+                    <td className="py-3.5 font-mono font-bold text-ink">
                       {stats.workedHours} h
                     </td>
 
                     <td className="py-3.5 font-mono font-bold">
-                      <span className={`px-2 py-0.5 rounded-md text-[11px] ${isPositiveOvertime ? 'bg-subtle text-ink' : 'btn-brand text-brand'
-                        }`}>
-                        {isPositiveOvertime ? `+${stats.overtime}` : stats.overtime} h
+                      <span
+                        className={`inline-flex items-center justify-center px-3.5 py-1 rounded-xl text-xs font-black tracking-wide min-w-[68px] ${
+                          stats.overtime === 0
+                            ? 'saldo-badge-success'
+                            : 'saldo-badge-danger'
+                        }`}
+                      >
+                        {stats.overtime > 0 ? `+${stats.overtime}` : stats.overtime} h
                       </span>
                     </td>
 

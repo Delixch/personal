@@ -12,7 +12,8 @@ import {
   X,
   BadgeCheck,
   Building,
-  UserPlus
+  UserPlus,
+  Sparkles
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { StorageService } from '../../services/storage';
@@ -315,7 +316,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                   >
                     {SEED_DEPARTMENTS.map(d => (
-                      <option className="text-ink bg-white" key={d.id} value={d.id}>
+                      <option key={d.id} value={d.id}>
                         {d.name}
                       </option>
                     ))}

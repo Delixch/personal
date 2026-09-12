@@ -361,8 +361,16 @@ export const StorageService = {
     setStoredItem(STORAGE_KEYS.NOTIFICATIONS, list);
   },
 
-  getCurrentUser: () => getStoredItem(STORAGE_KEYS.CURRENT_USER, SEED_EMPLOYEES[0]),
+  getCurrentUser: () => {
+    const user = getStoredItem(STORAGE_KEYS.CURRENT_USER, null);
+    if (!user || user === 'guest') return null;
+    return user;
+  },
   setCurrentUser: (user) => setStoredItem(STORAGE_KEYS.CURRENT_USER, user),
+  logout: () => {
+    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify('guest'));
+    window.dispatchEvent(new Event('ado_db_update'));
+  },
   login: (email, password) => {
     const employees = StorageService.getEmployees();
     const found = employees.find(e => e.email.toLowerCase() === email.toLowerCase() && e.password === password);
@@ -396,10 +404,6 @@ export const StorageService = {
       result = StorageService.addBreakTime(found.id, 30);
     }
     return { success: true, user: found, result };
-  },
-  logout: () => {
-    localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
-    window.dispatchEvent(new Event('ado_db_update'));
   },
 
   getHaccpChecklists: () => getStoredItem(STORAGE_KEYS.HACCP_CHECKLISTS, SEED_HACCP_CHECKLISTS),

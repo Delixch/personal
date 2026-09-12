@@ -97,6 +97,12 @@ export function App() {
     navigateToTab('dashboard');
   };
 
+  const handleLogout = () => {
+    StorageService.logout();
+    setCurrentUser(null);
+    setIsLoginModalOpen(true);
+  };
+
   const getActiveTabTitle = () => {
     switch (activeTab) {
       case 'suppliers':
@@ -180,12 +186,61 @@ export function App() {
 
   const isModuleOpen = activeTab !== 'dashboard';
 
+  if (!currentUser) {
+    return (
+      <div className="min-h-screen bg-ground text-ink flex flex-col font-sans">
+        <Navbar
+          currentUser={null}
+          onUserChange={handleUserChange}
+          onLogout={handleLogout}
+          lang={lang}
+          onLangChange={handleLangChange}
+          notifications={[]}
+          onNotificationsRead={() => {}}
+          onOpenLoginModal={() => setIsLoginModalOpen(true)}
+          onGoHome={() => navigateToTab('dashboard')}
+        />
+        <main className="flex-1 flex items-center justify-center p-4">
+          <div className="max-w-md w-full p-8 rounded-3xl bg-surface border border-line text-center card-inner space-y-4 shadow-2xl">
+            <div className="w-16 h-16 mx-auto rounded-2xl btn-brand flex items-center justify-center text-white font-black text-2xl shadow-lg">
+              ADO
+            </div>
+            <h1 className="text-2xl font-black text-ink">
+              {lang === 'tr' ? 'Oturum Kapatıldı' : 'Abgemeldet'}
+            </h1>
+            <p className="text-xs text-subhead max-w-sm mx-auto">
+              {lang === 'tr'
+                ? 'Sisteme erişmek için lütfen 4 haneli PIN kodunuz veya e-postanız ile giriş yapınız.'
+                : 'Bitte melden Sie sich mit Ihrem 4-stelligen PIN-Code oder E-Mail an.'}
+            </p>
+            <button
+              onClick={() => setIsLoginModalOpen(true)}
+              className="w-full py-3 rounded-2xl btn-brand text-white font-bold text-sm transition shadow-md"
+            >
+              {lang === 'tr' ? '🔑 Giriş Yap / PIN Tuşla' : '🔑 Jetzt Anmelden / PIN'}
+            </button>
+          </div>
+        </main>
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+          onLoginSuccess={(user) => {
+            handleUserChange(user);
+            setIsLoginModalOpen(false);
+          }}
+          lang={lang}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-ground text-ink flex flex-col font-sans">
 
       <Navbar
         currentUser={currentUser}
         onUserChange={handleUserChange}
+        onLogout={handleLogout}
         lang={lang}
         onLangChange={handleLangChange}
         notifications={notifications}

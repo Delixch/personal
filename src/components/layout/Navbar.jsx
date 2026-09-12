@@ -73,7 +73,7 @@ export const Navbar = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-lg tracking-tight text-ink font-sans">
-                TEST
+                ADO <span className="text-brand">MANAGEMENT</span>
               </span>
             </div>
             <p className="text-[11px] text-ink-muted hidden sm:block">

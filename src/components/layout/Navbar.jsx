@@ -208,7 +208,7 @@ export const Navbar = ({
                     <>
                       <div className="px-3 py-2 border-b border-line-soft mb-2">
                         <p className="text-[11px] font-bold text-ink-muted uppercase tracking-wider">
-                          {lang === 'tr' ? 'Hizli Rol Degistirici' : 'Schnellansicht Wechseln'}
+                          {lang === 'tr' ? 'Hızlı Rol Değiştirici' : 'Schnellansicht Wechseln'}
                         </p>
                       </div>
                       <div className="space-y-1 max-h-64 overflow-y-auto mb-2">
@@ -218,11 +218,11 @@ export const Navbar = ({
                             <button
                               key={emp.id}
                               onClick={() => handleSelectUser(emp)}
-                              className={+""+w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-left text-xs transition {
+                              className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-left text-xs transition ${
                                 isSelected
                                   ? 'bg-brand-light text-brand-hover font-bold border border-brand-border'
                                   : ' text-ink'
-                              }+""+}
+                              }`}
                             >
                               <img
                                 src={emp.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}

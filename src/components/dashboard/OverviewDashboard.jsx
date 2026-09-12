@@ -446,8 +446,8 @@ export const OverviewDashboard = ({
       {isAdmin ? (
         <div className="space-y-4">
           
-          <div className="flex flex-wrap items-center justify-between gap-3 bg-surface p-2.5 rounded-2xl border border-line">
-            <div className="flex items-start gap-2">
+          <div className="bg-surface p-2 sm:p-2.5 rounded-2xl border border-line">
+            <div className="flex items-start sm:items-center gap-2">
               
               <button
                 onClick={() => setActiveCategoryFilter('all')}
@@ -461,43 +461,42 @@ export const OverviewDashboard = ({
                 <Home className="w-4 h-4" />
               </button>
 
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
+                <button
+                  onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'hr' ? 'all' : 'hr')}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
+                    activeCategoryFilter === 'hr'
+                      ? 'btn-brand font-black'
+                      : 'card-inner text-ink border border-line'
+                  }`}
+                >
+                  <Users2 className="w-3.5 h-3.5" />
+                  <span className="text-left">{lang === 'tr' ? 'Personel & Vardiya (5)' : 'Personal & Schichten (5)'}</span>
+                </button>
 
-              <button
-                onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'hr' ? 'all' : 'hr')}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
-                  activeCategoryFilter === 'hr'
-                    ? 'btn-brand font-black'
-                    : 'card-inner text-ink border border-line'
-                }`}
-              >
-                <Users2 className="w-3.5 h-3.5" />
-                <span>{lang === 'tr' ? 'Personel & Vardiya (5)' : 'Personal & Schichten (5)'}</span>
-              </button>
+                <button
+                  onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'finance' ? 'all' : 'finance')}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
+                    activeCategoryFilter === 'finance'
+                      ? 'btn-brand font-black'
+                      : 'card-inner text-ink border border-line'
+                  }`}
+                >
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <span className="text-left">{lang === 'tr' ? 'Alışveriş, Fatura & Kasa (3)' : 'Einkauf & Finanzen (3)'}</span>
+                </button>
 
-              <button
-                onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'finance' ? 'all' : 'finance')}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
-                  activeCategoryFilter === 'finance'
-                    ? 'btn-brand font-black'
-                    : 'card-inner text-ink border border-line'
-                }`}
-              >
-                <ShoppingBag className="w-3.5 h-3.5" />
-                <span>{lang === 'tr' ? 'Alışveriş, Fatura & Kasa (3)' : 'Einkauf & Finanzen (3)'}</span>
-              </button>
-
-              <button
-                onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'operations' ? 'all' : 'operations')}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
-                  activeCategoryFilter === 'operations'
-                    ? 'btn-brand font-black'
-                    : 'card-inner text-ink border border-line'
-                }`}
-              >
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>{lang === 'tr' ? 'Operasyon, Hijyen & Genel (3)' : 'Betrieb & Hygiene (3)'}</span>
-              </button>
+                <button
+                  onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'operations' ? 'all' : 'operations')}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
+                    activeCategoryFilter === 'operations'
+                      ? 'btn-brand font-black'
+                      : 'card-inner text-ink border border-line'
+                  }`}
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span className="text-left">{lang === 'tr' ? 'Operasyon, Hijyen & Genel (3)' : 'Betrieb & Hygiene (3)'}</span>
+                </button>
               </div>
             </div>
           </div>

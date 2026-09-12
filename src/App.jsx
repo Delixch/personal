@@ -287,8 +287,9 @@ export function App() {
               </div>
             </div>
 
-            <div className="p-2.5 rounded-2xl bg-surface border border-line flex items-center justify-between gap-2 overflow-x-auto">
-              <div className="flex flex-wrap items-center gap-2">
+            <div className="bg-surface p-2 md:p-2.5 rounded-2xl border border-line">
+              <div className="flex items-start sm:items-center gap-2">
+                
                 <button
                   onClick={() => handleCategorySelect('all')}
                   title={lang === 'tr' ? 'Tüm Bölümleri Göster' : 'Alle Bereiche anzeigen'}
@@ -301,41 +302,43 @@ export function App() {
                   <Home className="w-4 h-4" />
                 </button>
 
-                <button
-                  onClick={() => handleCategorySelect(activeCategoryFilter === 'hr' ? 'all' : 'hr')}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
-                    activeCategoryFilter === 'hr'
-                      ? 'btn-brand font-black'
-                      : 'card-inner text-ink border border-line'
-                  }`}
-                >
-                  <Users2 className="w-3.5 h-3.5" />
-                  <span>{lang === 'tr' ? 'Personal & Vardiya (5)' : 'Personal & Schichten (5)'}</span>
-                </button>
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
+                  <button
+                    onClick={() => handleCategorySelect(activeCategoryFilter === 'hr' ? 'all' : 'hr')}
+                    className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
+                      activeCategoryFilter === 'hr'
+                        ? 'btn-brand font-black'
+                        : 'card-inner text-ink border border-line'
+                    }`}
+                  >
+                    <Users2 className="w-3.5 h-3.5" />
+                    <span className="text-left">{lang === 'tr' ? 'Personal & Vardiya (5)' : 'Personal & Schichten (5)'}</span>
+                  </button>
 
-                <button
-                  onClick={() => handleCategorySelect(activeCategoryFilter === 'finance' ? 'all' : 'finance')}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
-                    activeCategoryFilter === 'finance'
-                      ? 'btn-brand font-black'
-                      : 'card-inner text-ink border border-line'
-                  }`}
-                >
-                  <ShoppingBag className="w-3.5 h-3.5" />
-                  <span>{lang === 'tr' ? 'Alışveriş, Fatura & Kasa (3)' : 'Einkauf & Finanzen (3)'}</span>
-                </button>
+                  <button
+                    onClick={() => handleCategorySelect(activeCategoryFilter === 'finance' ? 'all' : 'finance')}
+                    className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
+                      activeCategoryFilter === 'finance'
+                        ? 'btn-brand font-black'
+                        : 'card-inner text-ink border border-line'
+                    }`}
+                  >
+                    <ShoppingBag className="w-3.5 h-3.5" />
+                    <span className="text-left">{lang === 'tr' ? 'Alışveriş, Fatura & Kasa (3)' : 'Einkauf & Finanzen (3)'}</span>
+                  </button>
 
-                <button
-                  onClick={() => handleCategorySelect(activeCategoryFilter === 'operations' ? 'all' : 'operations')}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
-                    activeCategoryFilter === 'operations'
-                      ? 'btn-brand font-black'
-                      : 'card-inner text-ink border border-line'
-                  }`}
-                >
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>{lang === 'tr' ? 'Operasyon, Hijyen & Genel (3)' : 'Betrieb & Hygiene (3)'}</span>
-                </button>
+                  <button
+                    onClick={() => handleCategorySelect(activeCategoryFilter === 'operations' ? 'all' : 'operations')}
+                    className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
+                      activeCategoryFilter === 'operations'
+                        ? 'btn-brand font-black'
+                        : 'card-inner text-ink border border-line'
+                    }`}
+                  >
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span className="text-left">{lang === 'tr' ? 'Operasyon, Hijyen & Genel (3)' : 'Betrieb & Hygiene (3)'}</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

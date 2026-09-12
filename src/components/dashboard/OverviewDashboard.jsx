@@ -447,7 +447,7 @@ export const OverviewDashboard = ({
         <div className="space-y-4">
           
           <div className="flex flex-wrap items-center justify-between gap-3 bg-surface p-2.5 rounded-2xl border border-line">
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-start gap-2">
               
               <button
                 onClick={() => setActiveCategoryFilter('all')}
@@ -460,6 +460,8 @@ export const OverviewDashboard = ({
               >
                 <Home className="w-4 h-4" />
               </button>
+
+              <div className="flex flex-wrap items-center gap-2">
 
               <button
                 onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'hr' ? 'all' : 'hr')}
@@ -496,6 +498,7 @@ export const OverviewDashboard = ({
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>{lang === 'tr' ? 'Operasyon, Hijyen & Genel (3)' : 'Betrieb & Hygiene (3)'}</span>
               </button>
+              </div>
             </div>
           </div>
 

@@ -204,6 +204,45 @@ export const Navbar = ({
 
               {showUserDropdown && (
                 <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-surface border border-line p-3 z-50 card-inner shadow-2xl">
+                                    {currentUser?.role === 'admin' && (
+                    <>
+                      <div className="px-3 py-2 border-b border-line-soft mb-2">
+                        <p className="text-[11px] font-bold text-ink-muted uppercase tracking-wider">
+                          {lang === 'tr' ? 'Hizli Rol Degistirici' : 'Schnellansicht Wechseln'}
+                        </p>
+                      </div>
+                      <div className="space-y-1 max-h-64 overflow-y-auto mb-2">
+                        {employees.map((emp) => {
+                          const isSelected = emp.id === currentUser?.id;
+                          return (
+                            <button
+                              key={emp.id}
+                              onClick={() => handleSelectUser(emp)}
+                              className={+""+w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-left text-xs transition {
+                                isSelected
+                                  ? 'bg-brand-light text-brand-hover font-bold border border-brand-border'
+                                  : ' text-ink'
+                              }+""+}
+                            >
+                              <img
+                                src={emp.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}
+                                alt={emp.name}
+                                className="w-6 h-6 rounded-md object-cover"
+                              />
+                              <div className="flex-1 truncate">
+                                <p className="truncate font-semibold text-ink">{emp.name}</p>
+                                <p className="text-[10px] text-subhead truncate">{emp.jobTitle}</p>
+                              </div>
+                              {emp.role === 'admin' && (
+                                <ShieldCheck className="w-3.5 h-3.5 text-brand icon-brand" />
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <div className="border-t border-line-soft mt-2 pt-2"></div>
+                    </>
+                  )}
                   <div className="space-y-1.5">
                     <button
                       onClick={() => {

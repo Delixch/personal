@@ -145,6 +145,12 @@ export const StorageService = {
     return list;
   },
 
+  deleteSupplier: (supplierId) => {
+    const list = StorageService.getSuppliers().filter(s => s.id !== supplierId);
+    setStoredItem(STORAGE_KEYS.SUPPLIERS, list);
+    return list;
+  },
+
   getOrders: () => getStoredItem(STORAGE_KEYS.ORDERS, []),
   addOrder: (order) => {
     const list = StorageService.getOrders();

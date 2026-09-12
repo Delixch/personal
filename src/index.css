@@ -30,8 +30,8 @@
   /* Dış Kartlar & Genel Yüzey (#FFFFFF) */
   --surface-inner: #281E1D;
   /* İÇ KARTLAR ÖZEL YÜZEY RENK TANIMI (#EBE4D1) */
-  --subtle: #FAF6EE;
-  /* Kart İçi Dolgular (#FAF6EE Açık Krem Dolgu) */
+  --subtle: #180E0E;
+  /* Kart İçi Dolgular (#180E0E) */
 
   /* ── Kenarlık Renkleri ────────────────────────────────────────── */
   --line: #E2D7C3;
@@ -328,9 +328,9 @@ svg.lucide,
 }
 
 .badge-brand {
-  background: var(--brand-light) !important;
+  background: transparent !important;
   color: var(--brand) !important;
-  border: 1px solid var(--brand-border) !important;
+  border: none !important;
 }
 
 /* ================================================================

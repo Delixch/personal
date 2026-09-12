@@ -165,8 +165,8 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                 >
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className={`badge text-[10px] py-0.5 px-2 ${
-                        isOk ? 'badge-brand' : 'badge-neutral'
+                      <span className={`text-[11px] font-extrabold whitespace-nowrap ${
+                        isOk ? 'text-emerald-400' : 'text-rose-400'
                       }`}>
                         {isOk ? '● IN DER NORM' : '⚠️ GRENZWERT!'}
                       </span>
@@ -326,10 +326,10 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                 <div
                   key={item.id}
                   onClick={() => handleToggleTask(item.id)}
-                  className={`p-4 rounded-2xl border transition cursor-pointer flex items-center justify-between gap-3 ${
+                  className={`p-4 rounded-2xl border transition cursor-pointer flex items-center justify-between gap-3 card-inner ${
                     item.done
-                      ? 'bg-subtle border-brand-border '
-                      : 'bg-surface border-line  '
+                      ? 'bg-subtle opacity-85'
+                      : ''
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -340,7 +340,7 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                     </div>
                     <div>
                       <p className={`text-xs font-bold ${
-                        item.done ? 'line-through text-subhead' : 'text-ink'
+                        item.done ? 'line-through text-ink-muted' : 'text-ink'
                       }`}>
                         {lang === 'tr' ? item.titleTr || item.title : item.title}
                       </p>
@@ -352,10 +352,10 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                     </div>
                   </div>
 
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                    item.done ? 'badge-brand' : 'badge-neutral'
+                  <span className={`text-[11px] font-extrabold whitespace-nowrap ${
+                    item.done ? 'text-emerald-400' : 'text-subhead'
                   }`}>
-                    {item.done ? (lang === 'tr' ? 'Yapıldı' : 'Erledigt') : (lang === 'tr' ? 'Bekliyor' : 'Offen')}
+                    {item.done ? (lang === 'tr' ? '● Yapıldı' : '● Erledigt') : (lang === 'tr' ? '○ Bekliyor' : '○ Offen')}
                   </span>
                 </div>
               );

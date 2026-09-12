@@ -273,12 +273,28 @@ export const SupplierManagement = ({ lang, currentUser }) => {
             ) : (
               <>
                 
-                <div className="flex items-center justify-between gap-2 p-3.5 rounded-2xl card-inner border border-line text-xs">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-ink shrink-0" />
-                    <span>
-                      <strong>{lang === 'tr' ? 'Teslimat Günleri:' : 'Liefertage:'}</strong> {(selectedSupplierForOrder.deliveryDays || []).join(', ')}
-                    </span>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 rounded-2xl card-inner border border-line text-xs">
+                  <div className="flex flex-col gap-1.5 w-full">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-ink shrink-0" />
+                      <span>
+                        <strong>{lang === 'tr' ? 'Teslimat Günleri:' : 'Liefertage:'}</strong>{' '}
+                        {selectedSupplierForOrder.deliveryDays?.length 
+                          ? selectedSupplierForOrder.deliveryDays.join(', ') 
+                          : <span className="text-ink-muted italic">{lang === 'tr' ? 'Belirtilmedi' : 'Nicht angegeben'}</span>}
+                      </span>
+                    </div>
+                    {(selectedSupplierForOrder.contactPerson || selectedSupplierForOrder.phone || selectedSupplierForOrder.email) && (
+                      <div className="flex items-center gap-2 pt-1.5 border-t border-line-soft/50 text-ink-soft">
+                        <span className="truncate">
+                          {selectedSupplierForOrder.contactPerson && `${selectedSupplierForOrder.contactPerson}`}
+                          {selectedSupplierForOrder.contactPerson && selectedSupplierForOrder.phone && ' • '}
+                          {selectedSupplierForOrder.phone}
+                          {(selectedSupplierForOrder.contactPerson || selectedSupplierForOrder.phone) && selectedSupplierForOrder.email && ' • '}
+                          {selectedSupplierForOrder.email}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -288,16 +304,17 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                   </h3>
 
                   <div className="space-y-2">
-                    {selectedSupplierForOrder.catalog && selectedSupplierForOrder.catalog.map((item) => {
-                      const qty = orderQuantities[item.id] || 0;
-                      return (
-                        <div
-                          key={item.id}
-                          className={`p-3.5 rounded-2xl border transition flex items-center justify-between gap-3 card-inner ${
-                            qty > 0 ? 'border-brand' : ''
-                          }`}
-                        >
-                          <div className="flex-1 min-w-0">
+                    {selectedSupplierForOrder.catalog && selectedSupplierForOrder.catalog.length > 0 ? (
+                      selectedSupplierForOrder.catalog.map((item) => {
+                        const qty = orderQuantities[item.id] || 0;
+                        return (
+                          <div
+                            key={item.id}
+                            className={`p-3.5 rounded-2xl border transition flex items-center justify-between gap-3 card-inner ${
+                              qty > 0 ? 'border-brand' : ''
+                            }`}
+                          >
+                            <div className="flex-1 min-w-0">
                             <p className="text-xs font-bold text-ink truncate">{item.name}</p>
                             <p className="text-[11px] text-subhead mt-0.5">
                               CHF {item.price.toFixed(2)} / {item.unit}
@@ -329,7 +346,14 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                           </div>
                         </div>
                       );
-                    })}
+                    })
+                  ) : (
+                    <div className="p-4 rounded-2xl border border-line-soft bg-surface text-center text-ink-soft text-xs card-inner">
+                      {lang === 'tr' 
+                        ? 'Bu tedarikçi için ürün kataloğu henüz eklenmedi. Sadece serbest metin olarak sipariş notu bırakabilirsiniz.' 
+                        : 'Für diesen Lieferanten ist noch kein Katalog hinterlegt. Sie können stattdessen die Bestellnotiz verwenden.'}
+                    </div>
+                  )}
                   </div>
                 </div>
 

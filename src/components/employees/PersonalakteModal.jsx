@@ -197,8 +197,8 @@ export const PersonalakteModal = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/20 backdrop-blur-sm modal-backdrop">
-      <div className="w-full max-w-5xl max-h-[94vh] rounded-3xl bg-surface border border-line flex flex-col overflow-hidden text-ink shadow-2xl modal-container">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-transparent">
+      <div className="w-full max-w-4xl max-h-[90vh] rounded-3xl bg-surface border border-line flex flex-col overflow-hidden text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] modal-container pointer-events-auto">
         
         {/* Top Header Card */}
         <div className="p-5 sm:p-6 bg-surface text-ink flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-line">
@@ -296,7 +296,7 @@ export const PersonalakteModal = ({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 p-3 sm:p-4 bg-ground border-b border-line text-xs">
           
           {/* KPI 1: Worked Hours & Overtime */}
-          <div className="p-2.5 sm:p-3 rounded-2xl card-inner border border-line flex items-center gap-3">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-surface border border-line flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
               <Clock className="w-4 h-4" />
             </div>
@@ -314,7 +314,7 @@ export const PersonalakteModal = ({
           </div>
 
           {/* KPI 2: Vacation Balance */}
-          <div className="p-2.5 sm:p-3 rounded-2xl card-inner border border-line flex items-center gap-3">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-surface border border-line flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
               <Palmtree className="w-4 h-4" />
             </div>
@@ -332,7 +332,7 @@ export const PersonalakteModal = ({
           </div>
 
           {/* KPI 3: Monthly Net Salary */}
-          <div className="p-2.5 sm:p-3 rounded-2xl card-inner border border-line flex items-center gap-3">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-surface border border-line flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
               <DollarSign className="w-4 h-4" />
             </div>
@@ -350,7 +350,7 @@ export const PersonalakteModal = ({
           </div>
 
           {/* KPI 4: Annual Indicator & Social Security */}
-          <div className="p-2.5 sm:p-3 rounded-2xl card-inner border border-line flex items-center gap-3">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-surface border border-line flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
               <TrendingUp className="w-4 h-4" />
             </div>

@@ -199,7 +199,7 @@ export function App() {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-ground text-ink flex flex-col font-sans">
+      <div className="min-h-screen text-ink flex flex-col font-sans bg-transparent">
         <Navbar
           currentUser={null}
           onUserChange={handleUserChange}
@@ -246,7 +246,7 @@ export function App() {
   }
 
   return (
-    <div className="min-h-screen bg-ground text-ink flex flex-col font-sans">
+    <div className="min-h-screen text-ink flex flex-col font-sans bg-transparent">
 
       <Navbar
         currentUser={currentUser}

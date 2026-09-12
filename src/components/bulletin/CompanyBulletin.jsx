@@ -193,8 +193,8 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
       </div>
 
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="w-full max-w-lg bg-surface rounded-3xl p-6 border border-line card-inner">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
+          <div className="w-full max-w-lg bg-surface rounded-3xl p-6 border border-line modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
             <h3 className="font-bold text-base text-ink mb-1">
               {lang === 'tr' ? 'Yeni Duyuru Yayınla' : 'Neue Team-Mitteilung'}
             </h3>

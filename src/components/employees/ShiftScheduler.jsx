@@ -53,6 +53,33 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
   const dayNamesDe = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
   const dayNamesTr = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
 
+  const getWeekLabel = () => {
+    const mondayDate = new Date(weekDays[0] + 'T12:00:00');
+    const target = new Date(Date.UTC(mondayDate.getFullYear(), mondayDate.getMonth(), mondayDate.getDate()));
+    const dayNr = (target.getUTCDay() + 6) % 7;
+    target.setUTCDate(target.getUTCDate() - dayNr + 3);
+    const firstThursday = target.valueOf();
+    target.setUTCMonth(0, 1);
+    if (target.getUTCDay() !== 4) {
+      target.setUTCMonth(0, 1 + ((4 - target.getUTCDay()) + 7) % 7);
+    }
+    const kw = 1 + Math.ceil((firstThursday - target) / 604800000);
+
+    if (weekOffset === 0) {
+      return lang === 'tr' ? `Bu Hafta (Hafta ${kw})` : `Diese Woche (KW ${kw})`;
+    }
+    if (weekOffset === 1) {
+      return lang === 'tr' ? `Gelecek Hafta (Hafta ${kw})` : `Nächste Woche (KW ${kw})`;
+    }
+    if (weekOffset === -1) {
+      return lang === 'tr' ? `Geçen Hafta (Hafta ${kw})` : `Letzte Woche (KW ${kw})`;
+    }
+    if (weekOffset > 1) {
+      return lang === 'tr' ? `+${weekOffset} Hafta (Hafta ${kw})` : `+${weekOffset} Wochen (KW ${kw})`;
+    }
+    return lang === 'tr' ? `${weekOffset} Hafta (Hafta ${kw})` : `${weekOffset} Wochen (KW ${kw})`;
+  };
+
   const [formData, setFormData] = useState({
     employeeId: employees[0]?.id || '',
     department: 'kuche',
@@ -135,20 +162,25 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
             <button
               onClick={() => setWeekOffset(prev => prev - 1)}
               className="p-2 rounded-xl border border-line bg-surface text-ink transition card-inner"
-              title="Vorherige Woche"
+              title={lang === 'tr' ? 'Önceki Hafta' : 'Vorherige Woche'}
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => setWeekOffset(0)}
-              className="px-3.5 py-2 rounded-xl border border-line bg-surface text-xs font-bold text-ink transition card-inner"
+              className={`px-3.5 py-2 rounded-xl border border-line text-xs font-bold transition card-inner ${
+                weekOffset === 0
+                  ? 'bg-surface text-ink'
+                  : 'btn-brand text-white'
+              }`}
+              title={lang === 'tr' ? 'Mevcut haftaya dön' : 'Zur aktuellen Woche zurückkehren'}
             >
-              {lang === 'tr' ? 'Bu Hafta' : 'Diese Woche'}
+              {getWeekLabel()}
             </button>
             <button
               onClick={() => setWeekOffset(prev => prev + 1)}
               className="p-2 rounded-xl border border-line bg-surface text-ink transition card-inner"
-              title="Nächste Woche"
+              title={lang === 'tr' ? 'Gelecek Hafta' : 'Nächste Woche'}
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -309,8 +341,8 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
       </div>
 
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line text-ink card-inner">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
+          <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line text-ink modal-container shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
             <div className="flex items-center justify-between border-b border-line-soft pb-3 mb-4">
               <h2 className="text-base font-bold text-ink flex items-center gap-2">
                 <CalendarDays className="w-4 h-4 text-brand icon-brand" />
@@ -416,8 +448,8 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
       )}
 
       {showReplaceModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="w-full max-w-sm rounded-3xl bg-surface p-5 relative border border-line text-ink card-inner">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
+          <div className="w-full max-w-sm rounded-3xl bg-surface p-5 relative border border-line text-ink modal-container shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
             <h3 className="text-sm font-bold text-ink mb-2 flex items-center gap-2">
               <UserCheck className="w-4 h-4 text-brand icon-brand" />
               <span>{t.assignReplacement}</span>

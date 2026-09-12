@@ -197,8 +197,8 @@ export const PersonalakteModal = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-transparent">
-      <div className="w-full max-w-4xl max-h-[90vh] rounded-3xl bg-surface border border-line flex flex-col overflow-hidden text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] modal-container pointer-events-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
+      <div className="w-full max-w-4xl max-h-[90vh] rounded-3xl bg-surface border border-line flex flex-col overflow-hidden text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] modal-container pointer-events-auto">
         
         {/* Top Header Card */}
         <div className="p-5 sm:p-6 bg-surface text-ink flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-line">
@@ -1116,8 +1116,8 @@ export const PersonalakteModal = ({
 
       {/* DOCUMENT PREVIEW MODAL */}
       {previewDoc && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-dark">
-          <div className="w-full max-w-2xl bg-surface rounded-3xl p-6 border border-line relative max-h-[85vh] overflow-y-auto">
+        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
+          <div className="w-full max-w-2xl bg-surface rounded-3xl p-6 border border-line relative max-h-[85vh] overflow-y-auto modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
             <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
               <div className="flex items-center gap-2">
                 <FileText className="w-5 h-5 text-ink" />

@@ -288,8 +288,8 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
       )}
 
       {showSickModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 relative border border-line">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
+          <div className="w-full max-w-lg rounded-3xl bg-surface p-6 relative border border-line modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
             <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
               <h2 className="text-base font-bold text-ink flex items-center gap-2">
                 <HeartPulse className="w-5 h-5 text-brand" />
@@ -437,8 +437,8 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
       )}
 
       {showLeaveModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-3xl bg-white p-6 relative border border-line">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
+          <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
             <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
               <h2 className="text-base font-bold text-ink flex items-center gap-2">
                 <Palmtree className="w-5 h-5 text-ink" />

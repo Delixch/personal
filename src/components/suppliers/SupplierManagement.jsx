@@ -230,8 +230,8 @@ export const SupplierManagement = ({ lang, currentUser }) => {
       </div>
 
       {selectedSupplierForOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="glass-modal rounded-3xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto space-y-5 relative animate-in fade-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
+          <div className="w-full max-w-2xl max-h-[90vh] rounded-3xl bg-surface border border-line p-6 overflow-y-auto space-y-5 relative modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
 
             <div className="flex items-start justify-between border-b border-line pb-4">
               <div className="flex items-center gap-3">
@@ -293,8 +293,8 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                       return (
                         <div
                           key={item.id}
-                          className={`p-3.5 rounded-2xl border transition flex items-center justify-between gap-3 ${
-                            qty > 0 ? 'bg-surface border-brand' : 'bg-ground border-line'
+                          className={`p-3.5 rounded-2xl border transition flex items-center justify-between gap-3 card-inner ${
+                            qty > 0 ? 'border-brand' : ''
                           }`}
                         >
                           <div className="flex-1 min-w-0">

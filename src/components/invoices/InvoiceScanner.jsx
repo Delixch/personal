@@ -325,8 +325,8 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
       </div>
 
       {showScanModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="w-full max-w-3xl rounded-3xl bg-white p-6 relative border border-line max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
+          <div className="w-full max-w-3xl rounded-3xl bg-surface p-6 relative border border-line max-h-[90vh] overflow-y-auto modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
 
             <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
               <h2 className="text-base font-bold text-ink flex items-center gap-2">
@@ -351,7 +351,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                     key={idx}
                     type="button"
                     onClick={() => handleApplyPreset(preset)}
-                    className="p-2.5 rounded-xl bg-white border border-line text-left transition text-xs group"
+                    className="p-2.5 rounded-xl card-inner border border-line text-left transition text-xs group"
                   >
                     <p className="font-semibold text-ink group- truncate">
                       {preset.title}
@@ -392,7 +392,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                     />
                   ) : (
                     <>
-                      <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-ink mb-3 border border-line">
+                      <div className="w-12 h-12 rounded-2xl icon-box flex items-center justify-center mb-3">
                         <Upload className="w-6 h-6" />
                       </div>
                       <p className="text-xs font-semibold text-ink mb-1">
@@ -539,8 +539,8 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
       )}
 
       {selectedInvoice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-3xl bg-white p-6 relative border border-line">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
+          <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
             <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
               <div>
                 <span className="badge badge-purple text-[10px] mb-1">{selectedInvoice.category}</span>

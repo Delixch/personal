@@ -378,6 +378,12 @@ select:focus {
   color: var(--ink) !important;
 }
 
+.glass-modal {
+  background-color: var(--surface) !important;
+  border: 1px solid var(--line) !important;
+  color: var(--ink) !important;
+}
+
 .text-ink {
   color: var(--ink) !important;
 }

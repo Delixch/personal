@@ -225,20 +225,40 @@ CREATE TABLE IF NOT EXISTS urlaub_zeit_saldo (
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS lieferanten (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug TEXT UNIQUE,                                    -- 'sup-prodega' gibi sabit ID
   name TEXT NOT NULL,
-  kategorie TEXT NOT NULL DEFAULT 'Lebensmittel',     -- Bäckerei, Fleisch, Getränke, Verpackung
+  kategorie TEXT NOT NULL DEFAULT 'Lebensmittel',
   kontakt_person TEXT,
   telefon TEXT,
+  whatsapp TEXT,
   email TEXT,
   adresse TEXT,
   iban TEXT,
   kundennummer TEXT,
-  liefertage TEXT,                                   -- 'Mo, Di, Do, Fr'
-  bestellfrist TEXT,                                 -- 'Bis 16:00 Uhr'
+  liefertage TEXT[],                                   -- Array: ['Montag','Mittwoch','Freitag']
+  bestellfrist TEXT,
   min_bestellwert NUMERIC(10,2) DEFAULT 0.00,
+  rating NUMERIC(3,1) DEFAULT 4.5,
+  notizen TEXT,
   aktiv BOOLEAN NOT NULL DEFAULT TRUE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Ürün Kataloğu (her tedarikçiye ait kalemler)
+CREATE TABLE IF NOT EXISTS lieferanten_katalog (
+  id TEXT PRIMARY KEY,                                 -- 'prd-1', 'hie-1' vb.
+  lieferant_slug TEXT NOT NULL REFERENCES lieferanten(slug) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  preis NUMERIC(10,2) NOT NULL DEFAULT 0.00,
+  einheit TEXT NOT NULL DEFAULT 'Stück',
+  reihenfolge INT NOT NULL DEFAULT 0
+);
+
+-- Katalog için index
+CREATE INDEX IF NOT EXISTS idx_katalog_lieferant ON lieferanten_katalog(lieferant_slug);
+
+
+
 
 CREATE TABLE IF NOT EXISTS rechnungen (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -366,6 +386,7 @@ ALTER TABLE lohnabrechnungen DISABLE ROW LEVEL SECURITY;
 ALTER TABLE lohnabrechnung_positionen DISABLE ROW LEVEL SECURITY;
 ALTER TABLE urlaub_zeit_saldo DISABLE ROW LEVEL SECURITY;
 ALTER TABLE lieferanten DISABLE ROW LEVEL SECURITY;
+ALTER TABLE lieferanten_katalog DISABLE ROW LEVEL SECURITY;
 ALTER TABLE rechnungen DISABLE ROW LEVEL SECURITY;
 ALTER TABLE bestellungen DISABLE ROW LEVEL SECURITY;
 ALTER TABLE haccp_checklisten DISABLE ROW LEVEL SECURITY;

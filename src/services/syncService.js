@@ -273,40 +273,29 @@ export const SyncService = {
   // TEDARİKÇİLER (LIEFERANTEN)
   syncSuppliers: async () => {
     if (!SyncService.isLive()) return;
-    const { data, error } = await supabase.from('lieferanten').select('*');
+    const { data, error } = await supabase
+      .from('lieferanten')
+      .select('*, lieferanten_katalog(*)')
+      .eq('aktiv', true)
+      .order('created_at', { ascending: true });
     if (error) throw error;
     if (data && data.length > 0) {
-      // Local seed data'yı oku — catalog, deliveryDays, rating, address gibi zengin alanları koru
-      let localList = [];
-      try {
-        const raw = localStorage.getItem('ado_suppliers_v1');
-        localList = raw ? JSON.parse(raw) : [];
-      } catch (_) {}
-
-      const mapped = data.map(l => {
-        // İsim veya ID ile eşleşen local kaydı bul
-        const local = localList.find(s =>
-          s.id === String(l.id) ||
-          s.name?.toLowerCase().includes(l.name?.toLowerCase()?.split('/')[0]?.trim()) ||
-          l.name?.toLowerCase().includes(s.name?.toLowerCase()?.split('(')[0]?.trim())
-        ) || {};
-        return {
-          ...local,                          // local'deki catalog, deliveryDays, rating, address vb. korunur
-          id:            String(l.id) || local.id,
-          name:          l.name || local.name,
-          category:      l.kategorie || local.category || '',
-          contactPerson: l.kontakt_person || local.contactPerson || '',
-          phone:         l.telefon || local.phone || '',
-          email:         l.email || local.email || '',
-          address:       l.adresse || local.address || '',
-          notes:         l.bestellfrist ? `Bestellfrist: ${l.bestellfrist}` : (local.notes || ''),
-          // Bu alanlar local'den gelir, Supabase'de yoktur:
-          catalog:       local.catalog || [],
-          deliveryDays:  local.deliveryDays || [],
-          rating:        local.rating || 4.5,
-          whatsapp:      local.whatsapp || ''
-        };
-      });
+      const mapped = data.map(l => ({
+        id:            l.slug || String(l.id),
+        name:          l.name,
+        category:      l.kategorie || '',
+        contactPerson: l.kontakt_person || '',
+        phone:         l.telefon || '',
+        whatsapp:      l.whatsapp || '',
+        email:         l.email || '',
+        address:       l.adresse || '',
+        notes:         l.notizen || (l.bestellfrist ? `Bestellfrist: ${l.bestellfrist}` : ''),
+        rating:        Number(l.rating) || 4.5,
+        deliveryDays:  Array.isArray(l.liefertage) ? l.liefertage : (l.liefertage ? [l.liefertage] : []),
+        catalog:       (l.lieferanten_katalog || [])
+                         .sort((a, b) => a.reihenfolge - b.reihenfolge)
+                         .map(k => ({ id: k.id, name: k.name, price: Number(k.preis), unit: k.einheit }))
+      }));
       localStorage.setItem('ado_suppliers_v1', JSON.stringify(mapped));
     }
   },

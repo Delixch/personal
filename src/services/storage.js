@@ -259,6 +259,8 @@ export const StorageService = {
     list.unshift(newReport);
     setStoredItem(STORAGE_KEYS.SICK_REPORTS, list);
 
+    SyncService.pushSickLeave(newReport);
+
     const shifts = StorageService.getShifts();
     shifts.forEach(s => {
       if (s.employeeId === report.employeeId && s.date >= report.startDate && s.date <= report.endDate) {

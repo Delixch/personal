@@ -14,7 +14,8 @@ export const SyncService = {
         SyncService.syncInvoices(),
         SyncService.syncSuppliers(),
         SyncService.syncBulletins(),
-        SyncService.syncTemperatures()
+        SyncService.syncTemperatures(),
+        SyncService.syncSickLeaves()
       ]);
       window.dispatchEvent(new Event('ado_db_update'));
       return true;
@@ -356,6 +357,44 @@ export const SyncService = {
       }).eq('id', id);
     } catch (err) {
       console.warn('updateTemperatureInDb error:', err);
+    }
+  },
+
+  // HASTALIK BİLDİRİMLERİ (KRANKMELDUNGEN)
+  syncSickLeaves: async () => {
+    if (!SyncService.isLive()) return;
+    const { data, error } = await supabase.from('krankmeldungen').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    if (data && data.length > 0) {
+      const mapped = data.map(k => ({
+        id: k.id,
+        employeeId: k.ma_id,
+        startDate: k.start_datum,
+        endDate: k.end_datum,
+        reason: k.grund,
+        hasDoctorNote: k.arztzeugnis,
+        documentUrl: k.attest_datei_url,
+        status: k.status,
+        createdAt: k.created_at
+      }));
+      localStorage.setItem('ado_sick_reports_v1', JSON.stringify(mapped));
+    }
+  },
+
+  pushSickLeave: async (report) => {
+    if (!SyncService.isLive()) return;
+    try {
+      await supabase.from('krankmeldungen').insert({
+        ma_id: report.employeeId,
+        start_datum: report.startDate,
+        end_datum: report.endDate,
+        grund: report.reason || 'Krank',
+        arztzeugnis: report.hasDoctorNote === true,
+        attest_datei_url: report.documentUrl || null,
+        status: report.status || 'gemeldet'
+      });
+    } catch (err) {
+      console.warn('pushSickLeave error:', err);
     }
   }
 };

@@ -92,22 +92,43 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
     <div className="space-y-6">
 
       <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <h1 className="page-title text-ink">
-              {t.sickTitle}
-            </h1>
-            <p className="text-subhead text-ink-soft max-w-2xl leading-relaxed mt-1">
-              {lang === 'tr'
-                ? 'Hastalık bildirimleri, doktor raporları, izin talepleri ve vardiya senkronizasyonu.'
-                : 'Lückenlose Dokumentation von Krankmeldungen mit Attest-Upload & Urlaubsfreigaben.'}
-            </p>
+        <div className="relative z-10 flex flex-col md:flex-row justify-between gap-6">
+          
+          <div className="space-y-6 flex-1">
+            <div className="space-y-2">
+              <h1 className="page-title text-ink">
+                {t.sickTitle}
+              </h1>
+              <p className="text-subhead text-ink-soft max-w-2xl leading-relaxed mt-1">
+                {lang === 'tr'
+                  ? 'Hastalık bildirimleri, doktor raporları, izin talepleri ve vardiya senkronizasyonu.'
+                  : 'Lückenlose Dokumentation von Krankmeldungen mit Attest-Upload & Urlaubsfreigaben.'}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 pt-4 border-t border-line-soft">
+              <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center">
+                <Palmtree className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-[11px] text-subhead">
+                  {lang === 'tr' ? 'Tatil / İzin Bakiyesi' : 'Urlaubskonto'}: {myEmp.name}
+                </p>
+                <div className="flex items-center gap-2 font-mono text-xs">
+                  <span className="text-ink font-bold">{myEmp.vacationTotal} {lang === 'tr' ? 'gün' : 'Tage'}</span>
+                  <span className="text-ink-muted">|</span>
+                  <span className="text-brand font-semibold">{myEmp.vacationUsed} {lang === 'tr' ? 'kullanıldı' : 'bezogen'}</span>
+                  <span className="text-ink-muted">|</span>
+                  <span className="text-brand font-extrabold">{vacationRemaining} {lang === 'tr' ? 'gün kaldı' : 'Resttage'}</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-col gap-2 shrink-0 w-full md:w-[240px]">
             <button
               onClick={() => setShowSickModal(true)}
-              className="px-4 py-2 rounded-xl card-inner text-ink border border-line text-xs font-bold flex items-center gap-1.5 transition"
+              className="w-full px-4 py-3 rounded-md bg-[#1e1514] text-ink text-xs font-bold flex items-center justify-center gap-2 transition"
             >
               <HeartPulse className="w-4 h-4 text-brand icon-brand" />
               <span>{t.reportSick}</span>
@@ -115,53 +136,32 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
 
             <button
               onClick={() => setShowLeaveModal(true)}
-              className="px-4 py-2 rounded-xl btn-brand font-black text-xs flex items-center gap-1.5 transition"
+              className="w-full px-4 py-3 rounded-md btn-brand font-black text-xs flex items-center justify-center gap-2 transition"
             >
               <Palmtree className="w-4 h-4" />
               <span>{t.leaveRequest}</span>
             </button>
-          </div>
-        </div>
 
-        <div className="mt-6 pt-4 border-t border-line-soft flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center">
-              <Palmtree className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="text-[11px] text-subhead">
-                {lang === 'tr' ? 'Tatil / İzin Bakiyesi' : 'Urlaubskonto'}: {myEmp.name}
-              </p>
-              <div className="flex items-center gap-2 font-mono text-xs">
-                <span className="text-ink font-bold">{myEmp.vacationTotal} {lang === 'tr' ? 'gün' : 'Tage'}</span>
-                <span className="text-ink-muted">|</span>
-                <span className="text-brand font-semibold">{myEmp.vacationUsed} {lang === 'tr' ? 'kullanıldı' : 'bezogen'}</span>
-                <span className="text-ink-muted">|</span>
-                <span className="text-brand font-extrabold">{vacationRemaining} {lang === 'tr' ? 'gün kaldı' : 'Resttage'}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 card-inner p-1 rounded-2xl border border-line">
             <button
               onClick={() => setActiveTab('sick')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${activeTab === 'sick'
+              className={`w-full px-4 py-3 rounded-md text-xs font-bold transition ${activeTab === 'sick'
                   ? 'btn-brand font-black'
-                  : 'text-ink-soft '
+                  : 'bg-[#1e1514] text-ink-soft'
                 }`}
             >
               {lang === 'tr' ? 'Hastalık Bildirimleri' : 'Krankmeldungen'} ({sickReports.length})
             </button>
             <button
               onClick={() => setActiveTab('leave')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${activeTab === 'leave'
+              className={`w-full px-4 py-3 rounded-md text-xs font-bold transition ${activeTab === 'leave'
                   ? 'btn-brand font-black'
-                  : 'text-ink-soft '
+                  : 'bg-[#1e1514] text-ink-soft'
                 }`}
             >
               {lang === 'tr' ? 'İzin Talepleri' : 'Urlaubsanträge'} ({leaveRequests.length})
             </button>
           </div>
+
         </div>
       </div>
 

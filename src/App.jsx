@@ -233,6 +233,19 @@ export function App() {
                   {lang === 'tr' ? 'Ana Bölümler:' : 'Hauptbereiche:'}
                 </span>
 
+                {/* Home Icon (Tüm Bölümleri Göster) */}
+                <button
+                  onClick={() => handleCategorySelect('all')}
+                  title={lang === 'tr' ? 'Tüm Bölümleri Göster' : 'Alle Bereiche anzeigen'}
+                  className={`p-2 rounded-lg text-xs font-bold transition flex items-center justify-center shrink-0 ${
+                    activeCategoryFilter === 'all'
+                      ? 'btn-brand font-black'
+                      : 'bg-ground border border-line text-ink'
+                  }`}
+                >
+                  <Home className="w-4 h-4" />
+                </button>
+
                 {/* 1. Personal & Schichten (5 Modül) */}
                 <button
                   onClick={() => handleCategorySelect(activeCategoryFilter === 'hr' ? 'all' : 'hr')}

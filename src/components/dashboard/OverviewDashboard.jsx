@@ -19,7 +19,8 @@ import {
   Thermometer,
   Layers,
   ShoppingBag,
-  Sparkle
+  Sparkle,
+  Home
 } from 'lucide-react';
 import { StorageService } from '../../services/storage';
 import { formatCurrency, formatDate } from '../../utils/formatters';
@@ -465,6 +466,19 @@ export const OverviewDashboard = ({
           {/* Quick Category Filter Bar */}
           <div className="flex flex-wrap items-center justify-between gap-3 bg-surface p-2.5 rounded-2xl border border-line">
             <div className="flex flex-wrap items-center gap-2">
+              {/* Home Icon (Tüm Bölümleri Göster) */}
+              <button
+                onClick={() => setActiveCategoryFilter('all')}
+                title={lang === 'tr' ? 'Tüm Bölümleri Göster' : 'Alle Bereiche anzeigen'}
+                className={`p-2 rounded-lg text-xs font-bold transition flex items-center justify-center shrink-0 ${
+                  activeCategoryFilter === 'all'
+                    ? 'btn-brand font-black'
+                    : 'bg-subtle text-ink border border-line'
+                }`}
+              >
+                <Home className="w-4 h-4" />
+              </button>
+
               <button
                 onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'hr' ? 'all' : 'hr')}
                 className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${

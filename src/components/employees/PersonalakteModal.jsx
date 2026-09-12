@@ -197,11 +197,11 @@ export const PersonalakteModal = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm">
-      <div className="w-full max-w-5xl max-h-[94vh] rounded-3xl bg-surface border border-line flex flex-col overflow-hidden duration-150 text-ink">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm modal-backdrop">
+      <div className="w-full max-w-5xl max-h-[94vh] rounded-3xl bg-surface border border-line flex flex-col overflow-hidden text-ink shadow-2xl modal-container">
         
         {/* Top Header Card */}
-        <div className="p-5 sm:p-6 bg-dark text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-line">
+        <div className="p-5 sm:p-6 bg-surface text-ink flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-line">
           <div className="flex items-center gap-4">
             <img
               src={employee.avatar}
@@ -210,29 +210,29 @@ export const PersonalakteModal = ({
             />
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-1">
-                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-brand-light text-ink border border-line">
+                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-brand-light text-brand border border-brand-border">
                   {employee.role === 'admin' ? '👑 CHEF / INHABER' : 'MITARBEITER / HR'}
                 </span>
-                <span className="text-[11px] font-mono text-ink-muted">
+                <span className="text-[11px] font-mono font-bold text-ink-muted">
                   ID: {employee.id.toUpperCase()}
                 </span>
                 {/* Live working badge */}
                 <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full flex items-center gap-1.5 ${
                   isCurrentlyWorking 
-                    ? 'bg-brand-light text-ink border border-line' 
+                    ? 'bg-brand-light text-brand border border-brand-border' 
                     : 'bg-subtle text-ink-muted border border-line'
                 }`}>
                   <span className={`w-2 h-2 rounded-full ${isCurrentlyWorking ? 'bg-brand' : 'bg-ink-muted'}`}></span>
                   <span>{isCurrentlyWorking ? (lang === 'tr' ? 'ŞU AN GÖREVDE' : 'IM DIENST') : (lang === 'tr' ? 'SERBEST / ÇIKTI' : 'FEIERABEND')}</span>
                 </span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2">
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-ink flex items-center gap-2">
                 <span>{formData.name}</span>
-                <span className="text-xs font-mono px-2 py-0.5 rounded-md bg-subtle text-ink border border-line">
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md bg-subtle text-ink-muted border border-line font-bold">
                   PIN: {formData.pin}
                 </span>
               </h2>
-              <p className="text-xs sm:text-sm text-subtle font-semibold">
+              <p className="text-xs sm:text-sm text-ink-soft font-semibold">
                 {formData.jobTitle} • {formData.department.toUpperCase()} • {formatCurrency(formData.hourlyRate)}/h
               </p>
             </div>
@@ -260,7 +260,7 @@ export const PersonalakteModal = ({
                   });
                 }
               }}
-              className="px-3 py-1.5 rounded-xl card-inner text-ink text-xs font-bold border border-line focus:outline-none"
+              className="px-3 py-2 rounded-xl bg-subtle text-ink text-xs font-bold border border-line focus:outline-none hover:border-brand transition"
             >
               {allEmployees.map(e => (
                 <option key={e.id} value={e.id} className="text-ink bg-white">
@@ -275,7 +275,7 @@ export const PersonalakteModal = ({
                 onSwitchUser(employee);
                 onClose();
               }}
-              className="px-3 py-2 rounded-xl card-inner text-ink text-xs font-black transition flex items-center gap-1.5"
+              className="px-3 py-2 rounded-xl bg-subtle text-ink text-xs font-black transition flex items-center gap-1.5 border border-line hover:bg-brand hover:text-white"
               title="Bu personelin ekranına geç"
             >
               <Fingerprint className="w-3.5 h-3.5" />
@@ -284,7 +284,7 @@ export const PersonalakteModal = ({
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl card-inner text-ink transition"
+              className="p-2 rounded-xl bg-subtle text-ink transition border border-line hover:bg-brand hover:text-white"
               title="Schliessen"
             >
               <X className="w-5 h-5" />
@@ -292,8 +292,8 @@ export const PersonalakteModal = ({
           </div>
         </div>
 
-        {/* 4-KPI Executive Master Banner (Always Visible for Instant Overview) */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 p-3 sm:p-4 bg-dark border-b border-line text-xs">
+        {/* 4-KPI Executive Master Banner */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 p-3 sm:p-4 bg-ground border-b border-line text-xs">
           
           {/* KPI 1: Worked Hours & Overtime */}
           <div className="p-2.5 sm:p-3 rounded-2xl card-inner border border-line flex items-center gap-3">
@@ -452,20 +452,20 @@ export const PersonalakteModal = ({
             <div className="space-y-6">
               
               {/* Executive Summary Banner */}
-              <div className="p-4 rounded-2xl bg-dark text-white border border-line flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="p-4 rounded-2xl bg-subtle text-ink border border-line flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-base font-black text-white flex items-center gap-2">
-                    <Award className="w-5 h-5 text-ink" />
+                  <h3 className="text-base font-black text-ink flex items-center gap-2">
+                    <Award className="w-5 h-5 text-brand" />
                     <span>{lang === 'tr' ? 'Personel 360° Sicil & Yönetici Karnesi' : 'Vollständiges Mitarbeiter-Dossier (Chef-Ansicht)'}</span>
                   </h3>
-                  <p className="text-xs text-subtle mt-0.5">
+                  <p className="text-xs text-ink-soft mt-0.5">
                     {lang === 'tr'
                       ? 'Tüm modüllerden toplanan canlı veriler: Stempeluhr, vardiyalar, maaş dekontu, kalan izin ve resmi evraklar.'
                       : 'Alle Daten aus Zeiterfassung, Schichtplanung, Lohnabrechnung und Absenzen auf einen Blick.'}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-brand-light text-ink font-bold text-xs border border-line">
+                  <span className="px-3 py-1 rounded-full bg-brand-light text-brand font-bold text-xs border border-brand-border">
                     GAV Gastrosuisse Konform
                   </span>
                 </div>

@@ -1187,32 +1187,36 @@ export const PersonalakteModal = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 card-inner border-t border-line flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+        <div className="p-3 sm:p-4 card-inner border-t border-line flex items-center justify-between gap-2">
+          
+          <div className="flex items-center gap-3">
             <button
               onClick={handleDeactivate}
-              className="px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 text-xs font-bold hover:bg-red-500/20 transition flex items-center gap-1.5"
+              className="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-red-500/10 text-red-500 text-[11px] sm:text-xs font-bold hover:bg-red-500/20 transition flex items-center gap-1.5"
             >
               <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-              {lang === 'tr' ? 'İşten Çıkar (Pasife Al)' : 'Deaktivieren'}
+              <span className="hidden sm:inline">{lang === 'tr' ? 'İşten Çıkar (Pasife Al)' : 'Deaktivieren'}</span>
+              <span className="sm:hidden">{lang === 'tr' ? 'Pasife Al' : 'Deaktivieren'}</span>
             </button>
-            <div className="flex items-center gap-2 text-[11px] text-ink-soft">
+            
+            <div className="hidden sm:flex items-center gap-2 text-[11px] text-ink-soft">
               <ShieldCheck className="w-3.5 h-3.5 text-ink" />
               <span>{lang === 'tr' ? 'nDSG Şifreli Sicil' : 'nDSG Akte'}</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={() => window.print()}
-              className="px-3.5 py-2 rounded-xl card-inner border border-line text-ink text-xs font-bold transition flex items-center gap-1.5"
+              className="px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl card-inner border border-line text-ink text-[11px] sm:text-xs font-bold transition flex items-center gap-1.5"
             >
-              <Printer className="w-3.5 h-3.5 text-ink-soft" />
-              <span>{lang === 'tr' ? 'Kayıtları Yazdır' : 'Akte drucken'}</span>
+              <Printer className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-ink-soft" />
+              <span className="hidden sm:inline">{lang === 'tr' ? 'Kayıtları Yazdır' : 'Akte drucken'}</span>
+              <span className="sm:hidden">{lang === 'tr' ? 'Yazdır' : 'Drucken'}</span>
             </button>
             <button
               onClick={onClose}
-              className="px-5 py-2 rounded-xl bg-dark text-white text-white text-xs font-black transition"
+              className="px-3 sm:px-5 py-1.5 sm:py-2 rounded-xl bg-dark text-white text-[11px] sm:text-xs font-black transition"
             >
               {lang === 'tr' ? 'Kapat' : 'Schliessen'}
             </button>

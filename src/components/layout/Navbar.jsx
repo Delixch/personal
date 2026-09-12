@@ -86,7 +86,7 @@ export const Navbar = ({
 
           {isSupabaseConfigured && (
             <div 
-              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-md card-inner border border-line text-xs font-bold text-emerald-400 select-none"
+              className="hidden lg:flex items-center gap-1.5 px-3 h-[32px] rounded-md navbar-btn text-xs font-bold text-emerald-400 select-none"
               title="Zentrale Supabase Cloud-Datenbank ist online und aktiv synchronisiert"
             >
               <span className="relative flex h-2 w-2">
@@ -98,20 +98,8 @@ export const Navbar = ({
             </div>
           )}
 
-          {currentUser?.role !== 'admin' ? (
-            <button
-              onClick={() => {
-                const adminUser = employees.find(e => e.role === 'admin') || employees[0];
-                handleSelectUser(adminUser);
-              }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-brand text-white font-bold text-xs transition"
-              title="Patron / Yönetici Ekranına Geç"
-            >
-              <ShieldCheck className="w-4 h-4" />
-              <span className="text-body-sm">{lang === 'tr' ? '👑 Patron Ekranına Dön' : '👑 Zum Chef-Modus'}</span>
-            </button>
-          ) : (
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-md card-inner border border-line text-ink font-bold text-xs">
+          {currentUser?.role === 'admin' && (
+            <div className="hidden sm:flex items-center gap-1.5 px-3 h-[32px] rounded-md navbar-btn text-ink font-bold text-xs">
               <ShieldCheck className="w-4 h-4 text-brand icon-brand" />
               <span className="text-body-sm">{lang === 'tr' ? 'Patron / Yönetici' : 'Chef-Modus aktiv'}</span>
             </div>
@@ -119,7 +107,7 @@ export const Navbar = ({
 
           <button
             onClick={() => onLangChange(lang === 'de' ? 'tr' : 'de')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-line bg-surface icon-brand sub-title transition card-inner"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md navbar-btn icon-brand sub-title transition"
             title="Sprache wechseln / Dil Değiştir"
           >
             <Globe className="w-3.5 h-3.5" />
@@ -132,7 +120,7 @@ export const Navbar = ({
                 setShowNotifDropdown(!showNotifDropdown);
                 if (!showNotifDropdown) onNotificationsRead();
               }}
-              className="relative p-2 rounded-md border border-line bg-surface text-ink transition card-inner"
+              className="relative p-2 rounded-md navbar-btn text-ink transition"
               title="Benachrichtigungen"
             >
               <Bell className="w-4 h-4" />
@@ -191,7 +179,7 @@ export const Navbar = ({
             <div className="relative">
               <button
                 onClick={() => setShowUserDropdown(!showUserDropdown)}
-                className="flex items-center gap-2.5 px-3.5 py-2 rounded-md border border-line bg-surface transition text-left card-inner"
+                className="flex items-center gap-2.5 px-3.5 py-2 rounded-md transition text-left hover:bg-surface"
               >
                 <img
                   src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}
@@ -216,43 +204,7 @@ export const Navbar = ({
 
               {showUserDropdown && (
                 <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-surface border border-line p-3 z-50 card-inner shadow-2xl">
-                  <div className="px-3 py-2 border-b border-line-soft mb-2">
-                    <p className="text-[11px] font-bold text-ink-muted uppercase tracking-wider">
-                      {lang === 'tr' ? 'Hızlı Rol Değiştirici' : 'Schnellansicht Wechseln'}
-                    </p>
-                  </div>
-
-                  <div className="space-y-1 max-h-64 overflow-y-auto">
-                    {employees.map((emp) => {
-                      const isSelected = emp.id === currentUser?.id;
-                      return (
-                        <button
-                          key={emp.id}
-                          onClick={() => handleSelectUser(emp)}
-                          className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-left text-xs transition ${
-                            isSelected
-                              ? 'bg-brand-light text-brand-hover font-bold border border-brand-border'
-                              : ' text-ink'
-                          }`}
-                        >
-                          <img
-                            src={emp.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}
-                            alt={emp.name}
-                            className="w-6 h-6 rounded-md object-cover"
-                          />
-                          <div className="flex-1 truncate">
-                            <p className="truncate font-semibold text-ink">{emp.name}</p>
-                            <p className="text-[10px] text-subhead truncate">{emp.jobTitle}</p>
-                          </div>
-                          {emp.role === 'admin' && (
-                            <ShieldCheck className="w-3.5 h-3.5 text-brand icon-brand" />
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  <div className="border-t border-line-soft mt-2 pt-2 space-y-1.5">
+                  <div className="space-y-1.5">
                     <button
                       onClick={() => {
                         setShowUserDropdown(false);

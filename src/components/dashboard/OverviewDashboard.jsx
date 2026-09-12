@@ -333,20 +333,6 @@ export const OverviewDashboard = ({
           </div>
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 shrink-0">
-            {!isAdmin && (
-              <button
-                onClick={() => {
-                  const adminUser = employees.find(e => e.role === 'admin') || employees[0];
-                  StorageService.setCurrentUser(adminUser);
-                  window.location.reload();
-                }}
-                className="px-4 py-2.5 rounded-2xl bg-brand text-white font-black text-xs flex items-center gap-2 transition"
-              >
-                <ShieldCheck className="w-4 h-4" />
-                <span>{lang === 'tr' ? '👑 Patron Ekranına Geç' : '👑 Zum Chef-Modus'}</span>
-              </button>
-            )}
-
             <div
               onClick={() => setShowChefModal(true)}
               className="p-3.5 rounded-2xl card-inner border border-line transition cursor-pointer flex items-center gap-3.5 group"

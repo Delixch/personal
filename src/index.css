@@ -398,6 +398,12 @@ select:focus {
   background-color: #180E0E !important;
 }
 
+.navbar-btn {
+  background-color: #281E1D !important;
+  border: 2px solid #3A2D2A !important;
+  color: var(--ink) !important;
+}
+
 .bg-dark {
   background-color: var(--dark) !important;
 }

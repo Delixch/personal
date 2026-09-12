@@ -86,7 +86,7 @@ export const Navbar = ({
 
           {isSupabaseConfigured && (
             <div 
-              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl card-inner border border-line text-[11px] font-bold text-emerald-400 select-none"
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-md card-inner border border-line text-[11px] font-bold text-emerald-400 select-none"
               title="Zentrale Supabase Cloud-Datenbank ist online und aktiv synchronisiert"
             >
               <span className="relative flex h-2 w-2">
@@ -104,14 +104,14 @@ export const Navbar = ({
                 const adminUser = employees.find(e => e.role === 'admin') || employees[0];
                 handleSelectUser(adminUser);
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand text-white font-bold text-xs transition"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-brand text-white font-bold text-xs transition"
               title="Patron / Yönetici Ekranına Geç"
             >
               <ShieldCheck className="w-4 h-4" />
               <span className="text-body-sm">{lang === 'tr' ? '👑 Patron Ekranına Dön' : '👑 Zum Chef-Modus'}</span>
             </button>
           ) : (
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl card-inner border border-line text-ink font-bold text-xs">
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-md card-inner border border-line text-ink font-bold text-xs">
               <ShieldCheck className="w-4 h-4 text-brand icon-brand" />
               <span className="text-body-sm">{lang === 'tr' ? 'Patron / Yönetici' : 'Chef-Modus aktiv'}</span>
             </div>
@@ -119,7 +119,7 @@ export const Navbar = ({
 
           <button
             onClick={() => onLangChange(lang === 'de' ? 'tr' : 'de')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line bg-surface icon-brand sub-title transition card-inner"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-line bg-surface icon-brand sub-title transition card-inner"
             title="Sprache wechseln / Dil Değiştir"
           >
             <Globe className="w-3.5 h-3.5" />
@@ -132,7 +132,7 @@ export const Navbar = ({
                 setShowNotifDropdown(!showNotifDropdown);
                 if (!showNotifDropdown) onNotificationsRead();
               }}
-              className="relative p-2 rounded-xl border border-line bg-surface text-ink transition card-inner"
+              className="relative p-2 rounded-md border border-line bg-surface text-ink transition card-inner"
               title="Benachrichtigungen"
             >
               <Bell className="w-4 h-4" />
@@ -191,12 +191,12 @@ export const Navbar = ({
             <div className="relative">
               <button
                 onClick={() => setShowUserDropdown(!showUserDropdown)}
-                className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border border-line bg-surface transition text-left card-inner"
+                className="flex items-center gap-2.5 px-3.5 py-2 rounded-md border border-line bg-surface transition text-left card-inner"
               >
                 <img
                   src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}
                   alt={currentUser?.name}
-                  className="w-7 h-7 rounded-full object-cover ring-2 ring-line"
+                  className="w-9 h-9 rounded-md object-cover ring-2 ring-line"
                 />
                 <div className="hidden md:block">
                   <div className="sub-title flex items-center gap-1.5">
@@ -229,7 +229,7 @@ export const Navbar = ({
                         <button
                           key={emp.id}
                           onClick={() => handleSelectUser(emp)}
-                          className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-left text-xs transition ${
+                          className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-left text-xs transition ${
                             isSelected
                               ? 'bg-brand-light text-brand-hover font-bold border border-brand-border'
                               : ' text-ink'
@@ -238,7 +238,7 @@ export const Navbar = ({
                           <img
                             src={emp.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}
                             alt={emp.name}
-                            className="w-6 h-6 rounded-full object-cover"
+                            className="w-6 h-6 rounded-md object-cover"
                           />
                           <div className="flex-1 truncate">
                             <p className="truncate font-semibold text-ink">{emp.name}</p>

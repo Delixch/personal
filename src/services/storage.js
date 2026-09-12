@@ -9,6 +9,7 @@ import {
   SEED_TEMPERATURE_LOGS,
   SEED_BULLETINS
 } from './seedData';
+import { SyncService } from './syncService';
 
 const STORAGE_KEYS = {
   SUPPLIERS: 'ado_suppliers_v1',
@@ -95,6 +96,8 @@ export const initializeDatabase = () => {
   if (!localStorage.getItem(STORAGE_KEYS.BULLETINS)) {
     localStorage.setItem(STORAGE_KEYS.BULLETINS, JSON.stringify(SEED_BULLETINS));
   }
+
+  SyncService.syncAll().catch(() => {});
 };
 
 export const getStoredItem = (key, fallback = []) => {
@@ -169,6 +172,7 @@ export const StorageService = {
       list.push({ ...employee, id: employee.id || `emp-${Date.now()}` });
     }
     setStoredItem(STORAGE_KEYS.EMPLOYEES, list);
+    SyncService.pushEmployee(employee);
     return list;
   },
 
@@ -182,6 +186,7 @@ export const StorageService = {
       list.push({ ...shift, id: shift.id || `sh-${Date.now()}` });
     }
     setStoredItem(STORAGE_KEYS.SHIFTS, list);
+    SyncService.pushShift(shift);
     return list;
   },
   deleteShift: (shiftId) => {
@@ -210,6 +215,7 @@ export const StorageService = {
     };
     list.unshift(newLog);
     setStoredItem(STORAGE_KEYS.TIME_LOGS, list);
+    SyncService.pushClockIn(newLog, employeeId);
     return newLog;
   },
   clockOut: (employeeId) => {
@@ -222,6 +228,7 @@ export const StorageService = {
       active.clockOut = nowTime;
       active.status = 'completed';
       setStoredItem(STORAGE_KEYS.TIME_LOGS, list);
+      SyncService.pushClockOut(employeeId, nowTime);
       return active;
     }
     return null;
@@ -316,6 +323,7 @@ export const StorageService = {
     };
     list.unshift(newInv);
     setStoredItem(STORAGE_KEYS.INVOICES, list);
+    SyncService.pushInvoice(newInv);
 
     StorageService.addNotification({
       type: 'invoice',
@@ -332,6 +340,7 @@ export const StorageService = {
       inv.status = status;
       if (paidDate) inv.paidDate = paidDate;
       setStoredItem(STORAGE_KEYS.INVOICES, list);
+      SyncService.updateInvoiceStatusInDb(invoiceId, status, paidDate);
     }
     return list;
   },
@@ -433,6 +442,7 @@ export const StorageService = {
         log.status = (log.currentTemp >= 1.0 && log.currentTemp <= 6.0) ? 'ok' : 'warning';
       }
       setStoredItem(STORAGE_KEYS.TEMPERATURE_LOGS, list);
+      SyncService.updateTemperatureInDb(id, temp, employeeName);
     }
     return list;
   },
@@ -448,6 +458,7 @@ export const StorageService = {
     };
     list.unshift(newBul);
     setStoredItem(STORAGE_KEYS.BULLETINS, list);
+    SyncService.pushBulletin(newBul);
     return newBul;
   },
 

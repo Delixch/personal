@@ -9,9 +9,11 @@ import {
   CheckCircle2,
   AlertTriangle,
   FileText,
-  Truck
+  Truck,
+  Cloud
 } from 'lucide-react';
 import { StorageService } from '../../services/storage';
+import { isSupabaseConfigured } from '../../services/supabase';
 
 export const Navbar = ({
   currentUser,
@@ -78,6 +80,20 @@ export const Navbar = ({
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
+
+          {isSupabaseConfigured && (
+            <div 
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl card-inner border border-line text-[11px] font-bold text-emerald-400 select-none"
+              title="Zentrale Supabase Cloud-Datenbank ist online und aktiv synchronisiert"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <Cloud className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Cloud Live</span>
+            </div>
+          )}
 
           {currentUser?.role !== 'admin' ? (
             <button

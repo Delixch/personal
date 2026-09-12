@@ -144,7 +144,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                       <h3 className="font-bold text-sm text-ink group-hover:text-brand transition">{emp.name}</h3>
                       <p className="text-xs text-ink-soft font-semibold">{emp.jobTitle}</p>
                       <span className="badge badge-slate text-[10px] py-0 px-2 mt-1 font-bold">
-                        {emp.department.toUpperCase()}
+                        {(emp.department || 'staff').toUpperCase()}
                       </span>
                     </div>
                   </div>

@@ -186,7 +186,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                   {lang === 'tr' ? 'Teslimat Günleri' : 'Liefertage'}
                 </span>
                 <span className="text-xs font-semibold text-ink">
-                  {supplier.deliveryDays.join(' · ')}
+                  {(supplier.deliveryDays || []).join(' · ')}
                 </span>
               </div>
             </div>
@@ -277,7 +277,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-ink shrink-0" />
                     <span>
-                      <strong>{lang === 'tr' ? 'Teslimat Günleri:' : 'Liefertage:'}</strong> {selectedSupplierForOrder.deliveryDays.join(', ')}
+                      <strong>{lang === 'tr' ? 'Teslimat Günleri:' : 'Liefertage:'}</strong> {(selectedSupplierForOrder.deliveryDays || []).join(', ')}
                     </span>
                   </div>
                 </div>

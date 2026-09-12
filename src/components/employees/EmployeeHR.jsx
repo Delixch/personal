@@ -49,7 +49,10 @@ export const EmployeeHR = ({ lang, currentUser }) => {
 
   const handleCreateEmployee = (e) => {
     e.preventDefault();
-    StorageService.saveEmployee(newEmp);
+    const generatedPin = Math.floor(1000 + Math.random() * 9000).toString();
+    const employeeToSave = { ...newEmp, pin: generatedPin };
+    
+    StorageService.saveEmployee(employeeToSave);
     setEmployees(StorageService.getEmployees());
     setShowAddModal(false);
 

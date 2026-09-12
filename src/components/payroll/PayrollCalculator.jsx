@@ -120,8 +120,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
 
   return (
     <div className="space-y-6">
-      
-      {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
+
       <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
@@ -139,7 +138,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
             <select
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
-              className="px-3 py-2.5 rounded-2xl bg-surface card-inner border border-line text-ink text-xs font-bold focus:outline-none focus:border-brand"
+              className="px-3 py-2.5 rounded-2xl card-inner border border-line text-ink text-xs font-bold focus:outline-none focus:border-brand"
             >
               {months.map(m => (
                 <option key={m.value} value={m.value}>{m.label}</option>
@@ -157,27 +156,26 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
         </div>
       </div>
 
-      {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 rounded-3xl bg-white border border-slate-200">
-          <div className="flex items-center justify-between text-slate-500 mb-2">
+        <div className="p-5 rounded-3xl bg-white border border-line">
+          <div className="flex items-center justify-between text-ink-soft mb-2">
             <span className="text-xs font-semibold">{lang === 'tr' ? 'Toplam Brüt Bordro' : 'Gesamte Bruttolohnsumme'}</span>
             <Coins className="w-4 h-4 text-indigo-600" />
           </div>
-          <div className="font-mono text-2xl font-black text-slate-900">
+          <div className="font-mono text-2xl font-black text-ink">
             {formatCurrency(totalGrossPayroll)}
           </div>
-          <p className="text-[11px] text-slate-500 mt-1">
+          <p className="text-[11px] text-ink-soft mt-1">
             {employees.length} {lang === 'tr' ? 'Mitarbeiter için hesaplandı' : 'Mitarbeiter erfasst'}
           </p>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white border border-slate-200">
-          <div className="flex items-center justify-between text-slate-500 mb-2">
+        <div className="p-5 rounded-3xl bg-white border border-line">
+          <div className="flex items-center justify-between text-ink-soft mb-2">
             <span className="text-xs font-semibold">{lang === 'tr' ? 'Toplam Çalışılan Saat' : 'Geleistete Arbeitsstunden'}</span>
             <Clock className="w-4 h-4 text-ink" />
           </div>
-          <div className="font-mono text-2xl font-black text-slate-900">
+          <div className="font-mono text-2xl font-black text-ink">
             {totalHoursWorked.toFixed(1)} Std
           </div>
           <p className="text-[11px] text-ink font-semibold mt-1">
@@ -185,24 +183,23 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
           </p>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white border border-slate-200">
-          <div className="flex items-center justify-between text-slate-500 mb-2">
+        <div className="p-5 rounded-3xl bg-white border border-line">
+          <div className="flex items-center justify-between text-ink-soft mb-2">
             <span className="text-xs font-semibold">{lang === 'tr' ? 'Sozialabzüge (~11.5%)' : 'Sozialabzüge (AHV/ALV/BVG)'}</span>
             <Percent className="w-4 h-4 text-brand" />
           </div>
-          <div className="font-mono text-2xl font-black text-slate-900">
+          <div className="font-mono text-2xl font-black text-ink">
             {formatCurrency(totalGrossPayroll * 0.115)}
           </div>
-          <p className="text-[11px] text-slate-500 mt-1">
+          <p className="text-[11px] text-ink-soft mt-1">
             {lang === 'tr' ? 'Yasal işçi kesintisi tahmini' : 'Gesetzlicher Arbeitnehmerbeitrag'}
           </p>
         </div>
       </div>
 
-      {/* Main Employee Payroll Table */}
-      <div className="p-6 rounded-3xl bg-white border border-slate-200 overflow-hidden">
+      <div className="p-6 rounded-3xl bg-white border border-line overflow-hidden">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+          <h2 className="text-base font-bold text-ink flex items-center gap-2">
             <Users className="w-4 h-4 text-indigo-600" />
             <span>{lang === 'tr' ? 'Personel Bazında Saat ve Hak Ediş Tablosu' : 'Mitarbeiter-Stunden & Lohnübersicht'}</span>
           </h2>
@@ -212,8 +209,8 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-700">
-            <thead className="border-b border-slate-100 text-[11px] text-slate-400">
+          <table className="w-full text-left text-xs text-ink-soft">
+            <thead className="border-b border-line text-[11px] text-ink-muted">
               <tr>
                 <th className="pb-3">Mitarbeiter</th>
                 <th className="pb-3">Pensum</th>
@@ -241,21 +238,21 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
                           className="w-9 h-9 rounded-xl object-cover ring-1 ring-slate-200 shrink-0"
                         />
                         <div>
-                          <p className="font-bold text-slate-900 text-xs">{emp.name}</p>
-                          <p className="text-[10px] text-slate-400">{emp.jobTitle}</p>
+                          <p className="font-bold text-ink text-xs">{emp.name}</p>
+                          <p className="text-[10px] text-ink-muted">{emp.jobTitle}</p>
                         </div>
                       </div>
                     </td>
 
-                    <td className="py-3.5 font-semibold text-slate-700">
+                    <td className="py-3.5 font-semibold text-ink-soft">
                       {stats.contractPercentage}%
                     </td>
 
-                    <td className="py-3.5 font-mono font-bold text-slate-900">
+                    <td className="py-3.5 font-mono font-bold text-ink">
                       CHF {emp.hourlyRate.toFixed(2)}
                     </td>
 
-                    <td className="py-3.5 font-mono text-slate-500">
+                    <td className="py-3.5 font-mono text-ink-soft">
                       {stats.targetHours} h
                     </td>
 
@@ -271,7 +268,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
                       </span>
                     </td>
 
-                    <td className="py-3.5 font-mono font-extrabold text-slate-900">
+                    <td className="py-3.5 font-mono font-extrabold text-ink">
                       {formatCurrency(stats.grossBase)}
                     </td>
 

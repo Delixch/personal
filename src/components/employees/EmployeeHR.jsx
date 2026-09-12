@@ -61,8 +61,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
 
   return (
     <div className="space-y-6">
-      
-      {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
+
       <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
@@ -86,15 +85,14 @@ export const EmployeeHR = ({ lang, currentUser }) => {
         </div>
       </div>
 
-      {/* Quick 360-Degree Employee Dossier Selector Bar for Chef */}
-      <div className="p-4 rounded-2xl bg-dark text-white border border-slate-700">
+      <div className="p-4 rounded-2xl bg-dark text-white border border-line">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
           <div>
             <h3 className="text-sm font-black text-white flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-ink" />
               <span>{lang === 'tr' ? 'Personel 360° Hızlı Sicil Seçici (Chef Kolaylığı)' : '360° Mitarbeiter-Schnellzugriff (Chef-Modus)'}</span>
             </h3>
-            <p className="text-[11px] text-slate-300 mt-0.5">
+            <p className="text-[11px] text-ink-muted mt-0.5">
               {lang === 'tr'
                 ? 'Bölüm bölüm gezmeden tek tıkla çalışanın çalıştığı saatleri, kalan iznini, maaşını ve tüm evraklarını açın:'
                 : 'Klicken Sie auf einen Mitarbeiter, um alle Arbeitszeiten, Resturlaub, Lohnabrechnungen und Akten sofort zu sehen:'}
@@ -105,13 +103,12 @@ export const EmployeeHR = ({ lang, currentUser }) => {
           </span>
         </div>
 
-        {/* Quick Employee Pill Buttons */}
         <div className="flex flex-wrap items-center gap-2">
           {employees.map((emp) => (
             <button
               key={emp.id}
               onClick={() => setSelectedEmployee(emp)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface card-inner border border-line text-xs font-bold text-white transition active:scale-98"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl card-inner border border-line text-xs font-bold text-white transition active:scale-98"
             >
               <img
                 src={emp.avatar}
@@ -125,7 +122,6 @@ export const EmployeeHR = ({ lang, currentUser }) => {
         </div>
       </div>
 
-      {/* Employee Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {employees.map((emp) => {
           const vacationRest = (emp.vacationTotal || 25) - (emp.vacationUsed || 0);
@@ -144,7 +140,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                       className="w-12 h-12 rounded-2xl object-cover ring-2 ring-slate-200 group- transition"
                     />
                     <div>
-                      <h3 className="font-bold text-sm text-slate-900 group- transition">{emp.name}</h3>
+                      <h3 className="font-bold text-sm text-ink group- transition">{emp.name}</h3>
                       <p className="text-xs text-ink font-semibold">{emp.jobTitle}</p>
                       <span className="badge badge-slate text-[10px] py-0 px-1.5 mt-1">
                         {emp.department.toUpperCase()}
@@ -159,42 +155,40 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                   )}
                 </div>
 
-                {/* Quick 360-Degree Stat Cards inside the card */}
                 <div className="grid grid-cols-3 gap-1.5 mb-3 text-center">
                   <div className="p-1.5 rounded-lg bg-cyan-50 border border-line">
-                    <span className="text-[9px] text-slate-500 block uppercase font-bold">Mesai</span>
+                    <span className="text-[9px] text-ink-soft block uppercase font-bold">Mesai</span>
                     <span className="font-mono text-xs font-black text-ink">42.0h/W</span>
                   </div>
                   <div className="p-1.5 rounded-lg bg-amber-50 border border-line">
-                    <span className="text-[9px] text-slate-500 block uppercase font-bold">Kalan İzin</span>
+                    <span className="text-[9px] text-ink-soft block uppercase font-bold">Kalan İzin</span>
                     <span className="font-mono text-xs font-black text-brand">{vacationRest} Gün</span>
                   </div>
                   <div className="p-1.5 rounded-lg bg-purple-50 border border-line">
-                    <span className="text-[9px] text-slate-500 block uppercase font-bold">Saatlik</span>
+                    <span className="text-[9px] text-ink-soft block uppercase font-bold">Saatlik</span>
                     <span className="font-mono text-xs font-black text-ink">{formatCurrency(emp.hourlyRate)}</span>
                   </div>
                 </div>
 
-                {/* Details */}
-                <div className="space-y-1.5 text-xs text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-200 my-2">
+                <div className="space-y-1.5 text-xs text-ink-soft card-inner p-3 rounded-xl border border-line my-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-500 flex items-center gap-1.5">
+                    <span className="text-ink-soft flex items-center gap-1.5">
                       <Mail className="w-3.5 h-3.5 text-ink" />
                       E-Mail:
                     </span>
-                    <span className="font-mono text-slate-900 text-[11px] truncate max-w-[150px]">
+                    <span className="font-mono text-ink text-[11px] truncate max-w-[150px]">
                       {emp.email}
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-500 flex items-center gap-1.5">
+                    <span className="text-ink-soft flex items-center gap-1.5">
                       <KeyRound className="w-3.5 h-3.5 text-ink" />
                       Passwort / PIN:
                     </span>
                     <div className="flex items-center gap-1.5 font-mono text-xs">
-                      <span className="text-slate-700">{emp.password}</span>
-                      <span className="text-slate-300">|</span>
+                      <span className="text-ink-soft">{emp.password}</span>
+                      <span className="text-ink-muted">|</span>
                       <span className="px-1.5 py-0.2 rounded bg-emerald-50 text-ink font-bold border border-line">
                         PIN: {emp.pin || '1001'}
                       </span>
@@ -202,12 +196,11 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-500">AHV / AVS:</span>
-                    <span className="font-mono text-[11px] text-slate-600">{emp.ahv || 'In Prüfung'}</span>
+                    <span className="text-ink-soft">AHV / AVS:</span>
+                    <span className="font-mono text-[11px] text-ink-soft">{emp.ahv || 'In Prüfung'}</span>
                   </div>
                 </div>
 
-                {/* Digital Check Badges */}
                 <div className="flex items-center gap-1.5 text-[10px]">
                   <span className="inline-flex items-center gap-1 text-ink bg-emerald-50 px-2 py-0.5 rounded-md border border-line">
                     <BadgeCheck className="w-3 h-3 text-ink" />
@@ -225,7 +218,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                   e.stopPropagation();
                   setSelectedEmployee(emp);
                 }}
-                className="mt-4 w-full py-2.5 rounded-xl bg-surface card-inner text-xs font-black text-white transition flex items-center justify-center gap-2 group-"
+                className="mt-4 w-full py-2.5 rounded-xl card-inner text-xs font-black text-white transition flex items-center justify-center gap-2 group-"
               >
                 <FileText className="w-4 h-4 text-white" />
                 <span>{lang === 'tr' ? '⭐ 360° Sicil & Tüm Bilgileri Aç →' : '⭐ 360° Akte & Alle Daten öffnen →'}</span>
@@ -235,7 +228,6 @@ export const EmployeeHR = ({ lang, currentUser }) => {
         })}
       </div>
 
-      {/* Comprehensive Swiss Personalakte Dossier Modal */}
       {selectedEmployee && (
         <PersonalakteModal
           employee={selectedEmployee}
@@ -253,18 +245,17 @@ export const EmployeeHR = ({ lang, currentUser }) => {
         />
       )}
 
-      {/* Add Employee Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 relative border border-slate-200 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+          <div className="w-full max-w-lg rounded-3xl bg-white p-6 relative border border-line max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
+              <h2 className="text-base font-bold text-ink flex items-center gap-2">
                 <UserPlus className="w-4 h-4 text-ink" />
                 <span>{lang === 'tr' ? 'Yeni Personel & Erişim Tanımla' : 'Neuen Mitarbeiter erfassen'}</span>
               </h2>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="p-1.5 rounded-lg text-slate-400"
+                className="p-1.5 rounded-lg text-ink-muted"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -272,7 +263,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
 
             <form onSubmit={handleCreateEmployee} className="space-y-3.5">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-ink-soft mb-1">
                   Vor- und Nachname (Ad Soyad):
                 </label>
                 <input
@@ -281,13 +272,13 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                   value={newEmp.name}
                   onChange={(e) => setNewEmp({ ...newEmp, name: e.target.value })}
                   placeholder="z.B. Deniz Arslan"
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
+                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-ink-soft mb-1">
                     E-Mail (App-Login):
                   </label>
                   <input
@@ -296,11 +287,11 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     value={newEmp.email}
                     onChange={(e) => setNewEmp({ ...newEmp, email: e.target.value })}
                     placeholder="deniz@firma.ch"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
+                    className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-ink-soft mb-1">
                     Passwort (Şifre):
                   </label>
                   <input
@@ -308,20 +299,20 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     required
                     value={newEmp.password}
                     onChange={(e) => setNewEmp({ ...newEmp, password: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line font-mono"
+                    className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-ink-soft mb-1">
                     Abteilung (Departman):
                   </label>
                   <select
                     value={newEmp.department}
                     onChange={(e) => setNewEmp({ ...newEmp, department: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
+                    className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                   >
                     {SEED_DEPARTMENTS.map(d => (
                       <option key={d.id} value={d.id}>
@@ -331,7 +322,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-ink-soft mb-1">
                     Funktion / Titel:
                   </label>
                   <input
@@ -340,14 +331,14 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     value={newEmp.jobTitle}
                     onChange={(e) => setNewEmp({ ...newEmp, jobTitle: e.target.value })}
                     placeholder="z.B. Chef de Partie / Barista"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
+                    className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-ink-soft mb-1">
                     Stundenlohn (CHF/h):
                   </label>
                   <input
@@ -355,36 +346,35 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     step="0.5"
                     value={newEmp.hourlyRate}
                     onChange={(e) => setNewEmp({ ...newEmp, hourlyRate: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line font-mono"
+                    className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line font-mono"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-ink-soft mb-1">
                     Telefon / WhatsApp:
                   </label>
                   <input
                     type="text"
                     value={newEmp.phone}
                     onChange={(e) => setNewEmp({ ...newEmp, phone: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line font-mono"
+                    className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line font-mono"
                   />
                 </div>
               </div>
 
-              {/* Onboarding Checklist */}
-              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                <p className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">
+              <div className="p-3.5 rounded-2xl card-inner border border-line space-y-2">
+                <p className="text-xs font-bold text-ink uppercase tracking-wider mb-1">
                   Onboarding & HR Checkliste:
                 </p>
-                <label className="flex items-center gap-2 text-xs text-slate-700">
+                <label className="flex items-center gap-2 text-xs text-ink-soft">
                   <input type="checkbox" defaultChecked className="rounded text-ink" />
                   <span>Arbeitsvertrag digital hinterlegt (GAV Gastgewerbe)</span>
                 </label>
-                <label className="flex items-center gap-2 text-xs text-slate-700">
+                <label className="flex items-center gap-2 text-xs text-ink-soft">
                   <input type="checkbox" defaultChecked className="rounded text-ink" />
                   <span>Kranken- und Unfallversicherung (UVG) angemeldet</span>
                 </label>
-                <label className="flex items-center gap-2 text-xs text-slate-700">
+                <label className="flex items-center gap-2 text-xs text-ink-soft">
                   <input type="checkbox" defaultChecked className="rounded text-ink" />
                   <span>Hygieneschulung & Sicherheitsunterweisung erfolgt</span>
                 </label>

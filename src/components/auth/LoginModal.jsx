@@ -54,8 +54,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
       <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line text-ink card-inner">
-        
-        {/* Close Button */}
+
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-xl text-subhead transition"
@@ -63,9 +62,8 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
           <X className="w-5 h-5" />
         </button>
 
-        {/* Title */}
         <div className="text-center mb-5">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-surface card-inner text-brand mb-2 border border-line">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl card-inner text-brand mb-2 border border-line">
             <KeyRound className="w-6 h-6 icon-brand" />
           </div>
           <h2 className="text-xl font-black text-ink">
@@ -78,8 +76,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
           </p>
         </div>
 
-        {/* Tab Switcher: PIN vs Email */}
-        <div className="flex bg-surface card-inner p-1 rounded-2xl mb-4 border border-line">
+        <div className="flex card-inner p-1 rounded-2xl mb-4 border border-line">
           <button
             type="button"
             onClick={() => {
@@ -113,13 +110,12 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-2xl bg-surface card-inner border border-brand-border flex items-center gap-2 text-brand text-xs font-bold">
+          <div className="mb-4 p-3 rounded-2xl card-inner border border-brand-border flex items-center gap-2 text-brand text-xs font-bold">
             <AlertCircle className="w-4 h-4 shrink-0 icon-brand" />
             <span>{error}</span>
           </div>
         )}
 
-        {/* Method 1: PIN Form */}
         {authMethod === 'pin' ? (
           <form onSubmit={handlePinLogin} className="space-y-4">
             <div>
@@ -134,7 +130,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
                 value={pin}
                 onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
                 placeholder="••••"
-                className="w-full text-center text-3xl font-mono font-black tracking-widest py-3 rounded-2xl bg-surface card-inner border border-line text-ink focus:outline-none focus:border-brand transition"
+                className="w-full text-center text-3xl font-mono font-black tracking-widest py-3 rounded-2xl card-inner border border-line text-ink focus:outline-none focus:border-brand transition"
               />
             </div>
 
@@ -146,7 +142,6 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
             </button>
           </form>
         ) : (
-          /* Method 2: Email & Password Form */
           <form onSubmit={handleEmailLogin} className="space-y-3.5">
             <div>
               <label className="block text-xs font-semibold text-subhead mb-1">
@@ -160,7 +155,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ornek@firma.ch"
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-surface card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand transition"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand transition"
                 />
               </div>
             </div>
@@ -177,7 +172,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-surface card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand transition"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand transition"
                 />
               </div>
             </div>
@@ -191,7 +186,6 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
           </form>
         )}
 
-        {/* Quick Click Persona Selector */}
         <div className="mt-6 pt-4 border-t border-line-soft">
           <p className="text-[11px] font-bold text-subhead uppercase tracking-wider mb-2.5 text-center">
             {lang === 'tr' ? 'Tek Tıkla Hızlı Test Girişi' : 'Direkte Schnell-Auswahl:'}
@@ -203,7 +197,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
                 key={emp.id}
                 type="button"
                 onClick={() => handleQuickSelect(emp)}
-                className="p-2 rounded-xl border border-line bg-surface card-inner text-left flex items-center gap-2.5 transition text-xs"
+                className="p-2 rounded-xl border border-line card-inner text-left flex items-center gap-2.5 transition text-xs"
               >
                 <img
                   src={emp.avatar}

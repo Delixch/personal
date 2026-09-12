@@ -12,9 +12,9 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   /* ── Yazı Renkleri ───────────────────────────────────────────── */
-  --ink:        #111111;     /* Ana Yazı (Koyu Siyah) */
-  --ink-soft:   #4A4A4A;     /* İkincil Yazı (Belirgin Koyu Gri) */
-  --ink-muted:  #787878;     /* Soluk Yazı (Orta Gri) */
+  --ink:        #111111;     /* Ana Yazı (Saf Koyu Siyah) */
+  --ink-soft:   #1F2937;     /* İkincil Yazı (Derin Koyu Siyah) */
+  --ink-muted:  #374151;     /* Etiket & Alt Yazı (Koyu Kömür Gri) */
 
   /* ── Zemin & Yüzey Renkleri ──────────────────────────────────── */
   --ground:        #F6EEDB;     /* En Arka Sayfa Zemini (#F6EEDB Sıcak Kum Rengi) */
@@ -74,18 +74,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .text-white {
-  color: var(--ink) !important;
+  color: #FFFFFF !important;
 }
 
-/* Sadece turuncu butonlar, bg-brand ve siyah modal/bannerlar beyaz metin kullanabilir */
+/* Sadece turuncu butonlar, bg-brand ve aktif elemanlar beyaz metin kullanabilir */
 .btn-brand,
 .btn-brand *,
 .bg-brand,
 .bg-brand *,
 .active,
-.active *,
-.bg-dark,
-.bg-dark * {
+.active * {
   color: #FFFFFF !important;
   stroke: #FFFFFF !important;
 }
@@ -287,8 +285,15 @@ input:focus, textarea:focus, select:focus {
   background-color: var(--surface) !important;
 }
 
-.card-inner {
+.bg-dark {
+  background-color: var(--dark) !important;
+  color: #FFFFFF !important;
+}
+
+.card-inner,
+.glass-panel {
   background-color: var(--surface-inner) !important;
+  border-color: var(--line) !important;
 }
 
 .bg-subtle {

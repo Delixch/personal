@@ -71,7 +71,7 @@ export const OverviewDashboard = ({
           subtitle: lang === 'tr' ? 'Tablet PIN terminali, canlı saat ve mola takibi' : 'Tablet-PIN-Terminal, Live-Stempeluhr & Pausen',
           icon: Clock,
           badge: `${activeTimeLogs.length} Im Dienst`,
-          cardBg: 'bg-surface border-line ',
+          cardBg: 'card-inner border-line ',
           iconBg: 'icon-box',
           badgeBg: 'badge-neutral',
           textColor: 'text-ink',
@@ -83,7 +83,7 @@ export const OverviewDashboard = ({
           subtitle: lang === 'tr' ? 'Früh- & Spätschicht, departmanlar & yedek eleman' : 'Einsatzplanung 2 Schichten & Ersatzpersonal',
           icon: CalendarDays,
           badge: `${todayShifts.length} Schichten`,
-          cardBg: 'bg-surface border-line ',
+          cardBg: 'card-inner border-line ',
           iconBg: 'icon-box',
           badgeBg: 'badge-neutral',
           textColor: 'text-ink',
@@ -95,7 +95,7 @@ export const OverviewDashboard = ({
           subtitle: lang === 'tr' ? 'Gerekçe seçimi, doktor raporu ve tatil günleri' : 'Attest-Upload, Absenzen & Urlaubsanträge',
           icon: HeartPulse,
           badge: sickReports.length > 0 ? `${sickReports.length} Gemeldet` : 'Alles OK',
-          cardBg: 'bg-surface border-line ',
+          cardBg: 'card-inner border-line ',
           iconBg: 'icon-box',
           badgeBg: 'badge-neutral',
           textColor: 'text-ink',
@@ -107,7 +107,7 @@ export const OverviewDashboard = ({
           subtitle: lang === 'tr' ? 'İsviçre GAV, fazla mesai & Treuhand CSV bordro çıktısı' : 'GAV Gastrosuisse, Überstunden & Treuhand-CSV',
           icon: Calculator,
           badge: 'GAV Konform',
-          cardBg: 'bg-surface border-line ',
+          cardBg: 'card-inner border-line ',
           iconBg: 'icon-box',
           badgeBg: 'badge-neutral',
           textColor: 'text-ink',
@@ -119,7 +119,7 @@ export const OverviewDashboard = ({
           subtitle: lang === 'tr' ? 'Sözleşmeler, AHV, saatlik ücretler & 4 haneli PIN kodları' : 'Verträge, Versicherungen, Stundenlöhne & PINs',
           icon: Users2,
           badge: `${employees.length} Mitarbeiter`,
-          cardBg: 'bg-surface border-line ',
+          cardBg: 'card-inner border-line ',
           iconBg: 'icon-box',
           badgeBg: 'badge-neutral',
           textColor: 'text-ink',
@@ -144,7 +144,7 @@ export const OverviewDashboard = ({
           subtitle: lang === 'tr' ? 'Prodega, Hiestand, Pistor, Meyerhans, Daroz, Yeşil Vadi' : 'Zentraler Einkauf mit echten Schweizer Lieferanten',
           icon: Truck,
           badge: `${suppliers.length} Partner`,
-          cardBg: 'bg-surface border-line ',
+          cardBg: 'card-inner border-line ',
           iconBg: 'icon-box',
           badgeBg: 'badge-neutral',
           textColor: 'text-ink',
@@ -156,7 +156,7 @@ export const OverviewDashboard = ({
           subtitle: lang === 'tr' ? 'Kamera veya fotoğrafla otomatik İsviçre KDV (%2.6/%8.1) ayıklama' : 'Automatische Belegerfassung mit MwSt-Erkennung',
           icon: ScanLine,
           badge: `${unpaidInvoices.length} Offen`,
-          cardBg: 'bg-surface border-line ',
+          cardBg: 'card-inner border-line ',
           iconBg: 'icon-box',
           badgeBg: 'badge-neutral',
           textColor: 'text-ink',
@@ -168,7 +168,7 @@ export const OverviewDashboard = ({
           subtitle: lang === 'tr' ? 'Kategori giderleri, KDV dökümü & Treuhand Excel çıktısı' : 'Kostenanalyse, MwSt-Rückforderung & Treuhand-Journal',
           icon: ReceiptText,
           badge: 'Excel / CSV',
-          cardBg: 'bg-surface border-line ',
+          cardBg: 'card-inner border-line ',
           iconBg: 'icon-box',
           badgeBg: 'badge-neutral',
           textColor: 'text-ink',
@@ -193,7 +193,7 @@ export const OverviewDashboard = ({
           subtitle: lang === 'tr' ? 'Soğuk oda sıcaklıkları, sabah ve akşam temizlik listesi' : 'Kühlraum-Temperaturen, Morgen- & Abendschliessung',
           icon: ShieldCheck,
           badge: 'HyV / LMG',
-          cardBg: 'bg-surface border-line ',
+          cardBg: 'card-inner border-line ',
           iconBg: 'icon-box',
           badgeBg: 'badge-neutral',
           textColor: 'text-ink',
@@ -205,7 +205,7 @@ export const OverviewDashboard = ({
           subtitle: lang === 'tr' ? 'Patron duyuruları, talimatlar ve şirket içi bildirimler' : 'Team-Mitteilungen, Arbeitsanweisungen & Termine',
           icon: Megaphone,
           badge: 'Team Info',
-          cardBg: 'bg-surface border-line ',
+          cardBg: 'card-inner border-line ',
           iconBg: 'icon-box',
           badgeBg: 'badge-neutral',
           textColor: 'text-ink',
@@ -217,7 +217,7 @@ export const OverviewDashboard = ({
           subtitle: lang === 'tr' ? 'Tek tıkla güvenli JSON yedek indir veya geri yükle' : 'Offline-First Datensicherung & JSON Export',
           icon: Database,
           badge: 'Local DB',
-          cardBg: 'bg-surface border-line ',
+          cardBg: 'card-inner border-line ',
           iconBg: 'icon-box',
           badgeBg: 'badge-neutral',
           textColor: 'text-ink',
@@ -308,11 +308,9 @@ export const OverviewDashboard = ({
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      
-      {/* Top Executive Welcome Hub Banner */}
+
       <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden">
-        
-        {/* Top Header Row: Welcome & Chef Identity */}
+
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-3">
@@ -334,7 +332,6 @@ export const OverviewDashboard = ({
             </p>
           </div>
 
-          {/* Right: Symmetrical Executive Profile Card */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 shrink-0">
             {!isAdmin && (
               <button
@@ -352,7 +349,7 @@ export const OverviewDashboard = ({
 
             <div
               onClick={() => setShowChefModal(true)}
-              className="p-3.5 rounded-2xl bg-surface card-inner border border-line transition cursor-pointer flex items-center gap-3.5 group"
+              className="p-3.5 rounded-2xl card-inner border border-line transition cursor-pointer flex items-center gap-3.5 group"
               title={lang === 'tr' ? 'Özlük Dosyasını Aç (GAV Dossier)' : 'Personalakte öffnen (GAV Dossier)'}
             >
               <img
@@ -376,13 +373,12 @@ export const OverviewDashboard = ({
           </div>
         </div>
 
-        {/* Bottom Metrics Bar: Symmetrical 4-Card KPI Grid */}
         {isAdmin && (
           <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-3.5 mt-6 pt-5 border-t border-line">
-            {/* KPI 1: Lieferanten */}
+            
             <div
               onClick={() => onNavigate('suppliers')}
-              className="p-3.5 rounded-2xl bg-surface card-inner border border-line transition cursor-pointer group"
+              className="p-3.5 rounded-2xl card-inner border border-line transition cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
@@ -396,10 +392,9 @@ export const OverviewDashboard = ({
               <p className="text-[10px] text-ink-muted mt-0.5">Prodega, Hiestand, Pistor</p>
             </div>
 
-            {/* KPI 2: Mitarbeiter */}
             <div
               onClick={() => onNavigate('employees')}
-              className="p-3.5 rounded-2xl bg-surface card-inner border border-line transition cursor-pointer group"
+              className="p-3.5 rounded-2xl card-inner border border-line transition cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
@@ -413,10 +408,9 @@ export const OverviewDashboard = ({
               <p className="text-[10px] text-ink-muted mt-0.5">5 Departman Aktif</p>
             </div>
 
-            {/* KPI 3: Stempeluhr Live */}
             <div
               onClick={() => onNavigate('timeTracker')}
-              className="p-3.5 rounded-2xl bg-surface card-inner border border-line transition cursor-pointer group"
+              className="p-3.5 rounded-2xl card-inner border border-line transition cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
@@ -430,10 +424,9 @@ export const OverviewDashboard = ({
               <p className="text-[10px] text-ink-muted mt-0.5">Tablet Kiosk Terminali</p>
             </div>
 
-            {/* KPI 4: Offene Rechnungen */}
             <div
               onClick={() => onNavigate('invoices')}
-              className="p-3.5 rounded-2xl bg-surface card-inner border border-line transition cursor-pointer group"
+              className="p-3.5 rounded-2xl card-inner border border-line transition cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
@@ -450,20 +443,19 @@ export const OverviewDashboard = ({
         )}
       </div>
 
-      {/* Admin View: 3 Distinct Categorized Pillars Side-by-Side */}
       {isAdmin ? (
         <div className="space-y-4">
-          {/* Quick Category Filter Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 bg-surface p-2.5 rounded-2xl border border-line card-inner">
+          
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-surface p-2.5 rounded-2xl border border-line">
             <div className="flex flex-wrap items-center gap-2">
-              {/* Home Icon (Tüm Bölümleri Göster) */}
+              
               <button
                 onClick={() => setActiveCategoryFilter('all')}
                 title={lang === 'tr' ? 'Tüm Bölümleri Göster' : 'Alle Bereiche anzeigen'}
                 className={`p-2 rounded-lg text-xs font-bold transition flex items-center justify-center shrink-0 ${
                   activeCategoryFilter === 'all'
                     ? 'btn-brand font-black'
-                    : 'bg-subtle text-ink border border-line'
+                    : 'card-inner text-ink border border-line'
                 }`}
               >
                 <Home className="w-4 h-4" />
@@ -474,7 +466,7 @@ export const OverviewDashboard = ({
                 className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
                   activeCategoryFilter === 'hr'
                     ? 'btn-brand font-black'
-                    : 'bg-subtle text-ink border border-line'
+                    : 'card-inner text-ink border border-line'
                 }`}
               >
                 <Users2 className="w-3.5 h-3.5" />
@@ -486,7 +478,7 @@ export const OverviewDashboard = ({
                 className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
                   activeCategoryFilter === 'finance'
                     ? 'btn-brand font-black'
-                    : 'bg-subtle text-ink border border-line'
+                    : 'card-inner text-ink border border-line'
                 }`}
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
@@ -498,7 +490,7 @@ export const OverviewDashboard = ({
                 className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
                   activeCategoryFilter === 'operations'
                     ? 'btn-brand font-black'
-                    : 'bg-subtle text-ink border border-line'
+                    : 'card-inner text-ink border border-line'
                 }`}
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
@@ -507,7 +499,6 @@ export const OverviewDashboard = ({
             </div>
           </div>
 
-          {/* 3 Sütun Yan Yana (Responsive 3-Column Categorized Grid) */}
           <div className={`grid grid-cols-1 ${activeCategoryFilter === 'all' ? 'lg:grid-cols-3' : 'lg:grid-cols-1'} gap-6 items-start`}>
             {filteredAdminCategories.map((category) => {
               const CategoryIcon = category.icon;
@@ -516,7 +507,7 @@ export const OverviewDashboard = ({
                   key={category.id}
                   className="bg-surface rounded-3xl border border-line p-4 md:p-5 flex flex-col gap-4"
                 >
-                  {/* Cards inside this Category */}
+                  
                   <div className="space-y-3.5">
                     {category.modules.map((mod) => {
                       const Icon = mod.icon;
@@ -563,7 +554,6 @@ export const OverviewDashboard = ({
           </div>
         </div>
       ) : (
-        /* Employee View: Richly-colored cards */
         <div className="space-y-4">
           <div className="flex items-center justify-between px-1">
             <h2 className="text-sm font-black text-ink uppercase tracking-wider">
@@ -614,7 +604,6 @@ export const OverviewDashboard = ({
         </div>
       )}
 
-      {/* Chef Personalakte Dossier Modal */}
       {showChefModal && (
         <PersonalakteModal
           employee={currentUser}

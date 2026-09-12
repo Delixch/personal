@@ -159,7 +159,7 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
               return (
                 <div
                   key={item.id}
-                  className={`p-5 rounded-3xl bg-surface border transition flex flex-col justify-between ${
+                  className={`p-5 rounded-3xl card-inner border border-line transition flex flex-col justify-between ${
                     isOk ? 'border-line ' : 'border-brand-border bg-subtle'
                   }`}
                 >

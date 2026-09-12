@@ -170,8 +170,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
 
   return (
     <div className="space-y-6">
-      
-      {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
+
       <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
@@ -194,23 +193,22 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
           </button>
         </div>
 
-        {/* Quick KPI Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 pt-4 border-t border-line-soft">
-          <div className="p-3.5 rounded-2xl bg-surface card-inner border border-line">
+          <div className="p-3.5 rounded-2xl card-inner border border-line">
             <p className="text-[11px] text-subhead">{lang === 'tr' ? 'Ödenen Faturalar' : 'Bezahlte Rechnungen'}</p>
             <p className="text-lg font-black font-mono text-brand">
               {formatCurrency(totalPaid)}
             </p>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-surface card-inner border border-line">
+          <div className="p-3.5 rounded-2xl card-inner border border-line">
             <p className="text-[11px] text-subhead">{lang === 'tr' ? 'Açık / Bekleyen Borç' : 'Offene Verbindlichkeiten'}</p>
             <p className="text-lg font-black font-mono text-brand font-semibold">
               {formatCurrency(totalUnpaid)}
             </p>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-surface card-inner border border-line col-span-2 sm:col-span-1">
+          <div className="p-3.5 rounded-2xl card-inner border border-line col-span-2 sm:col-span-1">
             <p className="text-[11px] text-subhead">{lang === 'tr' ? 'Toplam Kayıtlı Fatura' : 'Gesamtzahl Belege'}</p>
             <p className="text-lg font-black font-mono text-ink">
               {invoices.length} {lang === 'tr' ? 'Adet' : 'Stück'}
@@ -219,7 +217,6 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
         </div>
       </div>
 
-      {/* Filter Tabs */}
       <div className="flex items-center gap-2">
         {[
           { id: 'all', label: lang === 'tr' ? 'Tüm Faturalar' : 'Alle Belege' },
@@ -232,7 +229,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition border ${
               activeFilter === tab.id
                 ? 'btn-brand font-black'
-                : 'bg-ground border border-line text-ink '
+                : 'card-inner border-line text-ink'
             }`}
           >
             {tab.label}
@@ -240,7 +237,6 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
         ))}
       </div>
 
-      {/* Invoices List */}
       <div className="bg-surface border border-line rounded-3xl p-6 card-inner">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-ink">
@@ -329,27 +325,25 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
         </div>
       </div>
 
-      {/* Interactive Scan Modal */}
       {showScanModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
-          <div className="w-full max-w-3xl rounded-3xl bg-white p-6 relative border border-slate-200 max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-3xl rounded-3xl bg-white p-6 relative border border-line max-h-[90vh] overflow-y-auto">
             
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+            <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
+              <h2 className="text-base font-bold text-ink flex items-center gap-2">
                 <ScanLine className="w-5 h-5 text-ink" />
                 <span>{t.scanInvoice}</span>
               </h2>
               <button
                 onClick={() => setShowScanModal(false)}
-                className="p-1.5 rounded-lg text-slate-400"
+                className="p-1.5 rounded-lg text-ink-muted"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Presets */}
-            <div className="mb-4 p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-              <p className="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2">
+            <div className="mb-4 p-3.5 rounded-2xl card-inner border border-line">
+              <p className="text-[11px] font-bold text-ink-soft uppercase tracking-wider mb-2">
                 ⚡ {lang === 'tr' ? 'Hızlı Test: Hazır Fatura Yükle' : 'Schnelltest: Musterrechnung laden'}:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -358,9 +352,9 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                     key={idx}
                     type="button"
                     onClick={() => handleApplyPreset(preset)}
-                    className="p-2.5 rounded-xl bg-white border border-slate-200 text-left transition text-xs group"
+                    className="p-2.5 rounded-xl bg-white border border-line text-left transition text-xs group"
                   >
-                    <p className="font-semibold text-slate-900 group- truncate">
+                    <p className="font-semibold text-ink group- truncate">
                       {preset.title}
                     </p>
                     <p className="text-[10px] font-mono font-bold text-ink">
@@ -372,13 +366,13 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left Column */}
+              
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-2">
+                <label className="block text-xs font-semibold text-ink-soft mb-2">
                   {lang === 'tr' ? 'Fatura Görseli / Kamera' : 'Rechnungsfoto / Beleg'}:
                 </label>
 
-                <div className="relative rounded-2xl border-2 border-dashed border-slate-300 transition p-6 text-center flex flex-col items-center justify-center min-h-[260px] bg-slate-50 overflow-hidden">
+                <div className="relative rounded-2xl border-2 border-dashed border-line transition p-6 text-center flex flex-col items-center justify-center min-h-[260px] card-inner overflow-hidden">
                   {isScanning && (
                     <div className="absolute inset-0 bg-surface z-10 flex flex-col items-center justify-center text-center p-4">
                       <div className="w-10 h-10 rounded-full border-4 border-line border-brand mb-3"></div>
@@ -402,13 +396,13 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-ink mb-3 border border-line">
                         <Upload className="w-6 h-6" />
                       </div>
-                      <p className="text-xs font-semibold text-slate-900 mb-1">
+                      <p className="text-xs font-semibold text-ink mb-1">
                         {lang === 'tr' ? 'Fatura dosyasını buraya bırakın' : 'Datei hierher ziehen oder auswählen'}
                       </p>
-                      <p className="text-[10px] text-slate-500 mb-4">
+                      <p className="text-[10px] text-ink-soft mb-4">
                         JPG, PNG, PDF oder Smartphone-Foto
                       </p>
-                      <label className="px-4 py-2 rounded-xl bg-surface card-inner text-ink text-xs font-bold cursor-pointer transition">
+                      <label className="px-4 py-2 rounded-xl card-inner text-ink text-xs font-bold cursor-pointer transition">
                         <span>Datei auswählen</span>
                         <input
                           type="file"
@@ -422,7 +416,6 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                 </div>
               </div>
 
-              {/* Right Column: AI Extracted Fields */}
               <div className="space-y-3">
                 <div className="flex items-center gap-1.5 text-xs font-bold text-ink">
                   <Sparkles className="w-4 h-4 text-ink" />
@@ -430,70 +423,70 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                  <label className="block text-[11px] font-semibold text-ink-soft mb-1">
                     Lieferant (Tedarikçi):
                   </label>
                   <input
                     type="text"
                     value={extractedData.supplierName}
                     onChange={(e) => setExtractedData({ ...extractedData, supplierName: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
+                    className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    <label className="block text-[11px] font-semibold text-ink-soft mb-1">
                       Rechnungs-Nr:
                     </label>
                     <input
                       type="text"
                       value={extractedData.invoiceNumber}
                       onChange={(e) => setExtractedData({ ...extractedData, invoiceNumber: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-mono focus:outline-none focus:border-line"
+                      className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs font-mono focus:outline-none focus:border-line"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    <label className="block text-[11px] font-semibold text-ink-soft mb-1">
                       Kategorie:
                     </label>
                     <input
                       type="text"
                       value={extractedData.category}
                       onChange={(e) => setExtractedData({ ...extractedData, category: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
+                      className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    <label className="block text-[11px] font-semibold text-ink-soft mb-1">
                       Rechnungsdatum:
                     </label>
                     <input
                       type="date"
                       value={extractedData.date}
                       onChange={(e) => setExtractedData({ ...extractedData, date: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
+                      className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    <label className="block text-[11px] font-semibold text-ink-soft mb-1">
                       Fälligkeit:
                     </label>
                     <input
                       type="date"
                       value={extractedData.dueDate}
                       onChange={(e) => setExtractedData({ ...extractedData, dueDate: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
+                      className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    <label className="block text-[11px] font-semibold text-ink-soft mb-1">
                       MwSt Satz (%):
                     </label>
                     <select
@@ -508,7 +501,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                           totalAmount: Number((extractedData.subtotal + tax).toFixed(2))
                         });
                       }}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
+                      className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-line"
                     >
                       <option value="2.6">2.6% (Lebensmittel CH)</option>
                       <option value="8.1">8.1% (Normalsatz CH)</option>
@@ -516,7 +509,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    <label className="block text-[11px] font-semibold text-ink-soft mb-1">
                       Gesamtbetrag (CHF):
                     </label>
                     <input
@@ -524,7 +517,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       step="0.05"
                       value={extractedData.totalAmount}
                       onChange={(e) => setExtractedData({ ...extractedData, totalAmount: parseFloat(e.target.value) || 0 })}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-ink font-extrabold font-mono text-xs focus:outline-none focus:border-line"
+                      className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink font-extrabold font-mono text-xs focus:outline-none focus:border-line"
                     />
                   </div>
                 </div>
@@ -546,25 +539,24 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
         </div>
       )}
 
-      {/* Invoice Detail Modal */}
       {selectedInvoice && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
-          <div className="w-full max-w-md rounded-3xl bg-white p-6 relative border border-slate-200">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 relative border border-line">
+            <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
               <div>
                 <span className="badge badge-purple text-[10px] mb-1">{selectedInvoice.category}</span>
-                <h3 className="font-bold text-slate-900 text-base">{selectedInvoice.supplierName}</h3>
-                <p className="text-xs font-mono text-slate-500">{selectedInvoice.invoiceNumber}</p>
+                <h3 className="font-bold text-ink text-base">{selectedInvoice.supplierName}</h3>
+                <p className="text-xs font-mono text-ink-soft">{selectedInvoice.invoiceNumber}</p>
               </div>
               <button
                 onClick={() => setSelectedInvoice(null)}
-                className="p-1.5 rounded-lg text-slate-400"
+                className="p-1.5 rounded-lg text-ink-muted"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="rounded-2xl overflow-hidden mb-4 border border-slate-200 max-h-56 bg-slate-50">
+            <div className="rounded-2xl overflow-hidden mb-4 border border-line max-h-56 card-inner">
               <img
                 src={selectedInvoice.imageUrl}
                 alt="Beleg"
@@ -572,28 +564,28 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
               />
             </div>
 
-            <div className="space-y-2 text-xs text-slate-700 bg-slate-50 p-3.5 rounded-xl border border-slate-200 mb-4">
+            <div className="space-y-2 text-xs text-ink-soft card-inner p-3.5 rounded-xl border border-line mb-4">
               <div className="flex items-center justify-between">
-                <span className="text-slate-500">Rechnungsdatum:</span>
-                <span className="font-semibold text-slate-900">{formatDate(selectedInvoice.date)}</span>
+                <span className="text-ink-soft">Rechnungsdatum:</span>
+                <span className="font-semibold text-ink">{formatDate(selectedInvoice.date)}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-500">Fälligkeit:</span>
+                <span className="text-ink-soft">Fälligkeit:</span>
                 <span className="font-semibold text-brand">{formatDate(selectedInvoice.dueDate)}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-500">MwSt ({selectedInvoice.taxRate}%):</span>
-                <span className="font-mono text-slate-800">{formatCurrency(selectedInvoice.taxAmount)}</span>
+                <span className="text-ink-soft">MwSt ({selectedInvoice.taxRate}%):</span>
+                <span className="font-mono text-ink">{formatCurrency(selectedInvoice.taxAmount)}</span>
               </div>
-              <div className="flex items-center justify-between pt-1 border-t border-slate-200 font-bold text-sm">
-                <span className="text-slate-900">Gesamtbetrag:</span>
+              <div className="flex items-center justify-between pt-1 border-t border-line font-bold text-sm">
+                <span className="text-ink">Gesamtbetrag:</span>
                 <span className="font-mono text-ink">{formatCurrency(selectedInvoice.totalAmount)}</span>
               </div>
             </div>
 
             <button
               onClick={() => setSelectedInvoice(null)}
-              className="w-full py-2 rounded-xl bg-slate-100 text-xs text-slate-700 font-semibold transition"
+              className="w-full py-2 rounded-xl bg-subtle text-xs text-ink-soft font-semibold transition"
             >
               Schliessen
             </button>

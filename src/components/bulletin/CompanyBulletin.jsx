@@ -1,94 +1,80 @@
 import React, { useState } from 'react';
-import {
-  Megaphone,
-  Pin,
-  Plus,
-  Eye,
-  Calendar,
-  User,
-  AlertCircle,
-  Tag,
-  MessageSquare,
-  CheckCircle2,
-  Sparkles
-} from 'lucide-react';
-import { StorageService } from '../../services/storage';
-import { formatDate } from '../../utils/formatters';
+import { Megaphone, Pin, Plus, Calendar, User, Eye, CheckCircle2 } from 'lucide-react';
+import { SEED_BULLETINS } from '../../services/seedData';
 
-export const CompanyBulletin = ({ lang, currentUser }) => {
-  const [bulletins, setBulletins] = useState(() => StorageService.getBulletins());
+export const CompanyBulletin = ({ lang, isAdmin }) => {
+  const [bulletins, setBulletins] = useState(SEED_BULLETINS);
+  const [filterCategory, setFilterCategory] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
+  
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('info');
   const [isPinned, setIsPinned] = useState(false);
-  const [filterCategory, setFilterCategory] = useState('all');
 
-  const isAdmin = currentUser?.role === 'admin';
+  const filteredBulletins = bulletins.filter(b => {
+    if (filterCategory === 'all') return true;
+    return b.category === filterCategory;
+  });
 
   const handleAddBulletin = (e) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
 
-    const newBul = StorageService.addBulletin({
-      title: title.trim(),
-      titleTr: title.trim(),
-      content: content.trim(),
-      contentTr: content.trim(),
+    const newBulletin = {
+      id: `bulletin_${Date.now()}`,
+      title,
+      content,
       category,
-      author: currentUser?.name || 'Geschäftsleitung',
-      pinned: isPinned
-    });
+      pinned: isPinned,
+      date: new Date().toISOString().split('T')[0],
+      author: 'Geschäftsleitung',
+      views: 1
+    };
 
-    setBulletins(StorageService.getBulletins());
+    if (isPinned) {
+      setBulletins([newBulletin, ...bulletins]);
+    } else {
+      setBulletins([...bulletins, newBulletin]);
+    }
+
     setTitle('');
     setContent('');
+    setIsPinned(false);
     setShowAddModal(false);
   };
-
-  const filteredBulletins = bulletins
-    .filter(b => filterCategory === 'all' || b.category === filterCategory)
-    .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
 
   const getCategoryBadge = (cat) => {
     switch (cat) {
       case 'urgent':
-        return (
-          <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider btn-brand/10 text-brand border border-line/20 inline-flex items-center gap-1">
-            🚨 {lang === 'tr' ? 'ACİL / DRINGEND' : 'DRINGEND'}
-          </span>
-        );
+        return <span className="badge badge-rose font-bold text-[10px] uppercase">🚨 Dringend</span>;
       case 'rule':
-        return (
-          <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-subtle/10 text-brand border border-line/20 inline-flex items-center gap-1">
-            📋 {lang === 'tr' ? 'KURAL & TALİMAT' : 'REGEL & VORSCHRIFT'}
-          </span>
-        );
+        return <span className="badge badge-amber font-bold text-[10px] uppercase">📋 Regel</span>;
       case 'event':
-        return (
-          <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-subtle/10 text-ink border border-line/20 inline-flex items-center gap-1">
-            🎉 {lang === 'tr' ? 'ETKİNLİK' : 'EVENT'}
-          </span>
-        );
+        return <span className="badge badge-purple font-bold text-[10px] uppercase">🎉 Event</span>;
       default:
-        return (
-          <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-subtle/10 text-ink border border-line/20 inline-flex items-center gap-1">
-            ℹ️ {lang === 'tr' ? 'BİLGİ' : 'INFORMATION'}
-          </span>
-        );
+        return <span className="badge badge-sky font-bold text-[10px] uppercase">ℹ️ Info</span>;
     }
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return dateStr;
+    return `${parts[2]}.${parts[1]}.${parts[0]}`;
   };
 
   return (
     <div className="space-y-6">
-      
-      {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
       <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <h1 className="page-title text-ink">
-              {lang === 'tr' ? 'Şirket Duyuru Panosu & Notlar' : 'Schwarzes Brett & Bekanntmachungen'}
-            </h1>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Megaphone className="w-5 h-5 text-brand" />
+              <h1 className="text-xl sm:text-2xl font-black text-ink">
+                {lang === 'tr' ? 'Şirket Duyuru Panosu' : 'Schwarzes Brett & Mitteilungen'}
+              </h1>
+            </div>
             <p className="text-subhead text-ink-soft max-w-2xl leading-relaxed mt-1">
               {lang === 'tr'
                 ? 'Patron ve yönetimin tüm ekibe doğrudan duyurduğu önemli talimatlar, çalışma kuralları ve etkinlik bildirimleri.'
@@ -109,14 +95,13 @@ export const CompanyBulletin = ({ lang, currentUser }) => {
           </div>
         </div>
 
-        {/* Filter Pills */}
         <div className="flex flex-wrap gap-2 mt-6 border-t border-line-soft pt-4">
           <button
             onClick={() => setFilterCategory('all')}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
               filterCategory === 'all'
                 ? 'btn-brand text-white font-black'
-                : 'bg-ground border border-line text-subhead  '
+                : 'card-inner border border-line text-ink'
             }`}
           >
             {lang === 'tr' ? 'Tümü' : 'Alle Bekanntmachungen'} ({bulletins.length})
@@ -126,7 +111,7 @@ export const CompanyBulletin = ({ lang, currentUser }) => {
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
               filterCategory === 'urgent'
                 ? 'btn-brand text-white font-black'
-                : 'bg-ground border border-line text-subhead  '
+                : 'card-inner border border-line text-ink'
             }`}
           >
             🚨 {lang === 'tr' ? 'Acil Duyurular' : 'Dringend'}
@@ -136,7 +121,7 @@ export const CompanyBulletin = ({ lang, currentUser }) => {
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
               filterCategory === 'rule'
                 ? 'btn-brand text-white font-black'
-                : 'bg-ground border border-line text-subhead  '
+                : 'card-inner border border-line text-ink'
             }`}
           >
             📋 {lang === 'tr' ? 'Kurallar & Talimatlar' : 'Regeln'}
@@ -146,7 +131,7 @@ export const CompanyBulletin = ({ lang, currentUser }) => {
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
               filterCategory === 'info'
                 ? 'btn-brand text-white font-black'
-                : 'bg-ground border border-line text-subhead  '
+                : 'card-inner border border-line text-ink'
             }`}
           >
             ℹ️ {lang === 'tr' ? 'Genel Bilgi' : 'Infos'}
@@ -154,14 +139,13 @@ export const CompanyBulletin = ({ lang, currentUser }) => {
         </div>
       </div>
 
-      {/* Bulletin Cards Feed */}
       <div className="space-y-4">
         {filteredBulletins.map((item) => {
           return (
             <div
               key={item.id}
-              className={`p-6 rounded-3xl bg-surface border transition relative overflow-hidden ${
-                item.pinned ? 'border-brand ring-2 ring-brand/20' : 'border-line '
+              className={`p-6 rounded-3xl card-inner border border-line transition relative overflow-hidden ${
+                item.pinned ? 'border-brand ring-2 ring-brand/20' : ''
               }`}
             >
               {item.pinned && (
@@ -208,7 +192,6 @@ export const CompanyBulletin = ({ lang, currentUser }) => {
         })}
       </div>
 
-      {/* Add Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
           <div className="w-full max-w-lg bg-surface rounded-3xl p-6 border border-line card-inner">
@@ -230,7 +213,7 @@ export const CompanyBulletin = ({ lang, currentUser }) => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="z.B. Neue Öffnungszeiten am Feiertag..."
-                  className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
+                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
                 />
               </div>
 
@@ -241,7 +224,7 @@ export const CompanyBulletin = ({ lang, currentUser }) => {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
+                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
                 >
                   <option value="info">ℹ️ Information (Genel Bilgi)</option>
                   <option value="urgent">🚨 Dringend (Acil Duyuru)</option>
@@ -260,7 +243,7 @@ export const CompanyBulletin = ({ lang, currentUser }) => {
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Inhalt der Bekanntmachung hier eingeben..."
-                  className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
+                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
                 />
               </div>
 
@@ -281,7 +264,7 @@ export const CompanyBulletin = ({ lang, currentUser }) => {
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-xl bg-surface card-inner text-ink-soft text-xs font-semibold transition"
+                  className="px-4 py-2 rounded-xl card-inner text-ink-soft text-xs font-semibold transition"
                 >
                   {lang === 'tr' ? 'İptal' : 'Abbrechen'}
                 </button>

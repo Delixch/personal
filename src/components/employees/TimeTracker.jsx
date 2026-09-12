@@ -132,8 +132,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
 
   return (
     <div className="space-y-6">
-      
-      {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
+
       <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
@@ -148,8 +147,8 @@ export const TimeTracker = ({ lang, currentUser }) => {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 shrink-0">
-            {/* Mode Switcher */}
-            <div className="flex bg-surface card-inner p-1 rounded-2xl border border-line">
+            
+            <div className="flex card-inner p-1 rounded-2xl border border-line">
               <button
                 onClick={() => setTrackerMode('personal')}
                 className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
@@ -174,8 +173,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
               </button>
             </div>
 
-            {/* Live Digital Clock */}
-            <div className="bg-surface card-inner border border-line px-4 py-2.5 rounded-2xl flex items-center gap-2.5">
+            <div className="card-inner border border-line px-4 py-2.5 rounded-2xl flex items-center gap-2.5">
               <Clock className="w-4 h-4 text-brand icon-brand" />
               <div className="font-mono text-lg md:text-xl font-black tracking-wider text-ink">
                 {formattedHours}:{formattedMins}:<span className="text-brand">{formattedSecs}</span>
@@ -185,7 +183,6 @@ export const TimeTracker = ({ lang, currentUser }) => {
         </div>
       </div>
 
-      {/* MODE 1: TABLET PIN TERMINAL (KIOSK) */}
       {trackerMode === 'kiosk' && (
         <div className="max-w-xl mx-auto p-8 rounded-3xl bg-surface border border-line text-center card-inner">
           
@@ -203,7 +200,6 @@ export const TimeTracker = ({ lang, currentUser }) => {
             </p>
           </div>
 
-          {/* Feedback Message */}
           {kioskFeedback && (
             <div className={`p-3 rounded-2xl mb-4 text-xs font-bold flex items-center justify-center gap-2 ${
               kioskFeedback.type === 'success'
@@ -215,9 +211,8 @@ export const TimeTracker = ({ lang, currentUser }) => {
             </div>
           )}
 
-          {/* If Employee is Identified by PIN */}
           {kioskEmp && !kioskFeedback ? (
-            <div className="p-6 rounded-3xl bg-surface card-inner border border-line mb-6">
+            <div className="p-6 rounded-3xl card-inner border border-line mb-6">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <img
                   src={kioskEmp.avatar}
@@ -242,7 +237,6 @@ export const TimeTracker = ({ lang, currentUser }) => {
                 )}
               </div>
 
-              {/* Big Touch Action Buttons */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {!kioskActiveLog ? (
                   <button
@@ -256,7 +250,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
                   <>
                     <button
                       onClick={() => handleKioskAction('break')}
-                      className="py-3.5 rounded-2xl bg-surface card-inner text-ink border border-line font-bold text-xs flex items-center justify-center gap-1.5 transition"
+                      className="py-3.5 rounded-2xl card-inner text-ink border border-line font-bold text-xs flex items-center justify-center gap-1.5 transition"
                     >
                       <Coffee className="w-4 h-4 text-brand icon-brand" />
                       <span>{lang === 'tr' ? '☕ 30 Dk Mola' : '☕ 30m Pause'}</span>
@@ -280,10 +274,8 @@ export const TimeTracker = ({ lang, currentUser }) => {
               </button>
             </div>
           ) : (
-            /* Touch PIN Display & Keypad */
             <div className="space-y-6">
-              
-              {/* PIN Dots Display */}
+
               <div className="flex items-center justify-center gap-4 py-2">
                 {[0, 1, 2, 3].map((idx) => {
                   const isFilled = pinDigits.length > idx;
@@ -300,13 +292,12 @@ export const TimeTracker = ({ lang, currentUser }) => {
                 })}
               </div>
 
-              {/* Touch Numpad */}
               <div className="grid grid-cols-3 gap-3 max-w-xs mx-auto">
                 {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((num) => (
                   <button
                     key={num}
                     onClick={() => handlePinPress(num)}
-                    className="h-16 rounded-2xl bg-ground active:bg-surface card-inner border border-line text-ink text-2xl font-black transition"
+                    className="h-16 rounded-2xl bg-ground active:card-inner border border-line text-ink text-2xl font-black transition"
                   >
                     {num}
                   </button>
@@ -314,14 +305,14 @@ export const TimeTracker = ({ lang, currentUser }) => {
                 
                 <button
                   onClick={handleClearPin}
-                  className="h-16 rounded-2xl bg-surface card-inner border border-line text-brand text-xs font-bold transition flex items-center justify-center"
+                  className="h-16 rounded-2xl card-inner border border-line text-brand text-xs font-bold transition flex items-center justify-center"
                 >
                   C (Löschen)
                 </button>
                 
                 <button
                   onClick={() => handlePinPress('0')}
-                  className="h-16 rounded-2xl bg-ground active:bg-surface card-inner border border-line text-ink text-2xl font-black transition"
+                  className="h-16 rounded-2xl bg-ground active:card-inner border border-line text-ink text-2xl font-black transition"
                 >
                   0
                 </button>
@@ -330,13 +321,12 @@ export const TimeTracker = ({ lang, currentUser }) => {
                   onClick={() => {
                     if (pinDigits.length > 0) setPinDigits(pinDigits.slice(0, -1));
                   }}
-                  className="h-16 rounded-2xl bg-surface card-inner border border-line text-ink text-sm font-bold transition flex items-center justify-center"
+                  className="h-16 rounded-2xl card-inner border border-line text-ink text-sm font-bold transition flex items-center justify-center"
                 >
                   ⌫
                 </button>
               </div>
 
-              {/* Demo Helper Chips */}
               <div className="pt-4 border-t border-line-soft">
                 <p className="text-[11px] text-subhead mb-2 font-medium">
                   {lang === 'tr' ? 'Hızlı Test PIN Kodları:' : 'Demo PIN-Schnellauswahl:'}
@@ -349,7 +339,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
                         setPinDigits(e.pin);
                         setKioskEmp(e);
                       }}
-                      className="px-2.5 py-1 rounded-xl bg-surface card-inner text-ink text-[11px] font-semibold border border-line transition"
+                      className="px-2.5 py-1 rounded-xl card-inner text-ink text-[11px] font-semibold border border-line transition"
                     >
                       {e.name.split(' ')[0]}: <span className="font-mono font-bold text-brand">{e.pin}</span>
                     </button>
@@ -363,11 +353,9 @@ export const TimeTracker = ({ lang, currentUser }) => {
         </div>
       )}
 
-      {/* MODE 2: PERSONAL DASHBOARD + STAFF BOARD */}
       {trackerMode === 'personal' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Left Column: Current Employee Punch Card */}
+
           <div className="bg-surface border border-line rounded-3xl p-6 flex flex-col justify-between card-inner">
             <div>
               <div className="flex items-center gap-3 mb-4">
@@ -382,8 +370,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
                 </div>
               </div>
 
-              {/* Status Card */}
-              <div className="p-4 rounded-2xl bg-surface card-inner border border-line mb-6 text-center">
+              <div className="p-4 rounded-2xl card-inner border border-line mb-6 text-center">
                 <p className="text-xs text-subhead mb-1">
                   {lang === 'tr' ? 'Şu Anki Durum' : 'Aktueller Status'}
                 </p>
@@ -416,7 +403,6 @@ export const TimeTracker = ({ lang, currentUser }) => {
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="space-y-2.5">
               {!currentLog ? (
                 <button
@@ -430,7 +416,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
                 <div className="space-y-2">
                   <button
                     onClick={handleAddBreak}
-                    className="w-full py-2.5 rounded-2xl bg-surface card-inner text-ink border border-line font-bold text-xs flex items-center justify-center gap-2 transition"
+                    className="w-full py-2.5 rounded-2xl card-inner text-ink border border-line font-bold text-xs flex items-center justify-center gap-2 transition"
                   >
                     <Coffee className="w-4 h-4 text-brand icon-brand" />
                     <span>{t.breakStart}</span>
@@ -448,7 +434,6 @@ export const TimeTracker = ({ lang, currentUser }) => {
             </div>
           </div>
 
-          {/* Right 2 Columns: Live Presence Board */}
           <div className="lg:col-span-2 bg-surface border border-line rounded-3xl p-6 card-inner">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-bold text-ink flex items-center gap-2">
@@ -472,7 +457,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
                 return (
                   <div
                     key={emp.id}
-                    className="p-3 rounded-2xl bg-surface card-inner border border-line flex items-center justify-between gap-3"
+                    className="p-3 rounded-2xl card-inner border border-line flex items-center justify-between gap-3"
                   >
                     <div className="flex items-center gap-2.5 truncate">
                       <img
@@ -516,7 +501,6 @@ export const TimeTracker = ({ lang, currentUser }) => {
               })}
             </div>
 
-            {/* Today's Log Table */}
             <div className="border-t border-line-soft pt-4">
               <h3 className="text-xs font-bold text-ink uppercase tracking-wider mb-3">
                 {lang === 'tr' ? 'Son Giriş-Çıkış Hareketleri' : 'Protokollierte Zeiterfassungen'}:

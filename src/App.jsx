@@ -183,7 +183,6 @@ export function App() {
   return (
     <div className="min-h-screen bg-ground text-ink flex flex-col font-sans">
 
-      {/* Top Navigation */}
       <Navbar
         currentUser={currentUser}
         onUserChange={handleUserChange}
@@ -195,13 +194,11 @@ export function App() {
         onGoHome={() => navigateToTab('dashboard')}
       />
 
-      {/* Main Body */}
       <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
 
-        {/* Breadcrumb & Global Quick Switcher Bar — modül açıkken gösterilir */}
         {isModuleOpen && (
           <div className="space-y-4 mb-6">
-            {/* Top Breadcrumb Header */}
+            
             <div className="flex items-center justify-between pb-3 border-b border-line">
               <button
                 onClick={() => navigateToTab('dashboard')}
@@ -224,59 +221,50 @@ export function App() {
               </div>
             </div>
 
-            {/* Global 3 Category Quick Switcher Bar (Overview Dashboard ile 100% Senkron) */}
             <div className="p-2.5 rounded-2xl bg-surface border border-line flex items-center justify-between gap-2 overflow-x-auto">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-[10px] font-black text-ink-muted uppercase tracking-wider px-2 shrink-0">
-                  {lang === 'tr' ? 'Ana Bölümler:' : 'Hauptbereiche:'}
-                </span>
-
-                {/* Home Icon (Tüm Bölümleri Göster) */}
                 <button
                   onClick={() => handleCategorySelect('all')}
                   title={lang === 'tr' ? 'Tüm Bölümleri Göster' : 'Alle Bereiche anzeigen'}
                   className={`p-2 rounded-lg text-xs font-bold transition flex items-center justify-center shrink-0 ${
                     activeCategoryFilter === 'all'
                       ? 'btn-brand font-black'
-                      : 'bg-ground border border-line text-ink'
+                      : 'card-inner text-ink border border-line'
                   }`}
                 >
                   <Home className="w-4 h-4" />
                 </button>
 
-                {/* 1. Personal & Schichten (5 Modül) */}
                 <button
                   onClick={() => handleCategorySelect(activeCategoryFilter === 'hr' ? 'all' : 'hr')}
                   className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
                     activeCategoryFilter === 'hr'
                       ? 'btn-brand font-black'
-                      : 'bg-ground border border-line text-ink'
+                      : 'card-inner text-ink border border-line'
                   }`}
                 >
                   <Users2 className="w-3.5 h-3.5" />
                   <span>{lang === 'tr' ? 'Personal & Vardiya (5)' : 'Personal & Schichten (5)'}</span>
                 </button>
 
-                {/* 2. Einkauf & Finanzen (3 Modül) */}
                 <button
                   onClick={() => handleCategorySelect(activeCategoryFilter === 'finance' ? 'all' : 'finance')}
                   className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
                     activeCategoryFilter === 'finance'
                       ? 'btn-brand font-black'
-                      : 'bg-ground border border-line text-ink'
+                      : 'card-inner text-ink border border-line'
                   }`}
                 >
                   <ShoppingBag className="w-3.5 h-3.5" />
                   <span>{lang === 'tr' ? 'Alışveriş, Fatura & Kasa (3)' : 'Einkauf & Finanzen (3)'}</span>
                 </button>
 
-                {/* 3. Betrieb & Hygiene (3 Modül) */}
                 <button
                   onClick={() => handleCategorySelect(activeCategoryFilter === 'operations' ? 'all' : 'operations')}
                   className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
                     activeCategoryFilter === 'operations'
                       ? 'btn-brand font-black'
-                      : 'bg-ground border border-line text-ink'
+                      : 'card-inner text-ink border border-line'
                   }`}
                 >
                   <ShieldCheck className="w-3.5 h-3.5" />
@@ -287,7 +275,6 @@ export function App() {
           </div>
         )}
 
-        {/* Aktif Ekran */}
         {isModuleOpen ? (
           <div className="bg-surface rounded-3xl border border-line p-6 sm:p-8 space-y-6">
             {renderTabContent()}
@@ -297,7 +284,6 @@ export function App() {
         )}
       </main>
 
-      {/* Login Modal */}
       <LoginModal
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}

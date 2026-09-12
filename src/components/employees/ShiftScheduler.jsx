@@ -119,8 +119,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
   return (
     <div className="space-y-6">
-      
-      {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
+
       <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
@@ -132,7 +131,6 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
             </p>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setWeekOffset(prev => prev - 1)}
@@ -165,9 +163,8 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
           </div>
         </div>
 
-        {/* Sick Alert Warning Bar if any */}
         {sickAlerts.length > 0 && (
-          <div className="mt-4 p-3.5 rounded-2xl bg-surface card-inner border border-brand-border flex items-center justify-between gap-3 text-brand text-xs">
+          <div className="mt-4 p-3.5 rounded-2xl card-inner border border-brand-border flex items-center justify-between gap-3 text-brand text-xs">
             <div className="flex items-center gap-2 font-bold">
               <ShieldAlert className="w-4 h-4 text-brand icon-brand shrink-0" />
               <span>
@@ -179,14 +176,13 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
           </div>
         )}
 
-        {/* Department Filters */}
         <div className="flex items-center gap-2 mt-6 pt-4 border-t border-line-soft overflow-x-auto pb-1">
           <button
             onClick={() => setSelectedDept('all')}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition border ${
               selectedDept === 'all'
                 ? 'btn-brand text-white'
-                : 'bg-ground border-line text-ink '
+                : 'card-inner border-line text-ink'
             }`}
           >
             {lang === 'tr' ? 'Tüm Departmanlar' : 'Alle Abteilungen'}
@@ -198,7 +194,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition border flex items-center gap-1.5 ${
                 selectedDept === dept.id
                   ? 'btn-brand text-white'
-                  : 'bg-ground border-line text-ink '
+                  : 'card-inner border-line text-ink'
               }`}
             >
               {getDepartmentIcon(dept.id)}
@@ -208,7 +204,6 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
         </div>
       </div>
 
-      {/* 7-Day Weekly Grid */}
       <div className="grid grid-cols-1 md:grid-cols-7 gap-3">
         {weekDays.map((dateStr, idx) => {
           const dayName = lang === 'tr' ? dayNamesTr[idx] : dayNamesDe[idx];
@@ -218,13 +213,13 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
           return (
             <div
               key={dateStr}
-              className={`rounded-2xl border p-3 flex flex-col min-h-[360px] ${
+              className={`rounded-2xl border p-3 flex flex-col min-h-[360px] card-inner ${
                 isToday
-                  ? 'bg-subtle border-brand'
-                  : 'bg-surface border-line'
+                  ? 'border-brand font-bold'
+                  : 'border-line'
               }`}
             >
-              {/* Day Header */}
+              
               <div className="flex items-center justify-between border-b border-line-soft pb-2 mb-2.5">
                 <div>
                   <span className={`text-xs font-extrabold uppercase ${isToday ? 'text-brand font-black' : 'text-ink'}`}>
@@ -237,7 +232,6 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                 )}
               </div>
 
-              {/* Day Shifts List */}
               <div className="flex-1 space-y-2 overflow-y-auto">
                 {dayShifts.length === 0 ? (
                   <div className="h-full flex items-center justify-center text-center py-8 text-[11px] text-ink-muted">
@@ -254,7 +248,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                         className={`p-2.5 rounded-xl border transition text-left flex flex-col justify-between ${
                           isSick
                             ? 'bg-subtle border-brand-border text-brand font-semibold'
-                            : 'bg-ground border-line  text-ink'
+                            : 'bg-subtle border-line text-ink'
                         }`}
                       >
                         <div>
@@ -289,7 +283,6 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                           )}
                         </div>
 
-                        {/* Sick Alert & Reassign Button */}
                         {isSick && (
                           <div className="mt-2 pt-2 border-t border-line-soft">
                             <div className="flex items-center gap-1 text-[10px] font-bold text-brand mb-1">
@@ -315,7 +308,6 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
         })}
       </div>
 
-      {/* Add Shift Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
           <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line text-ink card-inner">
@@ -340,7 +332,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                 <select
                   value={formData.employeeId}
                   onChange={(e) => setFormData({ ...formData, employeeId: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                 >
                   {employees.map(emp => (
                     <option key={emp.id} value={emp.id}>
@@ -358,7 +350,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   <select
                     value={formData.shiftType}
                     onChange={(e) => setFormData({ ...formData, shiftType: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                    className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                   >
                     <option value="frueh">Frühschicht (08:00 - 16:30)</option>
                     <option value="spaet">Spätschicht (16:00 - 00:30)</option>
@@ -373,7 +365,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   <select
                     value={formData.department}
                     onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                    className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                   >
                     {SEED_DEPARTMENTS.map(d => (
                       <option key={d.id} value={d.id}>
@@ -393,7 +385,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   required
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                 />
               </div>
 
@@ -406,7 +398,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   placeholder={lang === 'tr' ? 'Örn: Hazırlık & servis' : 'z.B. Vorbereitung & Abendservice'}
-                  className="w-full px-3 py-2 rounded-xl bg-surface card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
                 />
               </div>
 
@@ -423,7 +415,6 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
         </div>
       )}
 
-      {/* Replace Employee Modal */}
       {showReplaceModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
           <div className="w-full max-w-sm rounded-3xl bg-surface p-5 relative border border-line text-ink card-inner">
@@ -444,7 +435,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   <button
                     key={emp.id}
                     onClick={() => handleReplaceEmployee(showReplaceModal, emp.id)}
-                    className="w-full flex items-center justify-between p-2.5 rounded-xl bg-surface card-inner border border-line text-left transition text-xs"
+                    className="w-full flex items-center justify-between p-2.5 rounded-xl card-inner border border-line text-left transition text-xs"
                   >
                     <div className="flex items-center gap-2.5 truncate">
                       <img
@@ -464,7 +455,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
             <button
               onClick={() => setShowReplaceModal(null)}
-              className="w-full py-2 rounded-xl bg-surface card-inner text-xs font-bold text-ink border border-line transition"
+              className="w-full py-2 rounded-xl card-inner text-xs font-bold text-ink border border-line transition"
             >
               {lang === 'tr' ? 'İptal' : 'Abbrechen'}
             </button>

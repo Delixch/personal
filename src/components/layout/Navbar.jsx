@@ -52,7 +52,6 @@ export const Navbar = ({
     <header className="sticky top-0 z-40 w-full border-b border-line bg-surface">
       <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
 
-        {/* Brand — tıklayınca dashboard'a dön */}
         <div
           onClick={onGoHome}
           className="flex items-center gap-3 cursor-pointer group"
@@ -60,7 +59,7 @@ export const Navbar = ({
         >
           <div className="relative flex items-center justify-center w-10 h-10 rounded-xl icon-box font-black transition">
             <Building2 className="w-5 h-5" />
-            {/* Canlı gösterge noktası */}
+            
             <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full rounded-full bg-brand opacity-60"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand"></span>
@@ -82,10 +81,8 @@ export const Navbar = ({
           </div>
         </div>
 
-        {/* Sağ araçlar */}
         <div className="flex items-center gap-2 sm:gap-3">
 
-          {/* Patron / Personel Hızlı Geçiş */}
           {currentUser?.role !== 'admin' ? (
             <button
               onClick={() => {
@@ -99,13 +96,12 @@ export const Navbar = ({
               <span className="text-body-sm">{lang === 'tr' ? '👑 Patron Ekranına Dön' : '👑 Zum Chef-Modus'}</span>
             </button>
           ) : (
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface card-inner border border-line text-ink font-bold text-xs">
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl card-inner border border-line text-ink font-bold text-xs">
               <ShieldCheck className="w-4 h-4 text-brand icon-brand" />
               <span className="text-body-sm">{lang === 'tr' ? 'Patron / Yönetici' : 'Chef-Modus aktiv'}</span>
             </div>
           )}
 
-          {/* Dil Değiştirici */}
           <button
             onClick={() => onLangChange(lang === 'de' ? 'tr' : 'de')}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line bg-surface icon-brand sub-title transition card-inner"
@@ -115,7 +111,6 @@ export const Navbar = ({
             <span className="text-body-sm">{lang.toUpperCase()}</span>
           </button>
 
-          {/* Bildirimler */}
           <div className="relative">
             <button
               onClick={() => {
@@ -159,7 +154,7 @@ export const Navbar = ({
                         className={`p-3 rounded-xl border transition ${
                           n.type === 'warning'
                             ? 'bg-brand-light border-brand-border text-brand-deep'
-                            : 'bg-ground border-line text-ink '
+                            : 'card-inner border-line text-ink '
                         }`}
                       >
                         <div className="flex items-start gap-2.5">
@@ -177,7 +172,6 @@ export const Navbar = ({
             )}
           </div>
 
-          {/* Kullanıcı / Rol Değiştirici */}
           <div className="relative">
             <button
               onClick={() => setShowUserDropdown(!showUserDropdown)}
@@ -248,7 +242,7 @@ export const Navbar = ({
                       setShowUserDropdown(false);
                       onOpenLoginModal();
                     }}
-                    className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-surface card-inner text-xs font-semibold text-ink transition border border-line"
+                    className="w-full flex items-center justify-center gap-2 py-2 rounded-xl card-inner text-xs font-semibold text-ink transition border border-line"
                   >
                     <UserCheck className="w-3.5 h-3.5 text-brand icon-brand" />
                     <span className="text-body-sm">{lang === 'tr' ? 'Şifre ile Giriş Ekranı' : 'Mit Passwort einloggen'}</span>

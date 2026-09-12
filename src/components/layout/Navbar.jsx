@@ -218,7 +218,7 @@ export const Navbar = ({
 
               {showUserDropdown && (
                 <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-surface border border-line p-3 z-50 card-inner shadow-2xl">
-                                    {currentUser?.role === 'admin' && (
+                  {isSuperUser && (
                     <>
                       <div className="px-3 py-2 border-b border-line-soft mb-2">
                         <p className="text-[11px] font-bold text-ink-muted uppercase tracking-wider">
@@ -231,7 +231,10 @@ export const Navbar = ({
                           return (
                             <button
                               key={emp.id}
-                              onClick={() => handleSelectUser(emp)}
+                              onClick={() => {
+                                const impUser = { ...emp, isImpersonated: true };
+                                handleSelectUser(impUser);
+                              }}
                               className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-left text-xs transition ${
                                 isSelected
                                   ? 'bg-brand-light text-brand-hover font-bold border border-brand-border'

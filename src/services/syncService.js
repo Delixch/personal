@@ -73,15 +73,16 @@ export const SyncService = {
 
 
   pushEmployee: async (emp) => {
-    if (!SyncService.isLive() || !emp.pin) return;
+    if (!SyncService.isLive() || !emp.pin || !emp.email) return;
     try {
       await supabase.from('mitarbeiter').upsert({
         name: emp.name,
         pin: emp.pin,
+        email: emp.email,
+        password: emp.password || null,
         rolle: emp.role === 'admin' ? 'admin' : 'mitarbeiter',
         stundenlohn: emp.hourlyRate || 25,
         pensum: emp.pensum || 100,
-        email: emp.email || null,
         telefon: emp.phone || null,
         ahv_nummer: emp.ahv || null,
         iban: emp.iban || null,
@@ -90,9 +91,23 @@ export const SyncService = {
         urlaubsanspruch_tage: emp.vacationTotal || 25,
         urlaub_bezogen_tage: emp.vacationUsed || 0,
         aktiv: emp.status !== 'inactive'
-      }, { onConflict: 'pin' });
+      }, { onConflict: 'email' });
     } catch (err) {
       console.warn('pushEmployee error:', err);
+    }
+  },
+
+  // Tüm yerel işçileri Supabase'e gönder (ilk açılışta çalışır)
+  pushAllEmployees: async () => {
+    if (!SyncService.isLive()) return;
+    try {
+      const raw = localStorage.getItem('ado_employees_v1');
+      const employees = raw ? JSON.parse(raw) : [];
+      for (const emp of employees) {
+        if (emp.email) await SyncService.pushEmployee(emp);
+      }
+    } catch (err) {
+      console.warn('pushAllEmployees error:', err);
     }
   },
 

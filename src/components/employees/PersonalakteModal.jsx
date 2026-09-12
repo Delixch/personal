@@ -176,6 +176,19 @@ export const PersonalakteModal = ({
     });
   };
 
+  const handleDeactivate = (e) => {
+    e.preventDefault();
+    if (window.confirm(lang === 'tr' ? 'Bu personeli işten çıkarmak/pasife almak istediğinize emin misiniz? (Geçmiş verileri saklanacak ancak sisteme girişi kapatılacaktır)' : 'Mitarbeiter wirklich deaktivieren? (Zugang wird gesperrt)')) {
+      const updated = {
+        ...employee,
+        status: 'inactive',
+        aktiv: false,
+        austrittsdatum: new Date().toISOString().split('T')[0]
+      };
+      onSave(updated);
+    }
+  };
+
   const documents = [
     {
       id: 'doc-contract',
@@ -1134,9 +1147,18 @@ export const PersonalakteModal = ({
 
         {/* Footer Actions */}
         <div className="p-4 card-inner border-t border-line flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-xs text-ink-soft">
-            <ShieldCheck className="w-4 h-4 text-ink" />
-            <span>{lang === 'tr' ? 'İsviçre nDSG standartlarında şifrelenmiş 360° personel karnesi.' : 'Schweizer nDSG konforme Mitarbeiterakte mit Vollzugriff.'}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <button
+              onClick={handleDeactivate}
+              className="px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 text-xs font-bold hover:bg-red-500/20 transition flex items-center gap-1.5"
+            >
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+              {lang === 'tr' ? 'İşten Çıkar (Pasife Al)' : 'Deaktivieren'}
+            </button>
+            <div className="flex items-center gap-2 text-[11px] text-ink-soft">
+              <ShieldCheck className="w-3.5 h-3.5 text-ink" />
+              <span>{lang === 'tr' ? 'nDSG Şifreli Sicil' : 'nDSG Akte'}</span>
+            </div>
           </div>
 
           <div className="flex items-center gap-2">

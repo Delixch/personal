@@ -108,7 +108,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          {employees.map((emp) => (
+          {employees.filter(e => e.aktiv !== false && e.status !== 'inactive').map((emp) => (
             <button
               key={emp.id}
               onClick={() => setSelectedEmployee(emp)}
@@ -127,7 +127,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {employees.map((emp) => {
+        {employees.filter(e => e.aktiv !== false && e.status !== 'inactive').map((emp) => {
           const vacationRest = (emp.vacationTotal || 25) - (emp.vacationUsed || 0);
           return (
             <div

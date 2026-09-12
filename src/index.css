@@ -287,13 +287,29 @@ input:focus, textarea:focus, select:focus {
 
 .bg-dark {
   background-color: var(--dark) !important;
-  color: #FFFFFF !important;
 }
 
 .card-inner,
 .glass-panel {
   background-color: var(--surface-inner) !important;
   border-color: var(--line) !important;
+  color: var(--ink) !important;
+}
+
+.text-ink {
+  color: var(--ink) !important;
+}
+
+.text-ink-soft {
+  color: var(--ink-soft) !important;
+}
+
+.text-ink-muted {
+  color: var(--ink-muted) !important;
+}
+
+.text-brand {
+  color: var(--brand) !important;
 }
 
 .bg-subtle {

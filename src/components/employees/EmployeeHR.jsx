@@ -62,18 +62,18 @@ export const EmployeeHR = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
       
-      {/* Header Banner */}
-      <div className="p-6 rounded-3xl glass-panel relative">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold mb-2">
-              <Users2 className="w-3.5 h-3.5 text-amber-600" />
+      {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
+              <Users2 className="w-3.5 h-3.5 text-brand icon-brand" />
               <span>Digitale Personal- & HR-Verwaltung</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="page-title text-ink">
               {lang === 'tr' ? 'Personel Dosyaları, Sözleşmeler & Girişler' : 'Mitarbeiterakten, Verträge & Zugänge'}
             </h1>
-            <p className="text-xs text-slate-600 mt-1 max-w-2xl">
+            <p className="text-subhead text-ink-soft max-w-2xl leading-relaxed mt-1">
               {lang === 'tr'
                 ? 'Her personele özel e-posta & şifre erişimi, dijital sigorta, sözleşme ve onboarding takibi.'
                 : 'Zentrale Verwaltung aller Mitarbeiter-Zugänge, Stundenansätze, AHV-Nummern und Arbeitsverträge.'}
@@ -82,7 +82,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
 
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 rounded-xl gradient-btn-emerald font-bold text-xs flex items-center gap-1.5 transition shadow-sm self-start md:self-auto"
+            className="px-4 py-2 rounded-xl btn-brand font-black text-xs flex items-center gap-1.5 transition self-start md:self-auto shrink-0"
           >
             <UserPlus className="w-4 h-4" />
             <span>{lang === 'tr' ? 'Yeni Personel Ekle' : 'Neuen Mitarbeiter erfassen'}</span>
@@ -91,11 +91,11 @@ export const EmployeeHR = ({ lang, currentUser }) => {
       </div>
 
       {/* Quick 360-Degree Employee Dossier Selector Bar for Chef */}
-      <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 text-white shadow-md border border-slate-700">
+      <div className="p-4 rounded-2xl bg-dark text-white border border-slate-700">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
           <div>
             <h3 className="text-sm font-black text-white flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-emerald-400" />
+              <Sparkles className="w-4 h-4 text-ink" />
               <span>{lang === 'tr' ? 'Personel 360° Hızlı Sicil Seçici (Chef Kolaylığı)' : '360° Mitarbeiter-Schnellzugriff (Chef-Modus)'}</span>
             </h3>
             <p className="text-[11px] text-slate-300 mt-0.5">
@@ -104,7 +104,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                 : 'Klicken Sie auf einen Mitarbeiter, um alle Arbeitszeiten, Resturlaub, Lohnabrechnungen und Akten sofort zu sehen:'}
             </p>
           </div>
-          <span className="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 self-start sm:self-auto">
+          <span className="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-brand-light text-ink border border-line self-start sm:self-auto">
             {employees.length} {lang === 'tr' ? 'Kayıtlı Personel' : 'Mitarbeiter'}
           </span>
         </div>
@@ -115,7 +115,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
             <button
               key={emp.id}
               onClick={() => setSelectedEmployee(emp)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-bold text-white transition hover:scale-102 active:scale-98 shadow-2xs"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-subtle border border-line text-xs font-bold text-white transition active:scale-98"
             >
               <img
                 src={emp.avatar}
@@ -123,7 +123,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                 className="w-5 h-5 rounded-full object-cover ring-1 ring-emerald-400"
               />
               <span>{emp.role === 'admin' ? '👑 ' : ''}{emp.name.split(' ')[0]}</span>
-              <span className="text-[10px] text-emerald-300 font-mono font-normal">PIN:{emp.pin || '1001'}</span>
+              <span className="text-[10px] text-ink font-mono font-normal">PIN:{emp.pin || '1001'}</span>
             </button>
           ))}
         </div>
@@ -145,11 +145,11 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     <img
                       src={emp.avatar}
                       alt={emp.name}
-                      className="w-12 h-12 rounded-2xl object-cover ring-2 ring-slate-200 group-hover:ring-emerald-400 transition"
+                      className="w-12 h-12 rounded-2xl object-cover ring-2 ring-slate-200 group- transition"
                     />
                     <div>
-                      <h3 className="font-bold text-sm text-slate-900 group-hover:text-emerald-700 transition">{emp.name}</h3>
-                      <p className="text-xs text-emerald-700 font-semibold">{emp.jobTitle}</p>
+                      <h3 className="font-bold text-sm text-slate-900 group- transition">{emp.name}</h3>
+                      <p className="text-xs text-ink font-semibold">{emp.jobTitle}</p>
                       <span className="badge badge-slate text-[10px] py-0 px-1.5 mt-1">
                         {emp.department.toUpperCase()}
                       </span>
@@ -165,17 +165,17 @@ export const EmployeeHR = ({ lang, currentUser }) => {
 
                 {/* Quick 360-Degree Stat Cards inside the card */}
                 <div className="grid grid-cols-3 gap-1.5 mb-3 text-center">
-                  <div className="p-1.5 rounded-lg bg-cyan-50 border border-cyan-200">
+                  <div className="p-1.5 rounded-lg bg-cyan-50 border border-line">
                     <span className="text-[9px] text-slate-500 block uppercase font-bold">Mesai</span>
-                    <span className="font-mono text-xs font-black text-cyan-900">42.0h/W</span>
+                    <span className="font-mono text-xs font-black text-ink">42.0h/W</span>
                   </div>
-                  <div className="p-1.5 rounded-lg bg-amber-50 border border-amber-200">
+                  <div className="p-1.5 rounded-lg bg-amber-50 border border-line">
                     <span className="text-[9px] text-slate-500 block uppercase font-bold">Kalan İzin</span>
-                    <span className="font-mono text-xs font-black text-amber-900">{vacationRest} Gün</span>
+                    <span className="font-mono text-xs font-black text-brand">{vacationRest} Gün</span>
                   </div>
-                  <div className="p-1.5 rounded-lg bg-purple-50 border border-purple-200">
+                  <div className="p-1.5 rounded-lg bg-purple-50 border border-line">
                     <span className="text-[9px] text-slate-500 block uppercase font-bold">Saatlik</span>
-                    <span className="font-mono text-xs font-black text-purple-900">{formatCurrency(emp.hourlyRate)}</span>
+                    <span className="font-mono text-xs font-black text-ink">{formatCurrency(emp.hourlyRate)}</span>
                   </div>
                 </div>
 
@@ -183,7 +183,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                 <div className="space-y-1.5 text-xs text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-200 my-2">
                   <div className="flex items-center justify-between">
                     <span className="text-slate-500 flex items-center gap-1.5">
-                      <Mail className="w-3.5 h-3.5 text-blue-600" />
+                      <Mail className="w-3.5 h-3.5 text-ink" />
                       E-Mail:
                     </span>
                     <span className="font-mono text-slate-900 text-[11px] truncate max-w-[150px]">
@@ -193,13 +193,13 @@ export const EmployeeHR = ({ lang, currentUser }) => {
 
                   <div className="flex items-center justify-between">
                     <span className="text-slate-500 flex items-center gap-1.5">
-                      <KeyRound className="w-3.5 h-3.5 text-emerald-600" />
+                      <KeyRound className="w-3.5 h-3.5 text-ink" />
                       Passwort / PIN:
                     </span>
                     <div className="flex items-center gap-1.5 font-mono text-xs">
                       <span className="text-slate-700">{emp.password}</span>
                       <span className="text-slate-300">|</span>
-                      <span className="px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
+                      <span className="px-1.5 py-0.2 rounded bg-emerald-50 text-ink font-bold border border-line">
                         PIN: {emp.pin || '1001'}
                       </span>
                     </div>
@@ -213,12 +213,12 @@ export const EmployeeHR = ({ lang, currentUser }) => {
 
                 {/* Digital Check Badges */}
                 <div className="flex items-center gap-1.5 text-[10px]">
-                  <span className="inline-flex items-center gap-1 text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                    <BadgeCheck className="w-3 h-3 text-emerald-600" />
+                  <span className="inline-flex items-center gap-1 text-ink bg-emerald-50 px-2 py-0.5 rounded-md border border-line">
+                    <BadgeCheck className="w-3 h-3 text-ink" />
                     <span>Vertrag aktiv</span>
                   </span>
-                  <span className="inline-flex items-center gap-1 text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">
-                    <ShieldCheck className="w-3 h-3 text-blue-600" />
+                  <span className="inline-flex items-center gap-1 text-ink bg-blue-50 px-2 py-0.5 rounded-md border border-line">
+                    <ShieldCheck className="w-3 h-3 text-ink" />
                     <span>UVG / Kasse</span>
                   </span>
                 </div>
@@ -229,7 +229,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                   e.stopPropagation();
                   setSelectedEmployee(emp);
                 }}
-                className="mt-4 w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-xs font-black text-white transition flex items-center justify-center gap-2 shadow-sm group-hover:scale-101"
+                className="mt-4 w-full py-2.5 rounded-xl bg-subtle text-xs font-black text-white transition flex items-center justify-center gap-2 group-"
               >
                 <FileText className="w-4 h-4 text-white" />
                 <span>{lang === 'tr' ? '⭐ 360° Sicil & Tüm Bilgileri Aç →' : '⭐ 360° Akte & Alle Daten öffnen →'}</span>
@@ -259,16 +259,16 @@ export const EmployeeHR = ({ lang, currentUser }) => {
 
       {/* Add Employee Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl relative border border-slate-200 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+          <div className="w-full max-w-lg rounded-3xl bg-white p-6 relative border border-slate-200 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
               <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <UserPlus className="w-4 h-4 text-emerald-600" />
+                <UserPlus className="w-4 h-4 text-ink" />
                 <span>{lang === 'tr' ? 'Yeni Personel & Erişim Tanımla' : 'Neuen Mitarbeiter erfassen'}</span>
               </h2>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700"
+                className="p-1.5 rounded-lg text-slate-400"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -285,7 +285,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                   value={newEmp.name}
                   onChange={(e) => setNewEmp({ ...newEmp, name: e.target.value })}
                   placeholder="z.B. Deniz Arslan"
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                 />
               </div>
 
@@ -300,7 +300,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     value={newEmp.email}
                     onChange={(e) => setNewEmp({ ...newEmp, email: e.target.value })}
                     placeholder="deniz@firma.ch"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                   />
                 </div>
                 <div>
@@ -312,7 +312,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     required
                     value={newEmp.password}
                     onChange={(e) => setNewEmp({ ...newEmp, password: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500 font-mono"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line font-mono"
                   />
                 </div>
               </div>
@@ -325,7 +325,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                   <select
                     value={newEmp.department}
                     onChange={(e) => setNewEmp({ ...newEmp, department: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                   >
                     {SEED_DEPARTMENTS.map(d => (
                       <option key={d.id} value={d.id}>
@@ -344,7 +344,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     value={newEmp.jobTitle}
                     onChange={(e) => setNewEmp({ ...newEmp, jobTitle: e.target.value })}
                     placeholder="z.B. Chef de Partie / Barista"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                   />
                 </div>
               </div>
@@ -359,7 +359,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     step="0.5"
                     value={newEmp.hourlyRate}
                     onChange={(e) => setNewEmp({ ...newEmp, hourlyRate: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500 font-mono"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line font-mono"
                   />
                 </div>
                 <div>
@@ -370,7 +370,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     type="text"
                     value={newEmp.phone}
                     onChange={(e) => setNewEmp({ ...newEmp, phone: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500 font-mono"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line font-mono"
                   />
                 </div>
               </div>
@@ -381,15 +381,15 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                   Onboarding & HR Checkliste:
                 </p>
                 <label className="flex items-center gap-2 text-xs text-slate-700">
-                  <input type="checkbox" defaultChecked className="rounded text-emerald-600" />
+                  <input type="checkbox" defaultChecked className="rounded text-ink" />
                   <span>Arbeitsvertrag digital hinterlegt (GAV Gastgewerbe)</span>
                 </label>
                 <label className="flex items-center gap-2 text-xs text-slate-700">
-                  <input type="checkbox" defaultChecked className="rounded text-emerald-600" />
+                  <input type="checkbox" defaultChecked className="rounded text-ink" />
                   <span>Kranken- und Unfallversicherung (UVG) angemeldet</span>
                 </label>
                 <label className="flex items-center gap-2 text-xs text-slate-700">
-                  <input type="checkbox" defaultChecked className="rounded text-emerald-600" />
+                  <input type="checkbox" defaultChecked className="rounded text-ink" />
                   <span>Hygieneschulung & Sicherheitsunterweisung erfolgt</span>
                 </label>
               </div>
@@ -397,7 +397,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-2.5 rounded-xl gradient-btn-emerald font-bold text-xs transition shadow-sm"
+                  className="w-full py-2.5 rounded-xl btn-brand font-bold text-xs transition"
                 >
                   {lang === 'tr' ? 'Personeli Kaydet & Erişimi Aç' : 'Mitarbeiter anlegen & Zugang freischalten'}
                 </button>

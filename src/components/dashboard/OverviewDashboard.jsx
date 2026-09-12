@@ -25,8 +25,16 @@ import { StorageService } from '../../services/storage';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 import { PersonalakteModal } from '../employees/PersonalakteModal';
 
-export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
-  const [activeCategoryFilter, setActiveCategoryFilter] = useState('all');
+export const OverviewDashboard = ({
+  lang,
+  currentUser,
+  onNavigate,
+  activeCategoryFilter: propCategoryFilter,
+  setActiveCategoryFilter: propSetCategoryFilter
+}) => {
+  const [localCategoryFilter, setLocalCategoryFilter] = useState('all');
+  const activeCategoryFilter = propCategoryFilter !== undefined ? propCategoryFilter : localCategoryFilter;
+  const setActiveCategoryFilter = propSetCategoryFilter || setLocalCategoryFilter;
   const [showChefModal, setShowChefModal] = useState(false);
 
   const suppliers = StorageService.getSuppliers();
@@ -52,10 +60,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
       subtitle: lang === 'tr' ? 'Vardiya, stempeluhr, izinler, maaş ve çalışanlar' : 'Schichten, Stempeluhr, Absenzen, Lohn & Akten',
       icon: Users2,
       badge: lang === 'tr' ? '5 Bölüm' : '5 Module',
-      badgeClass: 'bg-emerald-100 text-emerald-900 border-emerald-300',
-      headerBg: 'bg-gradient-to-r from-emerald-50 via-teal-50 to-white border-emerald-200',
-      headerTextColor: 'text-emerald-950',
-      iconColor: 'bg-emerald-600 text-white',
+      badgeClass: 'badge-neutral',
+      headerBg: 'bg-subtle border-line',
+      headerTextColor: 'text-ink',
+      iconColor: 'icon-box',
       modules: [
         {
           id: 'timeTracker',
@@ -63,10 +71,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
           subtitle: lang === 'tr' ? 'Tablet PIN terminali, canlı saat ve mola takibi' : 'Tablet-PIN-Terminal, Live-Stempeluhr & Pausen',
           icon: Clock,
           badge: `${activeTimeLogs.length} Im Dienst`,
-          cardBg: 'bg-gradient-to-br from-cyan-100/90 via-sky-50 to-white border-cyan-300 hover:border-cyan-500',
-          iconBg: 'bg-cyan-600 text-white shadow-sm',
-          badgeBg: 'bg-cyan-200/80 text-cyan-900 border-cyan-300',
-          textColor: 'text-cyan-950',
+          cardBg: 'bg-surface border-line ',
+          iconBg: 'icon-box',
+          badgeBg: 'badge-neutral',
+          textColor: 'text-ink',
           stat: lang === 'tr' ? 'Canlı PIN Terminali' : 'Kiosk Terminal'
         },
         {
@@ -75,10 +83,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
           subtitle: lang === 'tr' ? 'Früh- & Spätschicht, departmanlar & yedek eleman' : 'Einsatzplanung 2 Schichten & Ersatzpersonal',
           icon: CalendarDays,
           badge: `${todayShifts.length} Schichten`,
-          cardBg: 'bg-gradient-to-br from-emerald-100/90 via-emerald-50 to-white border-emerald-300 hover:border-emerald-500',
-          iconBg: 'bg-emerald-600 text-white shadow-sm',
-          badgeBg: 'bg-emerald-200/80 text-emerald-900 border-emerald-300',
-          textColor: 'text-emerald-950',
+          cardBg: 'bg-surface border-line ',
+          iconBg: 'icon-box',
+          badgeBg: 'badge-neutral',
+          textColor: 'text-ink',
           stat: lang === 'tr' ? '5 Departman Aktif' : '5 Abteilungen'
         },
         {
@@ -87,10 +95,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
           subtitle: lang === 'tr' ? 'Gerekçe seçimi, doktor raporu ve tatil günleri' : 'Attest-Upload, Absenzen & Urlaubsanträge',
           icon: HeartPulse,
           badge: sickReports.length > 0 ? `${sickReports.length} Gemeldet` : 'Alles OK',
-          cardBg: 'bg-gradient-to-br from-rose-100/90 via-rose-50 to-white border-rose-300 hover:border-rose-500',
-          iconBg: 'bg-rose-600 text-white shadow-sm',
-          badgeBg: 'bg-rose-200/80 text-rose-900 border-rose-300',
-          textColor: 'text-rose-950',
+          cardBg: 'bg-surface border-line ',
+          iconBg: 'icon-box',
+          badgeBg: 'badge-neutral',
+          textColor: 'text-ink',
           stat: lang === 'tr' ? 'Rapor & İzin Takibi' : 'Urlaub & Atteste'
         },
         {
@@ -99,10 +107,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
           subtitle: lang === 'tr' ? 'İsviçre GAV, fazla mesai & Treuhand CSV bordro çıktısı' : 'GAV Gastrosuisse, Überstunden & Treuhand-CSV',
           icon: Calculator,
           badge: 'GAV Konform',
-          cardBg: 'bg-gradient-to-br from-violet-100/90 via-purple-50 to-white border-violet-300 hover:border-violet-500',
-          iconBg: 'bg-violet-600 text-white shadow-sm',
-          badgeBg: 'bg-violet-200/80 text-violet-900 border-violet-300',
-          textColor: 'text-violet-950',
+          cardBg: 'bg-surface border-line ',
+          iconBg: 'icon-box',
+          badgeBg: 'badge-neutral',
+          textColor: 'text-ink',
           stat: lang === 'tr' ? 'Treuhand Bordro Hazır' : 'Treuhand Export'
         },
         {
@@ -111,10 +119,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
           subtitle: lang === 'tr' ? 'Sözleşmeler, AHV, saatlik ücretler & 4 haneli PIN kodları' : 'Verträge, Versicherungen, Stundenlöhne & PINs',
           icon: Users2,
           badge: `${employees.length} Mitarbeiter`,
-          cardBg: 'bg-gradient-to-br from-amber-100/90 via-amber-50 to-white border-amber-300 hover:border-amber-500',
-          iconBg: 'bg-amber-600 text-white shadow-sm',
-          badgeBg: 'bg-amber-200/80 text-amber-900 border-amber-300',
-          textColor: 'text-amber-950',
+          cardBg: 'bg-surface border-line ',
+          iconBg: 'icon-box',
+          badgeBg: 'badge-neutral',
+          textColor: 'text-ink',
           stat: lang === 'tr' ? 'İK & PIN Yönetimi' : 'Mitarbeiterakten'
         }
       ]
@@ -125,10 +133,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
       subtitle: lang === 'tr' ? 'Gerçek tedarikçiler, fatura OCR ve aylık muhasebe' : 'Lieferanten, Beleg-OCR und Monatsbuchhaltung',
       icon: ShoppingBag,
       badge: lang === 'tr' ? '3 Bölüm' : '3 Module',
-      badgeClass: 'bg-blue-100 text-blue-900 border-blue-300',
-      headerBg: 'bg-gradient-to-r from-blue-50 via-indigo-50 to-white border-blue-200',
-      headerTextColor: 'text-blue-950',
-      iconColor: 'bg-blue-600 text-white',
+      badgeClass: 'badge-neutral',
+      headerBg: 'bg-subtle border-line',
+      headerTextColor: 'text-ink',
+      iconColor: 'icon-box',
       modules: [
         {
           id: 'suppliers',
@@ -136,10 +144,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
           subtitle: lang === 'tr' ? 'Prodega, Hiestand, Pistor, Meyerhans, Daroz, Yeşil Vadi' : 'Zentraler Einkauf mit echten Schweizer Lieferanten',
           icon: Truck,
           badge: `${suppliers.length} Partner`,
-          cardBg: 'bg-gradient-to-br from-blue-100/90 via-sky-50 to-white border-blue-300 hover:border-blue-500',
-          iconBg: 'bg-blue-600 text-white shadow-sm',
-          badgeBg: 'bg-blue-200/80 text-blue-900 border-blue-300',
-          textColor: 'text-blue-950',
+          cardBg: 'bg-surface border-line ',
+          iconBg: 'icon-box',
+          badgeBg: 'badge-neutral',
+          textColor: 'text-ink',
           stat: `${suppliers.length} Tedarikçi Kayıtlı`
         },
         {
@@ -148,10 +156,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
           subtitle: lang === 'tr' ? 'Kamera veya fotoğrafla otomatik İsviçre KDV (%2.6/%8.1) ayıklama' : 'Automatische Belegerfassung mit MwSt-Erkennung',
           icon: ScanLine,
           badge: `${unpaidInvoices.length} Offen`,
-          cardBg: 'bg-gradient-to-br from-purple-100/90 via-fuchsia-50 to-white border-purple-300 hover:border-purple-500',
-          iconBg: 'bg-purple-600 text-white shadow-sm',
-          badgeBg: 'bg-purple-200/80 text-purple-900 border-purple-300',
-          textColor: 'text-purple-950',
+          cardBg: 'bg-surface border-line ',
+          iconBg: 'icon-box',
+          badgeBg: 'badge-neutral',
+          textColor: 'text-ink',
           stat: formatCurrency(totalUnpaid)
         },
         {
@@ -160,10 +168,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
           subtitle: lang === 'tr' ? 'Kategori giderleri, KDV dökümü & Treuhand Excel çıktısı' : 'Kostenanalyse, MwSt-Rückforderung & Treuhand-Journal',
           icon: ReceiptText,
           badge: 'Excel / CSV',
-          cardBg: 'bg-gradient-to-br from-indigo-100/90 via-blue-50 to-white border-indigo-300 hover:border-indigo-500',
-          iconBg: 'bg-indigo-600 text-white shadow-sm',
-          badgeBg: 'bg-indigo-200/80 text-indigo-900 border-indigo-300',
-          textColor: 'text-indigo-950',
+          cardBg: 'bg-surface border-line ',
+          iconBg: 'icon-box',
+          badgeBg: 'badge-neutral',
+          textColor: 'text-ink',
           stat: lang === 'tr' ? 'Aylık Bilanço' : 'Monatsjournal'
         }
       ]
@@ -174,10 +182,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
       subtitle: lang === 'tr' ? 'Resmi HACCP hijyen kontrolü, panolar ve yedekleme' : 'HACCP-Check, Schwarzes Brett & Datensicherung',
       icon: ShieldCheck,
       badge: lang === 'tr' ? '3 Bölüm' : '3 Module',
-      badgeClass: 'bg-teal-100 text-teal-900 border-teal-300',
-      headerBg: 'bg-gradient-to-r from-teal-50 via-emerald-50 to-white border-teal-200',
-      headerTextColor: 'text-teal-950',
-      iconColor: 'bg-teal-600 text-white',
+      badgeClass: 'badge-neutral',
+      headerBg: 'bg-subtle border-line',
+      headerTextColor: 'text-ink',
+      iconColor: 'icon-box',
       modules: [
         {
           id: 'haccp',
@@ -185,10 +193,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
           subtitle: lang === 'tr' ? 'Soğuk oda sıcaklıkları, sabah ve akşam temizlik listesi' : 'Kühlraum-Temperaturen, Morgen- & Abendschliessung',
           icon: ShieldCheck,
           badge: 'HyV / LMG',
-          cardBg: 'bg-gradient-to-br from-teal-100/90 via-emerald-50 to-white border-teal-300 hover:border-teal-500',
-          iconBg: 'bg-teal-600 text-white shadow-sm',
-          badgeBg: 'bg-teal-200/80 text-teal-900 border-teal-300',
-          textColor: 'text-teal-950',
+          cardBg: 'bg-surface border-line ',
+          iconBg: 'icon-box',
+          badgeBg: 'badge-neutral',
+          textColor: 'text-ink',
           stat: lang === 'tr' ? 'Resmi Denetime Uygun' : 'LMG Konform'
         },
         {
@@ -197,10 +205,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
           subtitle: lang === 'tr' ? 'Patron duyuruları, talimatlar ve şirket içi bildirimler' : 'Team-Mitteilungen, Arbeitsanweisungen & Termine',
           icon: Megaphone,
           badge: 'Team Info',
-          cardBg: 'bg-gradient-to-br from-orange-100/90 via-amber-50 to-white border-orange-300 hover:border-orange-500',
-          iconBg: 'bg-orange-600 text-white shadow-sm',
-          badgeBg: 'bg-orange-200/80 text-orange-900 border-orange-300',
-          textColor: 'text-orange-950',
+          cardBg: 'bg-surface border-line ',
+          iconBg: 'icon-box',
+          badgeBg: 'badge-neutral',
+          textColor: 'text-ink',
           stat: lang === 'tr' ? 'Şirket Panosu' : 'Digitaler Aushang'
         },
         {
@@ -209,10 +217,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
           subtitle: lang === 'tr' ? 'Tek tıkla güvenli JSON yedek indir veya geri yükle' : 'Offline-First Datensicherung & JSON Export',
           icon: Database,
           badge: 'Local DB',
-          cardBg: 'bg-gradient-to-br from-slate-200/90 via-slate-100 to-white border-slate-300 hover:border-slate-500',
-          iconBg: 'bg-slate-700 text-white shadow-sm',
-          badgeBg: 'bg-slate-200 text-slate-900 border-slate-300',
-          textColor: 'text-slate-950',
+          cardBg: 'bg-surface border-line ',
+          iconBg: 'icon-box',
+          badgeBg: 'badge-neutral',
+          textColor: 'text-ink',
           stat: lang === 'tr' ? 'Çevrimdışı Güvenli' : 'Offline bereit'
         }
       ]
@@ -227,10 +235,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
       subtitle: lang === 'tr' ? 'Tek tıkla işe başla, mola ver veya mesaiyi bitir' : 'Arbeitsbeginn, Pause erfassen & Feierabend',
       icon: Clock,
       badge: activeTimeLogs.find(l => l.employeeId === currentUser?.id) ? '● IM DIENST' : 'Bereit',
-      cardBg: 'bg-gradient-to-br from-cyan-100/90 via-sky-50 to-white border-cyan-300 hover:border-cyan-500',
-      iconBg: 'bg-cyan-600 text-white shadow-sm',
-      badgeBg: 'bg-cyan-200/80 text-cyan-900 border-cyan-300',
-      textColor: 'text-cyan-950',
+      cardBg: 'bg-surface border-line ',
+      iconBg: 'icon-box',
+      badgeBg: 'badge-neutral',
+      textColor: 'text-ink',
       stat: lang === 'tr' ? 'Canlı Mesai' : 'Zeiterfassung'
     },
     {
@@ -239,10 +247,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
       subtitle: lang === 'tr' ? 'Bu haftaki çalışma gün ve saatleriniz' : 'Ihre Einsatzzeiten für die aktuelle Woche',
       icon: CalendarDays,
       badge: '2 Schichten',
-      cardBg: 'bg-gradient-to-br from-emerald-100/90 via-emerald-50 to-white border-emerald-300 hover:border-emerald-500',
-      iconBg: 'bg-emerald-600 text-white shadow-sm',
-      badgeBg: 'bg-emerald-200/80 text-emerald-900 border-emerald-300',
-      textColor: 'text-emerald-950',
+      cardBg: 'bg-surface border-line ',
+      iconBg: 'icon-box',
+      badgeBg: 'badge-neutral',
+      textColor: 'text-ink',
       stat: lang === 'tr' ? 'Haftalık Plan' : 'Wochenplan'
     },
     {
@@ -251,10 +259,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
       subtitle: lang === 'tr' ? 'Dolap sıcaklıkları ve açılış/kapanış temizlik kontrolleri' : 'Temperatur messen & tägliche Checklisten abhaken',
       icon: ShieldCheck,
       badge: 'Täglich',
-      cardBg: 'bg-gradient-to-br from-teal-100/90 via-emerald-50 to-white border-teal-300 hover:border-teal-500',
-      iconBg: 'bg-teal-600 text-white shadow-sm',
-      badgeBg: 'bg-teal-200/80 text-teal-900 border-teal-300',
-      textColor: 'text-teal-950',
+      cardBg: 'bg-surface border-line ',
+      iconBg: 'icon-box',
+      badgeBg: 'badge-neutral',
+      textColor: 'text-ink',
       stat: lang === 'tr' ? 'Günlük Kontrol' : 'Tagescheck'
     },
     {
@@ -263,10 +271,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
       subtitle: lang === 'tr' ? 'Şirket içi önemli duyuruları ve mesajları görün' : 'Wichtige Mitteilungen der Geschäftsleitung lesen',
       icon: Megaphone,
       badge: 'Aushang',
-      cardBg: 'bg-gradient-to-br from-orange-100/90 via-amber-50 to-white border-orange-300 hover:border-orange-500',
-      iconBg: 'bg-orange-600 text-white shadow-sm',
-      badgeBg: 'bg-orange-200/80 text-orange-900 border-orange-300',
-      textColor: 'text-orange-950',
+      cardBg: 'bg-surface border-line ',
+      iconBg: 'icon-box',
+      badgeBg: 'badge-neutral',
+      textColor: 'text-ink',
       stat: lang === 'tr' ? 'Duyurular' : 'Mitteilungen'
     },
     {
@@ -275,10 +283,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
       subtitle: lang === 'tr' ? 'Gerekçe seçimi ve doktor raporu (Attest) yükleme' : 'Absenzgrund mitteilen & Arztzeugnis hochladen',
       icon: HeartPulse,
       badge: 'Schnellmeldung',
-      cardBg: 'bg-gradient-to-br from-rose-100/90 via-rose-50 to-white border-rose-300 hover:border-rose-500',
-      iconBg: 'bg-rose-600 text-white shadow-sm',
-      badgeBg: 'bg-rose-200/80 text-rose-900 border-rose-300',
-      textColor: 'text-rose-950',
+      cardBg: 'bg-surface border-line ',
+      iconBg: 'icon-box',
+      badgeBg: 'badge-neutral',
+      textColor: 'text-ink',
       stat: lang === 'tr' ? 'Doktor Raporu' : 'Arztzeugnis'
     },
     {
@@ -287,10 +295,10 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
       subtitle: lang === 'tr' ? 'Kalan izin günlerinizi görün ve talep oluşturun' : 'Resturlaub einsehen & freie Tage beantragen',
       icon: Palmtree,
       badge: 'Urlaubskonto',
-      cardBg: 'bg-gradient-to-br from-amber-100/90 via-yellow-50 to-white border-amber-300 hover:border-amber-500',
-      iconBg: 'bg-amber-600 text-white shadow-sm',
-      badgeBg: 'bg-amber-200/80 text-amber-900 border-amber-300',
-      textColor: 'text-amber-950',
+      cardBg: 'bg-surface border-line ',
+      iconBg: 'icon-box',
+      badgeBg: 'badge-neutral',
+      textColor: 'text-ink',
       stat: lang === 'tr' ? 'İzin Talebi' : 'Urlaubstage'
     }
   ];
@@ -303,30 +311,28 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
     <div className="space-y-6 max-w-7xl mx-auto">
       
       {/* Top Executive Welcome Hub Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white border border-slate-700/80 shadow-xl relative overflow-hidden">
-        {/* Ambient Decorative Lighting */}
-        <div className="absolute -right-16 -top-16 w-64 h-64 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden">
+        
         {/* Top Header Row: Welcome & Chef Identity */}
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-black tracking-wider uppercase">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span>
-                {isAdmin
-                  ? (lang === 'tr' ? 'YÖNETİM KONTROL MERKEZİ • ZÜRİH' : 'BETRIEBSLEITUNG AKTIV • ZÜRICH')
-                  : (lang === 'tr' ? 'PERSONEL HIZLI İŞLEM PANELİ' : 'MITARBEITER SCHNELLZUGRIFF')}
-              </span>
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="page-title text-ink">
+                {lang === 'tr'
+                  ? `Hoş Geldiniz, ${currentUser?.name.split(' ')[0]}`
+                  : `Willkommen, ${currentUser?.name.split(' ')[0]}`}
+              </h1>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink text-xs font-black tracking-wider uppercase">
+                <span className="w-2 h-2 rounded-full bg-brand"></span>
+                <span>
+                  {isAdmin
+                    ? (lang === 'tr' ? 'YÖNETİM KONTROL MERKEZİ • ZÜRİH' : 'BETRIEBSLEITUNG AKTIV • ZÜRICH')
+                    : (lang === 'tr' ? 'PERSONEL HIZLI İŞLEM PANELİ' : 'MITARBEITER SCHNELLZUGRIFF')}
+                </span>
+              </div>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
-              {lang === 'tr'
-                ? `Hoş Geldiniz, ${currentUser?.name.split(' ')[0]}`
-                : `Willkommen, ${currentUser?.name.split(' ')[0]}`}
-            </h1>
-
-            <p className="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
+            <p className="text-subhead text-ink-soft max-w-xl leading-relaxed">
               {isAdmin
                 ? (lang === 'tr'
                     ? 'İsviçre L-GAV Gastgewerbe ve HACCP gıda hijyen standartlarına tam uyumlu dijital yönetim platformu.'
@@ -346,7 +352,7 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
                   StorageService.setCurrentUser(adminUser);
                   window.location.reload();
                 }}
-                className="px-4 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-md flex items-center gap-2 transition"
+                className="px-4 py-2.5 rounded-2xl bg-brand text-white font-black text-xs flex items-center gap-2 transition"
               >
                 <ShieldCheck className="w-4 h-4" />
                 <span>{lang === 'tr' ? '👑 Patron Ekranına Geç' : '👑 Zum Chef-Modus'}</span>
@@ -355,23 +361,23 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
 
             <div
               onClick={() => setShowChefModal(true)}
-              className="p-3.5 rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 transition cursor-pointer flex items-center gap-3.5 shadow-lg group"
+              className="p-3.5 rounded-2xl bg-surface border border-line transition cursor-pointer flex items-center gap-3.5 group"
               title={lang === 'tr' ? 'Özlük Dosyasını Aç (GAV Dossier)' : 'Personalakte öffnen (GAV Dossier)'}
             >
               <img
                 src={currentUser?.avatar}
                 alt={currentUser?.name}
-                className="w-12 h-12 rounded-xl object-cover ring-2 ring-emerald-400 group-hover:scale-105 transition"
+                className="w-12 h-12 rounded-xl object-cover ring-2 ring-line transition"
               />
               <div>
                 <div className="flex items-center gap-2">
-                  <p className="text-xs font-black text-white">{currentUser?.name}</p>
-                  <span className="text-[10px] font-black px-1.5 py-0.2 rounded bg-emerald-500/30 text-emerald-300 border border-emerald-500/40">
+                  <p className="text-xs font-black text-ink">{currentUser?.name}</p>
+                  <span className="badge badge-brand">
                     PIN: {currentUser?.pin || '9999'}
                   </span>
                 </div>
-                <p className="text-[11px] text-emerald-300 font-semibold">{currentUser?.jobTitle}</p>
-                <span className="inline-flex items-center gap-1 text-[10px] text-slate-300 group-hover:text-white font-bold mt-1 transition">
+                <p className="text-[11px] text-brand font-semibold mt-0.5">{currentUser?.jobTitle}</p>
+                <span className="inline-flex items-center gap-1 text-[10px] text-ink-soft group- font-bold mt-1 transition">
                   <span>{lang === 'tr' ? 'Özlük Dosyasını Aç →' : 'Personalakte öffnen →'}</span>
                 </span>
               </div>
@@ -381,73 +387,73 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
 
         {/* Bottom Metrics Bar: Symmetrical 4-Card KPI Grid */}
         {isAdmin && (
-          <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-3.5 mt-6 pt-5 border-t border-white/10">
+          <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-3.5 mt-6 pt-5 border-t border-line">
             {/* KPI 1: Lieferanten */}
             <div
               onClick={() => onNavigate('suppliers')}
-              className="p-3.5 rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 transition cursor-pointer hover:-translate-y-0.5 group"
+              className="p-3.5 rounded-2xl bg-surface border border-line transition cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
                   {lang === 'tr' ? 'Tedarikçiler' : 'Lieferanten'}
                 </span>
-                <div className="w-7 h-7 rounded-lg bg-blue-500/30 border border-blue-400/40 flex items-center justify-center text-blue-300">
+                <div className="w-7 h-7 rounded-lg bg-brand-light border border-brand-border flex items-center justify-center text-brand">
                   <Truck className="w-3.5 h-3.5" />
                 </div>
               </div>
-              <p className="text-lg font-black text-white">{suppliers.length} Partner</p>
-              <p className="text-[10px] text-blue-200 mt-0.5">Prodega, Hiestand, Pistor</p>
+              <p className="text-lg font-black text-ink">{suppliers.length} Partner</p>
+              <p className="text-[10px] text-ink-muted mt-0.5">Prodega, Hiestand, Pistor</p>
             </div>
 
             {/* KPI 2: Mitarbeiter */}
             <div
               onClick={() => onNavigate('employees')}
-              className="p-3.5 rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 transition cursor-pointer hover:-translate-y-0.5 group"
+              className="p-3.5 rounded-2xl bg-surface border border-line transition cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
                   {lang === 'tr' ? 'Personel' : 'Mitarbeiter'}
                 </span>
-                <div className="w-7 h-7 rounded-lg bg-emerald-500/30 border border-emerald-400/40 flex items-center justify-center text-emerald-300">
+                <div className="w-7 h-7 rounded-lg bg-brand-light border border-brand-border flex items-center justify-center text-brand">
                   <Users2 className="w-3.5 h-3.5" />
                 </div>
               </div>
-              <p className="text-lg font-black text-white">{employees.length} {lang === 'tr' ? 'Çalışan' : 'Personen'}</p>
-              <p className="text-[10px] text-emerald-200 mt-0.5">5 Departman Aktif</p>
+              <p className="text-lg font-black text-ink">{employees.length} {lang === 'tr' ? 'Çalışan' : 'Personen'}</p>
+              <p className="text-[10px] text-ink-muted mt-0.5">5 Departman Aktif</p>
             </div>
 
             {/* KPI 3: Stempeluhr Live */}
             <div
               onClick={() => onNavigate('timeTracker')}
-              className="p-3.5 rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 transition cursor-pointer hover:-translate-y-0.5 group"
+              className="p-3.5 rounded-2xl bg-surface border border-line transition cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
                   {lang === 'tr' ? 'Canlı Mesai' : 'Stempeluhr'}
                 </span>
-                <div className="w-7 h-7 rounded-lg bg-cyan-500/30 border border-cyan-400/40 flex items-center justify-center text-cyan-300">
+                <div className="w-7 h-7 rounded-lg bg-brand-light border border-brand-border flex items-center justify-center text-brand">
                   <Clock className="w-3.5 h-3.5" />
                 </div>
               </div>
-              <p className="text-lg font-black text-white">{activeTimeLogs.length} {lang === 'tr' ? 'Görevde' : 'Im Dienst'}</p>
-              <p className="text-[10px] text-cyan-200 mt-0.5">Tablet Kiosk Terminali</p>
+              <p className="text-lg font-black text-ink">{activeTimeLogs.length} {lang === 'tr' ? 'Görevde' : 'Im Dienst'}</p>
+              <p className="text-[10px] text-ink-muted mt-0.5">Tablet Kiosk Terminali</p>
             </div>
 
             {/* KPI 4: Offene Rechnungen */}
             <div
               onClick={() => onNavigate('invoices')}
-              className="p-3.5 rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 transition cursor-pointer hover:-translate-y-0.5 group"
+              className="p-3.5 rounded-2xl bg-surface border border-line transition cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
                   {lang === 'tr' ? 'Açık Faturalar' : 'Offene Belege'}
                 </span>
-                <div className="w-7 h-7 rounded-lg bg-purple-500/30 border border-purple-400/40 flex items-center justify-center text-purple-300">
+                <div className="w-7 h-7 rounded-lg bg-brand-light border border-brand-border flex items-center justify-center text-brand">
                   <ReceiptText className="w-3.5 h-3.5" />
                 </div>
               </div>
-              <p className="text-lg font-black text-white">{formatCurrency(totalUnpaid)}</p>
-              <p className="text-[10px] text-purple-200 mt-0.5">{unpaidInvoices.length} {lang === 'tr' ? 'Fatura bekliyor' : 'Belege offen'}</p>
+              <p className="text-lg font-black text-ink">{formatCurrency(totalUnpaid)}</p>
+              <p className="text-[10px] text-ink-muted mt-0.5">{unpaidInvoices.length} {lang === 'tr' ? 'Fatura bekliyor' : 'Belege offen'}</p>
             </div>
           </div>
         )}
@@ -457,26 +463,14 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
       {isAdmin ? (
         <div className="space-y-4">
           {/* Quick Category Filter Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-2.5 rounded-2xl border border-slate-200 shadow-xs">
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-surface p-2.5 rounded-2xl border border-line">
             <div className="flex flex-wrap items-center gap-2">
               <button
-                onClick={() => setActiveCategoryFilter('all')}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 ${
-                  activeCategoryFilter === 'all'
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-                }`}
-              >
-                <Layers className="w-3.5 h-3.5" />
-                <span>{lang === 'tr' ? 'Tümü (3 Sütun Yan Yana)' : 'Alle (3 Spalten nebeneinander)'}</span>
-              </button>
-
-              <button
-                onClick={() => setActiveCategoryFilter('hr')}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'hr' ? 'all' : 'hr')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
                   activeCategoryFilter === 'hr'
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200'
+                    ? 'btn-brand font-black'
+                    : 'bg-subtle text-ink border border-line'
                 }`}
               >
                 <Users2 className="w-3.5 h-3.5" />
@@ -484,11 +478,11 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
               </button>
 
               <button
-                onClick={() => setActiveCategoryFilter('finance')}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'finance' ? 'all' : 'finance')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
                   activeCategoryFilter === 'finance'
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200'
+                    ? 'btn-brand font-black'
+                    : 'bg-subtle text-ink border border-line'
                 }`}
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
@@ -496,21 +490,17 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
               </button>
 
               <button
-                onClick={() => setActiveCategoryFilter('operations')}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'operations' ? 'all' : 'operations')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
                   activeCategoryFilter === 'operations'
-                    ? 'bg-teal-600 text-white shadow-sm'
-                    : 'bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200'
+                    ? 'btn-brand font-black'
+                    : 'bg-subtle text-ink border border-line'
                 }`}
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>{lang === 'tr' ? 'Operasyon, Hijyen & Genel (3)' : 'Betrieb & Hygiene (3)'}</span>
               </button>
             </div>
-
-            <span className="text-xs text-slate-500 font-medium px-2">
-              {lang === 'tr' ? '💡 Renkli kartlara tıklayarak doğrudan girin' : '💡 Klicken zum Öffnen'}
-            </span>
           </div>
 
           {/* 3 Sütun Yan Yana (Responsive 3-Column Categorized Grid) */}
@@ -520,28 +510,8 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
               return (
                 <div
                   key={category.id}
-                  className="bg-white/95 rounded-3xl border border-slate-200/90 shadow-sm p-4 md:p-5 flex flex-col gap-4"
+                  className="bg-surface rounded-3xl border border-line p-4 md:p-5 flex flex-col gap-4"
                 >
-                  {/* Category Header Card */}
-                  <div className={`p-4 rounded-2xl border flex items-center justify-between gap-3 ${category.headerBg}`}>
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-xs ${category.iconColor}`}>
-                        <CategoryIcon className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h2 className={`text-base font-black ${category.headerTextColor} tracking-tight leading-tight`}>
-                          {category.title}
-                        </h2>
-                        <p className="text-[11px] text-slate-600 line-clamp-1 mt-0.5">
-                          {category.subtitle}
-                        </p>
-                      </div>
-                    </div>
-                    <span className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full border shadow-2xs shrink-0 ${category.badgeClass}`}>
-                      {category.badge}
-                    </span>
-                  </div>
-
                   {/* Cards inside this Category */}
                   <div className="space-y-3.5">
                     {category.modules.map((mod) => {
@@ -550,15 +520,15 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
                         <div
                           key={mod.id + mod.title}
                           onClick={() => onNavigate(mod.id)}
-                          className={`p-4 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between shadow-xs hover:shadow-md hover:-translate-y-0.5 ${mod.cardBg} group`}
+                          className={`p-4 rounded-2xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} group`}
                         >
                           <div>
                             <div className="flex items-start justify-between gap-3 mb-2.5">
-                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center border shadow-xs ${mod.iconBg} group-hover:scale-105 transition`}>
+                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${mod.iconBg} transition`}>
                                 <Icon className="w-5 h-5" />
                               </div>
                               {mod.badge && (
-                                <span className={`text-[10px] font-black py-0.5 px-2.5 rounded-full border shadow-2xs ${mod.badgeBg}`}>
+                                <span className={`text-[10px] font-black py-0.5 px-2.5 rounded-full border ${mod.badgeBg}`}>
                                   {mod.badge}
                                 </span>
                               )}
@@ -567,14 +537,14 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
                             <h3 className={`text-base font-black ${mod.textColor} mb-1 tracking-tight`}>
                               {mod.title}
                             </h3>
-                            <p className="text-xs text-slate-700 leading-relaxed">
+                            <p className="text-xs text-ink-soft leading-relaxed">
                               {mod.subtitle}
                             </p>
                           </div>
 
-                          <div className="mt-3.5 pt-2.5 border-t border-slate-300/60 flex items-center justify-between text-xs font-bold text-slate-800 group-hover:text-slate-950">
-                            <span className="text-[11px] font-semibold text-slate-600">{mod.stat || ''}</span>
-                            <div className="flex items-center gap-1 text-slate-900 group-hover:translate-x-1 transition">
+                          <div className="mt-3.5 pt-2.5 border-t border-line flex items-center justify-between text-xs font-bold text-ink group-">
+                            <span className="text-[11px] font-semibold text-ink-muted">{mod.stat || ''}</span>
+                            <div className="flex items-center gap-1 text-ink transition">
                               <span className="font-extrabold">{lang === 'tr' ? 'Aç' : 'Öffnen'}</span>
                               <ArrowRight className="w-3.5 h-3.5" />
                             </div>
@@ -592,12 +562,9 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
         /* Employee View: Richly-colored cards */
         <div className="space-y-4">
           <div className="flex items-center justify-between px-1">
-            <h2 className="text-sm font-black text-slate-700 uppercase tracking-wider">
+            <h2 className="text-sm font-black text-ink uppercase tracking-wider">
               {lang === 'tr' ? 'Görev & İşlemlerim' : 'Meine Aufgaben & Schnellzugriff'}
             </h2>
-            <span className="text-xs text-slate-500">
-              {lang === 'tr' ? 'Bölüme tıklayarak doğrudan giriş yapın' : 'Klicken zum Öffnen'}
-            </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -607,15 +574,15 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
                 <div
                   key={mod.id + mod.title}
                   onClick={() => onNavigate(mod.id)}
-                  className={`p-5 rounded-3xl border transition-all duration-200 cursor-pointer flex flex-col justify-between shadow-xs hover:shadow-md hover:-translate-y-0.5 ${mod.cardBg} group`}
+                  className={`p-5 rounded-3xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} group`}
                 >
                   <div>
                     <div className="flex items-start justify-between gap-3 mb-3">
-                      <div className={`w-11 h-11 rounded-2xl flex items-center justify-center border shadow-xs ${mod.iconBg} group-hover:scale-105 transition`}>
+                      <div className={`w-11 h-11 rounded-2xl flex items-center justify-center border ${mod.iconBg} transition`}>
                         <Icon className="w-5 h-5" />
                       </div>
                       {mod.badge && (
-                        <span className={`text-[10px] font-black py-0.5 px-2.5 rounded-full border shadow-2xs ${mod.badgeBg}`}>
+                        <span className={`text-[10px] font-black py-0.5 px-2.5 rounded-full border ${mod.badgeBg}`}>
                           {mod.badge}
                         </span>
                       )}
@@ -624,14 +591,14 @@ export const OverviewDashboard = ({ lang, currentUser, onNavigate }) => {
                     <h3 className={`text-base font-black ${mod.textColor} mb-1 tracking-tight`}>
                       {mod.title}
                     </h3>
-                    <p className="text-xs text-slate-700 leading-relaxed">
+                    <p className="text-xs text-ink-soft leading-relaxed">
                       {mod.subtitle}
                     </p>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-slate-300/60 flex items-center justify-between text-xs font-bold text-slate-800 group-hover:text-slate-950">
-                    <span className="text-[11px] font-semibold text-slate-600">{mod.stat || ''}</span>
-                    <div className="flex items-center gap-1 text-slate-900 group-hover:translate-x-1 transition">
+                  <div className="mt-4 pt-3 border-t border-line flex items-center justify-between text-xs font-bold text-ink group-">
+                    <span className="text-[11px] font-semibold text-ink-muted">{mod.stat || ''}</span>
+                    <div className="flex items-center gap-1 text-ink transition">
                       <span className="font-extrabold">{lang === 'tr' ? 'Aç' : 'Öffnen'}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </div>

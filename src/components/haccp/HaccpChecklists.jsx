@@ -97,43 +97,43 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
       
-      {/* Top Banner */}
-      <div className="p-6 rounded-3xl glass-panel relative">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-2">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+      {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
+              <ShieldCheck className="w-3.5 h-3.5 text-brand icon-brand" />
               <span>{lang === 'tr' ? 'İsviçre Gıda Hijyeni (HACCP / Lebensmittelkontrolle)' : 'Lebensmittelhygiene & HACCP-Kontrollen'}</span>
             </div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+            <h1 className="page-title text-ink">
               {lang === 'tr' ? 'HACCP & Günlük Hijyen Listeleri' : 'HACCP & Tägliche Kontrolllisten'}
             </h1>
-            <p className="text-xs text-slate-600 mt-1 max-w-2xl">
+            <p className="text-subhead text-ink-soft max-w-2xl leading-relaxed mt-1">
               {lang === 'tr'
                 ? 'Kanton gıda denetimi gereksinimlerine tam uygun soğutucu sıcaklık ölçümleri, sabah açılış ve akşam kapanış görev takip sistemi.'
                 : 'Lückenlose Dokumentation nach Lebensmittelrecht (HyV/LMG) für Kühlräume, Tiefkühler und tägliche Reinigungs- & Schliesskontrollen.'}
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={exportHaccpReport}
-              className="px-4 py-2.5 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 text-xs font-bold flex items-center gap-2 shadow-xs transition"
+              className="px-4 py-2.5 rounded-2xl bg-surface border border-line text-ink text-xs font-bold flex items-center gap-2 transition"
             >
-              <Download className="w-4 h-4 text-emerald-600" />
+              <Download className="w-4 h-4 text-brand icon-brand" />
               <span>{lang === 'tr' ? 'HACCP Raporu İndir' : 'HACCP Protokoll Export'}</span>
             </button>
           </div>
         </div>
 
         {/* View Switcher Tabs */}
-        <div className="flex gap-2 mt-6 border-b border-slate-200/60 pb-3">
+        <div className="flex gap-2 mt-6 pt-4 border-t border-line-soft overflow-x-auto">
           <button
             onClick={() => setActiveTab('temp')}
             className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition ${
               activeTab === 'temp'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                ? 'btn-brand font-black'
+                : 'bg-ground border border-line text-ink '
             }`}
           >
             <Thermometer className="w-4 h-4" />
@@ -143,11 +143,11 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
             onClick={() => setActiveTab('checklists')}
             className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition ${
               activeTab === 'checklists'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                ? 'btn-brand font-black'
+                : 'bg-ground border border-line text-ink '
             }`}
           >
-            <CheckSquare className="w-4 h-4" />
+            <CheckCircle2 className="w-4 h-4" />
             <span>{lang === 'tr' ? 'Açılış & Kapanış Kontrolleri' : 'Tägliche Checklisten (Morgen / Abend)'}</span>
           </button>
         </div>
@@ -164,31 +164,31 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
               return (
                 <div
                   key={item.id}
-                  className={`p-5 rounded-3xl bg-white border transition shadow-xs flex flex-col justify-between ${
-                    isOk ? 'border-slate-200 hover:border-emerald-300' : 'border-rose-300 bg-rose-50/30'
+                  className={`p-5 rounded-3xl bg-surface border transition flex flex-col justify-between ${
+                    isOk ? 'border-line ' : 'border-brand-border bg-subtle'
                   }`}
                 >
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className={`badge text-[10px] py-0.5 px-2 ${
-                        isOk ? 'badge-emerald' : 'badge-rose'
+                        isOk ? 'badge-brand' : 'badge-neutral'
                       }`}>
                         {isOk ? '● IN DER NORM' : '⚠️ GRENZWERT!'}
                       </span>
-                      <span className="text-[11px] text-slate-400 font-mono">
+                      <span className="text-[11px] text-subhead font-mono">
                         {item.targetRange}
                       </span>
                     </div>
 
-                    <h3 className="font-bold text-sm text-slate-900 mb-1">
+                    <h3 className="font-bold text-sm text-ink mb-1">
                       {lang === 'tr' ? item.locationTr || item.location : item.location}
                     </h3>
-                    <p className="text-[11px] text-slate-500 mb-4">
-                      {lang === 'tr' ? 'Hedef Aralık' : 'Sollwert'}: <span className="font-semibold text-slate-700">{item.targetRange}</span>
+                    <p className="text-[11px] text-subhead mb-4">
+                      {lang === 'tr' ? 'Hedef Aralık' : 'Sollwert'}: <span className="font-semibold text-ink">{item.targetRange}</span>
                     </p>
 
                     {/* Current Temp Display / Input */}
-                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center mb-4">
+                    <div className="p-4 rounded-2xl bg-ground border border-line text-center mb-4">
                       {isEditing ? (
                         <div className="flex items-center justify-center gap-2">
                           <input
@@ -198,12 +198,12 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                             value={tempValue}
                             onChange={(e) => setTempValue(e.target.value)}
                             placeholder={item.currentTemp.toString()}
-                            className="w-24 px-2 py-1 text-center font-mono font-black text-xl bg-white border border-emerald-400 rounded-lg text-slate-900 focus:outline-none"
+                            className="w-24 px-2 py-1 text-center font-mono font-black text-xl bg-surface border border-brand rounded-lg text-ink focus:outline-none"
                           />
-                          <span className="text-slate-500 font-bold">°C</span>
+                          <span className="text-subhead font-bold">°C</span>
                           <button
                             onClick={() => handleSaveTemp(item.id)}
-                            className="px-2 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition"
+                            className="px-2 py-1 btn-brand text-white rounded-lg text-xs font-black transition"
                           >
                             OK
                           </button>
@@ -211,11 +211,11 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                       ) : (
                         <div>
                           <div className={`font-mono text-3xl font-black ${
-                            isOk ? 'text-slate-900' : 'text-rose-600'
+                            isOk ? 'text-ink' : 'text-brand'
                           }`}>
                             {item.currentTemp > 0 ? `+${item.currentTemp}` : item.currentTemp}°C
                           </div>
-                          <p className="text-[10px] text-slate-400 mt-1">
+                          <p className="text-[10px] text-subhead mt-1">
                             {lang === 'tr' ? 'Son Ölçüm' : 'Letzte Messung'}: {item.checkedAt} Uhr
                           </p>
                         </div>
@@ -224,12 +224,12 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                   </div>
 
                   <div>
-                    <div className="text-[11px] text-slate-600 mb-3 flex items-center justify-between">
+                    <div className="text-[11px] text-subhead mb-3 flex items-center justify-between">
                       <span className="flex items-center gap-1">
-                        <UserCheck className="w-3.5 h-3.5 text-emerald-600" />
+                        <UserCheck className="w-3.5 h-3.5 text-brand icon-brand" />
                         <span>{item.checkedBy || 'Noch offen'}</span>
                       </span>
-                      <span className="text-slate-400">{item.checkedAt || '-'}</span>
+                      <span className="text-subhead">{item.checkedAt || '-'}</span>
                     </div>
 
                     {!isEditing ? (
@@ -238,14 +238,14 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                           setEditingTempId(item.id);
                           setTempValue(item.currentTemp.toString());
                         }}
-                        className="w-full py-2 rounded-xl bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 text-xs font-bold transition"
+                        className="w-full py-2 rounded-xl bg-subtle text-ink text-xs font-bold border border-line transition"
                       >
                         {lang === 'tr' ? 'Sıcaklık Gir / Güncelle' : 'Temperatur erfassen'}
                       </button>
                     ) : (
                       <button
                         onClick={() => setEditingTempId(null)}
-                        className="w-full py-2 rounded-xl bg-slate-100 text-slate-500 text-xs font-semibold hover:bg-slate-200 transition"
+                        className="w-full py-2 rounded-xl bg-subtle text-subhead text-xs font-semibold transition"
                       >
                         {lang === 'tr' ? 'İptal' : 'Abbrechen'}
                       </button>
@@ -256,13 +256,13 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
             })}
           </div>
 
-          <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+          <div className="p-4 rounded-2xl bg-subtle border border-brand-border text-brand text-xs flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-brand icon-brand shrink-0 mt-0.5" />
             <div>
               <p className="font-bold">
                 {lang === 'tr' ? 'İsviçre Gıda Yönetmeliği Kuralı:' : 'Schweizer Lebensmittelrecht (Hygiene-Vorschrift):'}
               </p>
-              <p className="mt-0.5 text-amber-800">
+              <p className="mt-0.5 text-subhead">
                 {lang === 'tr'
                   ? 'Kühlraum sıcaklıkları günde en az iki kez (sabah açılışta ve akşam kapanışta) kayıt altına alınmalıdır. +5.0°C üzerindeki sapmalar derhal müdahaleyi gerektirir.'
                   : 'Kühlhaustemperaturen müssen mindestens zweimal täglich (Morgen und Abend) digital oder handschriftlich protokolliert werden. Überschreitungen über +5.0°C müssen unverzüglich gemeldet werden.'}
@@ -277,24 +277,24 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
         <div className="space-y-6">
           
           {/* Shift Selection & Progress */}
-          <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="p-5 rounded-3xl bg-surface border border-line flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setSelectedShift('morning')}
-                className={`px-4 py-2 rounded-2xl text-xs font-bold transition ${
+                className={`px-4 py-2 rounded-2xl text-xs font-bold transition border ${
                   selectedShift === 'morning'
-                    ? 'bg-amber-100 text-amber-900 border border-amber-300'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'btn-brand font-black'
+                    : 'bg-ground border-line text-ink '
                 }`}
               >
                 🌅 {lang === 'tr' ? 'Sabah / Açılış Kontrolü (Frühschicht)' : 'Morgenkontrolle (Frühschicht)'}
               </button>
               <button
                 onClick={() => setSelectedShift('evening')}
-                className={`px-4 py-2 rounded-2xl text-xs font-bold transition ${
+                className={`px-4 py-2 rounded-2xl text-xs font-bold transition border ${
                   selectedShift === 'evening'
-                    ? 'bg-indigo-100 text-indigo-900 border border-indigo-300'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'btn-brand font-black'
+                    : 'bg-ground border-line text-ink '
                 }`}
               >
                 🌙 {lang === 'tr' ? 'Akşam / Kapanış Kontrolü (Spätschicht)' : 'Abendkontrolle (Spätschicht)'}
@@ -303,12 +303,12 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
 
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <span className="text-xs font-bold text-slate-900">
+                <span className="text-xs font-bold text-ink">
                   {completedCount} / {filteredTasks.length} {lang === 'tr' ? 'Tamamlandı' : 'Erledigt'}
                 </span>
-                <div className="w-36 h-2 rounded-full bg-slate-100 overflow-hidden mt-1">
+                <div className="w-36 h-2 rounded-full bg-ground border border-line overflow-hidden mt-1">
                   <div
-                    className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                    className="h-full bg-brand rounded-full"
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>
@@ -316,7 +316,7 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
 
               <button
                 onClick={() => setShowAddModal(true)}
-                className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition"
+                className="px-3 py-2 rounded-xl bg-subtle text-ink border border-line text-xs font-bold flex items-center gap-1.5 transition"
               >
                 <Plus className="w-4 h-4" />
                 <span>{lang === 'tr' ? 'Görev Ekle' : 'Prüfpunkt hinzufügen'}</span>
@@ -333,24 +333,24 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                   onClick={() => handleToggleTask(item.id)}
                   className={`p-4 rounded-2xl border transition cursor-pointer flex items-center justify-between gap-3 ${
                     item.done
-                      ? 'bg-emerald-50/40 border-emerald-200 hover:bg-emerald-50/60'
-                      : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/80'
+                      ? 'bg-subtle border-brand-border '
+                      : 'bg-surface border-line  '
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition ${
-                      item.done ? 'bg-emerald-600 text-white' : 'border-2 border-slate-300 bg-white'
+                      item.done ? 'bg-brand text-white' : 'border-2 border-line bg-ground'
                     }`}>
                       {item.done && <CheckCircle2 className="w-4 h-4" />}
                     </div>
                     <div>
                       <p className={`text-xs font-bold ${
-                        item.done ? 'line-through text-slate-400' : 'text-slate-900'
+                        item.done ? 'line-through text-subhead' : 'text-ink'
                       }`}>
                         {lang === 'tr' ? item.titleTr || item.title : item.title}
                       </p>
                       {item.done && item.completedBy && (
-                        <p className="text-[10px] text-emerald-700 font-medium mt-0.5">
+                        <p className="text-[10px] text-brand font-medium mt-0.5">
                           ✓ {item.completedBy} ({item.time} Uhr)
                         </p>
                       )}
@@ -358,7 +358,7 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                   </div>
 
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                    item.done ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'
+                    item.done ? 'badge-brand' : 'badge-neutral'
                   }`}>
                     {item.done ? (lang === 'tr' ? 'Yapıldı' : 'Erledigt') : (lang === 'tr' ? 'Bekliyor' : 'Offen')}
                   </span>
@@ -372,12 +372,12 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
 
       {/* Modal to add custom task */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-md bg-white rounded-3xl p-6 shadow-xl border border-slate-200">
-            <h3 className="font-bold text-base text-slate-900 mb-1">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+          <div className="w-full max-w-md bg-surface text-ink rounded-3xl p-6 border border-line">
+            <h3 className="font-bold text-base text-ink mb-1">
               {lang === 'tr' ? 'Yeni Hijyen / Kontrol Maddesi' : 'Neuen HACCP-Prüfpunkt erfassen'}
             </h3>
-            <p className="text-xs text-slate-500 mb-4">
+            <p className="text-xs text-subhead mb-4">
               {selectedShift === 'morning' ? 'Frühschicht / Morgen' : 'Spätschicht / Abend'}
             </p>
             <form onSubmit={handleAddTask} className="space-y-4">
@@ -388,19 +388,19 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                 value={newTaskTitle}
                 onChange={(e) => setNewTaskTitle(e.target.value)}
                 placeholder={lang === 'tr' ? 'Örn: Salata bar soğutucu temizliği...' : 'z.B. Espressomaschine entkalken...'}
-                className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-emerald-500"
+                className="w-full px-3 py-2.5 rounded-xl bg-ground border border-line text-xs text-ink focus:outline-none focus:border-brand"
               />
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 text-xs font-semibold hover:bg-slate-200 transition"
+                  className="px-4 py-2 rounded-xl bg-subtle text-subhead text-xs font-semibold transition"
                 >
                   {lang === 'tr' ? 'Vazgeç' : 'Abbrechen'}
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition"
+                  className="px-4 py-2 rounded-xl btn-brand text-white text-xs font-black transition"
                 >
                   {lang === 'tr' ? 'Kaydet' : 'Hinzufügen'}
                 </button>

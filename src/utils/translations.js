@@ -24,7 +24,6 @@ export const TRANSLATIONS = {
     copyOrder: 'Bestelltext kopieren',
     orderSummary: 'Bestellübersicht',
     deliveryDays: 'Liefertage',
-    minOrder: 'Mindestbestellwert',
     
     // Shifts & Planning
     shiftTitle: 'Transparente Mitarbeiterplanung & Schichten',
@@ -98,7 +97,6 @@ export const TRANSLATIONS = {
     copyOrder: 'Sipariş Metnini Kopyala',
     orderSummary: 'Sipariş Özeti',
     deliveryDays: 'Teslimat Günleri',
-    minOrder: 'Min. Sipariş Tutarı',
     
     // Shifts & Planning
     shiftTitle: 'Şeffaf Personel Planlaması & Vardiyalar',

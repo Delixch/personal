@@ -206,20 +206,20 @@ export const PersonalakteModal = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in">
-      <div className="w-full max-w-5xl max-h-[94vh] rounded-3xl bg-white border border-slate-200 shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-dark">
+      <div className="w-full max-w-5xl max-h-[94vh] rounded-3xl bg-white border border-slate-200 flex flex-col overflow-hidden duration-150">
         
         {/* Top Header Card */}
-        <div className="p-5 sm:p-6 bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-700">
+        <div className="p-5 sm:p-6 bg-dark text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-700">
           <div className="flex items-center gap-4">
             <img
               src={employee.avatar}
               alt={employee.name}
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover ring-4 ring-emerald-500/40 shadow-lg"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover ring-4 ring-brand-border"
             />
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-1">
-                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-brand-light text-ink border border-line">
                   {employee.role === 'admin' ? '👑 CHEF / INHABER' : 'MITARBEITER / HR'}
                 </span>
                 <span className="text-[11px] font-mono text-slate-300">
@@ -228,20 +228,20 @@ export const PersonalakteModal = ({
                 {/* Live working badge */}
                 <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full flex items-center gap-1.5 ${
                   isCurrentlyWorking 
-                    ? 'bg-cyan-500/30 text-cyan-300 border border-cyan-400/50 animate-pulse' 
-                    : 'bg-slate-700/60 text-slate-300 border border-slate-600'
+                    ? 'bg-brand-light text-ink border border-line ' 
+                    : 'bg-slate-700 text-slate-300 border border-slate-600'
                 }`}>
-                  <span className={`w-2 h-2 rounded-full ${isCurrentlyWorking ? 'bg-cyan-400' : 'bg-slate-400'}`}></span>
+                  <span className={`w-2 h-2 rounded-full ${isCurrentlyWorking ? 'bg-subtle' : 'bg-slate-400'}`}></span>
                   <span>{isCurrentlyWorking ? (lang === 'tr' ? 'ŞU AN GÖREVDE' : 'IM DIENST') : (lang === 'tr' ? 'SERBEST / ÇIKTI' : 'FEIERABEND')}</span>
                 </span>
               </div>
               <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2">
                 <span>{formData.name}</span>
-                <span className="text-xs font-mono px-2 py-0.5 rounded-md bg-emerald-500/30 text-emerald-300 border border-emerald-500/40">
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md bg-subtle text-ink border border-line">
                   PIN: {formData.pin}
                 </span>
               </h2>
-              <p className="text-xs sm:text-sm text-emerald-300 font-semibold">
+              <p className="text-xs sm:text-sm text-ink font-semibold">
                 {formData.jobTitle} • {formData.department.toUpperCase()} • {formatCurrency(formData.hourlyRate)}/h
               </p>
             </div>
@@ -269,7 +269,7 @@ export const PersonalakteModal = ({
                   });
                 }
               }}
-              className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/20 focus:outline-none"
+              className="px-3 py-1.5 rounded-xl bg-subtle text-white text-xs font-bold border border-line focus:outline-none"
             >
               {allEmployees.map(e => (
                 <option key={e.id} value={e.id} className="text-slate-900 bg-white">
@@ -284,7 +284,7 @@ export const PersonalakteModal = ({
                 onSwitchUser(employee);
                 onClose();
               }}
-              className="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black transition flex items-center gap-1.5 shadow-sm"
+              className="px-3 py-2 rounded-xl bg-subtle text-white text-xs font-black transition flex items-center gap-1.5"
               title="Bu personelin ekranına geç"
             >
               <Fingerprint className="w-3.5 h-3.5" />
@@ -293,7 +293,7 @@ export const PersonalakteModal = ({
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition"
+              className="p-2 rounded-xl bg-subtle text-white transition"
               title="Schliessen"
             >
               <X className="w-5 h-5" />
@@ -305,33 +305,33 @@ export const PersonalakteModal = ({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 p-3 sm:p-4 bg-slate-950 text-white border-b border-slate-800 text-xs">
           
           {/* KPI 1: Worked Hours & Overtime */}
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center shrink-0">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-subtle border border-line flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
               <Clock className="w-4 h-4" />
             </div>
             <div>
               <span className="text-[10px] text-slate-400 font-semibold block uppercase">
                 {lang === 'tr' ? 'Bu Ayki Mesai' : 'Arbeitszeit'}
               </span>
-              <span className="font-mono font-black text-sm text-cyan-300">
+              <span className="font-mono font-black text-sm text-ink">
                 {effectiveHours} Std.
               </span>
-              <span className={`block text-[10px] font-bold ${overtime >= 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
+              <span className={`block text-[10px] font-bold ${overtime >= 0 ? 'text-ink' : 'text-brand'}`}>
                 {overtime >= 0 ? `+${overtime}h Mesai` : `${overtime}h Eksik`} (Soll: {targetMonthlyHours}h)
               </span>
             </div>
           </div>
 
           {/* KPI 2: Vacation Balance */}
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-subtle border border-line flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
               <Palmtree className="w-4 h-4" />
             </div>
             <div>
               <span className="text-[10px] text-slate-400 font-semibold block uppercase">
                 {lang === 'tr' ? 'Kalan İzin (Tatil)' : 'Resturlaub'}
               </span>
-              <span className="font-mono font-black text-sm text-amber-300">
+              <span className="font-mono font-black text-sm text-brand">
                 {vacationRemaining} Gün Kaldı
               </span>
               <span className="block text-[10px] text-slate-400">
@@ -341,33 +341,33 @@ export const PersonalakteModal = ({
           </div>
 
           {/* KPI 3: Monthly Net Salary */}
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-subtle border border-line flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
               <DollarSign className="w-4 h-4" />
             </div>
             <div>
               <span className="text-[10px] text-slate-400 font-semibold block uppercase">
                 {lang === 'tr' ? 'Net Maaş (Son Ay)' : 'Nettolohn'}
               </span>
-              <span className="font-mono font-black text-sm text-emerald-300">
+              <span className="font-mono font-black text-sm text-ink">
                 {formatCurrency(netMonthlySalary)}
               </span>
-              <span className="block text-[10px] text-emerald-400 font-bold">
+              <span className="block text-[10px] text-ink font-bold">
                 ✓ Bankaya Yatırıldı (ZKB)
               </span>
             </div>
           </div>
 
           {/* KPI 4: Annual Indicator & Social Security */}
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0">
+          <div className="p-2.5 sm:p-3 rounded-2xl bg-subtle border border-line flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
               <TrendingUp className="w-4 h-4" />
             </div>
             <div>
               <span className="text-[10px] text-slate-400 font-semibold block uppercase">
                 {lang === 'tr' ? 'Senelik Gösterge' : 'Jahreslohn'}
               </span>
-              <span className="font-mono font-black text-sm text-purple-300">
+              <span className="font-mono font-black text-sm text-ink">
                 {formatCurrency(annualGrossEstimate)}
               </span>
               <span className="block text-[10px] text-slate-400">
@@ -379,16 +379,16 @@ export const PersonalakteModal = ({
         </div>
 
         {/* Tab Navigation Strip */}
-        <div className="flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-2.5 bg-slate-100 border-b border-slate-200 overflow-x-auto text-xs font-bold">
+        <div className="flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-2.5 bg-ground border-b border-line overflow-x-auto text-xs font-bold">
           <button
             onClick={() => setActiveTab('360')}
             className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
               activeTab === '360'
-                ? 'bg-slate-900 text-white shadow-xs font-black'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                ? 'btn-brand font-black'
+                : 'text-ink-soft  '
             }`}
           >
-            <Layers className="w-4 h-4 text-emerald-400" />
+            <Layers className="w-4 h-4" />
             <span>{lang === 'tr' ? '⭐ 360° Sicil Özeti' : '⭐ 360° Chef-Übersicht'}</span>
           </button>
 
@@ -396,11 +396,11 @@ export const PersonalakteModal = ({
             onClick={() => setActiveTab('zeiterfassung')}
             className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
               activeTab === 'zeiterfassung'
-                ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-black'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                ? 'btn-brand font-black'
+                : 'text-ink-soft  '
             }`}
           >
-            <Clock className="w-4 h-4 text-cyan-600" />
+            <Clock className="w-4 h-4" />
             <span>{lang === 'tr' ? 'Saatler & Stempeluhr' : 'Stempeluhr & Stunden'}</span>
           </button>
 
@@ -408,11 +408,11 @@ export const PersonalakteModal = ({
             onClick={() => setActiveTab('schichten')}
             className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
               activeTab === 'schichten'
-                ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-black'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                ? 'btn-brand font-black'
+                : 'text-ink-soft  '
             }`}
           >
-            <Calendar className="w-4 h-4 text-emerald-600" />
+            <Calendar className="w-4 h-4" />
             <span>{lang === 'tr' ? 'Vardiya Planı' : 'Schichtplan'}</span>
           </button>
 
@@ -420,11 +420,11 @@ export const PersonalakteModal = ({
             onClick={() => setActiveTab('lohn')}
             className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
               activeTab === 'lohn'
-                ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-black'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                ? 'btn-brand font-black'
+                : 'text-ink-soft  '
             }`}
           >
-            <DollarSign className="w-4 h-4 text-purple-600" />
+            <DollarSign className="w-4 h-4" />
             <span>{lang === 'tr' ? 'Maaş, Bordro & Senelik' : 'Lohn & Abrechnung'}</span>
           </button>
 
@@ -432,11 +432,11 @@ export const PersonalakteModal = ({
             onClick={() => setActiveTab('absenzen')}
             className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
               activeTab === 'absenzen'
-                ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-black'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                ? 'btn-brand font-black'
+                : 'text-ink-soft  '
             }`}
           >
-            <HeartPulse className="w-4 h-4 text-rose-600" />
+            <HeartPulse className="w-4 h-4" />
             <span>{lang === 'tr' ? 'Hastalık & İzin Geçmişi' : 'Urlaub & Absenzen'}</span>
           </button>
 
@@ -444,11 +444,11 @@ export const PersonalakteModal = ({
             onClick={() => setActiveTab('stammdaten')}
             className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
               activeTab === 'stammdaten'
-                ? 'bg-white text-slate-900 shadow-xs border border-slate-300 font-black'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                ? 'btn-brand font-black'
+                : 'text-ink-soft  '
             }`}
           >
-            <FileText className="w-4 h-4 text-blue-600" />
+            <FileText className="w-4 h-4 text-ink" />
             <span>{lang === 'tr' ? 'Sözleşme, AHV & Evraklar' : 'Vertrag & Dokumente'}</span>
           </button>
         </div>
@@ -461,10 +461,10 @@ export const PersonalakteModal = ({
             <div className="space-y-6">
               
               {/* Executive Summary Banner */}
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-50 via-teal-50 to-blue-50 border border-emerald-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="p-4 rounded-2xl bg-dark border border-line flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                   <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
-                    <Award className="w-5 h-5 text-emerald-700" />
+                    <Award className="w-5 h-5 text-ink" />
                     <span>{lang === 'tr' ? 'Personel 360° Sicil & Yönetici Karnesi' : 'Vollständiges Mitarbeiter-Dossier (Chef-Ansicht)'}</span>
                   </h3>
                   <p className="text-xs text-slate-600 mt-0.5">
@@ -474,7 +474,7 @@ export const PersonalakteModal = ({
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-emerald-600 text-white font-bold text-xs shadow-2xs">
+                  <span className="px-3 py-1 rounded-full bg-subtle text-white font-bold text-xs">
                     GAV Gastrosuisse Konform
                   </span>
                 </div>
@@ -486,13 +486,13 @@ export const PersonalakteModal = ({
                 {/* 1. Stempeluhr & Saatler Özeti */}
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                   <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                    <span className="text-xs font-black uppercase text-cyan-900 flex items-center gap-1.5">
-                      <Clock className="w-4 h-4 text-cyan-600" />
+                    <span className="text-xs font-black uppercase text-ink flex items-center gap-1.5">
+                      <Clock className="w-4 h-4 text-ink" />
                       {lang === 'tr' ? 'Çalışma Saatleri' : 'Zeiterfassung'}
                     </span>
                     <button 
                       onClick={() => setActiveTab('zeiterfassung')} 
-                      className="text-[11px] font-bold text-cyan-700 hover:underline"
+                      className="text-[11px] font-bold text-ink"
                     >
                       {lang === 'tr' ? 'Detay →' : 'Details →'}
                     </button>
@@ -505,11 +505,11 @@ export const PersonalakteModal = ({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Çalışılan (Ist):</span>
-                      <span className="font-mono font-bold text-cyan-800">{effectiveHours} Std.</span>
+                      <span className="font-mono font-bold text-ink">{effectiveHours} Std.</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Fazla Mesai:</span>
-                      <span className={`font-mono font-black ${overtime >= 0 ? 'text-emerald-700' : 'text-amber-700'}`}>
+                      <span className={`font-mono font-black ${overtime >= 0 ? 'text-ink' : 'text-brand'}`}>
                         {overtime >= 0 ? `+${overtime} Std.` : `${overtime} Std.`}
                       </span>
                     </div>
@@ -525,13 +525,13 @@ export const PersonalakteModal = ({
                 {/* 2. Maaş & Senelik Gösterge Özeti */}
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                   <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                    <span className="text-xs font-black uppercase text-purple-900 flex items-center gap-1.5">
-                      <DollarSign className="w-4 h-4 text-purple-600" />
+                    <span className="text-xs font-black uppercase text-ink flex items-center gap-1.5">
+                      <DollarSign className="w-4 h-4 text-ink" />
                       {lang === 'tr' ? 'Maaş & Bordro' : 'Lohnabrechnung'}
                     </span>
                     <button 
                       onClick={() => setActiveTab('lohn')} 
-                      className="text-[11px] font-bold text-purple-700 hover:underline"
+                      className="text-[11px] font-bold text-ink"
                     >
                       {lang === 'tr' ? 'Detay →' : 'Details →'}
                     </button>
@@ -548,11 +548,11 @@ export const PersonalakteModal = ({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Net Ele Geçen:</span>
-                      <span className="font-mono font-black text-emerald-700">{formatCurrency(netMonthlySalary)}</span>
+                      <span className="font-mono font-black text-ink">{formatCurrency(netMonthlySalary)}</span>
                     </div>
                     <div className="flex justify-between pt-1 border-t border-slate-200 text-[11px]">
                       <span className="text-slate-500">Yıllık Brüt (13. dahil):</span>
-                      <span className="font-mono font-bold text-purple-900">{formatCurrency(annualGrossEstimate)}</span>
+                      <span className="font-mono font-bold text-ink">{formatCurrency(annualGrossEstimate)}</span>
                     </div>
                   </div>
                 </div>
@@ -560,13 +560,13 @@ export const PersonalakteModal = ({
                 {/* 3. İzin, Rapor & Vardiya Özeti */}
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                   <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                    <span className="text-xs font-black uppercase text-amber-900 flex items-center gap-1.5">
-                      <Palmtree className="w-4 h-4 text-amber-600" />
+                    <span className="text-xs font-black uppercase text-brand flex items-center gap-1.5">
+                      <Palmtree className="w-4 h-4 text-brand" />
                       {lang === 'tr' ? 'İzin & Devamsızlık' : 'Urlaub & Absenzen'}
                     </span>
                     <button 
                       onClick={() => setActiveTab('absenzen')} 
-                      className="text-[11px] font-bold text-amber-700 hover:underline"
+                      className="text-[11px] font-bold text-brand"
                     >
                       {lang === 'tr' ? 'Detay →' : 'Details →'}
                     </button>
@@ -575,7 +575,7 @@ export const PersonalakteModal = ({
                   <div className="space-y-2 text-xs">
                     <div className="flex justify-between">
                       <span className="text-slate-500">Kalan İzin:</span>
-                      <span className="font-mono font-black text-amber-700">{vacationRemaining} Gün ({vacationRemaining / 5} Hafta)</span>
+                      <span className="font-mono font-black text-brand">{vacationRemaining} Gün ({vacationRemaining / 5} Hafta)</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Kullanılan İzin:</span>
@@ -587,7 +587,7 @@ export const PersonalakteModal = ({
                     </div>
                     <div className="flex justify-between pt-1 border-t border-slate-200 text-[11px]">
                       <span className="text-slate-500">Haftalık Vardiya:</span>
-                      <span className="font-bold text-emerald-800">{empShifts.length || 5} Gün Görevli</span>
+                      <span className="font-bold text-ink">{empShifts.length || 5} Gün Görevli</span>
                     </div>
                   </div>
                 </div>
@@ -595,9 +595,9 @@ export const PersonalakteModal = ({
               </div>
 
               {/* Official Status Verification Seal */}
-              <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-4 rounded-2xl bg-white border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-subtle text-ink flex items-center justify-center shrink-0">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div>
@@ -612,8 +612,8 @@ export const PersonalakteModal = ({
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span className="px-3 py-1 rounded-full bg-emerald-50 text-ink border border-line font-bold text-xs flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-ink" />
                     <span>{lang === 'tr' ? 'Tüm Primler Yatırıldı' : 'Beiträge aktuell'}</span>
                   </span>
                 </div>
@@ -635,13 +635,13 @@ export const PersonalakteModal = ({
                   </p>
                 </div>
                 <div className="text-right">
-                  <span className="font-mono font-black text-base text-cyan-800">{effectiveHours} Std. Total</span>
+                  <span className="font-mono font-black text-base text-ink">{effectiveHours} Std. Total</span>
                   <span className="block text-[11px] text-slate-500">Soll: {targetMonthlyHours} Std.</span>
                 </div>
               </div>
 
               {/* Time Logs Table */}
-              <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
+              <div className="border border-slate-200 rounded-2xl overflow-hidden">
                 <table className="w-full text-left text-xs">
                   <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
                     <tr>
@@ -662,9 +662,9 @@ export const PersonalakteModal = ({
                       </tr>
                     ) : (
                       empLogs.map((log) => (
-                        <tr key={log.id} className="hover:bg-slate-50">
+                        <tr key={log.id} className="">
                           <td className="p-3 font-sans font-bold text-slate-900">{log.date}</td>
-                          <td className="p-3 text-emerald-700 font-bold">{log.clockIn}</td>
+                          <td className="p-3 text-ink font-bold">{log.clockIn}</td>
                           <td className="p-3 text-slate-700">{log.clockOut || '● İŞTE'}</td>
                           <td className="p-3 text-slate-500">{log.breakMinutes || 0} Min</td>
                           <td className="p-3 font-bold text-slate-900">
@@ -672,7 +672,7 @@ export const PersonalakteModal = ({
                           </td>
                           <td className="p-3 font-sans">
                             <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                              log.clockOut ? 'bg-emerald-50 text-emerald-800' : 'bg-cyan-50 text-cyan-800 animate-pulse'
+                              log.clockOut ? 'bg-emerald-50 text-ink' : 'bg-cyan-50 text-ink '
                             }`}>
                               {log.clockOut ? 'Abgeschlossen' : 'Im Dienst'}
                             </span>
@@ -698,7 +698,7 @@ export const PersonalakteModal = ({
                     {lang === 'tr' ? 'Bu haftaki ve gelecek haftaki çalışma vardiyaları (Früh/Spät).' : 'Einsatzplanung mit 2 Schichten gemäss Wochenplan.'}
                   </p>
                 </div>
-                <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
+                <span className="px-3 py-1 rounded-full bg-subtle text-ink text-xs font-bold">
                   {empShifts.length || 5} Schichten geplant
                 </span>
               </div>
@@ -712,13 +712,13 @@ export const PersonalakteModal = ({
                       className={`p-3.5 rounded-2xl border ${
                         isOff 
                           ? 'bg-slate-50 border-slate-200 text-slate-400' 
-                          : 'bg-white border-emerald-200 shadow-2xs'
+                          : 'bg-white border-line '
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="font-bold text-xs text-slate-800">{day}</span>
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          isOff ? 'bg-slate-200 text-slate-600' : 'bg-emerald-100 text-emerald-800'
+                          isOff ? 'bg-slate-200 text-slate-600' : 'bg-subtle text-ink'
                         }`}>
                           {isOff ? 'Ruhetag' : 'Frühschicht'}
                         </span>
@@ -741,19 +741,19 @@ export const PersonalakteModal = ({
             <div className="space-y-5">
               
               {/* Top Monthly vs Annual Indicator Banner */}
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-50 via-indigo-50 to-white border border-purple-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="p-4 rounded-2xl bg-dark border border-line flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-base font-black text-purple-950 flex items-center gap-2">
-                    <ReceiptText className="w-5 h-5 text-purple-700" />
+                  <h3 className="text-base font-black text-ink flex items-center gap-2">
+                    <ReceiptText className="w-5 h-5 text-ink" />
                     <span>{lang === 'tr' ? 'Maaş Bordrosu & Yıllık Gösterge (GAV Gastrosuisse)' : 'Lohnabrechnung & Jahresausweis (L-GAV)'}</span>
                   </h3>
-                  <p className="text-xs text-purple-800 mt-0.5">
+                  <p className="text-xs text-ink mt-0.5">
                     İsviçre Comatic ve Treuhand formatında net ele geçen, 13. maaş ve resmi sosyal kesintiler.
                   </p>
                 </div>
                 <div className="text-right">
                   <span className="text-xs text-slate-500 block uppercase font-bold">Lohn-Status:</span>
-                  <span className="px-3 py-1 rounded-full bg-emerald-600 text-white font-black text-xs inline-flex items-center gap-1 shadow-xs">
+                  <span className="px-3 py-1 rounded-full bg-subtle text-white font-black text-xs inline-flex items-center gap-1">
                     <Check className="w-3.5 h-3.5" />
                     <span>{lang === 'tr' ? 'Eylül 2026: ÖDENDİ' : 'Sept 2026: Überwiesen'}</span>
                   </span>
@@ -761,7 +761,7 @@ export const PersonalakteModal = ({
               </div>
 
               {/* Monthly Paycheck Breakdown Table */}
-              <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-2xs">
+              <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-3">
                 <h4 className="text-xs font-black uppercase text-slate-700 tracking-wider">
                   {lang === 'tr' ? 'Aylık Bordro Hesabı (Monatsabrechnung)' : 'Detaillierte Monatsberechnung:'}
                 </h4>
@@ -775,25 +775,25 @@ export const PersonalakteModal = ({
                     <span className="text-slate-600">Abrechnungs-Stunden ({effectiveHours} Std.):</span>
                     <span className="font-mono font-bold text-slate-900">{formatCurrency(grossMonthlySalary)}</span>
                   </div>
-                  <div className="flex justify-between py-1.5 text-rose-700">
+                  <div className="flex justify-between py-1.5 text-brand">
                     <span>AHV / IV / EO (%5.30):</span>
                     <span className="font-mono font-bold">-{formatCurrency(ahvDeduction)}</span>
                   </div>
-                  <div className="flex justify-between py-1.5 text-rose-700">
+                  <div className="flex justify-between py-1.5 text-brand">
                     <span>ALV Arbeitslosenversicherung (%1.10):</span>
                     <span className="font-mono font-bold">-{formatCurrency(alvDeduction)}</span>
                   </div>
-                  <div className="flex justify-between py-1.5 text-rose-700">
+                  <div className="flex justify-between py-1.5 text-brand">
                     <span>BVG Pensionskasse GastroSocial (~%3.80):</span>
                     <span className="font-mono font-bold">-{formatCurrency(bvgDeduction)}</span>
                   </div>
-                  <div className="flex justify-between py-1.5 text-rose-700">
+                  <div className="flex justify-between py-1.5 text-brand">
                     <span>UVG (NBU 0.85%) & KTG Krankentaggeld (0.73%):</span>
                     <span className="font-mono font-bold">-{formatCurrency(uvgKtgDeduction)}</span>
                   </div>
-                  <div className="flex justify-between py-2 pt-3 border-t-2 border-slate-300 font-bold text-sm bg-emerald-50/60 px-3 rounded-xl">
-                    <span className="text-emerald-950 font-black">Nettolohn (Ele Geçen Net Maaş):</span>
-                    <span className="font-mono font-black text-emerald-800 text-base">{formatCurrency(netMonthlySalary)}</span>
+                  <div className="flex justify-between py-2 pt-3 border-t-2 border-slate-300 font-bold text-sm bg-subtle px-3 rounded-xl">
+                    <span className="text-ink font-black">Nettolohn (Ele Geçen Net Maaş):</span>
+                    <span className="font-mono font-black text-ink text-base">{formatCurrency(netMonthlySalary)}</span>
                   </div>
                 </div>
               </div>
@@ -801,7 +801,7 @@ export const PersonalakteModal = ({
               {/* Annual Indicator & Accumulation Box */}
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                 <h4 className="text-xs font-black uppercase text-slate-700 tracking-wider flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-purple-600" />
+                  <TrendingUp className="w-4 h-4 text-ink" />
                   <span>{lang === 'tr' ? 'Senelik Gösterge & Yıllık Toplamlar (Jahresausweis)' : 'Jahreslohn & Kumulierte Werte 2026'}</span>
                 </h4>
 
@@ -811,12 +811,12 @@ export const PersonalakteModal = ({
                     <span className="text-base font-mono font-black text-slate-900 mt-1 block">
                       {formatCurrency(annualNetPaidEstimate)}
                     </span>
-                    <span className="text-[10px] text-emerald-700 font-bold">✓ 9 Ay Tam Ödendi</span>
+                    <span className="text-[10px] text-ink font-bold">✓ 9 Ay Tam Ödendi</span>
                   </div>
 
                   <div className="p-3 rounded-xl bg-white border border-slate-200">
                     <span className="text-slate-500 block">13. Maaş Birikimi (%8.33):</span>
-                    <span className="text-base font-mono font-black text-purple-700 mt-1 block">
+                    <span className="text-base font-mono font-black text-ink mt-1 block">
                       {formatCurrency(thirteentMonthAccrual * 9)}
                     </span>
                     <span className="text-[10px] text-slate-500">Aralık ayında ödenecek</span>
@@ -851,10 +851,10 @@ export const PersonalakteModal = ({
               
               {/* Vacation Balance Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200">
-                  <span className="text-[11px] font-bold text-amber-900 uppercase">Yıllık İzin Hakkı (Total):</span>
-                  <p className="text-2xl font-mono font-black text-amber-950 mt-1">{vacationTotal} Gün</p>
-                  <p className="text-[11px] text-amber-800 mt-0.5">{vacationTotal / 5} Hafta Tatil</p>
+                <div className="p-4 rounded-2xl bg-amber-50 border border-line">
+                  <span className="text-[11px] font-bold text-brand uppercase">Yıllık İzin Hakkı (Total):</span>
+                  <p className="text-2xl font-mono font-black text-brand mt-1">{vacationTotal} Gün</p>
+                  <p className="text-[11px] text-brand mt-0.5">{vacationTotal / 5} Hafta Tatil</p>
                 </div>
 
                 <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
@@ -863,23 +863,23 @@ export const PersonalakteModal = ({
                   <p className="text-[11px] text-slate-500 mt-0.5">Onaylı İzinler</p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
-                  <span className="text-[11px] font-bold text-emerald-900 uppercase">Kalan Tatil (Resturlaub):</span>
-                  <p className="text-2xl font-mono font-black text-emerald-700 mt-1">{vacationRemaining} Gün</p>
-                  <p className="text-[11px] text-emerald-800 font-semibold mt-0.5">Kullanılabilir Bakiye</p>
+                <div className="p-4 rounded-2xl bg-emerald-50 border border-line">
+                  <span className="text-[11px] font-bold text-ink uppercase">Kalan Tatil (Resturlaub):</span>
+                  <p className="text-2xl font-mono font-black text-ink mt-1">{vacationRemaining} Gün</p>
+                  <p className="text-[11px] text-ink font-semibold mt-0.5">Kullanılabilir Bakiye</p>
                 </div>
               </div>
 
               {/* Sick Leave & Attest History */}
               <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-3">
                 <h4 className="text-xs font-black uppercase text-slate-700 tracking-wider flex items-center gap-2">
-                  <HeartPulse className="w-4 h-4 text-rose-600" />
+                  <HeartPulse className="w-4 h-4 text-brand" />
                   <span>{lang === 'tr' ? 'Hastalık Bildirimleri & Doktor Raporları (Attest)' : 'Krankmeldungen & Arztzeugnisse:'}</span>
                 </h4>
 
                 {empSick.length === 0 ? (
-                  <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <div className="p-4 rounded-xl bg-emerald-50 border border-line text-xs text-ink flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-ink" />
                     <span>{lang === 'tr' ? 'Bu çalışanın kayıtlı bir hastalık veya devamsızlık raporu bulunmamaktadır (Sicil Temiz).' : 'Keine Krankmeldungen vorhanden. 100% Anwesenheit.'}</span>
                   </div>
                 ) : (
@@ -890,7 +890,7 @@ export const PersonalakteModal = ({
                           <p className="font-bold text-slate-900">{r.reason || 'Grippaler Infekt'}</p>
                           <p className="text-[11px] text-slate-500">{r.startDate} bis {r.endDate || r.startDate}</p>
                         </div>
-                        <span className="px-2 py-0.5 rounded bg-rose-50 text-rose-800 border border-rose-200 text-[10px] font-bold">
+                        <span className="px-2 py-0.5 rounded bg-rose-50 text-brand border border-line text-[10px] font-bold">
                           Attest hinterlegt
                         </span>
                       </div>
@@ -920,7 +920,7 @@ export const PersonalakteModal = ({
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                     isEditing
                       ? 'bg-slate-200 text-slate-800'
-                      : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200'
+                      : 'bg-emerald-50 text-ink  border border-line'
                   }`}
                 >
                   <Edit3 className="w-3.5 h-3.5" />
@@ -960,7 +960,7 @@ export const PersonalakteModal = ({
                         maxLength="4"
                         value={formData.pin}
                         onChange={(e) => setFormData({ ...formData, pin: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-emerald-700 font-mono font-bold text-sm tracking-widest"
+                        className="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-ink font-mono font-bold text-sm tracking-widest"
                         required
                       />
                     </div>
@@ -992,7 +992,7 @@ export const PersonalakteModal = ({
                         step="0.5"
                         value={formData.hourlyRate}
                         onChange={(e) => setFormData({ ...formData, hourlyRate: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-emerald-700 font-mono font-bold"
+                        className="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-ink font-mono font-bold"
                       />
                     </div>
                   </div>
@@ -1007,7 +1007,7 @@ export const PersonalakteModal = ({
                     </button>
                     <button
                       type="submit"
-                      className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-md flex items-center gap-1.5"
+                      className="px-5 py-2 rounded-xl bg-subtle text-white text-xs font-black flex items-center gap-1.5"
                     >
                       <Save className="w-4 h-4" />
                       <span>{lang === 'tr' ? 'Değişiklikleri Kaydet' : 'Änderungen speichern'}</span>
@@ -1020,24 +1020,24 @@ export const PersonalakteModal = ({
                   {/* Left Column: Identifiers */}
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                     <h4 className="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                      <Lock className="w-3.5 h-3.5 text-emerald-600" />
+                      <Lock className="w-3.5 h-3.5 text-ink" />
                       <span>{lang === 'tr' ? 'Sistem & Terminal Giriş Bilgileri' : 'Zugangsdaten & Tablet-PIN'}</span>
                     </h4>
 
                     <div className="space-y-2 text-xs">
                       <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-slate-200">
                         <span className="text-slate-500 flex items-center gap-1.5">
-                          <Fingerprint className="w-4 h-4 text-emerald-600" />
+                          <Fingerprint className="w-4 h-4 text-ink" />
                           Tablet Kiosk PIN:
                         </span>
-                        <span className="font-mono font-black text-sm px-2.5 py-0.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-300">
+                        <span className="font-mono font-black text-sm px-2.5 py-0.5 rounded-lg bg-emerald-50 text-ink border border-line">
                           {formData.pin}
                         </span>
                       </div>
 
                       <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-slate-200">
                         <span className="text-slate-500 flex items-center gap-1.5">
-                          <Mail className="w-4 h-4 text-blue-600" />
+                          <Mail className="w-4 h-4 text-ink" />
                           E-Mail Login:
                         </span>
                         <span className="font-mono text-slate-900 font-bold">
@@ -1047,7 +1047,7 @@ export const PersonalakteModal = ({
 
                       <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-slate-200">
                         <span className="text-slate-500 flex items-center gap-1.5">
-                          <KeyRound className="w-4 h-4 text-amber-600" />
+                          <KeyRound className="w-4 h-4 text-brand" />
                           Passwort:
                         </span>
                         <span className="font-mono text-slate-800 font-bold">
@@ -1067,7 +1067,7 @@ export const PersonalakteModal = ({
                   {/* Right Column: Digital Documents Archive */}
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                     <h4 className="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                      <FileCheck className="w-3.5 h-3.5 text-blue-600" />
+                      <FileCheck className="w-3.5 h-3.5 text-ink" />
                       <span>{lang === 'tr' ? 'Resmi Evraklar & Önizleme' : 'Dokumentenablage'}</span>
                     </h4>
 
@@ -1080,7 +1080,7 @@ export const PersonalakteModal = ({
                           </div>
                           <button
                             onClick={() => setPreviewDoc(doc)}
-                            className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center gap-1 text-[11px]"
+                            className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-bold transition flex items-center gap-1 text-[11px]"
                           >
                             <Eye className="w-3.5 h-3.5" />
                             <span>Önizle</span>
@@ -1100,21 +1100,21 @@ export const PersonalakteModal = ({
         {/* Footer Actions */}
         <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-xs text-slate-500">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <ShieldCheck className="w-4 h-4 text-ink" />
             <span>{lang === 'tr' ? 'İsviçre nDSG standartlarında şifrelenmiş 360° personel karnesi.' : 'Schweizer nDSG konforme Mitarbeiterakte mit Vollzugriff.'}</span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={() => window.print()}
-              className="px-3.5 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs"
+              className="px-3.5 py-2 rounded-xl bg-white border border-slate-300 text-slate-800 text-xs font-bold transition flex items-center gap-1.5"
             >
               <Printer className="w-3.5 h-3.5 text-slate-600" />
               <span>{lang === 'tr' ? 'Kayıtları Yazdır' : 'Akte drucken'}</span>
             </button>
             <button
               onClick={onClose}
-              className="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black transition shadow-sm"
+              className="px-5 py-2 rounded-xl bg-slate-900 text-white text-xs font-black transition"
             >
               {lang === 'tr' ? 'Kapat' : 'Schliessen'}
             </button>
@@ -1125,23 +1125,23 @@ export const PersonalakteModal = ({
 
       {/* DOCUMENT PREVIEW MODAL */}
       {previewDoc && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in">
-          <div className="w-full max-w-2xl bg-white rounded-3xl p-6 shadow-2xl border border-slate-300 relative max-h-[85vh] overflow-y-auto">
+        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-dark">
+          <div className="w-full max-w-2xl bg-white rounded-3xl p-6 border border-slate-300 relative max-h-[85vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
               <div className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-emerald-600" />
+                <FileText className="w-5 h-5 text-ink" />
                 <h3 className="font-bold text-sm text-slate-900">{previewDoc.title}</h3>
               </div>
               <button
                 onClick={() => setPreviewDoc(null)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
+                className="p-1 rounded-lg text-slate-400"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Official Swiss Contract View */}
-            <div className="p-6 bg-amber-50/40 rounded-2xl border border-amber-200/80 font-serif text-slate-800 text-xs space-y-4 shadow-inner">
+            <div className="p-6 bg-subtle rounded-2xl border border-line font-serif text-slate-800 text-xs space-y-4">
               <div className="flex justify-between items-start border-b border-slate-300 pb-4">
                 <div>
                   <h4 className="font-black text-sm tracking-wide uppercase font-sans text-slate-900">
@@ -1150,7 +1150,7 @@ export const PersonalakteModal = ({
                   <p className="text-[11px] font-sans text-slate-500">Zürich, Schweiz • CHE-115.892.411 MWST</p>
                 </div>
                 <div className="text-right font-sans">
-                  <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">
+                  <span className="px-2 py-0.5 rounded bg-subtle text-ink font-bold text-[10px]">
                     L-GAV GASTGEWERBE 2025
                   </span>
                   <p className="text-[10px] text-slate-500 mt-1">Datum: {previewDoc.date}</p>

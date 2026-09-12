@@ -127,29 +127,29 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
       
-      {/* Top Banner */}
-      <div className="p-6 rounded-3xl glass-panel relative">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs font-semibold mb-2">
-              <Calculator className="w-3.5 h-3.5 text-indigo-600" />
+      {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
+              <Calculator className="w-3.5 h-3.5 text-brand icon-brand" />
               <span>{lang === 'tr' ? 'İsviçre GAV Gastronomi Maaş & Bordro Sistemi' : 'Lohnabrechnung & Treuhand-Monatsjournal'}</span>
             </div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+            <h1 className="page-title text-ink">
               {lang === 'tr' ? 'Maaş & Çalışma Saati Hesaplayıcı' : 'Lohn- & Stundenabrechnung'}
             </h1>
-            <p className="text-xs text-slate-600 mt-1 max-w-2xl">
+            <p className="text-subhead text-ink-soft max-w-2xl leading-relaxed mt-1">
               {lang === 'tr'
                 ? 'Çalışılan saatler, fazla mesai bakiyeleri (Überstunden), İsviçre AHV/ALV kesinti simülatörü ve muhasebeci (Treuhand) için tek tıkla CSV çıktısı.'
                 : 'Monatliche Arbeitszeitauswertung, Überstundensaldo, Schweizer Sozialabzüge (AHV/ALV/BVG) und Treuhand-Export.'}
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             <select
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
-              className="px-3 py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-800 text-xs font-bold shadow-xs focus:outline-none focus:border-indigo-400"
+              className="px-3 py-2.5 rounded-2xl bg-ground border border-line text-ink text-xs font-bold focus:outline-none focus:border-brand"
             >
               {months.map(m => (
                 <option key={m.value} value={m.value}>{m.label}</option>
@@ -158,7 +158,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
 
             <button
               onClick={exportTreuhandCSV}
-              className="px-4 py-2.5 rounded-2xl gradient-btn-indigo text-white text-xs font-extrabold flex items-center gap-2 shadow-sm transition"
+              className="px-4 py-2.5 rounded-2xl btn-brand text-white text-xs font-black flex items-center gap-2 transition"
             >
               <FileSpreadsheet className="w-4 h-4" />
               <span>{lang === 'tr' ? 'Treuhand CSV İndir' : 'Treuhand CSV Export'}</span>
@@ -169,7 +169,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs">
+        <div className="p-5 rounded-3xl bg-white border border-slate-200">
           <div className="flex items-center justify-between text-slate-500 mb-2">
             <span className="text-xs font-semibold">{lang === 'tr' ? 'Toplam Brüt Bordro' : 'Gesamte Bruttolohnsumme'}</span>
             <Coins className="w-4 h-4 text-indigo-600" />
@@ -182,23 +182,23 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
           </p>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs">
+        <div className="p-5 rounded-3xl bg-white border border-slate-200">
           <div className="flex items-center justify-between text-slate-500 mb-2">
             <span className="text-xs font-semibold">{lang === 'tr' ? 'Toplam Çalışılan Saat' : 'Geleistete Arbeitsstunden'}</span>
-            <Clock className="w-4 h-4 text-emerald-600" />
+            <Clock className="w-4 h-4 text-ink" />
           </div>
           <div className="font-mono text-2xl font-black text-slate-900">
             {totalHoursWorked.toFixed(1)} Std
           </div>
-          <p className="text-[11px] text-emerald-700 font-semibold mt-1">
+          <p className="text-[11px] text-ink font-semibold mt-1">
             Ø {(totalHoursWorked / employees.length).toFixed(1)} Std / Person
           </p>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs">
+        <div className="p-5 rounded-3xl bg-white border border-slate-200">
           <div className="flex items-center justify-between text-slate-500 mb-2">
             <span className="text-xs font-semibold">{lang === 'tr' ? 'Sozialabzüge (~11.5%)' : 'Sozialabzüge (AHV/ALV/BVG)'}</span>
-            <Percent className="w-4 h-4 text-amber-600" />
+            <Percent className="w-4 h-4 text-brand" />
           </div>
           <div className="font-mono text-2xl font-black text-slate-900">
             {formatCurrency(totalGrossPayroll * 0.115)}
@@ -210,7 +210,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
       </div>
 
       {/* Main Employee Payroll Table */}
-      <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs overflow-hidden">
+      <div className="p-6 rounded-3xl bg-white border border-slate-200 overflow-hidden">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
             <Users className="w-4 h-4 text-indigo-600" />
@@ -242,7 +242,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
                 const isPositiveOvertime = stats.overtime >= 0;
 
                 return (
-                  <tr key={emp.id} className="hover:bg-slate-50/80 transition">
+                  <tr key={emp.id} className="transition">
                     <td className="py-3.5">
                       <div className="flex items-center gap-3">
                         <img
@@ -275,7 +275,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
 
                     <td className="py-3.5 font-mono font-bold">
                       <span className={`px-2 py-0.5 rounded-md text-[11px] ${
-                        isPositiveOvertime ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                        isPositiveOvertime ? 'bg-subtle text-ink' : 'btn-brand text-brand'
                       }`}>
                         {isPositiveOvertime ? `+${stats.overtime}` : stats.overtime} h
                       </span>
@@ -285,7 +285,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
                       {formatCurrency(stats.grossBase)}
                     </td>
 
-                    <td className="py-3.5 font-mono font-extrabold text-emerald-700">
+                    <td className="py-3.5 font-mono font-extrabold text-ink">
                       {formatCurrency(stats.netSalary)}
                     </td>
 

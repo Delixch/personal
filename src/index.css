@@ -2,141 +2,275 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ================================================================
+   ADO DESIGN TOKENS — CLORFIRMA PALETİ (TAM DÜZ VE SÜSÜZ)
+================================================================ */
+
 :root {
-  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  /* ── Yazı Tipleri ──────────────────────────────────── */
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  
-  --bg-primary: #F8FAFC;
-  --bg-secondary: #FFFFFF;
-  --bg-card: #FFFFFF;
-  --bg-card-hover: #F8FAFC;
-  
-  --border-subtle: #E2E8F0;
-  --border-hover: #CBD5E1;
-  --border-glow: rgba(16, 185, 129, 0.15);
-  
-  --accent-emerald: #059669;
-  --accent-blue: #2563EB;
-  --accent-purple: #7C3AED;
-  --accent-amber: #D97706;
-  --accent-rose: #E11D48;
+
+  /* ── Yazı Renkleri ───────────────────────────────────────────── */
+  --ink:        #111111;     /* Ana Yazı (Koyu Siyah) */
+  --ink-soft:   #4A4A4A;     /* İkincil Yazı (Belirgin Koyu Gri) */
+  --ink-muted:  #787878;     /* Soluk Yazı (Orta Gri) */
+
+  /* ── Zemin & Yüzey Renkleri (TEK KART TANIMI: #F6EEDB) ───────── */
+  --ground:     #F6EEDB;     /* En Arka Sayfa Zemini (#F6EEDB Kum Rengi) */
+  --surface:    #F6EEDB;     /* TÜM KARTLAR (ÜST VE ALT KARTLAR TEK RENK: #F6EEDB) */
+  --subtle:     #EADCBF;     /* Kart İçi Dolgular (#EADCBF Kum Dolgu) */
+
+  /* ── Kenarlık Renkleri ────────────────────────────────────────── */
+  --line:       #E2D7C3;     /* Ana Border (Kum Uyumlu Kenarlık) */
+  --line-soft:  #EFEFEF;     /* İnce Çizgi */
+
+  /* ── Marka / Aksan Renkleri (#FF5A1F Turuncu) ───────────────── */
+  --brand:        #FF5A1F;   /* Turuncu Marka */
+  --brand-hover:  #C23E10;   /* Hover Turuncu */
+  --brand-deep:   #532515;   /* Koyu Ton */
+  --brand-light:  #FFF0EB;   /* Açık Turuncu Tint */
+  --brand-border: #FFCAB4;   /* Açık Turuncu Border */
+
+  /* ── Koyu Zemin (Banner) ─────────────────────────────────────── */
+  --dark:         #111111;   /* Koyu Banner (#111111) */
+
+  /* ── İkon Renkleri (MERKEZİ TANIM) ────────────────────────────── */
+  --icon-bg:      #ECE4D2;   /* İkon Kutusu Arka Planı (#ECE4D2 — Dış Çizgisiz) */
+  --icon-color:   #32312F;   /* İkonun Kendi Rengi (#32312F) */
 }
 
-* {
+/* ================================================================
+   GLOBAL RESET & BODY
+================================================================ */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body {
-  font-family: var(--font-main);
-  background-color: var(--bg-primary);
-  color: #1E293B;
+html, body, #root {
+  background-color: var(--ground) !important;
   min-height: 100vh;
+  color: var(--ink) !important;
+}
+
+body {
+  font-family: var(--font-sans);
   overflow-x: hidden;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Crisp Clean Panel Styles */
-.glass-panel {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+input, textarea, select, button {
+  font-family: inherit;
 }
 
-.glass-panel-hover {
-  transition: all 0.2s ease-in-out;
+/* MERKEZİ BAŞLIK VE YAZI RENK EZİCİ */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--ink) !important;
 }
 
-.glass-panel-hover:hover {
-  border-color: #CBD5E1;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
-  transform: translateY(-1px);
+.text-white {
+  color: var(--ink) !important;
 }
 
-.glass-modal {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+/* Sadece turuncu butonlar, bg-brand ve siyah modal/bannerlar beyaz metin kullanabilir */
+.btn-brand,
+.btn-brand *,
+.bg-brand,
+.bg-brand *,
+.active,
+.active *,
+.bg-dark,
+.bg-dark * {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
 }
 
-/* Gradients and Buttons */
-.gradient-btn-emerald {
-  background: #059669;
-  color: #FFFFFF;
-  box-shadow: 0 2px 8px -1px rgba(5, 150, 105, 0.3);
-  transition: all 0.2s ease;
+/* ================================================================
+   BUTONLAR VE MERKEZİ AKTİF ELEMANLAR
+================================================================ */
+.btn-brand,
+.bg-brand,
+.active,
+[aria-selected="true"] {
+  background-color: var(--brand) !important;
+  color: #FFFFFF !important;
+  border-radius: 0.75rem;
 }
 
-.gradient-btn-emerald:hover {
-  background: #047857;
-  box-shadow: 0 4px 12px -1px rgba(5, 150, 105, 0.4);
+.btn-ghost {
+  background: var(--surface) !important;
+  border: 1px solid var(--line) !important;
+  color: var(--ink) !important;
+  border-radius: 0.75rem;
 }
 
-/* Custom Scrollbar - Soft Gray */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* ================================================================
+   TYPOGRAPHY HIERARCHY
+================================================================ */
+.page-title {
+  font-size: 1.375rem;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+@media (min-width: 640px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: #F1F5F9;
+.section-title {
+  font-size: 1.125rem;
+  line-height: 1.3;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--ink);
 }
 
-::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+.card-title {
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.sub-title {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.text-subhead {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.text-body {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.text-body-sm {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.text-muted {
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+
+.text-label {
+  font-size: 0.625rem;
+  line-height: 1.4;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brand);
+}
+
+/* ================================================================
+   MERKEZİ İKON TANIMI (TAM KESİN — HİÇBİR İKON TURUNCU OLAMAZ)
+   - Arka Plan: #ECE4D2 (Tüm İkon Kutuları)
+   - Dış Çizgi: YOK (border: none)
+   - İkon Rengi: #32312F (Tüm İkon Çizgileri Koyu Gri/Siyah)
+================================================================ */
+
+/* 1. TÜM İKON KUTULARI VE ZEMİNLERİ (#ECE4D2 — ÇİZGİSİZ) */
+.icon-box,
+[class*="icon-bg"],
+.bg-brand-light,
+.bg-brand,
+div.bg-brand,
+.bg-cyan-600,
+.bg-rose-600,
+.bg-violet-600,
+.bg-amber-600,
+.bg-blue-600,
+.bg-purple-600,
+.bg-indigo-600,
+.bg-teal-600,
+.bg-orange-600,
+.bg-slate-700 {
+  background-color: var(--icon-bg) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* 2. PROJEDEKİ İSTİSNASIZ TÜM İKONLAR (#32312F) */
+svg,
+svg *,
+svg.lucide,
+.icon-brand,
+.icon-soft,
+.icon-muted,
+.icon-dark,
+.icon-white {
+  color: var(--icon-color) !important;
+  stroke: var(--icon-color) !important;
+}
+
+/* ================================================================
+   PROGRESS BAR
+================================================================ */
+.progress-bar {
+  height: 100%;
+  width: var(--bar-w, 0%);
+  background: var(--brand);
   border-radius: 9999px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
-}
+/* ================================================================
+   SCROLLBAR
+================================================================ */
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--subtle); }
+::-webkit-scrollbar-thumb { background: var(--ink-muted); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--brand); }
 
-/* Badge styles with high readability on light mode */
+/* ================================================================
+   BADGE
+================================================================ */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  padding: 0.25rem 0.625rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-size: 0.7rem;
+  font-weight: 700;
 }
 
-.badge-emerald {
-  background: #ECFDF5;
-  color: #065F46;
-  border: 1px solid #A7F3D0;
+.badge-neutral {
+  background: var(--subtle) !important;
+  color: var(--ink-soft) !important;
+  border: 1px solid var(--line) !important;
 }
 
-.badge-blue {
-  background: #EFF6FF;
-  color: #1E40AF;
-  border: 1px solid #BFDBFE;
+.badge-brand {
+  background: var(--brand-light) !important;
+  color: var(--brand) !important;
+  border: 1px solid var(--brand-border) !important;
 }
 
-.badge-amber {
-  background: #FFFBEB;
-  color: #92400E;
-  border: 1px solid #FDE68A;
-}
-
-.badge-purple {
-  background: #FAF5FF;
-  color: #6B21A8;
-  border: 1px solid #E9D5FF;
-}
-
-.badge-rose {
-  background: #FFF1F2;
-  color: #9F1239;
-  border: 1px solid #FECDD3;
-}
-
-.badge-slate {
-  background: #F1F5F9;
-  color: #475569;
-  border: 1px solid #E2E8F0;
+/* ================================================================
+   FORM INPUTS
+================================================================ */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--brand) !important;
 }

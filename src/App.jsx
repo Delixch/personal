@@ -11,11 +11,24 @@ import { EmployeeHR } from './components/employees/EmployeeHR';
 import { InvoiceScanner } from './components/invoices/InvoiceScanner';
 import { AccountingDashboard } from './components/accounting/AccountingDashboard';
 import { DatabaseManager } from './components/database/DatabaseManager';
-import { EmployeePortal } from './components/portal/EmployeePortal';
 import { HaccpChecklists } from './components/haccp/HaccpChecklists';
 import { PayrollCalculator } from './components/payroll/PayrollCalculator';
 import { CompanyBulletin } from './components/bulletin/CompanyBulletin';
-import { ArrowLeft, Home, ChevronRight } from 'lucide-react';
+import {
+  ArrowLeft,
+  Home,
+  ChevronRight,
+  Clock,
+  Calendar,
+  Users2,
+  FileText,
+  ReceiptText,
+  Truck,
+  ShieldCheck,
+  Megaphone,
+  Database,
+  ShoppingBag
+} from 'lucide-react';
 
 export function App() {
   useEffect(() => {
@@ -23,10 +36,37 @@ export function App() {
   }, []);
 
   const [currentUser, setCurrentUser] = useState(() => StorageService.getCurrentUser());
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState(() => {
+    const hash = window.location.hash.replace('#', '');
+    return hash || 'dashboard';
+  });
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState('all');
   const [lang, setLang] = useState(() => StorageService.getLanguage());
   const [notifications, setNotifications] = useState(() => StorageService.getNotifications());
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  // Tarayıcı Geri/İleri (Edge Back/Forward) butonlarını dinle
+  useEffect(() => {
+    const handlePopState = () => {
+      const hash = window.location.hash.replace('#', '');
+      setActiveTab(hash || 'dashboard');
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handlePopState);
+    };
+  }, []);
+
+  const navigateToTab = (tabName) => {
+    setActiveTab(tabName);
+    const targetHash = tabName === 'dashboard' ? '' : `#${tabName}`;
+    if (window.location.hash !== targetHash) {
+      window.history.pushState({ tab: tabName }, '', targetHash || window.location.pathname + window.location.search);
+    }
+  };
 
   useEffect(() => {
     const handleDbUpdate = () => {
@@ -38,6 +78,11 @@ export function App() {
     window.addEventListener('ado_db_update', handleDbUpdate);
     return () => window.removeEventListener('ado_db_update', handleDbUpdate);
   }, []);
+
+  // Modül değişince sayfayı başa al
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [activeTab]);
 
   const handleLangChange = (newLang) => {
     StorageService.setLanguage(newLang);
@@ -51,7 +96,7 @@ export function App() {
 
   const handleUserChange = (user) => {
     setCurrentUser(user);
-    setActiveTab('dashboard'); // Always go back to clean dashboard on persona switch
+    navigateToTab('dashboard');
   };
 
   const getActiveTabTitle = () => {
@@ -83,6 +128,11 @@ export function App() {
     }
   };
 
+  const handleCategorySelect = (catId) => {
+    setActiveCategoryFilter(catId);
+    navigateToTab('dashboard');
+  };
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'dashboard':
@@ -90,7 +140,9 @@ export function App() {
           <OverviewDashboard
             lang={lang}
             currentUser={currentUser}
-            onNavigate={(tab) => setActiveTab(tab)}
+            onNavigate={(tab) => navigateToTab(tab)}
+            activeCategoryFilter={activeCategoryFilter}
+            setActiveCategoryFilter={setActiveCategoryFilter}
           />
         );
       case 'suppliers':
@@ -120,7 +172,9 @@ export function App() {
           <OverviewDashboard
             lang={lang}
             currentUser={currentUser}
-            onNavigate={(tab) => setActiveTab(tab)}
+            onNavigate={(tab) => navigateToTab(tab)}
+            activeCategoryFilter={activeCategoryFilter}
+            setActiveCategoryFilter={setActiveCategoryFilter}
           />
         );
     }
@@ -129,8 +183,8 @@ export function App() {
   const isModuleOpen = activeTab !== 'dashboard';
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans">
-      
+    <div className="min-h-screen bg-ground text-ink flex flex-col font-sans">
+
       {/* Top Navigation */}
       <Navbar
         currentUser={currentUser}
@@ -140,38 +194,89 @@ export function App() {
         notifications={notifications}
         onNotificationsRead={handleNotificationsRead}
         onOpenLoginModal={() => setIsLoginModalOpen(true)}
-        onGoHome={() => setActiveTab('dashboard')}
+        onGoHome={() => navigateToTab('dashboard')}
       />
 
-      {/* Main Body - Focused and spacious without distracting side menus */}
+      {/* Main Body */}
       <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-        
-        {/* Navigation Bar when inside a specific module */}
-        {isModuleOpen && (
-          <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-200">
-            <button
-              onClick={() => setActiveTab('dashboard')}
-              className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-slate-200 hover:bg-slate-100/80 text-slate-800 font-bold text-xs shadow-xs hover:shadow transition group"
-            >
-              <ArrowLeft className="w-4 h-4 text-slate-500 group-hover:-translate-x-0.5 transition" />
-              <span>{lang === 'tr' ? '← Ana Menüye Dön' : '← Zurück zum Dashboard'}</span>
-            </button>
 
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
-              <span
-                onClick={() => setActiveTab('dashboard')}
-                className="cursor-pointer hover:text-slate-800 flex items-center gap-1"
+        {/* Breadcrumb & Global Quick Switcher Bar — modül açıkken gösterilir */}
+        {isModuleOpen && (
+          <div className="space-y-4 mb-6">
+            {/* Top Breadcrumb Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-line">
+              <button
+                onClick={() => navigateToTab('dashboard')}
+                className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface border border-line icon-brand text-ink font-bold text-xs transition"
               >
-                <Home className="w-3.5 h-3.5" />
-                <span>Dashboard</span>
-              </span>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-              <span className="text-slate-900 font-extrabold">{getActiveTabTitle()}</span>
+                <ArrowLeft className="w-4 h-4" />
+                <span className="text-body-sm">{lang === 'tr' ? 'Ana Menüye Dön' : 'Zurück zum Dashboard'}</span>
+              </button>
+
+              <div className="flex items-center gap-2 text-xs font-semibold text-ink-soft">
+                <span
+                  onClick={() => navigateToTab('dashboard')}
+                  className="cursor-pointer icon-brand flex items-center gap-1"
+                >
+                  <Home className="w-3.5 h-3.5" />
+                  <span className="text-body-sm">Dashboard</span>
+                </span>
+                <ChevronRight className="w-3.5 h-3.5 text-ink-muted" />
+                <span className="text-ink font-extrabold">{getActiveTabTitle()}</span>
+              </div>
+            </div>
+
+            {/* Global 3 Category Quick Switcher Bar (Overview Dashboard ile 100% Senkron) */}
+            <div className="p-2.5 rounded-2xl bg-surface border border-line flex items-center justify-between gap-2 overflow-x-auto">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[10px] font-black text-ink-muted uppercase tracking-wider px-2 shrink-0">
+                  {lang === 'tr' ? 'Ana Bölümler:' : 'Hauptbereiche:'}
+                </span>
+
+                {/* 1. Personal & Schichten (5 Modül) */}
+                <button
+                  onClick={() => handleCategorySelect(activeCategoryFilter === 'hr' ? 'all' : 'hr')}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+                    activeCategoryFilter === 'hr'
+                      ? 'btn-brand font-black'
+                      : 'bg-ground border border-line text-ink'
+                  }`}
+                >
+                  <Users2 className="w-3.5 h-3.5" />
+                  <span>{lang === 'tr' ? 'Personal & Vardiya (5)' : 'Personal & Schichten (5)'}</span>
+                </button>
+
+                {/* 2. Einkauf & Finanzen (3 Modül) */}
+                <button
+                  onClick={() => handleCategorySelect(activeCategoryFilter === 'finance' ? 'all' : 'finance')}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+                    activeCategoryFilter === 'finance'
+                      ? 'btn-brand font-black'
+                      : 'bg-ground border border-line text-ink'
+                  }`}
+                >
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <span>{lang === 'tr' ? 'Alışveriş, Fatura & Kasa (3)' : 'Einkauf & Finanzen (3)'}</span>
+                </button>
+
+                {/* 3. Betrieb & Hygiene (3 Modül) */}
+                <button
+                  onClick={() => handleCategorySelect(activeCategoryFilter === 'operations' ? 'all' : 'operations')}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+                    activeCategoryFilter === 'operations'
+                      ? 'btn-brand font-black'
+                      : 'bg-ground border border-line text-ink'
+                  }`}
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>{lang === 'tr' ? 'Operasyon, Hijyen & Genel (3)' : 'Betrieb & Hygiene (3)'}</span>
+                </button>
+              </div>
             </div>
           </div>
         )}
 
-        {/* Current Active Screen */}
+        {/* Aktif Ekran */}
         {renderTabContent()}
       </main>
 
@@ -181,7 +286,7 @@ export function App() {
         onClose={() => setIsLoginModalOpen(false)}
         onLoginSuccess={(user) => {
           setCurrentUser(user);
-          setActiveTab('dashboard');
+          navigateToTab('dashboard');
         }}
         lang={lang}
       />

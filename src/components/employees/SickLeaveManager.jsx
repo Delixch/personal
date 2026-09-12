@@ -91,36 +91,36 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
       
-      {/* Header Banner */}
-      <div className="p-6 rounded-3xl glass-panel relative">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold mb-2">
-              <HeartPulse className="w-3.5 h-3.5 text-rose-600" />
+      {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
+              <HeartPulse className="w-3.5 h-3.5 text-brand icon-brand" />
               <span>Absenzen-, Krankheits- & Urlaubsverwaltung</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="page-title text-ink">
               {t.sickTitle}
             </h1>
-            <p className="text-xs text-slate-600 mt-1 max-w-2xl">
+            <p className="text-subhead text-ink-soft max-w-2xl leading-relaxed mt-1">
               {lang === 'tr'
                 ? 'Hastalık bildirimleri, doktor raporları, izin talepleri ve vardiya senkronizasyonu.'
                 : 'Lückenlose Dokumentation von Krankmeldungen mit Attest-Upload & Urlaubsfreigaben.'}
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setShowSickModal(true)}
-              className="px-4 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 text-xs font-bold flex items-center gap-1.5 transition shadow-sm"
+              className="px-4 py-2 rounded-xl bg-subtle text-ink border border-line text-xs font-bold flex items-center gap-1.5 transition"
             >
-              <HeartPulse className="w-4 h-4 text-rose-600" />
+              <HeartPulse className="w-4 h-4 text-brand icon-brand" />
               <span>{t.reportSick}</span>
             </button>
 
             <button
               onClick={() => setShowLeaveModal(true)}
-              className="px-4 py-2 rounded-xl gradient-btn-emerald font-bold text-xs flex items-center gap-1.5 transition shadow-sm"
+              className="px-4 py-2 rounded-xl btn-brand font-black text-xs flex items-center gap-1.5 transition"
             >
               <Palmtree className="w-4 h-4" />
               <span>{t.leaveRequest}</span>
@@ -129,43 +129,43 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
         </div>
 
         {/* Vacation Balance Pill */}
-        <div className="mt-6 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+        <div className="mt-6 pt-4 border-t border-line-soft flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 border border-emerald-200">
+            <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center">
               <Palmtree className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-subhead">
                 {lang === 'tr' ? 'Tatil / İzin Bakiyesi' : 'Urlaubskonto'}: {myEmp.name}
               </p>
               <div className="flex items-center gap-2 font-mono text-xs">
-                <span className="text-slate-900 font-bold">{myEmp.vacationTotal} {lang === 'tr' ? 'gün' : 'Tage'}</span>
-                <span className="text-slate-400">|</span>
-                <span className="text-amber-700 font-semibold">{myEmp.vacationUsed} {lang === 'tr' ? 'kullanıldı' : 'bezogen'}</span>
-                <span className="text-slate-400">|</span>
-                <span className="text-emerald-700 font-extrabold">{vacationRemaining} {lang === 'tr' ? 'gün kaldı' : 'Resttage'}</span>
+                <span className="text-ink font-bold">{myEmp.vacationTotal} {lang === 'tr' ? 'gün' : 'Tage'}</span>
+                <span className="text-ink-muted">|</span>
+                <span className="text-brand font-semibold">{myEmp.vacationUsed} {lang === 'tr' ? 'kullanıldı' : 'bezogen'}</span>
+                <span className="text-ink-muted">|</span>
+                <span className="text-brand font-extrabold">{vacationRemaining} {lang === 'tr' ? 'gün kaldı' : 'Resttage'}</span>
               </div>
             </div>
           </div>
 
           {/* Tab switchers */}
-          <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-xl border border-slate-200">
+          <div className="flex items-center gap-2 bg-ground p-1 rounded-2xl border border-line">
             <button
               onClick={() => setActiveTab('sick')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
                 activeTab === 'sick'
-                  ? 'bg-white text-rose-900 font-bold shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'btn-brand font-black'
+                  : 'text-ink-soft '
               }`}
             >
               {lang === 'tr' ? 'Hastalık Bildirimleri' : 'Krankmeldungen'} ({sickReports.length})
             </button>
             <button
               onClick={() => setActiveTab('leave')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
                 activeTab === 'leave'
-                  ? 'bg-white text-emerald-900 font-bold shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'btn-brand font-black'
+                  : 'text-ink-soft '
               }`}
             >
               {lang === 'tr' ? 'İzin Talepleri' : 'Urlaubsanträge'} ({leaveRequests.length})
@@ -178,13 +178,13 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
       {activeTab === 'sick' ? (
         <div className="glass-panel p-6">
           <h2 className="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-            <HeartPulse className="w-4 h-4 text-rose-600" />
+            <HeartPulse className="w-4 h-4 text-brand" />
             <span>{lang === 'tr' ? 'Bildirilen Hastalık ve Rapor Kayıtları' : 'Erfasste Krankmeldungen & Arbeitsunfähigkeiten'}</span>
           </h2>
 
           {sickReports.length === 0 ? (
             <div className="text-center py-12 text-slate-400 text-xs">
-              <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
+              <CheckCircle2 className="w-8 h-8 text-ink mx-auto mb-2" />
               <p>{lang === 'tr' ? 'Harika! Aktif bir hastalık bildirimi bulunmuyor.' : 'Keine aktuellen Krankmeldungen verzeichnet.'}</p>
             </div>
           ) : (
@@ -192,7 +192,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
               {sickReports.map((report) => (
                 <div
                   key={report.id}
-                  className="p-4 rounded-2xl bg-white border border-slate-200 hover:border-slate-300 transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm"
+                  className="p-4 rounded-2xl bg-white border border-slate-200 transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
@@ -206,7 +206,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                       )}
                     </div>
 
-                    <div className="text-xs font-semibold text-rose-800">
+                    <div className="text-xs font-semibold text-brand">
                       Grund: {report.reason}
                     </div>
 
@@ -230,7 +230,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
         /* Leave Requests Tab */
         <div className="glass-panel p-6">
           <h2 className="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-            <Palmtree className="w-4 h-4 text-emerald-600" />
+            <Palmtree className="w-4 h-4 text-ink" />
             <span>{lang === 'tr' ? 'Personel İzin ve Tatil Talepleri' : 'Eingereichte Urlaubsanträge'}</span>
           </h2>
 
@@ -243,7 +243,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
               {leaveRequests.map((req) => (
                 <div
                   key={req.id}
-                  className="p-4 rounded-2xl bg-white border border-slate-200 hover:border-slate-300 transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm"
+                  className="p-4 rounded-2xl bg-white border border-slate-200 transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
@@ -273,16 +273,16 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                       <>
                         <button
                           onClick={() => handleLeaveDecision(req.id, 'approved')}
-                          className="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold flex items-center gap-1 transition"
+                          className="px-3 py-1.5 rounded-xl bg-emerald-50 text-ink border border-line text-xs font-bold flex items-center gap-1 transition"
                         >
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          <CheckCircle2 className="w-3.5 h-3.5 text-ink" />
                           <span>Genehmigen</span>
                         </button>
                         <button
                           onClick={() => handleLeaveDecision(req.id, 'rejected')}
-                          className="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 text-xs font-bold flex items-center gap-1 transition"
+                          className="px-3 py-1.5 rounded-xl bg-rose-50 text-brand border border-line text-xs font-bold flex items-center gap-1 transition"
                         >
-                          <XCircle className="w-3.5 h-3.5 text-rose-600" />
+                          <XCircle className="w-3.5 h-3.5 text-brand" />
                           <span>Ablehnen</span>
                         </button>
                       </>
@@ -301,16 +301,16 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
 
       {/* Report Sick Modal */}
       {showSickModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl relative border border-slate-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+          <div className="w-full max-w-lg rounded-3xl bg-white p-6 relative border border-slate-200">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
               <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <HeartPulse className="w-5 h-5 text-rose-600" />
+                <HeartPulse className="w-5 h-5 text-brand" />
                 <span>{t.reportSick} (Krankmeldung)</span>
               </h2>
               <button
                 onClick={() => setShowSickModal(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700"
+                className="p-1.5 rounded-lg text-slate-400"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -325,7 +325,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                   <select
                     value={sickData.employeeId}
                     onChange={(e) => setSickData({ ...sickData, employeeId: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-rose-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                   >
                     {employees.map(emp => (
                       <option key={emp.id} value={emp.id}>
@@ -343,7 +343,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                 <select
                   value={sickData.reason}
                   onChange={(e) => setSickData({ ...sickData, reason: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-rose-500"
+                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                 >
                   {SICK_REASONS.map((r, i) => (
                     <option key={i} value={r}>
@@ -363,7 +363,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                     required
                     value={sickData.startDate}
                     onChange={(e) => setSickData({ ...sickData, startDate: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-rose-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                   />
                 </div>
                 <div>
@@ -375,7 +375,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                     required
                     value={sickData.endDate}
                     onChange={(e) => setSickData({ ...sickData, endDate: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-rose-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                   />
                 </div>
               </div>
@@ -384,7 +384,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
               <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                    <FileText className="w-3.5 h-3.5 text-rose-600" />
+                    <FileText className="w-3.5 h-3.5 text-brand" />
                     <span>{t.uploadAttest}</span>
                   </span>
                   <label className="flex items-center gap-1 text-[11px] text-slate-700 cursor-pointer font-medium">
@@ -392,7 +392,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                       type="checkbox"
                       checked={sickData.hasAttest}
                       onChange={(e) => setSickData({ ...sickData, hasAttest: e.target.checked })}
-                      className="rounded text-rose-600"
+                      className="rounded text-brand"
                     />
                     <span>Liegt vor</span>
                   </label>
@@ -400,11 +400,11 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
 
                 {sickData.hasAttest && (
                   <div className="flex items-center gap-3 mt-2">
-                    <div className="flex-1 px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 flex items-center gap-2 shadow-sm">
-                      <Camera className="w-4 h-4 text-emerald-600" />
+                    <div className="flex-1 px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 flex items-center gap-2">
+                      <Camera className="w-4 h-4 text-ink" />
                       <span className="truncate font-mono">{sickData.attestFileName}</span>
                     </div>
-                    <label className="px-3 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-xs text-slate-800 font-semibold cursor-pointer transition">
+                    <label className="px-3 py-2 rounded-xl bg-slate-200 text-xs text-slate-800 font-semibold cursor-pointer transition">
                       <span>Durchsuchen</span>
                       <input
                         type="file"
@@ -433,14 +433,14 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                   value={sickData.notes}
                   onChange={(e) => setSickData({ ...sickData, notes: e.target.value })}
                   placeholder={lang === 'tr' ? 'Örn: Doktor 3 gün istirahat verdi' : 'z.B. Bettruhe verordnet, telefonisch erreichbar'}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-rose-500"
+                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                 />
               </div>
 
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition shadow"
+                  className="w-full py-2.5 rounded-xl btn-brand text-white font-bold text-xs transition"
                 >
                   {lang === 'tr' ? 'Hastalık Bildirimini Gönder' : 'Krankmeldung verbindlich absenden'}
                 </button>
@@ -452,16 +452,16 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
 
       {/* Leave Request Modal */}
       {showLeaveModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl relative border border-slate-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 relative border border-slate-200">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
               <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <Palmtree className="w-5 h-5 text-emerald-600" />
+                <Palmtree className="w-5 h-5 text-ink" />
                 <span>{t.leaveRequest}</span>
               </h2>
               <button
                 onClick={() => setShowLeaveModal(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700"
+                className="p-1.5 rounded-lg text-slate-400"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -478,7 +478,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                     required
                     value={leaveData.startDate}
                     onChange={(e) => setLeaveData({ ...leaveData, startDate: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                   />
                 </div>
                 <div>
@@ -490,7 +490,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                     required
                     value={leaveData.endDate}
                     onChange={(e) => setLeaveData({ ...leaveData, endDate: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                   />
                 </div>
               </div>
@@ -502,7 +502,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                 <select
                   value={leaveData.type}
                   onChange={(e) => setLeaveData({ ...leaveData, type: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                 >
                   <option value="Erholungsurlaub (Yıllık İzin)">Erholungsurlaub (Yıllık İzin)</option>
                   <option value="Kompensation Überstunden (Fazla Mesai İzni)">Kompensation Überstunden (Fazla Mesai İzni)</option>
@@ -514,7 +514,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-2.5 rounded-xl gradient-btn-emerald font-bold text-xs transition shadow-sm"
+                  className="w-full py-2.5 rounded-xl btn-brand font-bold text-xs transition"
                 >
                   {lang === 'tr' ? 'İzin Talebini Onaya Gönder' : 'Urlaubsantrag einreichen'}
                 </button>

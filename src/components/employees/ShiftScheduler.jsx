@@ -98,11 +98,11 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
   const getDepartmentIcon = (deptId) => {
     switch (deptId) {
-      case 'kuche': return <ChefHat className="w-3.5 h-3.5 text-emerald-600" />;
-      case 'service': return <UtensilsCrossed className="w-3.5 h-3.5 text-blue-600" />;
-      case 'bar': return <Wine className="w-3.5 h-3.5 text-purple-600" />;
-      case 'lager': return <Boxes className="w-3.5 h-3.5 text-amber-600" />;
-      default: return <Sparkles className="w-3.5 h-3.5 text-rose-600" />;
+      case 'kuche': return <ChefHat className="w-3.5 h-3.5 text-ink" />;
+      case 'service': return <UtensilsCrossed className="w-3.5 h-3.5 text-ink" />;
+      case 'bar': return <Wine className="w-3.5 h-3.5 text-ink" />;
+      case 'lager': return <Boxes className="w-3.5 h-3.5 text-brand" />;
+      default: return <Sparkles className="w-3.5 h-3.5 text-brand" />;
     }
   };
 
@@ -120,40 +120,40 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
       
-      {/* Header Banner */}
-      <div className="p-6 rounded-3xl glass-panel relative">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-semibold mb-2">
-              <CalendarDays className="w-3.5 h-3.5 text-blue-600" />
+      {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
+              <CalendarDays className="w-3.5 h-3.5 text-brand icon-brand" />
               <span>{lang === 'tr' ? '2 Vardiyalı Dinamik Personel Çizelgesi' : '2-Schichten Personaleinsatzplanung'}</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="page-title text-ink">
               {t.shiftTitle}
             </h1>
-            <p className="text-xs text-slate-600 mt-1 max-w-2xl">
+            <p className="text-subhead text-ink-soft max-w-2xl leading-relaxed mt-1">
               {t.shiftSubtitle}
             </p>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setWeekOffset(prev => prev - 1)}
-              className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 shadow-sm transition"
+              className="p-2 rounded-xl border border-line bg-surface text-ink transition"
               title="Vorherige Woche"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => setWeekOffset(0)}
-              className="px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-700 shadow-sm transition"
+              className="px-3.5 py-2 rounded-xl border border-line bg-surface text-xs font-bold text-ink transition"
             >
               {lang === 'tr' ? 'Bu Hafta' : 'Diese Woche'}
             </button>
             <button
               onClick={() => setWeekOffset(prev => prev + 1)}
-              className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 shadow-sm transition"
+              className="p-2 rounded-xl border border-line bg-surface text-ink transition"
               title="Nächste Woche"
             >
               <ChevronRight className="w-4 h-4" />
@@ -161,7 +161,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
             <button
               onClick={() => setShowAddModal(true)}
-              className="ml-2 px-4 py-2 rounded-xl gradient-btn-emerald font-bold text-xs flex items-center gap-1.5 transition shadow-sm"
+              className="ml-2 px-4 py-2 rounded-xl btn-brand font-black text-xs flex items-center gap-1.5 transition"
             >
               <Plus className="w-4 h-4" />
               <span>{t.addShift}</span>
@@ -171,9 +171,9 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
         {/* Sick Alert Warning Bar if any */}
         {sickAlerts.length > 0 && (
-          <div className="mt-4 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-between gap-3 text-rose-900 text-xs shadow-sm">
+          <div className="mt-4 p-3.5 rounded-2xl bg-subtle border border-brand-border flex items-center justify-between gap-3 text-brand text-xs">
             <div className="flex items-center gap-2 font-bold">
-              <ShieldAlert className="w-4 h-4 text-rose-600 shrink-0" />
+              <ShieldAlert className="w-4 h-4 text-brand icon-brand shrink-0" />
               <span>
                 {lang === 'tr'
                   ? `DİKKAT: ${sickAlerts.length} vardiyada hastalık bildirimi var! Lütfen yerine yedek personel atayın.`
@@ -184,13 +184,13 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
         )}
 
         {/* Department Filters */}
-        <div className="flex items-center gap-2 mt-6 overflow-x-auto pb-1">
+        <div className="flex items-center gap-2 mt-6 pt-4 border-t border-line-soft overflow-x-auto pb-1">
           <button
             onClick={() => setSelectedDept('all')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition border ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition border ${
               selectedDept === 'all'
-                ? 'bg-blue-50 border-blue-300 text-blue-900 font-bold'
-                : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                ? 'btn-brand text-white'
+                : 'bg-ground border-line text-ink '
             }`}
           >
             {lang === 'tr' ? 'Tüm Departmanlar' : 'Alle Abteilungen'}
@@ -199,10 +199,10 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
             <button
               key={dept.id}
               onClick={() => setSelectedDept(dept.id)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition border flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition border flex items-center gap-1.5 ${
                 selectedDept === dept.id
-                  ? 'bg-blue-50 border-blue-300 text-blue-900 font-bold'
-                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? 'btn-brand text-white'
+                  : 'bg-ground border-line text-ink '
               }`}
             >
               {getDepartmentIcon(dept.id)}
@@ -224,27 +224,27 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
               key={dateStr}
               className={`rounded-2xl border p-3 flex flex-col min-h-[360px] ${
                 isToday
-                  ? 'bg-emerald-50/40 border-emerald-300 shadow-sm'
-                  : 'bg-white border-slate-200'
+                  ? 'bg-subtle border-brand'
+                  : 'bg-surface border-line'
               }`}
             >
               {/* Day Header */}
-              <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-2.5">
+              <div className="flex items-center justify-between border-b border-line-soft pb-2 mb-2.5">
                 <div>
-                  <span className={`text-xs font-extrabold uppercase ${isToday ? 'text-emerald-800' : 'text-slate-800'}`}>
+                  <span className={`text-xs font-extrabold uppercase ${isToday ? 'text-brand font-black' : 'text-ink'}`}>
                     {dayName}
                   </span>
-                  <p className="text-[11px] text-slate-500">{formatDate(dateStr)}</p>
+                  <p className="text-[11px] text-subhead">{formatDate(dateStr)}</p>
                 </div>
                 {isToday && (
-                  <span className="badge badge-emerald py-0 px-1.5 text-[9px]">HEUTE</span>
+                  <span className="badge badge-brand py-0 px-1.5 text-[9px]">HEUTE</span>
                 )}
               </div>
 
               {/* Day Shifts List */}
               <div className="flex-1 space-y-2 overflow-y-auto">
                 {dayShifts.length === 0 ? (
-                  <div className="h-full flex items-center justify-center text-center py-8 text-[11px] text-slate-400">
+                  <div className="h-full flex items-center justify-center text-center py-8 text-[11px] text-ink-muted">
                     {lang === 'tr' ? 'Boş gün' : 'Keine Schichten'}
                   </div>
                 ) : (
@@ -257,8 +257,8 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                         key={shift.id}
                         className={`p-2.5 rounded-xl border transition text-left flex flex-col justify-between ${
                           isSick
-                            ? 'bg-rose-50 border-rose-300 text-rose-900'
-                            : 'bg-slate-50 border-slate-200 hover:border-slate-300 text-slate-800'
+                            ? 'bg-subtle border-brand-border text-brand font-semibold'
+                            : 'bg-ground border-line  text-ink'
                         }`}
                       >
                         <div>
@@ -267,15 +267,15 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                               <img
                                 src={emp?.avatar}
                                 alt={emp?.name}
-                                className="w-5 h-5 rounded-full object-cover shrink-0 ring-1 ring-slate-200"
+                                className="w-5 h-5 rounded-full object-cover shrink-0 ring-1 ring-line"
                               />
-                              <span className="text-xs font-bold text-slate-900 truncate">
+                              <span className="text-xs font-bold text-ink truncate">
                                 {emp?.name.split(' ')[0]}
                               </span>
                             </div>
                             <button
                               onClick={() => handleDeleteShift(shift.id)}
-                              className="text-slate-400 hover:text-rose-600 p-0.5 transition shrink-0"
+                              className="text-subhead p-0.5 transition shrink-0"
                               title="Schicht löschen"
                             >
                               <Trash2 className="w-3 h-3" />
@@ -287,7 +287,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                           </div>
 
                           {shift.notes && (
-                            <p className="text-[10px] text-slate-500 italic truncate mb-1">
+                            <p className="text-[10px] text-subhead italic truncate mb-1">
                               {shift.notes}
                             </p>
                           )}
@@ -295,16 +295,16 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
                         {/* Sick Alert & Reassign Button */}
                         {isSick && (
-                          <div className="mt-2 pt-2 border-t border-rose-200">
-                            <div className="flex items-center gap-1 text-[10px] font-bold text-rose-700 mb-1">
-                              <AlertTriangle className="w-3 h-3" />
+                          <div className="mt-2 pt-2 border-t border-line-soft">
+                            <div className="flex items-center gap-1 text-[10px] font-bold text-brand mb-1">
+                              <AlertTriangle className="w-3 h-3 icon-brand text-brand" />
                               <span>KRANK: {shift.sickReason || 'Absenz'}</span>
                             </div>
                             <button
                               onClick={() => setShowReplaceModal(shift)}
-                              className="w-full py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 text-[10px] font-bold flex items-center justify-center gap-1 transition"
+                              className="w-full py-1 rounded-lg bg-subtle text-ink border border-line text-[10px] font-bold flex items-center justify-center gap-1 transition"
                             >
-                              <UserCheck className="w-3 h-3" />
+                              <UserCheck className="w-3 h-3 text-brand icon-brand" />
                               <span>{t.assignReplacement}</span>
                             </button>
                           </div>
@@ -321,16 +321,16 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
       {/* Add Shift Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl relative border border-slate-200">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <CalendarDays className="w-4 h-4 text-emerald-600" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+          <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line text-ink">
+            <div className="flex items-center justify-between border-b border-line-soft pb-3 mb-4">
+              <h2 className="text-base font-bold text-ink flex items-center gap-2">
+                <CalendarDays className="w-4 h-4 text-brand icon-brand" />
                 <span>{t.addShift}</span>
               </h2>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700"
+                className="p-1.5 rounded-lg text-subhead"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -338,13 +338,13 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
             <form onSubmit={handleSaveShift} className="space-y-3.5">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-subhead mb-1">
                   {lang === 'tr' ? 'Çalışan Seçin' : 'Mitarbeiter wählen'}:
                 </label>
                 <select
                   value={formData.employeeId}
                   onChange={(e) => setFormData({ ...formData, employeeId: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-xl bg-ground border border-line text-ink text-xs focus:outline-none focus:border-brand"
                 >
                   {employees.map(emp => (
                     <option key={emp.id} value={emp.id}>
@@ -356,13 +356,13 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-subhead mb-1">
                     {lang === 'tr' ? 'Vardiya Türü' : 'Schicht-Typ'}:
                   </label>
                   <select
                     value={formData.shiftType}
                     onChange={(e) => setFormData({ ...formData, shiftType: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 rounded-xl bg-ground border border-line text-ink text-xs focus:outline-none focus:border-brand"
                   >
                     <option value="frueh">Frühschicht (08:00 - 16:30)</option>
                     <option value="spaet">Spätschicht (16:00 - 00:30)</option>
@@ -371,13 +371,13 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-subhead mb-1">
                     {lang === 'tr' ? 'Departman' : 'Abteilung'}:
                   </label>
                   <select
                     value={formData.department}
                     onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 rounded-xl bg-ground border border-line text-ink text-xs focus:outline-none focus:border-brand"
                   >
                     {SEED_DEPARTMENTS.map(d => (
                       <option key={d.id} value={d.id}>
@@ -389,7 +389,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-subhead mb-1">
                   {lang === 'tr' ? 'Tarih' : 'Datum'}:
                 </label>
                 <input
@@ -397,12 +397,12 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   required
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-xl bg-ground border border-line text-ink text-xs focus:outline-none focus:border-brand"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-subhead mb-1">
                   {lang === 'tr' ? 'Not / İstek' : 'Hinweis / Aufgaben'}:
                 </label>
                 <input
@@ -410,14 +410,14 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   placeholder={lang === 'tr' ? 'Örn: Hazırlık & servis' : 'z.B. Vorbereitung & Abendservice'}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-xl bg-ground border border-line text-ink text-xs focus:outline-none focus:border-brand"
                 />
               </div>
 
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-2.5 rounded-xl gradient-btn-emerald font-bold text-xs transition shadow-sm"
+                  className="w-full py-2.5 rounded-xl btn-brand font-black text-xs transition"
                 >
                   {lang === 'tr' ? 'Vardiyayı Kaydet' : 'Schicht verbindlich eintragen'}
                 </button>
@@ -429,13 +429,13 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
       {/* Replace Employee Modal */}
       {showReplaceModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-sm rounded-3xl bg-white p-5 shadow-2xl relative border border-slate-200">
-            <h3 className="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
-              <UserCheck className="w-4 h-4 text-emerald-600" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+          <div className="w-full max-w-sm rounded-3xl bg-surface p-5 relative border border-line text-ink">
+            <h3 className="text-sm font-bold text-ink mb-2 flex items-center gap-2">
+              <UserCheck className="w-4 h-4 text-brand icon-brand" />
               <span>{t.assignReplacement}</span>
             </h3>
-            <p className="text-xs text-slate-600 mb-4">
+            <p className="text-xs text-subhead mb-4">
               {lang === 'tr'
                 ? 'Hasta olan personelin yerine çalışabilecek uygun elemanı seçin:'
                 : 'Wählen Sie eine verfügbare Ersatzkraft für diese Schicht:'}
@@ -448,27 +448,27 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   <button
                     key={emp.id}
                     onClick={() => handleReplaceEmployee(showReplaceModal, emp.id)}
-                    className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-left transition text-xs"
+                    className="w-full flex items-center justify-between p-2.5 rounded-xl bg-ground border border-line text-left transition text-xs"
                   >
                     <div className="flex items-center gap-2.5 truncate">
                       <img
                         src={emp.avatar}
                         alt={emp.name}
-                        className="w-6 h-6 rounded-full object-cover ring-1 ring-slate-200"
+                        className="w-6 h-6 rounded-full object-cover ring-1 ring-line"
                       />
                       <div className="truncate">
-                        <p className="font-semibold text-slate-900 truncate">{emp.name}</p>
-                        <p className="text-[10px] text-slate-500 truncate">{emp.jobTitle}</p>
+                        <p className="font-semibold text-ink truncate">{emp.name}</p>
+                        <p className="text-[10px] text-subhead truncate">{emp.jobTitle}</p>
                       </div>
                     </div>
-                    <span className="badge badge-emerald text-[9px]">Zuteilen</span>
+                    <span className="badge badge-brand text-[9px]">Zuteilen</span>
                   </button>
                 ))}
             </div>
 
             <button
               onClick={() => setShowReplaceModal(null)}
-              className="w-full py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition"
+              className="w-full py-2 rounded-xl bg-subtle text-xs font-bold text-ink border border-line transition"
             >
               {lang === 'tr' ? 'İptal' : 'Abbrechen'}
             </button>

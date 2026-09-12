@@ -171,18 +171,18 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
       
-      {/* Header Banner */}
-      <div className="p-6 rounded-3xl glass-panel relative">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-purple-800 text-xs font-semibold mb-2">
-              <ScanLine className="w-3.5 h-3.5 text-purple-600" />
+      {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle text-ink border border-line-soft text-xs font-black tracking-wider uppercase">
+              <ScanLine className="w-3.5 h-3.5 text-brand icon-brand" />
               <span>KI-gestützter Rechnungs-Scan & Belegerfassung</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="page-title text-ink">
               {t.invoiceTitle}
             </h1>
-            <p className="text-xs text-slate-600 mt-1 max-w-2xl">
+            <p className="text-subhead text-ink-soft max-w-2xl leading-relaxed mt-1">
               {lang === 'tr'
                 ? 'Faturaları kamerayla çekin veya dosya yükleyin; yapay zeka tutar, KDV ve vadeyi otomatik ayıklasın.'
                 : 'Scannen oder fotografieren Sie Lieferantenrechnungen zur automatischen Erfassung von Betrag, MwSt und Fälligkeit.'}
@@ -191,7 +191,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
 
           <button
             onClick={() => setShowScanModal(true)}
-            className="px-5 py-2.5 rounded-xl gradient-btn-emerald font-extrabold text-xs flex items-center gap-2 transition self-start md:self-auto shadow-sm"
+            className="px-5 py-2.5 rounded-xl btn-brand font-black text-xs flex items-center gap-2 transition self-start md:self-auto shrink-0"
           >
             <Camera className="w-4 h-4" />
             <span>{t.scanInvoice}</span>
@@ -199,24 +199,24 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
         </div>
 
         {/* Quick KPI Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 pt-4 border-t border-slate-100">
-          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <p className="text-[11px] text-slate-500">{lang === 'tr' ? 'Ödenen Faturalar' : 'Bezahlte Rechnungen'}</p>
-            <p className="text-lg font-black font-mono text-emerald-700">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 pt-4 border-t border-line-soft">
+          <div className="p-3.5 rounded-2xl bg-ground border border-line">
+            <p className="text-[11px] text-subhead">{lang === 'tr' ? 'Ödenen Faturalar' : 'Bezahlte Rechnungen'}</p>
+            <p className="text-lg font-black font-mono text-brand">
               {formatCurrency(totalPaid)}
             </p>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-            <p className="text-[11px] text-slate-500">{lang === 'tr' ? 'Açık / Bekleyen Borç' : 'Offene Verbindlichkeiten'}</p>
-            <p className="text-lg font-black font-mono text-amber-700">
+          <div className="p-3.5 rounded-2xl bg-ground border border-line">
+            <p className="text-[11px] text-subhead">{lang === 'tr' ? 'Açık / Bekleyen Borç' : 'Offene Verbindlichkeiten'}</p>
+            <p className="text-lg font-black font-mono text-brand font-semibold">
               {formatCurrency(totalUnpaid)}
             </p>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 col-span-2 sm:col-span-1">
-            <p className="text-[11px] text-slate-500">{lang === 'tr' ? 'Toplam Kayıtlı Fatura' : 'Gesamtzahl Belege'}</p>
-            <p className="text-lg font-black font-mono text-slate-900">
+          <div className="p-3.5 rounded-2xl bg-ground border border-line col-span-2 sm:col-span-1">
+            <p className="text-[11px] text-subhead">{lang === 'tr' ? 'Toplam Kayıtlı Fatura' : 'Gesamtzahl Belege'}</p>
+            <p className="text-lg font-black font-mono text-ink">
               {invoices.length} {lang === 'tr' ? 'Adet' : 'Stück'}
             </p>
           </div>
@@ -233,10 +233,10 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
           <button
             key={tab.id}
             onClick={() => setActiveFilter(tab.id)}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition border ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition border ${
               activeFilter === tab.id
-                ? 'bg-purple-50 border-purple-300 text-purple-900 font-bold'
-                : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                ? 'btn-brand font-black'
+                : 'bg-ground border border-line text-ink '
             }`}
           >
             {tab.label}
@@ -245,10 +245,10 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
       </div>
 
       {/* Invoices List */}
-      <div className="glass-panel p-6">
+      <div className="bg-surface border border-line rounded-3xl p-6">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-700">
-            <thead className="border-b border-slate-100 text-[11px] text-slate-400 uppercase tracking-wider">
+          <table className="w-full text-left text-xs text-ink">
+            <thead className="border-b border-line text-[11px] text-subhead uppercase tracking-wider">
               <tr>
                 <th className="pb-3">Beleg / Foto</th>
                 <th className="pb-3">Lieferant & Nr</th>
@@ -259,13 +259,13 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                 <th className="pb-3 text-right">Aktion</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-line-soft">
               {filteredInvoices.map((inv) => (
-                <tr key={inv.id} className="hover:bg-slate-50 transition">
+                <tr key={inv.id} className="transition">
                   <td className="py-3">
                     <div
                       onClick={() => setSelectedInvoice(inv)}
-                      className="w-12 h-12 rounded-xl overflow-hidden cursor-pointer border border-slate-200 hover:ring-2 ring-emerald-500 transition"
+                      className="w-12 h-12 rounded-xl overflow-hidden cursor-pointer border border-line transition"
                     >
                       <img
                         src={inv.imageUrl}
@@ -276,30 +276,30 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                   </td>
 
                   <td className="py-3">
-                    <p className="font-bold text-slate-900 text-sm">{inv.supplierName}</p>
-                    <p className="text-[11px] font-mono text-slate-500">{inv.invoiceNumber}</p>
+                    <p className="font-bold text-ink text-sm">{inv.supplierName}</p>
+                    <p className="text-[11px] font-mono text-subhead">{inv.invoiceNumber}</p>
                   </td>
 
                   <td className="py-3">
-                    <p className="text-slate-700">Ausgestellt: {formatDate(inv.date)}</p>
-                    <p className="text-[11px] text-amber-700 font-semibold">Fällig: {formatDate(inv.dueDate)}</p>
+                    <p className="text-ink">Ausgestellt: {formatDate(inv.date)}</p>
+                    <p className="text-[11px] text-brand font-semibold">Fällig: {formatDate(inv.dueDate)}</p>
                   </td>
 
                   <td className="py-3 font-mono">
                     {inv.taxRate}% ({formatCurrency(inv.taxAmount)})
                   </td>
 
-                  <td className="py-3 font-mono font-extrabold text-sm text-emerald-700">
+                  <td className="py-3 font-mono font-black text-sm text-brand">
                     {formatCurrency(inv.totalAmount)}
                   </td>
 
                   <td className="py-3">
                     {inv.status === 'paid' ? (
-                      <span className="badge badge-emerald py-0.5 px-2 text-[10px]">
+                      <span className="badge badge-brand py-0.5 px-2 text-[10px]">
                         ✓ BEZAHLT
                       </span>
                     ) : (
-                      <span className="badge badge-amber py-0.5 px-2 text-[10px]">
+                      <span className="badge badge-neutral py-0.5 px-2 text-[10px]">
                         ● OFFEN
                       </span>
                     )}
@@ -309,7 +309,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => setSelectedInvoice(inv)}
-                        className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
+                        className="p-1.5 rounded-lg bg-subtle text-ink border border-line transition"
                         title="Beleg ansehen"
                       >
                         <Eye className="w-4 h-4" />
@@ -318,7 +318,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       {inv.status !== 'paid' && (
                         <button
                           onClick={() => handleMarkAsPaid(inv.id)}
-                          className="px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px] font-bold flex items-center gap-1 transition"
+                          className="px-2.5 py-1.5 rounded-lg bg-emerald-50 text-ink border border-line text-[11px] font-bold flex items-center gap-1 transition"
                         >
                           <Check className="w-3.5 h-3.5" />
                           <span>{lang === 'tr' ? 'Ödendi Yap' : 'Als bezahlt'}</span>
@@ -335,17 +335,17 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
 
       {/* Interactive Scan Modal */}
       {showScanModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-3xl rounded-3xl bg-white p-6 shadow-2xl relative border border-slate-200 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+          <div className="w-full max-w-3xl rounded-3xl bg-white p-6 relative border border-slate-200 max-h-[90vh] overflow-y-auto">
             
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
               <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <ScanLine className="w-5 h-5 text-purple-600" />
+                <ScanLine className="w-5 h-5 text-ink" />
                 <span>{t.scanInvoice}</span>
               </h2>
               <button
                 onClick={() => setShowScanModal(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700"
+                className="p-1.5 rounded-lg text-slate-400"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -362,12 +362,12 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                     key={idx}
                     type="button"
                     onClick={() => handleApplyPreset(preset)}
-                    className="p-2.5 rounded-xl bg-white hover:bg-purple-50 border border-slate-200 hover:border-purple-300 text-left transition text-xs group shadow-sm"
+                    className="p-2.5 rounded-xl bg-white border border-slate-200 text-left transition text-xs group"
                   >
-                    <p className="font-semibold text-slate-900 group-hover:text-purple-900 truncate">
+                    <p className="font-semibold text-slate-900 group- truncate">
                       {preset.title}
                     </p>
-                    <p className="text-[10px] font-mono font-bold text-emerald-700">
+                    <p className="text-[10px] font-mono font-bold text-ink">
                       {formatCurrency(preset.totalAmount)}
                     </p>
                   </button>
@@ -382,14 +382,14 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                   {lang === 'tr' ? 'Fatura Görseli / Kamera' : 'Rechnungsfoto / Beleg'}:
                 </label>
 
-                <div className="relative rounded-2xl border-2 border-dashed border-slate-300 hover:border-purple-400 transition p-6 text-center flex flex-col items-center justify-center min-h-[260px] bg-slate-50 overflow-hidden">
+                <div className="relative rounded-2xl border-2 border-dashed border-slate-300 transition p-6 text-center flex flex-col items-center justify-center min-h-[260px] bg-slate-50 overflow-hidden">
                   {isScanning && (
-                    <div className="absolute inset-0 bg-white/90 backdrop-blur-xs z-10 flex flex-col items-center justify-center text-center p-4">
-                      <div className="w-10 h-10 rounded-full border-4 border-purple-600 border-t-transparent animate-spin mb-3"></div>
-                      <p className="text-xs font-bold text-purple-900">
+                    <div className="absolute inset-0 bg-surface z-10 flex flex-col items-center justify-center text-center p-4">
+                      <div className="w-10 h-10 rounded-full border-4 border-line border-brand mb-3"></div>
+                      <p className="text-xs font-bold text-ink">
                         {t.extractingData}
                       </p>
-                      <p className="text-[10px] text-purple-700 mt-1">
+                      <p className="text-[10px] text-ink mt-1">
                         OCR analysiert Lieferant, MwSt und Summen
                       </p>
                     </div>
@@ -403,7 +403,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                     />
                   ) : (
                     <>
-                      <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600 mb-3 border border-purple-100">
+                      <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-ink mb-3 border border-line">
                         <Upload className="w-6 h-6" />
                       </div>
                       <p className="text-xs font-semibold text-slate-900 mb-1">
@@ -412,7 +412,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       <p className="text-[10px] text-slate-500 mb-4">
                         JPG, PNG, PDF oder Smartphone-Foto
                       </p>
-                      <label className="px-4 py-2 rounded-xl bg-purple-100 hover:bg-purple-200 text-purple-900 text-xs font-bold cursor-pointer transition shadow-sm">
+                      <label className="px-4 py-2 rounded-xl bg-subtle text-ink text-xs font-bold cursor-pointer transition">
                         <span>Datei auswählen</span>
                         <input
                           type="file"
@@ -428,8 +428,8 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
 
               {/* Right Column: AI Extracted Fields */}
               <div className="space-y-3">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-purple-800">
-                  <Sparkles className="w-4 h-4 text-purple-600" />
+                <div className="flex items-center gap-1.5 text-xs font-bold text-ink">
+                  <Sparkles className="w-4 h-4 text-ink" />
                   <span>{lang === 'tr' ? 'Otomatik Ayrıştırılan Veriler' : 'Erkannte Rechnungsdaten'}:</span>
                 </div>
 
@@ -441,7 +441,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                     type="text"
                     value={extractedData.supplierName}
                     onChange={(e) => setExtractedData({ ...extractedData, supplierName: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-purple-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                   />
                 </div>
 
@@ -454,7 +454,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       type="text"
                       value={extractedData.invoiceNumber}
                       onChange={(e) => setExtractedData({ ...extractedData, invoiceNumber: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-mono focus:outline-none focus:border-purple-500"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs font-mono focus:outline-none focus:border-line"
                     />
                   </div>
                   <div>
@@ -465,7 +465,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       type="text"
                       value={extractedData.category}
                       onChange={(e) => setExtractedData({ ...extractedData, category: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-purple-500"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                     />
                   </div>
                 </div>
@@ -479,7 +479,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       type="date"
                       value={extractedData.date}
                       onChange={(e) => setExtractedData({ ...extractedData, date: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-purple-500"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                     />
                   </div>
                   <div>
@@ -490,7 +490,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       type="date"
                       value={extractedData.dueDate}
                       onChange={(e) => setExtractedData({ ...extractedData, dueDate: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-purple-500"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                     />
                   </div>
                 </div>
@@ -512,7 +512,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                           totalAmount: Number((extractedData.subtotal + tax).toFixed(2))
                         });
                       }}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-purple-500"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-line"
                     >
                       <option value="2.6">2.6% (Lebensmittel CH)</option>
                       <option value="8.1">8.1% (Normalsatz CH)</option>
@@ -528,7 +528,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       step="0.05"
                       value={extractedData.totalAmount}
                       onChange={(e) => setExtractedData({ ...extractedData, totalAmount: parseFloat(e.target.value) || 0 })}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-emerald-700 font-extrabold font-mono text-xs focus:outline-none focus:border-purple-500"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-ink font-extrabold font-mono text-xs focus:outline-none focus:border-line"
                     />
                   </div>
                 </div>
@@ -537,7 +537,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                   <button
                     type="button"
                     onClick={handleSaveScannedInvoice}
-                    className="w-full py-3 rounded-xl gradient-btn-emerald font-extrabold text-xs flex items-center justify-center gap-2 transition shadow-sm"
+                    className="w-full py-3 rounded-xl btn-brand font-extrabold text-xs flex items-center justify-center gap-2 transition"
                   >
                     <CheckCircle2 className="w-4 h-4" />
                     <span>{lang === 'tr' ? 'Faturayı Sisteme Kaydet & Muhasebeleştir' : 'Rechnung verbindlich buchen'}</span>
@@ -552,8 +552,8 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
 
       {/* Invoice Detail Modal */}
       {selectedInvoice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl relative border border-slate-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 relative border border-slate-200">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
               <div>
                 <span className="badge badge-purple text-[10px] mb-1">{selectedInvoice.category}</span>
@@ -562,7 +562,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
               </div>
               <button
                 onClick={() => setSelectedInvoice(null)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700"
+                className="p-1.5 rounded-lg text-slate-400"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -583,7 +583,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-500">Fälligkeit:</span>
-                <span className="font-semibold text-amber-800">{formatDate(selectedInvoice.dueDate)}</span>
+                <span className="font-semibold text-brand">{formatDate(selectedInvoice.dueDate)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-500">MwSt ({selectedInvoice.taxRate}%):</span>
@@ -591,13 +591,13 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
               </div>
               <div className="flex items-center justify-between pt-1 border-t border-slate-200 font-bold text-sm">
                 <span className="text-slate-900">Gesamtbetrag:</span>
-                <span className="font-mono text-emerald-700">{formatCurrency(selectedInvoice.totalAmount)}</span>
+                <span className="font-mono text-ink">{formatCurrency(selectedInvoice.totalAmount)}</span>
               </div>
             </div>
 
             <button
               onClick={() => setSelectedInvoice(null)}
-              className="w-full py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs text-slate-700 font-semibold transition"
+              className="w-full py-2 rounded-xl bg-slate-100 text-xs text-slate-700 font-semibold transition"
             >
               Schliessen
             </button>

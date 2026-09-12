@@ -52,26 +52,26 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in">
-      <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl relative border border-slate-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark">
+      <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line text-ink">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
+          className="absolute top-4 right-4 p-2 rounded-xl text-subhead transition"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Title */}
         <div className="text-center mb-5">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 mb-2 border border-emerald-200">
-            <KeyRound className="w-6 h-6" />
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-subtle text-brand mb-2 border border-line">
+            <KeyRound className="w-6 h-6 icon-brand" />
           </div>
-          <h2 className="text-xl font-black text-slate-900">
+          <h2 className="text-xl font-black text-ink">
             {lang === 'tr' ? 'Sisteme Giriş' : 'Mitarbeiter & Chef Login'}
           </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-subhead mt-0.5">
             {lang === 'tr'
               ? 'PIN kodunuzla veya e-posta ile giriş yapın'
               : 'Wählen Sie Ihren Zugang per PIN oder E-Mail'}
@@ -79,7 +79,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
         </div>
 
         {/* Tab Switcher: PIN vs Email */}
-        <div className="flex bg-slate-100 p-1 rounded-2xl mb-4 border border-slate-200">
+        <div className="flex bg-ground p-1 rounded-2xl mb-4 border border-line">
           <button
             type="button"
             onClick={() => {
@@ -88,11 +88,11 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
             }}
             className={`flex-1 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 ${
               authMethod === 'pin'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'btn-brand font-black'
+                : 'text-subhead '
             }`}
           >
-            <Hash className="w-3.5 h-3.5 text-emerald-600" />
+            <Hash className="w-3.5 h-3.5" />
             <span>{lang === 'tr' ? '🔢 4-Haneli PIN (Önerilen)' : '🔢 PIN-Code (Schnell)'}</span>
           </button>
           <button
@@ -103,18 +103,18 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
             }}
             className={`flex-1 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 ${
               authMethod === 'email'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'btn-brand font-black'
+                : 'text-subhead '
             }`}
           >
-            <Mail className="w-3.5 h-3.5 text-slate-500" />
+            <Mail className="w-3.5 h-3.5" />
             <span>{lang === 'tr' ? '✉️ E-posta & Şifre' : '✉️ E-Mail & Passwort'}</span>
           </button>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-2xl bg-rose-50 border border-rose-200 flex items-center gap-2 text-rose-800 text-xs">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="mb-4 p-3 rounded-2xl bg-subtle border border-brand-border flex items-center gap-2 text-brand text-xs font-bold">
+            <AlertCircle className="w-4 h-4 shrink-0 icon-brand" />
             <span>{error}</span>
           </div>
         )}
@@ -123,7 +123,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
         {authMethod === 'pin' ? (
           <form onSubmit={handlePinLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1 text-center">
+              <label className="block text-xs font-bold text-subhead mb-1 text-center">
                 {lang === 'tr' ? '4 Haneli Çalışan PIN Kodunuz:' : 'Ihr 4-stelliger Mitarbeiter-PIN:'}
               </label>
               <input
@@ -134,13 +134,13 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
                 value={pin}
                 onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
                 placeholder="••••"
-                className="w-full text-center text-3xl font-mono font-black tracking-widest py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-emerald-500 transition"
+                className="w-full text-center text-3xl font-mono font-black tracking-widest py-3 rounded-2xl bg-ground border border-line text-ink focus:outline-none focus:border-brand transition"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 rounded-2xl gradient-btn-emerald font-extrabold text-xs transition shadow-sm"
+              className="w-full py-3 rounded-2xl btn-brand font-black text-xs transition"
             >
               {lang === 'tr' ? 'PIN ile Giriş Yap' : 'Mit PIN anmelden'}
             </button>
@@ -149,42 +149,42 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
           /* Method 2: Email & Password Form */
           <form onSubmit={handleEmailLogin} className="space-y-3.5">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-subhead mb-1">
                 {lang === 'tr' ? 'E-posta Adresi' : 'E-Mail Adresse'}
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <Mail className="w-4 h-4 text-subhead absolute left-3 top-3" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ornek@firma.ch"
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs placeholder:text-slate-400 focus:outline-none focus:border-emerald-500 transition"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-ground border border-line text-ink text-xs focus:outline-none focus:border-brand transition"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-subhead mb-1">
                 {lang === 'tr' ? 'Şifre' : 'Passwort'}
               </label>
               <div className="relative">
-                <KeyRound className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <KeyRound className="w-4 h-4 text-subhead absolute left-3 top-3" />
                 <input
                   type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs placeholder:text-slate-400 focus:outline-none focus:border-emerald-500 transition"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-ground border border-line text-ink text-xs focus:outline-none focus:border-brand transition"
                 />
               </div>
             </div>
 
             <button
               type="submit"
-              className="w-full py-2.5 rounded-xl gradient-btn-emerald font-bold text-xs transition mt-2 shadow-sm"
+              className="w-full py-2.5 rounded-xl btn-brand font-black text-xs transition mt-2"
             >
               {lang === 'tr' ? 'Giriş Yap' : 'Anmelden'}
             </button>
@@ -192,8 +192,8 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
         )}
 
         {/* Quick Click Persona Selector */}
-        <div className="mt-6 pt-4 border-t border-slate-100">
-          <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2.5 text-center">
+        <div className="mt-6 pt-4 border-t border-line-soft">
+          <p className="text-[11px] font-bold text-subhead uppercase tracking-wider mb-2.5 text-center">
             {lang === 'tr' ? 'Tek Tıkla Hızlı Test Girişi' : 'Direkte Schnell-Auswahl:'}
           </p>
 
@@ -203,18 +203,18 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
                 key={emp.id}
                 type="button"
                 onClick={() => handleQuickSelect(emp)}
-                className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 text-left flex items-center gap-2.5 transition text-xs"
+                className="p-2 rounded-xl border border-line bg-ground text-left flex items-center gap-2.5 transition text-xs"
               >
                 <img
                   src={emp.avatar}
                   alt={emp.name}
-                  className="w-7 h-7 rounded-lg object-cover ring-1 ring-slate-200"
+                  className="w-7 h-7 rounded-lg object-cover ring-1 ring-line"
                 />
                 <div className="truncate">
-                  <div className="font-bold text-slate-900 truncate text-[11px]">
+                  <div className="font-bold text-ink truncate text-[11px]">
                     {emp.name.split(' ')[0]} {emp.role === 'admin' && '👑'}
                   </div>
-                  <div className="text-[10px] text-emerald-700 font-mono">
+                  <div className="text-[10px] text-brand font-mono font-bold">
                     PIN: {emp.pin}
                   </div>
                 </div>

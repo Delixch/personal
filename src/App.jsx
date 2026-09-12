@@ -265,7 +265,7 @@ export function App() {
         {isModuleOpen && (
           <div className="space-y-4 mb-6">
             
-            <div className="flex items-center justify-between pb-3 border-b border-line">
+            <div className="flex items-center justify-between pb-3">
               <button
                 onClick={() => navigateToTab('dashboard')}
                 className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface border border-line icon-brand text-ink font-bold text-xs transition"

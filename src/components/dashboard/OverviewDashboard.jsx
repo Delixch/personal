@@ -523,7 +523,7 @@ export const OverviewDashboard = ({
                                 <Icon className="w-5 h-5" />
                               </div>
                               {mod.badge && (
-                                <span className={`text-[10px] font-black py-0.5 px-2.5 rounded-full border ${mod.badgeBg}`}>
+                                <span className="text-xs font-extrabold text-ink">
                                   {mod.badge}
                                 </span>
                               )}
@@ -537,7 +537,7 @@ export const OverviewDashboard = ({
                             </p>
                           </div>
 
-                          <div className="mt-3.5 pt-2.5 border-t border-line flex items-center justify-between text-xs font-bold text-ink group-">
+                          <div className="mt-3.5 pt-2.5 card-footer-action flex items-center justify-between text-xs font-bold text-ink">
                             <span className="text-[11px] font-semibold text-ink-muted">{mod.stat || ''}</span>
                             <div className="flex items-center gap-1 text-ink transition">
                               <span className="font-extrabold">{lang === 'tr' ? 'Aç' : 'Öffnen'}</span>
@@ -576,7 +576,7 @@ export const OverviewDashboard = ({
                         <Icon className="w-5 h-5" />
                       </div>
                       {mod.badge && (
-                        <span className={`text-[10px] font-black py-0.5 px-2.5 rounded-full border ${mod.badgeBg}`}>
+                        <span className="text-xs font-extrabold text-ink">
                           {mod.badge}
                         </span>
                       )}
@@ -590,7 +590,7 @@ export const OverviewDashboard = ({
                     </p>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-line flex items-center justify-between text-xs font-bold text-ink group-">
+                  <div className="mt-4 pt-3 card-footer-action flex items-center justify-between text-xs font-bold text-ink">
                     <span className="text-[11px] font-semibold text-ink-muted">{mod.stat || ''}</span>
                     <div className="flex items-center gap-1 text-ink transition">
                       <span className="font-extrabold">{lang === 'tr' ? 'Aç' : 'Öffnen'}</span>

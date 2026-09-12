@@ -68,11 +68,7 @@ export const Navbar = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-lg tracking-tight text-ink font-sans">
-                ADO <span className="text-brand icon-brand">FIRMA</span>
-              </span>
-              <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-subtle px-2.5 py-0.5 text-xs font-semibold text-subhead border border-line">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand"></span>
-                Zürich Enterprise
+                TEST
               </span>
             </div>
             <p className="text-[11px] text-ink-muted hidden sm:block">

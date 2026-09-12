@@ -1,6 +1,6 @@
 export const TRANSLATIONS = {
   de: {
-    appTitle: 'ADO Firma Management',
+    appTitle: 'Test Management',
     tagline: 'All-in-One Enterprise Platform',
     adminView: 'Chef / Admin Ansicht',
     employeeView: 'Mitarbeiter Portal',
@@ -67,7 +67,7 @@ export const TRANSLATIONS = {
     localDbStatus: 'Offline-First Lokale Datenbank aktiv'
   },
   tr: {
-    appTitle: 'ADO Firma Yönetimi',
+    appTitle: 'Test Yönetimi',
     tagline: 'Hepsi Bir Arada İşletme & Yönetim Platformu',
     adminView: 'Yönetici / Chef Görünümü',
     employeeView: 'Çalışan Portalı',

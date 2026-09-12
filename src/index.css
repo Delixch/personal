@@ -12,28 +12,38 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   /* ── Yazı Renkleri ───────────────────────────────────────────── */
-  --ink: #111111;
-  /* Ana Yazı (Saf Koyu Siyah) */
-  --ink-soft: #1F2937;
-  /* İkincil Yazı (Derin Koyu Siyah) */
-  --ink-muted: #374151;
-  /* Etiket & Alt Yazı (Koyu Kömür Gri) */
+  --h1: #FDFEFD;
+  /* Tüm H1 Başlıklar (#FDFEFD) */
+  --ink: #FAF4E9;
+  /* Ana Yazı / Sağ Taraf (#FAF4E9) */
+  --ink-heading: #FAF4E9;
+  /* Başlıklar (#FAF4E9) */
+  --ink-soft: #C8C8C8;
+  /* İkincil Yazı (#C8C8C8) */
+  --ink-muted: #C8C8C8;
+  /* Sol Taraf / Alt Yazı (#C8C8C8 - Einsatzplanung ile aynı) */
 
   /* ── Zemin & Yüzey Renkleri ──────────────────────────────────── */
-  --ground: #F6EEDB;
+  --ground: #27110F;
   /* En Arka Sayfa Zemini (#F6EEDB Sıcak Kum Rengi) */
-  --surface: #FFFFFF;
+  --surface: #221F1D;
   /* Dış Kartlar & Genel Yüzey (#FFFFFF) */
-  --surface-inner: #EBE4D1;
+  --surface-inner: #281E1D;
   /* İÇ KARTLAR ÖZEL YÜZEY RENK TANIMI (#EBE4D1) */
   --subtle: #FAF6EE;
   /* Kart İçi Dolgular (#FAF6EE Açık Krem Dolgu) */
 
   /* ── Kenarlık Renkleri ────────────────────────────────────────── */
   --line: #E2D7C3;
-  /* Ana Border (Kum Uyumlu Kenarlık) */
+  /* Ana Border (Dış Kartlar & Genel Kenarlık) */
+  --line-inner: #180E0E;
+  /* İç Kart Kenarlık Rengi (#180E0E) */
   --line-soft: #EFEFEF;
   /* İnce Çizgi */
+
+  /* ── Buton Renkleri ─────────────────────────────────────────── */
+  --btn-bg: #180E0E;
+  /* Standart Buton Arka Planı (#180E0E) */
 
   /* ── Marka / Aksan Renkleri (#FF5A1F Turuncu) ───────────────── */
   --brand: #FF5A1F;
@@ -52,10 +62,12 @@
   /* Koyu Banner (#111111) */
 
   /* ── İkon Renkleri (MERKEZİ TANIM) ────────────────────────────── */
-  --icon-bg: #ECE4D2;
-  /* İkon Kutusu Arka Planı (#ECE4D2 — Dış Çizgisiz) */
-  --icon-color: #32312F;
-  /* İkonun Kendi Rengi (#32312F) */
+  --icon-bg: #160A0B;
+  /* İkon Kutusu Arka Planı (#160A0B) */
+  --icon-color: #FAF4E9;
+  /* İkonun Kendi Rengi / İçindeki Şekil (#FAF4E9) */
+  --icon-border: #524946;
+  /* İkon Kutusu Kenarlık Rengi (#524946) */
 }
 
 /* ================================================================
@@ -94,12 +106,19 @@ button {
 
 /* MERKEZİ BAŞLIK VE YAZI RENK EZİCİ */
 h1,
+.page-title {
+  color: var(--h1) !important;
+}
+
 h2,
 h3,
 h4,
 h5,
-h6 {
-  color: var(--ink) !important;
+h6,
+.section-title,
+.card-title,
+.sub-title {
+  color: var(--ink-heading) !important;
 }
 
 .text-white {
@@ -120,6 +139,12 @@ h6 {
 /* ================================================================
    BUTONLAR VE MERKEZİ AKTİF ELEMANLAR
 ================================================================ */
+button:not(.btn-brand):not(.bg-brand):not(.active):not([aria-selected="true"]):not(.icon-box),
+button.card-inner,
+.btn-ghost {
+  background-color: var(--btn-bg) !important;
+}
+
 .btn-brand,
 .bg-brand,
 .active,
@@ -130,9 +155,8 @@ h6 {
 }
 
 .btn-ghost {
-  background: var(--surface) !important;
-  border: 1px solid var(--line) !important;
-  color: var(--ink) !important;
+  background-color: var(--btn-bg) !important;
+  border: 1px solid var(--line-inner) !important;
   border-radius: 0.75rem;
 }
 
@@ -144,7 +168,7 @@ h6 {
   line-height: 1.25;
   font-weight: 800;
   letter-spacing: -0.025em;
-  color: var(--ink);
+  color: var(--h1) !important;
 }
 
 @media (min-width: 640px) {
@@ -158,28 +182,28 @@ h6 {
   line-height: 1.3;
   font-weight: 800;
   letter-spacing: -0.015em;
-  color: var(--ink);
+  color: var(--ink-heading) !important;
 }
 
 .card-title {
   font-size: 0.9375rem;
   line-height: 1.35;
   font-weight: 700;
-  color: var(--ink);
+  color: var(--ink-heading) !important;
 }
 
 .sub-title {
   font-size: 0.8125rem;
   line-height: 1.4;
   font-weight: 700;
-  color: var(--ink);
+  color: var(--ink-heading) !important;
 }
 
 .text-subhead {
   font-size: 0.75rem;
   line-height: 1.5;
   font-weight: 500;
-  color: var(--ink-soft);
+  color: var(--ink-soft) !important;
 }
 
 .text-body {
@@ -236,7 +260,7 @@ div.bg-brand,
 .bg-orange-600,
 .bg-slate-700 {
   background-color: var(--icon-bg) !important;
-  border: none !important;
+  border: 1px solid var(--icon-border) !important;
   box-shadow: none !important;
 }
 
@@ -298,9 +322,9 @@ svg.lucide,
 }
 
 .badge-neutral {
-  background: var(--subtle) !important;
-  color: var(--ink-soft) !important;
-  border: 1px solid var(--line) !important;
+  background: transparent !important;
+  color: #FAF4E9 !important;
+  border: none !important;
 }
 
 .badge-brand {
@@ -334,15 +358,73 @@ select:focus {
   background-color: var(--dark) !important;
 }
 
+.bg-subtle {
+  background-color: var(--subtle) !important;
+}
+
+.border-line {
+  border-color: var(--line) !important;
+}
+
 .card-inner,
+.card-inner.border-line,
+.card-inner.border,
+[class*="card-inner"].border-line,
 .glass-panel {
   background-color: var(--surface-inner) !important;
-  border-color: var(--line) !important;
+  border-color: var(--line-inner) !important;
+  border-width: 2px !important;
+  border-style: solid !important;
   color: var(--ink) !important;
 }
 
 .text-ink {
   color: var(--ink) !important;
+}
+
+/* KART İÇİ ALT ALAN (KIOSK TERMINAL / ÖFFNEN) ÇİZGİLERİNİ TAMAMEN SIFIRLA */
+.card-footer-action,
+.card-inner .card-footer-action,
+.card-inner .border-t,
+.card-inner [class*="border-t"] {
+  border: none !important;
+  border-width: 0 !important;
+  border-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.card-inner .text-ink,
+.card-inner .text-ink * {
+  color: #FAF4E9 !important;
+}
+
+/* BAŞLIKLAR (HER ZAMAN TEXT-INK'I VE DİĞER SINIFLARI EZER) */
+h1,
+h1.text-ink,
+h1 *,
+.page-title,
+.page-title.text-ink {
+  color: var(--h1) !important;
+}
+
+h2,
+h2.text-ink,
+h3,
+h3.text-ink,
+h4,
+h4.text-ink,
+h5,
+h5.text-ink,
+h6,
+h6.text-ink,
+.section-title,
+.section-title.text-ink,
+.card-title,
+.card-title.text-ink,
+.sub-title,
+.sub-title.text-ink {
+  color: var(--ink-heading) !important;
 }
 
 .text-ink-soft {
@@ -355,14 +437,6 @@ select:focus {
 
 .text-brand {
   color: var(--brand) !important;
-}
-
-.bg-subtle {
-  background-color: var(--subtle) !important;
-}
-
-.border-line {
-  border-color: var(--line) !important;
 }
 
 /* ================================================================

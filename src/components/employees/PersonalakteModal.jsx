@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   X,
   User,
@@ -57,6 +57,18 @@ export const PersonalakteModal = ({
   const [isEditing, setIsEditing] = useState(false);
   const [previewDoc, setPreviewDoc] = useState(null);
 
+  const scrollContainerRef = useRef(null);
+
+  // Sekme değiştiğinde kaydırma çubuğunu en başa (veya aşağıya) al
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      // KPI banner'ının yüksekliği kadar aşağı kaydır ki içerik hemen odaklansın
+      // Mobilde 4-KPI banner çok yer kapladığı için sekme değiştiğinde onu gizlemek güzel bir UX.
+      const isMobile = window.innerWidth < 640;
+      scrollContainerRef.current.scrollTop = isMobile ? 180 : 0; 
+    }
+  }, [activeTab]);
+
   const timeLogs = StorageService.getTimeLogs();
   const shifts = StorageService.getShifts();
   const sickReports = StorageService.getSickReports();
@@ -113,6 +125,14 @@ export const PersonalakteModal = ({
   const thirteentMonthAccrual = +(grossMonthlySalary * 0.0833).toFixed(2);
   const annualGrossEstimate = +(grossMonthlySalary * 12 + grossMonthlySalary * 12 * 0.0833).toFixed(2);
   const annualNetPaidEstimate = +(netMonthlySalary * 9).toFixed(2);
+
+  useEffect(() => {
+    // Modal açıldığında arkadaki sayfanın kaymasını (scroll) engelle
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
   const vacationTotal = employee.vacationTotal || 25;
   const vacationUsed = employee.vacationUsed || 0;
@@ -324,160 +344,181 @@ export const PersonalakteModal = ({
           </div>
         </div>
 
-        {/* 4-KPI Executive Master Banner */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 p-3 sm:p-4 bg-ground border-b border-line text-xs">
-          
-          {/* KPI 1: Worked Hours & Overtime */}
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-surface border border-line flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
+
+
+        {/* Tab Navigation Strip (Mobile Dropdown + Desktop Tabs) */}
+        <div className="px-4 py-2 sm:py-2.5 sm:px-6 bg-ground border-b border-line">
+          {/* Mobile Dropdown */}
+          <div className="block sm:hidden">
+            <select
+              value={activeTab}
+              onChange={(e) => setActiveTab(e.target.value)}
+              className="w-full px-3 py-2.5 rounded-xl bg-surface text-ink text-xs font-bold border border-brand/50 focus:outline-none focus:border-brand appearance-none"
+            >
+              <option value="360">{lang === 'tr' ? '⭐ 360° Sicil Özeti' : '⭐ 360° Chef-Übersicht'}</option>
+              <option value="zeiterfassung">{lang === 'tr' ? 'Saatler & Stempeluhr' : 'Stempeluhr & Stunden'}</option>
+              <option value="schichten">{lang === 'tr' ? 'Vardiya Planı' : 'Schichtplan'}</option>
+              <option value="lohn">{lang === 'tr' ? 'Maaş, Bordro & Senelik' : 'Lohn & Abrechnung'}</option>
+              <option value="absenzen">{lang === 'tr' ? 'Hastalık & İzin Geçmişi' : 'Urlaub & Absenzen'}</option>
+              <option value="stammdaten">{lang === 'tr' ? 'Sözleşme, AHV & Evraklar' : 'Vertrag & Dokumente'}</option>
+            </select>
+          </div>
+
+          {/* Desktop Tabs */}
+          <div className="hidden sm:flex items-center gap-2 overflow-x-auto text-xs font-bold hide-scrollbar">
+            <button
+              onClick={() => setActiveTab('360')}
+              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                activeTab === '360'
+                  ? 'btn-brand font-black'
+                  : 'text-ink-soft'
+              }`}
+            >
+              <Layers className="w-4 h-4" />
+              <span>{lang === 'tr' ? '⭐ 360° Sicil Özeti' : '⭐ 360° Chef-Übersicht'}</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('zeiterfassung')}
+              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                activeTab === 'zeiterfassung'
+                  ? 'btn-brand font-black'
+                  : 'text-ink-soft'
+              }`}
+            >
               <Clock className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="text-[10px] text-ink font-black block uppercase tracking-wider">
-                {lang === 'tr' ? 'Bu Ayki Mesai' : 'Arbeitszeit'}
-              </span>
-              <span className="font-mono font-black text-sm text-ink block">
-                {effectiveHours} Std.
-              </span>
-              <span className={`block text-[10px] font-bold ${overtime === 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                {overtime === 0 ? '0h Denk' : overtime > 0 ? `+${overtime}h Fazla` : `${overtime}h Eksik`} (Soll: <span className="text-emerald-400">{targetMonthlyHours}h</span>)
-              </span>
-            </div>
-          </div>
+              <span>{lang === 'tr' ? 'Saatler & Stempeluhr' : 'Stempeluhr & Stunden'}</span>
+            </button>
 
-          {/* KPI 2: Vacation Balance */}
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-surface border border-line flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
-              <Palmtree className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="text-[10px] text-ink font-black block uppercase tracking-wider">
-                {lang === 'tr' ? 'Kalan İzin (Tatil)' : 'Resturlaub'}
-              </span>
-              <span className="font-mono font-black text-sm text-brand block">
-                {vacationRemaining} Gün Kaldı
-              </span>
-              <span className="block text-[10px] text-ink font-extrabold">
-                Toplam {vacationTotal} / {vacationUsed} Kullanıldı
-              </span>
-            </div>
-          </div>
+            <button
+              onClick={() => setActiveTab('schichten')}
+              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                activeTab === 'schichten'
+                  ? 'btn-brand font-black'
+                  : 'text-ink-soft'
+              }`}
+            >
+              <Calendar className="w-4 h-4" />
+              <span>{lang === 'tr' ? 'Vardiya Planı' : 'Schichtplan'}</span>
+            </button>
 
-          {/* KPI 3: Monthly Net Salary */}
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-surface border border-line flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
+            <button
+              onClick={() => setActiveTab('lohn')}
+              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                activeTab === 'lohn'
+                  ? 'btn-brand font-black'
+                  : 'text-ink-soft'
+              }`}
+            >
               <DollarSign className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="text-[10px] text-ink font-black block uppercase tracking-wider">
-                {lang === 'tr' ? 'Net Maaş (Son Ay)' : 'Nettolohn'}
-              </span>
-              <span className="font-mono font-black text-sm text-ink block">
-                {formatCurrency(netMonthlySalary)}
-              </span>
-              <span className="block text-[10px] text-ink font-extrabold">
-                ✓ Bankaya Yatırıldı (ZKB)
-              </span>
-            </div>
+              <span>{lang === 'tr' ? 'Maaş, Bordro & Senelik' : 'Lohn & Abrechnung'}</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('absenzen')}
+              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                activeTab === 'absenzen'
+                  ? 'btn-brand font-black'
+                  : 'text-ink-soft'
+              }`}
+            >
+              <HeartPulse className="w-4 h-4" />
+              <span>{lang === 'tr' ? 'Hastalık & İzin Geçmişi' : 'Urlaub & Absenzen'}</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('stammdaten')}
+              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                activeTab === 'stammdaten'
+                  ? 'btn-brand font-black'
+                  : 'text-ink-soft'
+              }`}
+            >
+              <FileText className="w-4 h-4 text-ink" />
+              <span>{lang === 'tr' ? 'Sözleşme, AHV & Evraklar' : 'Vertrag & Dokumente'}</span>
+            </button>
           </div>
-
-          {/* KPI 4: Annual Indicator & Social Security */}
-          <div className="p-2.5 sm:p-3 rounded-2xl bg-surface border border-line flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
-              <TrendingUp className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="text-[10px] text-ink font-black block uppercase tracking-wider">
-                {lang === 'tr' ? 'Senelik Gösterge' : 'Jahreslohn'}
-              </span>
-              <span className="font-mono font-black text-sm text-ink block">
-                {formatCurrency(annualGrossEstimate)}
-              </span>
-              <span className="block text-[10px] text-ink font-extrabold">
-                13. Maaş Dahil • AHV/BVG ✓
-              </span>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Tab Navigation Strip */}
-        <div className="flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-2.5 bg-ground border-b border-line overflow-x-auto text-xs font-bold">
-          <button
-            onClick={() => setActiveTab('360')}
-            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-              activeTab === '360'
-                ? 'btn-brand font-black'
-                : 'text-ink-soft  '
-            }`}
-          >
-            <Layers className="w-4 h-4" />
-            <span>{lang === 'tr' ? '⭐ 360° Sicil Özeti' : '⭐ 360° Chef-Übersicht'}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('zeiterfassung')}
-            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-              activeTab === 'zeiterfassung'
-                ? 'btn-brand font-black'
-                : 'text-ink-soft  '
-            }`}
-          >
-            <Clock className="w-4 h-4" />
-            <span>{lang === 'tr' ? 'Saatler & Stempeluhr' : 'Stempeluhr & Stunden'}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('schichten')}
-            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-              activeTab === 'schichten'
-                ? 'btn-brand font-black'
-                : 'text-ink-soft  '
-            }`}
-          >
-            <Calendar className="w-4 h-4" />
-            <span>{lang === 'tr' ? 'Vardiya Planı' : 'Schichtplan'}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('lohn')}
-            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-              activeTab === 'lohn'
-                ? 'btn-brand font-black'
-                : 'text-ink-soft  '
-            }`}
-          >
-            <DollarSign className="w-4 h-4" />
-            <span>{lang === 'tr' ? 'Maaş, Bordro & Senelik' : 'Lohn & Abrechnung'}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('absenzen')}
-            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-              activeTab === 'absenzen'
-                ? 'btn-brand font-black'
-                : 'text-ink-soft  '
-            }`}
-          >
-            <HeartPulse className="w-4 h-4" />
-            <span>{lang === 'tr' ? 'Hastalık & İzin Geçmişi' : 'Urlaub & Absenzen'}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('stammdaten')}
-            className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-              activeTab === 'stammdaten'
-                ? 'btn-brand font-black'
-                : 'text-ink-soft  '
-            }`}
-          >
-            <FileText className="w-4 h-4 text-ink" />
-            <span>{lang === 'tr' ? 'Sözleşme, AHV & Evraklar' : 'Vertrag & Dokumente'}</span>
-          </button>
         </div>
 
         {/* Scrollable Tab Content Body */}
-        <div className="p-5 sm:p-6 overflow-y-auto flex-1 space-y-6">
+        <div ref={scrollContainerRef} className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-6">
+
+          {/* 4-KPI Executive Master Banner (Now inside scrollable area to save mobile space) */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 p-3 sm:p-4 bg-ground rounded-2xl border border-line text-xs">
+            
+            {/* KPI 1: Worked Hours & Overtime */}
+            <div className="p-2.5 sm:p-3 rounded-xl bg-surface border border-line flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
+                <Clock className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-[10px] text-ink font-black block uppercase tracking-wider">
+                  {lang === 'tr' ? 'Bu Ayki Mesai' : 'Arbeitszeit'}
+                </span>
+                <span className="font-mono font-black text-sm text-ink block">
+                  {effectiveHours} Std.
+                </span>
+                <span className={`block text-[10px] font-bold ${overtime === 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                  {overtime === 0 ? '0h Denk' : overtime > 0 ? `+${overtime}h Fazla` : `${overtime}h Eksik`} (Soll: <span className="text-emerald-400">{targetMonthlyHours}h</span>)
+                </span>
+              </div>
+            </div>
+
+            {/* KPI 2: Vacation Balance */}
+            <div className="p-2.5 sm:p-3 rounded-xl bg-surface border border-line flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
+                <Palmtree className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-[10px] text-ink font-black block uppercase tracking-wider">
+                  {lang === 'tr' ? 'Kalan İzin' : 'Resturlaub'}
+                </span>
+                <span className="font-mono font-black text-sm text-brand block">
+                  {vacationRemaining} Gün
+                </span>
+                <span className="block text-[10px] text-ink font-extrabold">
+                  {vacationTotal} / {vacationUsed} Kullanıldı
+                </span>
+              </div>
+            </div>
+
+            {/* KPI 3: Monthly Net Salary */}
+            <div className="p-2.5 sm:p-3 rounded-xl bg-surface border border-line flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
+                <DollarSign className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-[10px] text-ink font-black block uppercase tracking-wider">
+                  {lang === 'tr' ? 'Net Maaş' : 'Nettolohn'}
+                </span>
+                <span className="font-mono font-black text-sm text-ink block">
+                  {formatCurrency(netMonthlySalary)}
+                </span>
+                <span className="block text-[10px] text-ink font-extrabold">
+                  Bankaya Yatırıldı (ZKB)
+                </span>
+              </div>
+            </div>
+
+            {/* KPI 4: Annual Indicator */}
+            <div className="p-2.5 sm:p-3 rounded-xl bg-surface border border-line flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center shrink-0">
+                <TrendingUp className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-[10px] text-ink font-black block uppercase tracking-wider">
+                  {lang === 'tr' ? 'Yıllık Maaş' : 'Jahreslohn'}
+                </span>
+                <span className="font-mono font-black text-sm text-ink block">
+                  {formatCurrency(annualGrossEstimate)}
+                </span>
+                <span className="block text-[10px] text-ink font-extrabold">
+                  13. Maaş Dahil • AHV✓
+                </span>
+              </div>
+            </div>
+
+          </div>
 
           {/* TAB 1: 360° CHEF-ÜBERSICHT (THE MASTER SNAPSHOT) */}
           {activeTab === '360' && (

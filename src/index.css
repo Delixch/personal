@@ -394,6 +394,10 @@ select:focus {
   background-color: var(--surface) !important;
 }
 
+.bg-navbar {
+  background-color: #180E0E !important;
+}
+
 .bg-dark {
   background-color: var(--dark) !important;
 }

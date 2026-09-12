@@ -53,6 +53,8 @@ export const Navbar = ({
     }
   };
 
+  const isSuperUser = currentUser?.role === 'admin' || currentUser?.isImpersonated;
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-line bg-navbar">
       <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -98,12 +100,24 @@ export const Navbar = ({
             </div>
           )}
 
-          {currentUser?.role === 'admin' && (
+          {currentUser?.role === 'admin' ? (
             <div className="hidden sm:flex items-center gap-1.5 px-3 h-[32px] rounded-md navbar-btn text-ink font-bold text-xs">
               <ShieldCheck className="w-4 h-4 text-brand icon-brand" />
               <span className="text-body-sm">{lang === 'tr' ? 'Patron / Yönetici' : 'Chef-Modus aktiv'}</span>
             </div>
-          )}
+          ) : currentUser?.isImpersonated ? (
+            <button
+              onClick={() => {
+                const adminUser = employees.find(e => e.role === 'admin') || employees[0];
+                handleSelectUser(adminUser);
+              }}
+              className="flex items-center gap-1.5 px-3 h-[32px] rounded-md bg-brand text-white font-bold text-xs transition"
+              title="Patron / Yönetici Ekranına Geç"
+            >
+              <ShieldCheck className="w-4 h-4" />
+              <span className="text-body-sm">{lang === 'tr' ? '👑 Admin\'e Dön' : '👑 Zurück zu Admin'}</span>
+            </button>
+          ) : null}
 
           <button
             onClick={() => onLangChange(lang === 'de' ? 'tr' : 'de')}

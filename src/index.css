@@ -35,8 +35,8 @@
   /* Kart İçi Dolgular (#180E0E) */
 
   /* ── Kenarlık Renkleri ────────────────────────────────────────── */
-  --line: #E2D7C3;
-  /* Ana Border (Dış Kartlar & Genel Kenarlık) */
+  --line: #524946;
+  /* Ana Border (Dış Kartlar & Genel Kenarlık) - Daha Önce: #281E1D (Çok karanlıktı), İlk Hali: #E2D7C3 */
   --line-inner: #180E0E;
   /* İç Kart Kenarlık Rengi (#180E0E) */
   --line-soft: #EFEFEF;

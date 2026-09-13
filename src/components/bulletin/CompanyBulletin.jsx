@@ -11,7 +11,8 @@ import {
   FileText,
   Info,
   Sparkles,
-  Layers
+  Layers,
+  X
 } from 'lucide-react';
 import { StorageService } from '../../services/storage';
 import { SyncService } from '../../services/syncService';
@@ -268,14 +269,31 @@ export const CompanyBulletin = ({ lang, currentUser, isAdmin }) => {
       </div>
 
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
-          <div className="w-full max-w-lg bg-surface rounded-3xl p-6 border border-line modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
-            <h3 className="font-bold text-base text-ink mb-1">
-              {lang === 'tr' ? 'Yeni Duyuru Yayınla' : 'Neue Team-Mitteilung'}
-            </h3>
-            <p className="text-xs text-subhead mb-4">
-              {lang === 'tr' ? 'Bu duyuru tüm personelin panosunda görüntülenecektir.' : 'Erscheint auf allen Mitarbeiter-Dashboards.'}
-            </p>
+        <div 
+          className="fixed inset-0 z-50 flex justify-start bg-black/70 backdrop-blur-xs modal-backdrop"
+          onClick={() => setShowAddModal(false)}
+        >
+          <div 
+            className="w-full max-w-lg sm:max-w-xl h-full bg-surface border-r border-line p-6 flex flex-col gap-4 overflow-y-auto text-ink shadow-2xl drawer-left-container pointer-events-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-line pb-3">
+              <div>
+                <h3 className="font-bold text-base text-ink mb-0.5">
+                  {lang === 'tr' ? 'Yeni Duyuru Yayınla' : 'Neue Team-Mitteilung'}
+                </h3>
+                <p className="text-xs text-subhead">
+                  {lang === 'tr' ? 'Bu duyuru tüm personelin panosunda görüntülenecektir.' : 'Erscheint auf allen Mitarbeiter-Dashboards.'}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowAddModal(false)}
+                className="p-1.5 rounded-lg text-ink-muted hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
             <form onSubmit={handleAddBulletin} className="space-y-4">
               <div>

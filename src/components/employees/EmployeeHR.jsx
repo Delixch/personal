@@ -132,8 +132,10 @@ export const EmployeeHR = ({ lang, currentUser }) => {
           return (
             <div
               key={emp.id}
-              className="p-5 rounded-3xl card-inner border border-line flex flex-col justify-between cursor-pointer hover:border-brand transition shadow-sm group"
-              onClick={() => setSelectedEmployee(emp)}
+              className={`p-5 rounded-3xl card-inner border transition shadow-sm group cursor-pointer ${
+                selectedEmployee?.id === emp.id ? 'border-brand ring-2 ring-brand/40' : 'border-line hover:border-brand'
+              }`}
+              onClick={() => setSelectedEmployee(selectedEmployee?.id === emp.id ? null : emp)}
             >
               <div>
                 <div className="flex items-start justify-between gap-3 mb-3">

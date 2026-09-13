@@ -417,8 +417,14 @@ export const SupplierManagement = ({ lang, currentUser }) => {
       </div>
 
       {selectedSupplierForOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
-          <div className="w-full max-w-2xl max-h-[90vh] rounded-3xl bg-surface border border-line p-6 overflow-y-auto space-y-5 relative modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
+        <div 
+          className="fixed inset-0 z-50 flex justify-start bg-black/70 backdrop-blur-xs modal-backdrop"
+          onClick={() => setSelectedSupplierForOrder(null)}
+        >
+          <div 
+            className="w-full max-w-xl sm:max-w-2xl h-full bg-surface border-r border-line p-6 flex flex-col gap-4 overflow-y-auto text-ink shadow-2xl drawer-left-container pointer-events-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
 
             <div className="flex items-start justify-between border-b border-line pb-4">
               <div className="flex items-center gap-3">
@@ -592,8 +598,14 @@ export const SupplierManagement = ({ lang, currentUser }) => {
 
       {/* ── Admin: Tedarikçi Ekle / Düzenle Modalı ── */}
       {showEditModal && editingSupplier && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
-          <div className="w-full max-w-xl max-h-[90vh] rounded-3xl bg-surface border border-line p-6 sm:p-7 overflow-y-auto space-y-5 modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
+        <div 
+          className="fixed inset-0 z-50 flex justify-start bg-black/70 backdrop-blur-xs modal-backdrop"
+          onClick={() => setShowEditModal(false)}
+        >
+          <div 
+            className="w-full max-w-xl sm:max-w-2xl h-full bg-surface border-r border-line p-6 flex flex-col gap-4 overflow-y-auto text-ink shadow-2xl drawer-left-container pointer-events-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between pb-3 border-b border-line">
               <h2 className="font-black text-base text-ink">
                 {editingSupplier.name ? (lang === 'tr' ? 'Tedarikçi Düzenle' : 'Lieferant bearbeiten') : (lang === 'tr' ? 'Yeni Tedarikçi' : 'Neuer Lieferant')}

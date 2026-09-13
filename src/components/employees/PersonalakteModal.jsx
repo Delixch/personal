@@ -23,6 +23,7 @@ import {
   Fingerprint,
   Camera,
   Home,
+  ArrowLeft,
   HeartHandshake,
   Award,
   Lock,
@@ -294,8 +295,14 @@ export const PersonalakteModal = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
-      <div className="w-full max-w-4xl max-h-[90vh] rounded-3xl bg-surface border border-line flex flex-col overflow-hidden text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] modal-container pointer-events-auto">
+    <div 
+      className="fixed inset-0 z-50 flex justify-start bg-black/70 backdrop-blur-xs modal-backdrop"
+      onClick={onClose}
+    >
+      <div 
+        className="w-full max-w-2xl sm:max-w-3xl lg:max-w-4xl h-full bg-surface border-r border-line flex flex-col overflow-hidden text-ink shadow-2xl drawer-left-container pointer-events-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Top Header Card */}
         <div className="p-5 sm:p-6 bg-surface text-ink flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-line">
@@ -1301,8 +1308,6 @@ export const PersonalakteModal = ({
           </div>
         </div>
 
-      </div>
-
       {/* DOCUMENT PREVIEW MODAL */}
       {previewDoc && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
@@ -1376,7 +1381,7 @@ export const PersonalakteModal = ({
           </div>
         </div>
       )}
-
     </div>
-  );
+  </div>
+);
 };

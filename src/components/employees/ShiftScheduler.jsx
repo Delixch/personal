@@ -354,8 +354,14 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
       </div>
 
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
-          <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line text-ink modal-container shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
+        <div 
+          className="fixed inset-0 z-50 flex justify-start bg-black/70 backdrop-blur-xs modal-backdrop"
+          onClick={() => setShowAddModal(false)}
+        >
+          <div 
+            className="w-full max-w-md sm:max-w-lg h-full bg-surface border-r border-line p-6 flex flex-col gap-4 overflow-y-auto text-ink shadow-2xl drawer-left-container pointer-events-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between border-b border-line-soft pb-3 mb-4">
               <h2 className="text-base font-bold text-ink flex items-center gap-2">
                 <CalendarDays className="w-4 h-4 text-brand icon-brand" />
@@ -461,8 +467,14 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
       )}
 
       {showReplaceModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
-          <div className="w-full max-w-sm rounded-3xl bg-surface p-5 relative border border-line text-ink modal-container shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
+        <div 
+          className="fixed inset-0 z-50 flex justify-start bg-black/70 backdrop-blur-xs modal-backdrop"
+          onClick={() => setShowReplaceModal(null)}
+        >
+          <div 
+            className="w-full max-w-sm sm:max-w-md h-full bg-surface border-r border-line p-6 flex flex-col gap-4 overflow-y-auto text-ink shadow-2xl drawer-left-container pointer-events-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h3 className="text-sm font-bold text-ink mb-2 flex items-center gap-2">
               <UserCheck className="w-4 h-4 text-brand icon-brand" />
               <span>{t.assignReplacement}</span>

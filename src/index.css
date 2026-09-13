@@ -533,6 +533,45 @@ h6.text-ink,
   animation: modalPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes drawerSlideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes drawerSlideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.drawer-container {
+  background-color: var(--surface) !important;
+  border-left-color: var(--line) !important;
+  color: var(--ink) !important;
+  animation: drawerSlideInRight 0.26s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.drawer-left-container {
+  background-color: var(--surface) !important;
+  border-right-color: var(--line) !important;
+  color: var(--ink) !important;
+  animation: drawerSlideInLeft 0.26s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.drawer-container input:not([type="checkbox"]):not([type="radio"]),
+.drawer-container select,
+.drawer-container textarea,
 .modal-container input:not([type="checkbox"]):not([type="radio"]),
 .modal-container select,
 .modal-container textarea {

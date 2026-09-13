@@ -23,6 +23,7 @@ import {
   Fingerprint,
   Camera,
   Home,
+  ChevronDown,
   ArrowLeft,
   HeartHandshake,
   Award,
@@ -424,11 +425,11 @@ export const PersonalakteModal = ({
         {/* Tab Navigation Strip (Mobile Dropdown + Desktop Tabs) */}
         <div className="px-4 py-2 sm:py-2.5 sm:px-6 bg-ground border-b border-line">
           {/* Mobile Dropdown */}
-          <div className="block sm:hidden">
+          <div className="block sm:hidden relative w-full">
             <select
               value={activeTab}
               onChange={(e) => setActiveTab(e.target.value)}
-              className="w-full px-3 py-2.5 rounded-xl bg-surface text-ink text-xs font-bold border border-brand/50 focus:outline-none focus:border-brand appearance-none"
+              className="w-full pl-3.5 pr-11 py-2.5 rounded-2xl bg-surface text-ink text-xs font-bold border border-line focus:outline-none focus:border-brand appearance-none cursor-pointer tracking-wide"
             >
               <option value="360">{lang === 'tr' ? '⭐ 360° Sicil Özeti' : '⭐ 360° Chef-Übersicht'}</option>
               <option value="zeiterfassung">{lang === 'tr' ? 'Saatler & Stempeluhr' : 'Stempeluhr & Stunden'}</option>
@@ -437,6 +438,11 @@ export const PersonalakteModal = ({
               <option value="absenzen">{lang === 'tr' ? 'Hastalık & İzin Geçmişi' : 'Urlaub & Absenzen'}</option>
               <option value="stammdaten">{lang === 'tr' ? 'Sözleşme, AHV & Evraklar' : 'Vertrag & Dokumente'}</option>
             </select>
+            
+            {/* Yanıp Sönen Turuncu Ok (Çizgisiz & Sade, pointer-events-none ile tüm alana dokunulabilir) */}
+            <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center text-brand">
+              <ChevronDown className="w-5 h-5 text-brand animate-pulse stroke-[2.5]" />
+            </div>
           </div>
 
           {/* Desktop Tabs */}

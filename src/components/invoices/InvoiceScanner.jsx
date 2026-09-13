@@ -216,7 +216,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
 
           <button
             onClick={() => setShowScanModal(true)}
-            className="px-5 py-2.5 rounded-xl btn-brand font-black text-xs flex items-center gap-2 transition self-start md:self-auto shrink-0"
+            className="px-5 py-2.5 rounded-md btn-brand font-black text-xs flex items-center gap-2 transition self-start md:self-auto shrink-0"
           >
             <Camera className="w-4 h-4" />
             <span>{t.scanInvoice}</span>
@@ -256,10 +256,11 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
           <button
             key={tab.id}
             onClick={() => setActiveFilter(tab.id)}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition border ${activeFilter === tab.id
-                ? 'btn-brand font-black'
-                : 'card-inner border-line text-ink'
-              }`}
+            className={`px-4 py-2 rounded-md text-xs transition border ${
+              activeFilter === tab.id
+                ? 'bg-[#2e1f1c] border-brand/50 text-brand font-black'
+                : 'bg-[#1e1514] border-transparent text-ink-soft hover:text-ink font-bold'
+            }`}
           >
             {tab.label}
           </button>

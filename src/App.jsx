@@ -275,14 +275,6 @@ export function App() {
               </button>
 
               <div className="flex items-center gap-2 text-xs font-semibold text-ink-soft">
-                <span
-                  onClick={() => navigateToTab('dashboard')}
-                  className="cursor-pointer icon-brand flex items-center gap-1"
-                >
-                  <Home className="w-3.5 h-3.5" />
-                  <span className="text-body-sm">Dashboard</span>
-                </span>
-                <ChevronRight className="w-3.5 h-3.5 text-ink-muted" />
                 <span className="text-ink font-extrabold">{getActiveTabTitle()}</span>
               </div>
             </div>

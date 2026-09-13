@@ -286,11 +286,15 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                   <td className="py-3">
                     <div
                       onClick={() => setSelectedInvoice(inv)}
-                      className="w-12 h-12 rounded-xl overflow-hidden cursor-pointer border border-line transition"
+                      className="w-12 h-12 rounded-xl overflow-hidden cursor-pointer border border-line transition card-inner flex items-center justify-center bg-subtle"
                     >
                       <img
-                        src={inv.imageUrl}
+                        src={inv.imageUrl || 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=80'}
                         alt="Rechnung"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=80';
+                        }}
                         className="w-full h-full object-cover"
                       />
                     </div>

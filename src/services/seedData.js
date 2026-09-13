@@ -470,7 +470,7 @@ export const SEED_INVOICES = [
     totalAmount: 3373.15,
     category: 'Grosshandelswaren & Molkerei',
     status: 'pending',
-    imageUrl: 'https://images.unsplash.com/photo-1607344645866-009c320c5ab8?w=600&auto=format&fit=crop&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&auto=format&fit=crop&q=80',
     items: [
       { name: 'Olivenöl 5L (4 Kanister)', total: 256.00 },
       { name: 'Mozzarella di Bufala (20kg)', total: 396.00 },

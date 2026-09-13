@@ -112,7 +112,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
             <button
               key={emp.id}
               onClick={() => setSelectedEmployee(emp)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl card-inner border border-line text-xs font-bold text-ink hover:border-brand transition active:scale-98"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg card-inner border border-line text-xs font-bold text-ink hover:border-brand transition active:scale-98"
             >
               <img
                 src={emp.avatar}

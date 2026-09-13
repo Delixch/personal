@@ -199,7 +199,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
                 key={emp.id}
                 type="button"
                 onClick={() => handleQuickSelect(emp)}
-                className="p-2 rounded-xl border border-line card-inner text-left flex items-center gap-2.5 transition text-xs"
+                className="p-2 rounded-lg border border-line card-inner text-left flex items-center gap-2.5 transition text-xs"
               >
                 <img
                   src={emp.avatar}

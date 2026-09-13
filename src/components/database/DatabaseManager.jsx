@@ -87,7 +87,7 @@ export const DatabaseManager = ({ lang, currentUser }) => {
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={handleExportBackup}
-              className="px-4 py-2 rounded-xl btn-brand font-black text-xs flex items-center gap-1.5 transition"
+              className="px-4 py-2.5 rounded-md btn-brand font-black text-xs flex items-center gap-1.5 transition"
             >
               <Download className="w-4 h-4" />
               <span>{lang === 'tr' ? 'Veritabanı Yedeği İndir (JSON)' : 'Backup herunterladen (JSON)'}</span>
@@ -181,7 +181,7 @@ export const DatabaseManager = ({ lang, currentUser }) => {
 
           <button
             onClick={handleResetDefaults}
-            className="mt-6 w-full py-2.5 rounded-xl card-inner text-ink border border-line text-xs font-bold transition flex items-center justify-center gap-2"
+            className="mt-6 w-full py-2.5 rounded-md card-inner text-ink border border-line text-xs font-bold transition flex items-center justify-center gap-2"
           >
             <RefreshCw className="w-4 h-4" />
             <span>{lang === 'tr' ? 'Fabrika Ayarlarına Dön (Reset)' : 'Auf Werkseinstellungen zurücksetzen'}</span>

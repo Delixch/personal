@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS mitarbeiter (
   urlaub_bezogen_tage NUMERIC(5,2) NOT NULL DEFAULT 0.00,
   
   -- Sistem & Profil
+  abteilung TEXT DEFAULT 'kuche',                    -- Mutfak, Servis, Bar, Depo, Temizlik
   avatar TEXT,
   telefon TEXT,
   notiz TEXT,
@@ -272,6 +273,8 @@ CREATE TABLE IF NOT EXISTS rechnungen (
   mwst_betrag NUMERIC(10,2) DEFAULT 0.00,
   status TEXT NOT NULL DEFAULT 'offen' CHECK (status IN ('offen', 'bezahlt', 'in_pruefung', 'storniert')),
   bezahlt_am DATE,
+  bezahlt_von_konto TEXT,                            -- Banka / Kasa Hesabı (UBS, ZKB, PostFinance, Bar-Kasse)
+  zahlungs_referenz TEXT,                            -- QR-Zahlung Ref / e-Banking Dekont No
   scan_datei_url TEXT,                               -- OCR ile yüklenen fatura görseli
   kategorie TEXT DEFAULT 'Warenaufwand',
   notiz TEXT,

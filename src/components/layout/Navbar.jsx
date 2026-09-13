@@ -79,43 +79,58 @@ export const Navbar = ({
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-line bg-navbar">
-      <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:h-16 items-center justify-between px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto py-2.5 sm:py-0 gap-2 sm:gap-0">
 
-        <div
-          onClick={onGoHome}
-          className="flex items-center gap-3 cursor-pointer group select-none"
-          title={lang === 'tr' ? 'Ana Menüye Git' : 'Zum Dashboard'}
-        >
-          {/* İkon Kutusu - Yüzen & Parlayan */}
-          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl icon-box font-black transition-all duration-300 group-hover:scale-110 group-hover:border-brand/60 group-hover:shadow-[0_0_20px_rgba(255,90,31,0.5)] animate-icon-float">
-            <Building2 className="w-5 h-5 text-brand group-hover:rotate-6 transition-transform duration-300" />
-            
-            {/* Canlı Turuncu/Altın Nabız Atan Nokta */}
-            <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 z-10">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff5522] opacity-90"></span>
-              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-gradient-to-r from-orange-500 to-amber-400 ring-2 ring-black/70 shadow-[0_0_10px_#ff5522]"></span>
-            </span>
-          </div>
-
-          {/* Logo Yazı Alanı */}
-          <div className="relative">
-            <div className="flex items-center gap-2 relative group/logo">
-              {/* Arkadaki Süzülen & Yanıp Sönen Neon Işık Hüzmesi */}
-              <div className="absolute -inset-3 bg-gradient-to-r from-brand/60 via-amber-500/30 to-brand/40 rounded-2xl animate-logo-glow pointer-events-none"></div>
+        {/* SATIR 1: ADO MANAGEMENT LOGO (MOBİLDE EN ÜSTTE) */}
+        <div className="flex items-center justify-between w-full sm:w-auto shrink-0 pb-1 sm:pb-0">
+          <div
+            onClick={onGoHome}
+            className="flex items-center gap-3 cursor-pointer group select-none"
+            title={lang === 'tr' ? 'Ana Menüye Git' : 'Zum Dashboard'}
+          >
+            {/* İkon Kutusu - Yüzen & Parlayan */}
+            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl icon-box font-black transition-all duration-300 group-hover:scale-110 group-hover:border-brand/60 group-hover:shadow-[0_0_20px_rgba(255,90,31,0.5)] animate-icon-float">
+              <Building2 className="w-5 h-5 text-brand group-hover:rotate-6 transition-transform duration-300" />
               
-              <span className="relative font-extrabold text-lg sm:text-xl tracking-tight text-ink font-sans flex items-center gap-1.5 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
-                <span className="text-white font-black tracking-wider">ADO</span>
-                <span className="animate-text-shimmer font-black tracking-widest text-transparent">MANAGEMENT</span>
+              {/* Canlı Turuncu/Altın Nabız Atan Nokta */}
+              <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 z-10">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff5522] opacity-90"></span>
+                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-gradient-to-r from-orange-500 to-amber-400 ring-2 ring-black/70 shadow-[0_0_10px_#ff5522]"></span>
               </span>
             </div>
-            <p className="text-[10px] sm:text-[11px] text-ink-muted hidden sm:flex items-center gap-1.5 relative z-10 mt-0.5 font-medium tracking-wide">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span>
-              <span>{lang === 'tr' ? 'Merkezi Firma & Personel Yönetimi' : 'Zentrales Betriebs- & Personalmanagement'}</span>
-            </p>
+
+            {/* Logo Yazı Alanı */}
+            <div className="relative">
+              <div className="flex items-center gap-2 relative group/logo">
+                {/* Arkadaki Süzülen & Yanıp Sönen Neon Işık Hüzmesi */}
+                <div className="absolute -inset-3 bg-gradient-to-r from-brand/60 via-amber-500/30 to-brand/40 rounded-2xl animate-logo-glow pointer-events-none"></div>
+                
+                <span className="relative font-extrabold text-lg sm:text-xl tracking-tight text-ink font-sans flex items-center gap-1.5 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+                  <span className="text-white font-black tracking-wider">ADO</span>
+                  <span className="animate-text-shimmer font-black tracking-widest text-transparent">MANAGEMENT</span>
+                </span>
+              </div>
+              <p className="text-[10px] sm:text-[11px] text-ink-muted hidden sm:flex items-center gap-1.5 relative z-10 mt-0.5 font-medium tracking-wide">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span>
+                <span>{lang === 'tr' ? 'Merkezi Firma & Personel Yönetimi' : 'Zentrales Betriebs- & Personalmanagement'}</span>
+              </p>
+            </div>
           </div>
+
+          {/* Mobilde Logonun Sağında Gösterilen Cloud Live Rozeti */}
+          {isSupabaseConfigured && (
+            <div className="flex sm:hidden items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-bold text-emerald-400 select-none">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span>Cloud Live</span>
+            </div>
+          )}
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        {/* SATIR 2: CHEF MODUS, DİL, ZİL VE PROFİL (MOBİLDE ALT SATIRDA) */}
+        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-2 sm:gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-line/40">
 
           {isSupabaseConfigured && (
             <div 
@@ -132,9 +147,9 @@ export const Navbar = ({
           )}
 
           {currentUser?.role === 'admin' ? (
-            <div className="hidden sm:flex items-center gap-1.5 px-3 h-[32px] rounded-md navbar-btn text-ink font-bold text-xs">
-              <ShieldCheck className="w-4 h-4 text-brand icon-brand" />
-              <span className="text-body-sm">{lang === 'tr' ? 'Patron / Yönetici' : 'Chef-Modus aktiv'}</span>
+            <div className="flex items-center gap-1.5 px-2.5 sm:px-3 h-[32px] rounded-md navbar-btn text-ink font-bold text-[11px] sm:text-xs">
+              <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand icon-brand" />
+              <span>{lang === 'tr' ? 'Patron Modu' : 'Chef-Modus aktiv'}</span>
             </div>
           ) : currentUser?.isImpersonated ? (
             <button
@@ -144,21 +159,21 @@ export const Navbar = ({
                 delete cleanAdmin.isImpersonated;
                 handleSelectUser(cleanAdmin);
               }}
-              className="flex items-center gap-1.5 px-3 h-[32px] rounded-md bg-brand text-white font-bold text-xs transition"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 h-[32px] rounded-md bg-brand text-white font-bold text-[11px] sm:text-xs transition"
               title="Patron / Yönetici Ekranına Geç"
             >
-              <ShieldCheck className="w-4 h-4" />
-              <span className="text-body-sm">{lang === 'tr' ? '👑 Admin\'e Dön' : '👑 Zurück zu Admin'}</span>
+              <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span>{lang === 'tr' ? '👑 Admin\'e Dön' : '👑 Zurück zu Admin'}</span>
             </button>
           ) : null}
 
           <button
             onClick={() => onLangChange(lang === 'de' ? 'tr' : 'de')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md navbar-btn icon-brand sub-title transition"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md navbar-btn icon-brand sub-title transition text-[11px] sm:text-xs"
             title="Sprache wechseln / Dil Değiştir"
           >
             <Globe className="w-3.5 h-3.5" />
-            <span className="text-body-sm">{lang.toUpperCase()}</span>
+            <span>{lang.toUpperCase()}</span>
           </button>
 
           <div className="relative" ref={notifDropdownRef}>

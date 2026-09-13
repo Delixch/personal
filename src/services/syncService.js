@@ -39,6 +39,14 @@ export const SyncService = {
         localList = raw ? JSON.parse(raw) : [];
       } catch (_) {}
 
+      let customAvatars = {};
+      try {
+        const rawCustom = localStorage.getItem('ado_custom_avatars_v1');
+        customAvatars = rawCustom ? JSON.parse(rawCustom) : {};
+      } catch (_) {}
+
+      let customAvatarsUpdated = false;
+
       const mapped = data.map(m => {
         // Aynı PIN, ID veya E-posta'lı local kaydı bul (tip uyuşmazlığını önlemek için String karşılaştırma)
         const local = localList.find(e =>
@@ -47,7 +55,32 @@ export const SyncService = {
           (e.email && m.email && e.email.toLowerCase() === m.email.toLowerCase())
         ) || {};
 
-        const avatarVal = (m.avatar && m.avatar.length > 5) ? m.avatar : (local.avatar || '');
+        // Yerelde saklanan özel avatarı bul
+        const customLocalAvatar = customAvatars[m.id] ||
+                                  customAvatars[String(m.pin)] ||
+                                  customAvatars[m.email] ||
+                                  customAvatars[local.id] ||
+                                  customAvatars[String(local.pin)] ||
+                                  (local.avatar && local.avatar.startsWith('data:image') ? local.avatar : null);
+
+        let avatarVal = '';
+
+        if (m.avatar && m.avatar.startsWith('data:image')) {
+          // Supabase'de custom Base64 avatar var, bunu kullan ve yerel customAvatars haritasına kaydet
+          avatarVal = m.avatar;
+          if (m.id) customAvatars[m.id] = m.avatar;
+          if (m.pin) customAvatars[String(m.pin)] = m.avatar;
+          if (m.email) customAvatars[m.email] = m.avatar;
+          if (local.id) customAvatars[local.id] = m.avatar;
+          if (local.pin) customAvatars[String(local.pin)] = m.avatar;
+          customAvatarsUpdated = true;
+        } else if (customLocalAvatar) {
+          // Yerelde özel avatar var ancak Supabase'de seed URL veya boş veri var -> Yerel özel avatarı koru!
+          avatarVal = customLocalAvatar;
+        } else {
+          // Özel avatar yoksa Supabase avatarını veya local avatarını kullan
+          avatarVal = (m.avatar && m.avatar.length > 5) ? m.avatar : (local.avatar || '');
+        }
 
         return {
           ...local,                          // local alanları önce yay
@@ -84,7 +117,23 @@ export const SyncService = {
         }
       });
 
+      if (customAvatarsUpdated) {
+        localStorage.setItem('ado_custom_avatars_v1', JSON.stringify(customAvatars));
+      }
+
       localStorage.setItem('ado_employees_v1', JSON.stringify(mapped));
+
+      // Aktif oturum açmış kullanıcı avatarını da güncelle
+      try {
+        const userRaw = localStorage.getItem('ado_current_user_v1');
+        if (userRaw && userRaw !== '"guest"') {
+          const u = JSON.parse(userRaw);
+          const found = mapped.find(m => (m.id && u.id && m.id === u.id) || (m.pin && u.pin && String(m.pin) === String(u.pin)) || (m.email && u.email && m.email.toLowerCase() === u.email.toLowerCase()));
+          if (found) {
+            localStorage.setItem('ado_current_user_v1', JSON.stringify({ ...u, ...found, avatar: found.avatar }));
+          }
+        }
+      } catch (_) {}
     }
   },
 
@@ -92,6 +141,17 @@ export const SyncService = {
   pushEmployee: async (emp) => {
     if (!SyncService.isLive() || !emp.pin || !emp.email) return;
     try {
+      let avatarToPush = emp.avatar;
+      if (!avatarToPush || !avatarToPush.startsWith('data:image')) {
+        let customAvatars = {};
+        try {
+          const rawCustom = localStorage.getItem('ado_custom_avatars_v1');
+          customAvatars = rawCustom ? JSON.parse(rawCustom) : {};
+        } catch (_) {}
+        const custom = customAvatars[emp.id] || customAvatars[String(emp.pin)] || customAvatars[emp.email];
+        if (custom) avatarToPush = custom;
+      }
+
       await supabase.from('mitarbeiter').upsert({
         name: emp.name,
         pin: emp.pin,
@@ -104,7 +164,7 @@ export const SyncService = {
         ahv_nummer: emp.ahv || null,
         iban: emp.iban || null,
         bank_name: emp.bankName || null,
-        avatar: emp.avatar || null,
+        avatar: avatarToPush || null,
         abteilung: emp.department || 'kuche',
         lohnart: emp.contractType?.includes('Fest') ? 'monatslohn' : 'stundenlohn',
         urlaubsanspruch_tage: emp.vacationTotal || 25,
@@ -122,8 +182,16 @@ export const SyncService = {
     try {
       const raw = localStorage.getItem('ado_employees_v1');
       const employees = raw ? JSON.parse(raw) : [];
+      let customAvatars = {};
+      try {
+        const rawCustom = localStorage.getItem('ado_custom_avatars_v1');
+        customAvatars = rawCustom ? JSON.parse(rawCustom) : {};
+      } catch (_) {}
       for (const emp of employees) {
-        if (emp.email) await SyncService.pushEmployee(emp);
+        if (emp.email) {
+          const custom = customAvatars[emp.id] || customAvatars[String(emp.pin)] || customAvatars[emp.email] || emp.avatar;
+          await SyncService.pushEmployee({ ...emp, avatar: custom });
+        }
       }
     } catch (err) {
       console.warn('pushAllEmployees error:', err);

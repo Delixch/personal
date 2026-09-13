@@ -122,7 +122,43 @@ export const setStoredItem = (key, value) => {
 };
 
 export const StorageService = {
-  getSuppliers: () => getStoredItem(STORAGE_KEYS.SUPPLIERS, SEED_SUPPLIERS),
+  getSuppliers: () => {
+    const rawList = getStoredItem(STORAGE_KEYS.SUPPLIERS, SEED_SUPPLIERS);
+    if (!Array.isArray(rawList)) return SEED_SUPPLIERS;
+    
+    const deduplicated = [];
+    const seenNames = new Map();
+    const normalize = (name) => (name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    for (const sup of rawList) {
+      if (!sup || !sup.name) continue;
+      const key = normalize(sup.name);
+      
+      let existingKey = null;
+      for (const k of seenNames.keys()) {
+        if (k === key || (k.length > 5 && key.length > 5 && (k.includes(key) || key.includes(k)))) {
+          existingKey = k;
+          break;
+        }
+      }
+
+      if (existingKey) {
+        const existing = seenNames.get(existingKey);
+        const existingCatLen = existing.catalog?.length || 0;
+        const supCatLen = sup.catalog?.length || 0;
+        if (supCatLen > existingCatLen) {
+          const idx = deduplicated.findIndex(s => s.id === existing.id);
+          if (idx >= 0) deduplicated[idx] = sup;
+          seenNames.set(existingKey, sup);
+        }
+      } else {
+        seenNames.set(key, sup);
+        deduplicated.push(sup);
+      }
+    }
+
+    return deduplicated.length > 0 ? deduplicated : SEED_SUPPLIERS;
+  },
   saveSupplier: (supplier) => {
     const list = StorageService.getSuppliers();
     const existingIndex = list.findIndex(s => s.id === supplier.id);

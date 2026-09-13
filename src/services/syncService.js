@@ -313,7 +313,7 @@ export const SyncService = {
 
       const normalizeStr = (str) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
-      const mapped = suppliersData.map(l => {
+      const mapped = (suppliersData || []).map(l => {
         const matchingCatalog = catalogData
           .filter(k => k.lieferant_slug === l.slug)
           .sort((a, b) => (a.reihenfolge || 0) - (b.reihenfolge || 0))
@@ -358,7 +358,6 @@ export const SyncService = {
           catalog:       matchingCatalog.length > 0 ? matchingCatalog : (local.catalog || seed.catalog || [])
         };
 
-        // Eğer Supabase'deki kayıtta numara null kalmışsa ve varsayılanda numara varsa Supabase'i de güncelle
         if (l.whatsapp === null && whatsappVal) {
           SyncService.pushSupplier(mergedSupplier);
         }
@@ -366,8 +365,37 @@ export const SyncService = {
         return mergedSupplier;
       });
 
-      if (mapped.length > 0) {
-        localStorage.setItem('ado_suppliers_v1', JSON.stringify(mapped));
+      // Tekrarlayan firmaları temizle (Örn: Pistor AG vs Pistor AG Bäckerei...)
+      const deduplicated = [];
+      const seenKeys = new Map();
+
+      for (const sup of mapped) {
+        if (!sup.name) continue;
+        const norm = normalizeStr(sup.name);
+        
+        let matchKey = null;
+        for (const k of seenKeys.keys()) {
+          if (k === norm || (k.length > 4 && norm.length > 4 && (k.includes(norm) || norm.includes(k)))) {
+            matchKey = k;
+            break;
+          }
+        }
+
+        if (matchKey) {
+          const existing = seenKeys.get(matchKey);
+          if ((!existing.catalog || existing.catalog.length === 0) && sup.catalog && sup.catalog.length > 0) {
+            const idx = deduplicated.findIndex(s => s.id === existing.id);
+            if (idx >= 0) deduplicated[idx] = sup;
+            seenKeys.set(matchKey, sup);
+          }
+        } else {
+          seenKeys.set(norm, sup);
+          deduplicated.push(sup);
+        }
+      }
+
+      if (deduplicated.length > 0) {
+        localStorage.setItem('ado_suppliers_v1', JSON.stringify(deduplicated));
         window.dispatchEvent(new Event('ado_db_update'));
       }
     } catch (err) {

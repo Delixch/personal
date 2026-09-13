@@ -148,7 +148,7 @@ export const SyncService = {
 
 
   pushEmployee: async (emp) => {
-    if (!SyncService.isLive() || (!emp.pin && !emp.email)) return;
+    if (!SyncService.isLive()) return;
     try {
       let avatarToPush = emp.avatar;
       if (!avatarToPush || !avatarToPush.startsWith('data:image')) {
@@ -181,19 +181,10 @@ export const SyncService = {
         aktiv: emp.status !== 'inactive'
       };
 
-      // 1. Önce e-posta veya PIN ile doğrudan UPDATE dene (OnConflict kısıtlaması gerektirmez)
-      let filter = [];
-      if (emp.email) filter.push(`email.eq.${emp.email}`);
-      if (emp.pin) filter.push(`pin.eq.${emp.pin}`);
-      
-      const { error: updateError } = await supabase
-        .from('mitarbeiter')
-        .update(payload)
-        .or(filter.join(','));
-
-      if (updateError) {
-        console.warn('pushEmployee update error, attempting upsert:', updateError);
-        await supabase.from('mitarbeiter').upsert(payload);
+      if (emp.email) {
+        await supabase.from('mitarbeiter').update(payload).eq('email', emp.email);
+      } else if (emp.pin) {
+        await supabase.from('mitarbeiter').update(payload).eq('pin', emp.pin);
       }
     } catch (err) {
       console.warn('pushEmployee catch error:', err);

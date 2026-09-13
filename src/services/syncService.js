@@ -191,7 +191,8 @@ export const SyncService = {
         startTime: s.von,
         endTime: s.bis,
         status: s.status,
-        notes: s.notiz
+        notes: s.notiz,
+        department: s.abteilung || s.department || null
       }));
       localStorage.setItem('ado_shifts_v1', JSON.stringify(mapped));
     }
@@ -207,7 +208,8 @@ export const SyncService = {
         von: shift.startTime || '06:00',
         bis: shift.endTime || '14:30',
         status: shift.status || 'geplant',
-        notiz: shift.notes || null
+        notiz: shift.notes || null,
+        abteilung: shift.department || null
       }, { onConflict: 'ma_id,datum,von' });
     } catch (err) {
       console.warn('pushShift error:', err);

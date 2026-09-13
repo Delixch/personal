@@ -88,9 +88,22 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
     notes: ''
   });
 
+  const normalizeDept = (dept) => {
+    if (!dept) return 'kuche';
+    const d = String(dept).toLowerCase();
+    if (d.includes('küche') || d.includes('kuche') || d.includes('mutfak')) return 'kuche';
+    if (d.includes('service') || d.includes('servis')) return 'service';
+    if (d.includes('bar')) return 'bar';
+    if (d.includes('lager') || d.includes('logistik') || d.includes('depo')) return 'lager';
+    if (d.includes('reinigung') || d.includes('hygiene') || d.includes('temizlik')) return 'reinigung';
+    return 'kuche';
+  };
+
   const filteredShifts = shifts.filter(s => {
     if (selectedDept === 'all') return true;
-    return s.department === selectedDept;
+    const emp = employees.find(e => e.id === s.employeeId);
+    const rawDept = s.department || emp?.department;
+    return normalizeDept(rawDept) === normalizeDept(selectedDept);
   });
 
   const handleSaveShift = (e) => {

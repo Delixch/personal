@@ -21,6 +21,7 @@ import {
   AlertCircle,
   Sparkles,
   Fingerprint,
+  Camera,
   Home,
   HeartHandshake,
   Award,
@@ -60,6 +61,40 @@ export const PersonalakteModal = ({
   const [activeTab, setActiveTab] = useState('360');
   const [isEditing, setIsEditing] = useState(false);
   const [previewDoc, setPreviewDoc] = useState(null);
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const targetSize = 200; // 200x200 px - ultra light (~15 KB) & crisp
+        canvas.width = targetSize;
+        canvas.height = targetSize;
+        const ctx = canvas.getContext('2d');
+
+        const minDim = Math.min(img.width, img.height);
+        const startX = (img.width - minDim) / 2;
+        const startY = (img.height - minDim) / 2;
+
+        ctx.drawImage(img, startX, startY, minDim, minDim, 0, 0, targetSize, targetSize);
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+
+        const updated = { ...employee, avatar: compressedBase64 };
+        StorageService.saveEmployee(updated);
+        if (currentUser?.id === employee.id) {
+          StorageService.setCurrentUser(updated);
+        }
+        if (onSave) onSave(updated);
+        confetti({ particleCount: 30, spread: 50, origin: { y: 0.6 } });
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
 
   const scrollContainerRef = useRef(null);
 
@@ -259,11 +294,23 @@ export const PersonalakteModal = ({
         {/* Top Header Card */}
         <div className="p-5 sm:p-6 bg-surface text-ink flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-line">
           <div className="flex items-center gap-4">
-            <img
-              src={employee.avatar}
-              alt={employee.name}
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover ring-2 ring-brand/40"
-            />
+            <div className="relative group cursor-pointer" title={lang === 'tr' ? 'Fotoğraf Yükle / Değiştir' : 'Foto hochladen / ändern'}>
+              <img
+                src={employee.avatar}
+                alt={employee.name}
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover ring-2 ring-brand/40 group-hover:brightness-90 transition"
+              />
+              <label className="absolute inset-0 rounded-2xl bg-black/60 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center text-white text-[10px] font-bold cursor-pointer">
+                <Camera className="w-5 h-5 mb-0.5" />
+                <span>{lang === 'tr' ? 'Foto Seç' : 'Foto wählen'}</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarChange}
+                  className="hidden"
+                />
+              </label>
+            </div>
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-1">
                 <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full card-inner text-brand border border-brand/40">

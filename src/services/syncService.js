@@ -274,15 +274,18 @@ export const SyncService = {
   // TEDARİKÇİLER (LIEFERANTEN)
   syncSuppliers: async () => {
     if (!SyncService.isLive()) return;
-    const { data, error } = await supabase
-      .from('lieferanten')
-      .select('*, lieferanten_katalog(*)')
-      .eq('aktiv', true)
-      .order('created_at', { ascending: true });
-    if (error) throw error;
-    if (data && data.length > 0) {
-      // Supabase'deki eski boş/legacy kayıtları süz (slug'ı veya adresi veya kataloğu olanları al)
-      const validData = data.filter(l => Boolean(l.slug) || Boolean(l.adresse) || (l.lieferanten_katalog && l.lieferanten_katalog.length > 0));
+    try {
+      const [suppliersRes, catalogRes] = await Promise.all([
+        supabase.from('lieferanten').select('*').eq('aktiv', true).order('created_at', { ascending: true }),
+        supabase.from('lieferanten_katalog').select('*').order('reihenfolge', { ascending: true })
+      ]);
+
+      if (suppliersRes.error) throw suppliersRes.error;
+      const suppliersData = suppliersRes.data || [];
+      const catalogData = catalogRes.data || [];
+
+      // Supabase'deki eski boş/legacy kayıtları süz (slug'ı veya adresi olanları al)
+      const validSuppliers = suppliersData.filter(l => Boolean(l.slug) || Boolean(l.adresse));
 
       const parseDeliveryDays = (val) => {
         if (Array.isArray(val)) return val;
@@ -294,15 +297,11 @@ export const SyncService = {
         return [];
       };
 
-      const mapped = validData.map(l => {
-        const seedSupplier = SEED_SUPPLIERS.find(s => s.id === l.slug || s.name?.toLowerCase() === l.name?.toLowerCase());
-        const seedCatalog = seedSupplier?.catalog || [];
-
-        const supabaseCatalog = (l.lieferanten_katalog || [])
-                         .sort((a, b) => a.reihenfolge - b.reihenfolge)
-                         .map(k => ({ id: k.id, name: k.name, price: Number(k.preis), unit: k.einheit }));
-
-        const finalCatalog = supabaseCatalog.length > 0 ? supabaseCatalog : seedCatalog;
+      const mapped = validSuppliers.map(l => {
+        const matchingCatalog = catalogData
+          .filter(k => k.lieferant_slug === l.slug)
+          .sort((a, b) => (a.reihenfolge || 0) - (b.reihenfolge || 0))
+          .map(k => ({ id: k.id, name: k.name, price: Number(k.preis), unit: k.einheit }));
 
         return {
           id:            l.slug || String(l.id),
@@ -316,10 +315,15 @@ export const SyncService = {
           notes:         l.notizen || (l.bestellfrist ? `Bestellfrist: ${l.bestellfrist}` : ''),
           rating:        Number(l.rating) || 4.5,
           deliveryDays:  parseDeliveryDays(l.liefertage),
-          catalog:       finalCatalog
+          catalog:       matchingCatalog
         };
       });
-      localStorage.setItem('ado_suppliers_v1', JSON.stringify(mapped));
+
+      if (mapped.length > 0) {
+        localStorage.setItem('ado_suppliers_v1', JSON.stringify(mapped));
+      }
+    } catch (err) {
+      console.warn('syncSuppliers error:', err);
     }
   },
 

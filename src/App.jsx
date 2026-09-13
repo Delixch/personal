@@ -346,7 +346,7 @@ export function App() {
         )}
 
         {isModuleOpen ? (
-          <div className="bg-surface rounded-3xl border border-line p-6 sm:p-8 space-y-6">
+          <div className="bg-surface rounded-3xl border border-line p-4 sm:p-5 space-y-6">
             {renderTabContent()}
           </div>
         ) : (

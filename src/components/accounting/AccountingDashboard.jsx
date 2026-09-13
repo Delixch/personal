@@ -112,9 +112,9 @@ export const AccountingDashboard = ({ lang, currentUser }) => {
           <div className="p-4 rounded-2xl card-inner border border-line">
             <div className="flex items-center justify-between text-subhead text-xs mb-1">
               <span>{lang === 'tr' ? 'Offene Verbindlichkeiten' : 'Offene Rechnungen'}</span>
-              <Calendar className="w-4 h-4 text-brand" />
+              <Calendar className="w-4 h-4 text-rose-500" />
             </div>
-            <p className="text-xl font-black font-mono text-brand">
+            <p className="text-xl font-black font-mono text-rose-500">
               {formatCurrency(totalPendingInvoices)}
             </p>
             <span className="text-[10px] text-ink-muted">Zur Zahlung fällig</span>

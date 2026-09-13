@@ -226,14 +226,14 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 pt-4 border-t border-line-soft">
           <div className="p-3.5 rounded-2xl card-inner border border-line">
             <p className="text-[11px] text-subhead">{lang === 'tr' ? 'Ödenen Faturalar' : 'Bezahlte Rechnungen'}</p>
-            <p className="text-lg font-black font-mono text-brand">
+            <p className="text-lg font-black font-mono text-emerald-400">
               {formatCurrency(totalPaid)}
             </p>
           </div>
 
           <div className="p-3.5 rounded-2xl card-inner border border-line">
             <p className="text-[11px] text-subhead">{lang === 'tr' ? 'Açık / Bekleyen Borç' : 'Offene Verbindlichkeiten'}</p>
-            <p className="text-lg font-black font-mono text-brand font-semibold">
+            <p className="text-lg font-black font-mono text-rose-500 font-semibold">
               {formatCurrency(totalUnpaid)}
             </p>
           </div>

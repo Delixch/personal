@@ -126,40 +126,47 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
           </div>
 
           <div className="flex flex-col gap-2 shrink-0 w-full md:w-[240px]">
+            {/* Action Buttons (Modals) */}
             <button
               onClick={() => setShowSickModal(true)}
-              className="w-full px-4 py-3 rounded-md bg-[#1e1514] text-ink text-xs font-bold flex items-center justify-center gap-2 transition"
+              className="w-full px-4 py-2.5 rounded-md btn-brand font-black text-xs flex items-center justify-center gap-2 transition"
             >
-              <HeartPulse className="w-4 h-4 text-brand icon-brand" />
+              <HeartPulse className="w-4 h-4" />
               <span>{t.reportSick}</span>
             </button>
 
             <button
               onClick={() => setShowLeaveModal(true)}
-              className="w-full px-4 py-3 rounded-md btn-brand font-black text-xs flex items-center justify-center gap-2 transition"
+              className="w-full px-4 py-2.5 rounded-md btn-brand font-black text-xs flex items-center justify-center gap-2 transition"
             >
               <Palmtree className="w-4 h-4" />
               <span>{t.leaveRequest}</span>
             </button>
 
-            <button
-              onClick={() => setActiveTab('sick')}
-              className={`w-full px-4 py-3 rounded-md text-xs font-bold transition ${activeTab === 'sick'
-                  ? 'btn-brand font-black'
-                  : 'bg-[#1e1514] text-ink-soft'
+            <div className="border-t border-line-soft pt-1 flex flex-col gap-1.5">
+              {/* View Switcher Tabs */}
+              <button
+                onClick={() => setActiveTab('sick')}
+                className={`w-full px-4 py-2.5 rounded-md text-xs transition flex items-center justify-center gap-2 ${
+                  activeTab === 'sick'
+                    ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black'
+                    : 'bg-[#1e1514] border border-transparent text-ink-soft hover:text-ink font-bold'
                 }`}
-            >
-              {lang === 'tr' ? 'Hastalık Bildirimleri' : 'Krankmeldungen'} ({sickReports.length})
-            </button>
-            <button
-              onClick={() => setActiveTab('leave')}
-              className={`w-full px-4 py-3 rounded-md text-xs font-bold transition ${activeTab === 'leave'
-                  ? 'btn-brand font-black'
-                  : 'bg-[#1e1514] text-ink-soft'
+              >
+                <span>{lang === 'tr' ? 'Hastalık Bildirimleri' : 'Krankmeldungen'} ({sickReports.length})</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('leave')}
+                className={`w-full px-4 py-2.5 rounded-md text-xs transition flex items-center justify-center gap-2 ${
+                  activeTab === 'leave'
+                    ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black'
+                    : 'bg-[#1e1514] border border-transparent text-ink-soft hover:text-ink font-bold'
                 }`}
-            >
-              {lang === 'tr' ? 'İzin Talepleri' : 'Urlaubsanträge'} ({leaveRequests.length})
-            </button>
+              >
+                <span>{lang === 'tr' ? 'İzin Talepleri' : 'Urlaubsanträge'} ({leaveRequests.length})</span>
+              </button>
+            </div>
           </div>
 
         </div>

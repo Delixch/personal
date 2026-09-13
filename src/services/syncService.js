@@ -1,5 +1,4 @@
 import { supabase, isSupabaseConfigured } from './supabase';
-import { SEED_SUPPLIERS } from './seedData';
 
 export const SyncService = {
   isLive: () => isSupabaseConfigured && Boolean(supabase),
@@ -281,6 +280,7 @@ export const SyncService = {
       ]);
 
       if (suppliersRes.error) throw suppliersRes.error;
+      if (catalogRes.error) console.error('Supabase lieferanten_katalog Error:', catalogRes.error);
       const suppliersData = suppliersRes.data || [];
       const catalogData = catalogRes.data || [];
 

@@ -343,14 +343,16 @@ export const StorageService = {
 
     return newInv;
   },
-  updateInvoiceStatus: (invoiceId, status, paidDate = null) => {
+  updateInvoiceStatus: (invoiceId, status, paidDate = null, paymentAccount = null, paymentRef = null) => {
     const list = StorageService.getInvoices();
     const inv = list.find(i => i.id === invoiceId);
     if (inv) {
       inv.status = status;
       if (paidDate) inv.paidDate = paidDate;
+      if (paymentAccount) inv.paymentAccount = paymentAccount;
+      if (paymentRef) inv.paymentRef = paymentRef;
       setStoredItem(STORAGE_KEYS.INVOICES, list);
-      SyncService.updateInvoiceStatusInDb(invoiceId, status, paidDate);
+      SyncService.updateInvoiceStatusInDb(invoiceId, status, paidDate, paymentAccount, paymentRef);
     }
     return list;
   },

@@ -234,6 +234,8 @@ export const SyncService = {
         vatAmount: Number(r.mwst_betrag) || 0,
         status: r.status,
         paidDate: r.bezahlt_am,
+        paymentAccount: r.bezahlt_von_konto || r.paymentAccount || null,
+        paymentRef: r.zahlungs_referenz || r.paymentRef || null,
         scanUrl: r.scan_datei_url,
         category: r.kategorie
       }));
@@ -254,19 +256,24 @@ export const SyncService = {
         mwst_betrag: inv.vatAmount || 0,
         status: inv.status || 'offen',
         kategorie: inv.category || 'Warenaufwand',
-        scan_datei_url: inv.scanUrl || null
+        scan_datei_url: inv.scanUrl || null,
+        bezahlt_am: inv.paidDate || null,
+        bezahlt_von_konto: inv.paymentAccount || null,
+        zahlungs_referenz: inv.paymentRef || null
       });
     } catch (err) {
       console.warn('pushInvoice error:', err);
     }
   },
 
-  updateInvoiceStatusInDb: async (invId, status, paidDate) => {
+  updateInvoiceStatusInDb: async (invId, status, paidDate, paymentAccount = null, paymentRef = null) => {
     if (!SyncService.isLive()) return;
     try {
       await supabase.from('rechnungen').update({
         status,
-        bezahlt_am: paidDate || null
+        bezahlt_am: paidDate || null,
+        bezahlt_von_konto: paymentAccount || null,
+        zahlungs_referenz: paymentRef || null
       }).eq('id', invId);
     } catch (err) {
       console.warn('updateInvoiceStatus error:', err);

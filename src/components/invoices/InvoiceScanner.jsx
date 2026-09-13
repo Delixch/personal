@@ -146,10 +146,40 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
     });
   };
 
-  const handleMarkAsPaid = (invId) => {
-    const today = new Date().toISOString().split('T')[0];
-    StorageService.updateInvoiceStatus(invId, 'paid', today);
+  const [payingInvoice, setPayingInvoice] = useState(null);
+  const [paymentForm, setPaymentForm] = useState({
+    paidDate: new Date().toISOString().split('T')[0],
+    paymentAccount: 'UBS Switzerland AG (Firmenkonto)',
+    paymentRef: ''
+  });
+
+  const openPaymentModal = (inv) => {
+    setPayingInvoice(inv);
+    setPaymentForm({
+      paidDate: new Date().toISOString().split('T')[0],
+      paymentAccount: 'UBS Switzerland AG (Firmenkonto)',
+      paymentRef: ''
+    });
+  };
+
+  const handleConfirmPayment = (e) => {
+    e.preventDefault();
+    if (!payingInvoice) return;
+    StorageService.updateInvoiceStatus(
+      payingInvoice.id,
+      'paid',
+      paymentForm.paidDate,
+      paymentForm.paymentAccount,
+      paymentForm.paymentRef
+    );
     setInvoices(StorageService.getInvoices());
+    setPayingInvoice(null);
+
+    confetti({
+      particleCount: 50,
+      spread: 50,
+      origin: { y: 0.6 }
+    });
   };
 
   const filteredInvoices = invoices.filter(inv => {
@@ -246,7 +276,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                 <th className="pb-3">Datum & Fälligkeit</th>
                 <th className="pb-3">MwSt Satz</th>
                 <th className="pb-3">Betrag (CHF)</th>
-                <th className="pb-3">Status</th>
+                <th className="pb-3">Status & Konto</th>
                 <th className="pb-3 text-right">Aktion</th>
               </tr>
             </thead>
@@ -286,9 +316,15 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
 
                   <td className="py-3">
                     {inv.status === 'paid' ? (
-                      <span className="badge badge-brand py-0.5 px-2 text-[10px]">
-                        ✓ BEZAHLT
-                      </span>
+                      <div>
+                        <span className="badge badge-brand py-0.5 px-2 text-[10px] flex items-center gap-1 w-max">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                          <span>✓ BEZAHLT</span>
+                        </span>
+                        <p className="text-[10px] text-subhead mt-1 font-mono">
+                          {inv.paidDate ? formatDate(inv.paidDate) : ''} {inv.paymentAccount ? `• ${inv.paymentAccount.split(' ')[0]}` : ''}
+                        </p>
+                      </div>
                     ) : (
                       <span className="badge badge-neutral py-0.5 px-2 text-[10px]">
                         ● OFFEN
@@ -308,10 +344,10 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
 
                       {inv.status !== 'paid' && (
                         <button
-                          onClick={() => handleMarkAsPaid(inv.id)}
+                          onClick={() => openPaymentModal(inv)}
                           className="px-2.5 py-1.5 rounded-xl card-inner border border-emerald-500/40 text-emerald-400 hover:bg-emerald-600 hover:text-white text-[11px] font-bold flex items-center gap-1 transition"
                         >
-                          <Check className="w-3.5 h-3.5" />
+                          <CreditCard className="w-3.5 h-3.5" />
                           <span>{lang === 'tr' ? 'Ödendi Yap' : 'Als bezahlt'}</span>
                         </button>
                       )}
@@ -538,6 +574,89 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
         </div>
       )}
 
+      {payingInvoice && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
+          <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
+            <div className="flex items-center justify-between border-b border-line pb-3 mb-4">
+              <h3 className="font-bold text-ink text-base flex items-center gap-2">
+                <CreditCard className="w-5 h-5 text-brand" />
+                <span>{lang === 'tr' ? 'Fatura Ödeme & Banka Onayı' : 'Zahlung buchen'}</span>
+              </h3>
+              <button
+                onClick={() => setPayingInvoice(null)}
+                className="p-1.5 rounded-lg text-ink-muted"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-ground border border-line mb-4 text-xs">
+              <p className="font-bold text-ink text-sm">{payingInvoice.supplierName}</p>
+              <p className="text-subhead font-mono">{payingInvoice.invoiceNumber}</p>
+              <div className="flex items-center justify-between mt-2 pt-2 border-t border-line font-bold">
+                <span>{lang === 'tr' ? 'Ödenecek Tutar:' : 'Zahlbetrag:'}</span>
+                <span className="font-mono text-brand text-sm">{formatCurrency(payingInvoice.totalAmount)}</span>
+              </div>
+            </div>
+
+            <form onSubmit={handleConfirmPayment} className="space-y-3.5">
+              <div>
+                <label className="block text-xs font-semibold text-subhead mb-1">
+                  {lang === 'tr' ? 'Ödeme Tarihi' : 'Zahlungsdatum'}:
+                </label>
+                <input
+                  type="date"
+                  required
+                  value={paymentForm.paidDate}
+                  onChange={(e) => setPaymentForm({ ...paymentForm, paidDate: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-subhead mb-1">
+                  {lang === 'tr' ? 'Ödeme Yapılan Banka / Kasa Hesabı' : 'Zahlungskonto / Bankverbindung'}:
+                </label>
+                <select
+                  value={paymentForm.paymentAccount}
+                  onChange={(e) => setPaymentForm({ ...paymentForm, paymentAccount: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                >
+                  <option value="UBS Switzerland AG (Firmenkonto)">UBS Switzerland AG (Haupt-Firmenkonto)</option>
+                  <option value="Zürcher Kantonalbank ZKB">Zürcher Kantonalbank ZKB (Gastro Konto)</option>
+                  <option value="PostFinance Gastro">PostFinance Gastro Account</option>
+                  <option value="Bar-Kasse (Nakit Kasa)">Bar-Kasse (Tageskasse Bar)</option>
+                  <option value="Firmen-Kreditkarte (Mastercard)">Firmen-Kreditkarte (Corporate Mastercard)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-subhead mb-1">
+                  {lang === 'tr' ? 'e-Banking Ref / Dekont No (İsteğe Bağlı)' : 'Referenz / e-Banking Beleg Nr'}:
+                </label>
+                <input
+                  type="text"
+                  placeholder={lang === 'tr' ? 'Örn: QR-Zahlung Ref #9812' : 'z.B. QR-Zahlung Ref #9812'}
+                  value={paymentForm.paymentRef}
+                  onChange={(e) => setPaymentForm({ ...paymentForm, paymentRef: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-ink text-xs focus:outline-none focus:border-brand"
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="w-full py-3 rounded-xl btn-brand font-black text-xs flex items-center justify-center gap-2 transition"
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>{lang === 'tr' ? 'Ödemeyi Onayla & Muhasebeleştir' : 'Zahlung verbindlich buchen'}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {selectedInvoice && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
           <div className="w-full max-w-md rounded-3xl bg-surface p-6 relative border border-line modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
@@ -581,6 +700,29 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                 <span className="font-mono text-ink">{formatCurrency(selectedInvoice.totalAmount)}</span>
               </div>
             </div>
+
+            {selectedInvoice.status === 'paid' && (
+              <div className="space-y-1.5 text-xs card-inner p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-emerald-200 mb-4">
+                <div className="flex items-center gap-1.5 font-bold text-emerald-400 text-xs mb-1">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>{lang === 'tr' ? 'Banka & Ödeme Kaydı' : 'Zahlungsbestätigung'}</span>
+                </div>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-subhead">{lang === 'tr' ? 'Ödeme Tarihi:' : 'Bezahlt am:'}</span>
+                  <span className="font-semibold text-ink">{formatDate(selectedInvoice.paidDate || selectedInvoice.date)}</span>
+                </div>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-subhead">{lang === 'tr' ? 'Ödeme Hesabı:' : 'Konto / Bank:'}</span>
+                  <span className="font-semibold text-brand">{selectedInvoice.paymentAccount || 'UBS Switzerland AG'}</span>
+                </div>
+                {selectedInvoice.paymentRef && (
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="text-subhead">{lang === 'tr' ? 'Referenz / Dekont:' : 'Referenz:'}</span>
+                    <span className="font-mono text-ink">{selectedInvoice.paymentRef}</span>
+                  </div>
+                )}
+              </div>
+            )}
 
             <button
               onClick={() => setSelectedInvoice(null)}

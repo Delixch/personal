@@ -65,9 +65,10 @@ export const SyncService = {
                                     (local.avatar && local.avatar.startsWith('data:image') ? local.avatar : null);
 
           let avatarVal = '';
+          const isUnsplashUrl = Boolean(m.avatar && m.avatar.includes('unsplash.com'));
 
-          if (m.avatar && (m.avatar.startsWith('data:image') || m.avatar.startsWith('http'))) {
-            // Supabase'de custom Base64 veya geçerli resim URL'si var, bunu kullan ve yerel haritaya kaydet
+          if (m.avatar && m.avatar.startsWith('data:image')) {
+            // Supabase'de özel Base64 resim var, bunu kullan ve yerel haritaya kaydet
             avatarVal = m.avatar;
             if (m.id) customAvatars[m.id] = m.avatar;
             if (m.pin) customAvatars[String(m.pin)] = m.avatar;
@@ -76,10 +77,14 @@ export const SyncService = {
             if (local.pin) customAvatars[String(local.pin)] = m.avatar;
             customAvatarsUpdated = true;
           } else if (customLocalAvatar) {
-            // Yerelde özel avatar var ancak Supabase'de boş veri var -> Yerel özel avatarı koru!
+            // Yerelde özel avatar var -> Supabase'deki Unsplash linkinin resmi SILMESINI / EZMESINI ENGELLE!
             avatarVal = customLocalAvatar;
+            if (isUnsplashUrl || !m.avatar) {
+              SyncService.pushEmployee({ ...local, ...m, avatar: customLocalAvatar });
+            }
+          } else if (m.avatar && !isUnsplashUrl) {
+            avatarVal = m.avatar;
           } else {
-            // Özel avatar yoksa Supabase avatarını veya local avatarını kullan
             avatarVal = (m.avatar && m.avatar.length > 5) ? m.avatar : (local.avatar || '');
           }
 

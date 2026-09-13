@@ -1,4 +1,5 @@
 import { supabase, isSupabaseConfigured } from './supabase';
+import { SEED_SUPPLIERS } from './seedData';
 
 export const SyncService = {
   isLive: () => isSupabaseConfigured && Boolean(supabase),
@@ -293,22 +294,31 @@ export const SyncService = {
         return [];
       };
 
-      const mapped = validData.map(l => ({
-        id:            l.slug || String(l.id),
-        name:          l.name,
-        category:      l.kategorie || '',
-        contactPerson: l.kontakt_person || '',
-        phone:         l.telefon || '',
-        whatsapp:      l.whatsapp || '',
-        email:         l.email || '',
-        address:       l.adresse || '',
-        notes:         l.notizen || (l.bestellfrist ? `Bestellfrist: ${l.bestellfrist}` : ''),
-        rating:        Number(l.rating) || 4.5,
-        deliveryDays:  parseDeliveryDays(l.liefertage),
-        catalog:       (l.lieferanten_katalog || [])
+      const mapped = validData.map(l => {
+        const seedSupplier = SEED_SUPPLIERS.find(s => s.id === l.slug || s.name?.toLowerCase() === l.name?.toLowerCase());
+        const seedCatalog = seedSupplier?.catalog || [];
+
+        const supabaseCatalog = (l.lieferanten_katalog || [])
                          .sort((a, b) => a.reihenfolge - b.reihenfolge)
-                         .map(k => ({ id: k.id, name: k.name, price: Number(k.preis), unit: k.einheit }))
-      }));
+                         .map(k => ({ id: k.id, name: k.name, price: Number(k.preis), unit: k.einheit }));
+
+        const finalCatalog = supabaseCatalog.length > 0 ? supabaseCatalog : seedCatalog;
+
+        return {
+          id:            l.slug || String(l.id),
+          name:          l.name,
+          category:      l.kategorie || '',
+          contactPerson: l.kontakt_person || '',
+          phone:         l.telefon || '',
+          whatsapp:      l.whatsapp || '',
+          email:         l.email || '',
+          address:       l.adresse || '',
+          notes:         l.notizen || (l.bestellfrist ? `Bestellfrist: ${l.bestellfrist}` : ''),
+          rating:        Number(l.rating) || 4.5,
+          deliveryDays:  parseDeliveryDays(l.liefertage),
+          catalog:       finalCatalog
+        };
+      });
       localStorage.setItem('ado_suppliers_v1', JSON.stringify(mapped));
     }
   },

@@ -140,9 +140,19 @@ export const TimeTracker = ({ lang, currentUser }) => {
               {t.timeTrackerTitle}
             </h1>
             <p className="text-subhead text-ink-soft max-w-xl leading-relaxed mt-1">
-              {lang === 'tr'
-                ? 'Dokunmatik PIN terminali ile kartsız & e-postasız saniyelik giriş-çıkış, mola takibi ve canlı mesai panosu.'
-                : 'Präzise Zeiterfassung via Touch-PIN Terminal (Kiosk-Modus für Wand-Tablets) oder persönliche Stempeluhr.'}
+              {lang === 'tr' ? (
+                <>
+                  Dokunmatik PIN terminali ile kartsız & e-postasız saniyelik giriş-çıkış.
+                  <br />
+                  (Kiosk mola takibi ve canlı mesai panosu)
+                </>
+              ) : (
+                <>
+                  Präzise Zeiterfassung via Touch-PIN Terminal
+                  <br />
+                  (Kiosk-Modus für Wand-Tablets) oder persönliche Stempeluhr.
+                </>
+              )}
             </p>
           </div>
 

@@ -221,7 +221,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
           </div>
         )}
 
-        <div className="flex items-center gap-2 mt-6 pt-4 border-t border-line-soft overflow-x-auto pb-1">
+        <div className="flex flex-wrap items-center gap-2 mt-6 pt-4 border-t border-line-soft">
           <button
             onClick={() => setSelectedDept('all')}
             className={`px-3.5 py-2 rounded-md text-xs font-bold whitespace-nowrap transition border ${

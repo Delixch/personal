@@ -372,7 +372,7 @@ export const PersonalakteModal = ({
           </div>
 
           {/* Desktop Tabs */}
-          <div className="hidden sm:flex items-center gap-2 overflow-x-auto text-xs font-bold hide-scrollbar">
+          <div className="hidden sm:flex flex-wrap items-center gap-2 text-xs font-bold py-1">
             <button
               onClick={() => setActiveTab('360')}
               className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${

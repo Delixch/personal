@@ -62,9 +62,9 @@ export const SyncService = {
           vacationUsed:  Number(m.urlaub_bezogen_tage)  || local.vacationUsed  || 0,
           joinedDate:   m.eintrittsdatum || local.joinedDate || '2024-01-01',
           status:       m.aktiv ? 'active' : 'inactive',
-          // Local-only alanlar — Supabase'den gelmez, local'den korunur:
+          // Local & Supabase departman eşleşmesi:
           password:     local.password || '1234',
-          department:   local.department || 'staff',
+          department:   m.abteilung || local.department || 'kuche',
           jobTitle:     local.jobTitle || m.rolle || '',
           onboardingChecks: local.onboardingChecks || {}
         };
@@ -90,6 +90,7 @@ export const SyncService = {
         iban: emp.iban || null,
         bank_name: emp.bankName || null,
         avatar: emp.avatar || null,
+        abteilung: emp.department || 'kuche',
         lohnart: emp.contractType?.includes('Fest') ? 'monatslohn' : 'stundenlohn',
         urlaubsanspruch_tage: emp.vacationTotal || 25,
         urlaub_bezogen_tage: emp.vacationUsed || 0,

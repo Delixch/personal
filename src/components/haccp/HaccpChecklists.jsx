@@ -99,52 +99,50 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
       {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
       <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
+          <div className="space-y-2 max-w-xl">
             <h1 className="page-title text-ink">
               {lang === 'tr' ? 'HACCP & Günlük Hijyen Listeleri' : 'HACCP & Tägliche Kontrolllisten'}
             </h1>
-            <p className="text-subhead text-ink-soft max-w-2xl leading-relaxed mt-1">
+            <p className="text-subhead text-ink-soft leading-relaxed mt-1">
               {lang === 'tr'
                 ? 'Kanton gıda denetimi gereksinimlerine tam uygun soğutucu sıcaklık ölçümleri, sabah açılış ve akşam kapanış görev takip sistemi.'
                 : 'Lückenlose Dokumentation nach Lebensmittelrecht (HyV/LMG) für Kühlräume, Tiefkühler und tägliche Reinigungs- & Schliesskontrollen.'}
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="w-full md:w-[260px] flex flex-col gap-2 shrink-0">
             <button
               onClick={exportHaccpReport}
-              className="px-4 py-2.5 rounded-2xl bg-surface border border-line text-ink text-xs font-bold flex items-center gap-2 transition card-inner"
+              className="w-full py-2.5 rounded-md bg-[#1e1514] text-ink hover:bg-[#2a1d1b] font-bold text-xs flex items-center justify-center gap-2 transition"
             >
               <Download className="w-4 h-4 text-brand icon-brand" />
               <span>{lang === 'tr' ? 'HACCP Raporu İndir' : 'HACCP Protokoll Export'}</span>
             </button>
-          </div>
-        </div>
 
-        {/* View Switcher Tabs */}
-        <div className="flex gap-2 mt-6 pt-4 border-t border-line-soft overflow-x-auto">
-          <button
-            onClick={() => setActiveTab('temp')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition ${
-              activeTab === 'temp'
-                ? 'btn-brand font-black'
-                : 'bg-ground border border-line text-ink '
-            }`}
-          >
-            <Thermometer className="w-4 h-4" />
-            <span>{lang === 'tr' ? 'Soğuk Oda & Dolap Sıcaklıkları' : 'Temperaturkontrolle (Kühlräume)'}</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('checklists')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition ${
-              activeTab === 'checklists'
-                ? 'btn-brand font-black'
-                : 'bg-ground border border-line text-ink '
-            }`}
-          >
-            <CheckCircle2 className="w-4 h-4" />
-            <span>{lang === 'tr' ? 'Açılış & Kapanış Kontrolleri' : 'Tägliche Checklisten (Morgen / Abend)'}</span>
-          </button>
+            <button
+              onClick={() => setActiveTab('temp')}
+              className={`w-full py-2.5 rounded-md font-bold text-xs flex items-center justify-center gap-2 transition ${
+                activeTab === 'temp'
+                  ? 'btn-brand font-black'
+                  : 'bg-[#1e1514] text-ink-soft hover:text-ink hover:bg-[#2a1d1b]'
+              }`}
+            >
+              <Thermometer className="w-4 h-4" />
+              <span>{lang === 'tr' ? 'Soğuk Oda Sıcaklıkları' : 'Temperaturkontrolle'}</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('checklists')}
+              className={`w-full py-2.5 rounded-md font-bold text-xs flex items-center justify-center gap-2 transition ${
+                activeTab === 'checklists'
+                  ? 'btn-brand font-black'
+                  : 'bg-[#1e1514] text-ink-soft hover:text-ink hover:bg-[#2a1d1b]'
+              }`}
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              <span>{lang === 'tr' ? 'Açılış & Kapanış Listeleri' : 'Tägliche Checklisten'}</span>
+            </button>
+          </div>
         </div>
       </div>
 

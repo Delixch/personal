@@ -341,7 +341,7 @@ export const OverviewDashboard = ({
               <img
                 src={currentUser?.avatar}
                 alt={currentUser?.name}
-                className="w-12 h-12 rounded-xl object-cover ring-2 ring-line transition"
+                className="w-12 h-12 rounded-full object-cover ring-2 ring-line transition"
               />
               <div>
                 <div className="flex items-center gap-2">

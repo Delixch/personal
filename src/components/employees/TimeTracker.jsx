@@ -225,7 +225,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
                 <img
                   src={kioskEmp.avatar}
                   alt={kioskEmp.name}
-                  className="w-14 h-14 rounded-2xl object-cover ring-2 ring-line"
+                  className="w-14 h-14 rounded-full object-cover ring-2 ring-line"
                 />
                 <div className="text-left">
                   <h3 className="text-lg font-black text-ink">{kioskEmp.name}</h3>
@@ -370,7 +370,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
                 <img
                   src={currentUser?.avatar}
                   alt={currentUser?.name}
-                  className="w-12 h-12 rounded-2xl object-cover ring-2 ring-line"
+                  className="w-12 h-12 rounded-full object-cover ring-2 ring-line"
                 />
                 <div>
                   <h3 className="font-bold text-base text-ink">{currentUser?.name}</h3>

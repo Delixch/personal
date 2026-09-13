@@ -304,9 +304,9 @@ export const PersonalakteModal = ({
               <img
                 src={currentAvatar || employee.avatar}
                 alt={employee.name}
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover ring-2 ring-brand/40 group-hover:brightness-90 transition"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover ring-2 ring-brand/40 group-hover:brightness-90 transition"
               />
-              <label className="absolute inset-0 rounded-2xl bg-black/60 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center text-white text-[10px] font-bold cursor-pointer">
+              <label className="absolute inset-0 rounded-full bg-black/60 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center text-white text-[10px] font-bold cursor-pointer">
                 <Camera className="w-5 h-5 mb-0.5" />
                 <span>{lang === 'tr' ? 'Foto Seç' : 'Foto wählen'}</span>
                 <input

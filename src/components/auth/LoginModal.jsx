@@ -204,7 +204,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
                 <img
                   src={emp.avatar}
                   alt={emp.name}
-                  className="w-7 h-7 rounded-lg object-cover ring-1 ring-line"
+                  className="w-7 h-7 rounded-full object-cover ring-1 ring-line"
                 />
                 <div className="truncate">
                   <div className="font-bold text-ink truncate text-[11px]">

@@ -117,7 +117,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
               <img
                 src={emp.avatar}
                 alt={emp.name}
-                className="w-5 h-5 rounded-full object-cover ring-1 ring-brand/50"
+                className="w-6 h-6 rounded-full object-cover ring-1 ring-brand/50 shrink-0"
               />
               <span className="text-ink">{emp.role === 'admin' ? '👑 ' : ''}{emp.name.split(' ')[0]}</span>
               <span className="text-[10px] text-brand font-mono font-bold">PIN:{emp.pin || '1001'}</span>
@@ -141,7 +141,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     <img
                       src={emp.avatar}
                       alt={emp.name}
-                      className="w-12 h-12 rounded-2xl object-cover ring-2 ring-brand/30 transition"
+                      className="w-12 h-12 rounded-full object-cover ring-2 ring-brand/30 transition"
                     />
                     <div>
                       <h3 className="font-bold text-sm text-ink group-hover:text-brand transition">{emp.name}</h3>

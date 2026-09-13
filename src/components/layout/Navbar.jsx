@@ -203,7 +203,7 @@ export const Navbar = ({
                 <img
                   src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}
                   alt={currentUser?.name}
-                  className="w-9 h-9 rounded-md object-cover ring-2 ring-line"
+                  className="w-9 h-9 rounded-full object-cover ring-2 ring-line"
                 />
                 <div className="hidden md:block">
                   <div className="sub-title flex items-center gap-1.5">
@@ -249,7 +249,7 @@ export const Navbar = ({
                               <img
                                 src={emp.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}
                                 alt={emp.name}
-                                className="w-6 h-6 rounded-md object-cover"
+                                className="w-6 h-6 rounded-full object-cover"
                               />
                               <div className="flex-1 truncate">
                                 <p className="truncate font-semibold text-ink">{emp.name}</p>

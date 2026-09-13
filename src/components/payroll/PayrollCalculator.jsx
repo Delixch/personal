@@ -248,7 +248,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
                         <img
                           src={emp.avatar}
                           alt={emp.name}
-                          className="w-9 h-9 rounded-xl object-cover ring-1 ring-slate-200 shrink-0"
+                          className="w-9 h-9 rounded-full object-cover ring-1 ring-slate-200 shrink-0"
                         />
                         <div>
                           <p className="font-bold text-ink text-xs">{emp.name}</p>

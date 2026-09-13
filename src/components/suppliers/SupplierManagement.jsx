@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Truck,
   Phone,
@@ -42,6 +42,20 @@ export const SupplierManagement = ({ lang, currentUser }) => {
   const [editingSupplier, setEditingSupplier] = useState(null);
   const [deleteConfirm, setDeleteConfirm]   = useState(null); // supplier to delete
   const [deliveryDayInput, setDeliveryDayInput] = useState('');
+
+  // Listen for Supabase background sync database updates
+  useEffect(() => {
+    const handleDbUpdate = () => {
+      const updatedList = StorageService.getSuppliers();
+      setSuppliers(updatedList);
+      if (selectedSupplierForOrder) {
+        const refreshed = updatedList.find(s => s.id === selectedSupplierForOrder.id);
+        if (refreshed) setSelectedSupplierForOrder(refreshed);
+      }
+    };
+    window.addEventListener('ado_db_update', handleDbUpdate);
+    return () => window.removeEventListener('ado_db_update', handleDbUpdate);
+  }, [selectedSupplierForOrder]);
 
   const categories = [
     { id: 'all',        label: lang === 'tr' ? 'Tümü' : 'Alle' },

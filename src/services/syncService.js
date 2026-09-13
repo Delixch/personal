@@ -29,117 +29,121 @@ export const SyncService = {
   // PERSONEL SENKRONİZASYONU
   syncEmployees: async () => {
     if (!SyncService.isLive()) return;
-    const { data, error } = await supabase.from('mitarbeiter').select('*');
-    if (error) throw error;
-    if (data && data.length > 0) {
-      // Mevcut local veriyi oku — password, department, jobTitle gibi local alanları koru
-      let localList = [];
-      try {
-        const raw = localStorage.getItem('ado_employees_v1');
-        localList = raw ? JSON.parse(raw) : [];
-      } catch (_) {}
+    try {
+      const { data, error } = await supabase.from('mitarbeiter').select('*');
+      if (error) throw error;
+      if (data && data.length > 0) {
+        // Mevcut local veriyi oku — password, department, jobTitle gibi local alanları koru
+        let localList = [];
+        try {
+          const raw = localStorage.getItem('ado_employees_v1');
+          localList = raw ? JSON.parse(raw) : [];
+        } catch (_) {}
 
-      let customAvatars = {};
-      try {
-        const rawCustom = localStorage.getItem('ado_custom_avatars_v1');
-        customAvatars = rawCustom ? JSON.parse(rawCustom) : {};
-      } catch (_) {}
+        let customAvatars = {};
+        try {
+          const rawCustom = localStorage.getItem('ado_custom_avatars_v1');
+          customAvatars = rawCustom ? JSON.parse(rawCustom) : {};
+        } catch (_) {}
 
-      let customAvatarsUpdated = false;
+        let customAvatarsUpdated = false;
 
-      const mapped = data.map(m => {
-        // Aynı PIN, ID veya E-posta'lı local kaydı bul (tip uyuşmazlığını önlemek için String karşılaştırma)
-        const local = localList.find(e =>
-          (e.pin && m.pin && String(e.pin) === String(m.pin)) ||
-          (e.id && m.id && e.id === m.id) ||
-          (e.email && m.email && e.email.toLowerCase() === m.email.toLowerCase())
-        ) || {};
+        const mapped = data.map(m => {
+          // Aynı PIN, ID veya E-posta'lı local kaydı bul (tip uyuşmazlığını önlemek için String karşılaştırma)
+          const local = localList.find(e =>
+            (e.pin && m.pin && String(e.pin) === String(m.pin)) ||
+            (e.id && m.id && e.id === m.id) ||
+            (e.email && m.email && e.email.toLowerCase() === m.email.toLowerCase())
+          ) || {};
 
-        // Yerelde saklanan özel avatarı bul
-        const customLocalAvatar = customAvatars[m.id] ||
-                                  customAvatars[String(m.pin)] ||
-                                  customAvatars[m.email] ||
-                                  customAvatars[local.id] ||
-                                  customAvatars[String(local.pin)] ||
-                                  (local.avatar && local.avatar.startsWith('data:image') ? local.avatar : null);
+          // Yerelde saklanan özel avatarı bul
+          const customLocalAvatar = customAvatars[m.id] ||
+                                    customAvatars[String(m.pin)] ||
+                                    customAvatars[m.email] ||
+                                    customAvatars[local.id] ||
+                                    customAvatars[String(local.pin)] ||
+                                    (local.avatar && local.avatar.startsWith('data:image') ? local.avatar : null);
 
-        let avatarVal = '';
+          let avatarVal = '';
 
-        if (m.avatar && m.avatar.startsWith('data:image')) {
-          // Supabase'de custom Base64 avatar var, bunu kullan ve yerel customAvatars haritasına kaydet
-          avatarVal = m.avatar;
-          if (m.id) customAvatars[m.id] = m.avatar;
-          if (m.pin) customAvatars[String(m.pin)] = m.avatar;
-          if (m.email) customAvatars[m.email] = m.avatar;
-          if (local.id) customAvatars[local.id] = m.avatar;
-          if (local.pin) customAvatars[String(local.pin)] = m.avatar;
-          customAvatarsUpdated = true;
-        } else if (customLocalAvatar) {
-          // Yerelde özel avatar var ancak Supabase'de seed URL veya boş veri var -> Yerel özel avatarı koru!
-          avatarVal = customLocalAvatar;
-        } else {
-          // Özel avatar yoksa Supabase avatarını veya local avatarını kullan
-          avatarVal = (m.avatar && m.avatar.length > 5) ? m.avatar : (local.avatar || '');
-        }
-
-        return {
-          ...local,                          // local alanları önce yay
-          id:           m.id || local.id,
-          name:         m.name || local.name,
-          pin:          String(m.pin || local.pin || ''),
-          role:         m.rolle === 'admin' ? 'admin' : (local.role || 'employee'),
-          hourlyRate:   Number(m.stundenlohn) || local.hourlyRate || 25,
-          pensum:       m.pensum || local.pensum || 100,
-          email:        m.email || local.email || '',
-          phone:        m.telefon || local.phone || '',
-          ahv:          m.ahv_nummer || local.ahv || '',
-          iban:         m.iban || local.iban || '',
-          bankName:     m.bank_name || local.bankName || 'UBS Switzerland AG',
-          avatar:       avatarVal,
-          contractType: m.lohnart === 'monatslohn'
-                          ? 'Festanstellung 100%'
-                          : `Stundenlohn (${m.pensum || 100}%)`,
-          vacationTotal: Number(m.urlaubsanspruch_tage) || local.vacationTotal || 25,
-          vacationUsed:  Number(m.urlaub_bezogen_tage)  || local.vacationUsed  || 0,
-          joinedDate:   m.eintrittsdatum || local.joinedDate || '2024-01-01',
-          status:       m.aktiv !== false ? 'active' : 'inactive',
-          password:     local.password || '1234',
-          department:   m.abteilung || local.department || 'kuche',
-          jobTitle:     local.jobTitle || m.rolle || '',
-          onboardingChecks: local.onboardingChecks || {}
-        };
-      });
-
-      // Local'de var olan ama Supabase'de henüz olmayan çalışanları koru
-      localList.forEach(loc => {
-        if (!mapped.some(m => (loc.pin && m.pin && String(m.pin) === String(loc.pin)) || (loc.id && m.id && loc.id === m.id))) {
-          mapped.push(loc);
-        }
-      });
-
-      if (customAvatarsUpdated) {
-        localStorage.setItem('ado_custom_avatars_v1', JSON.stringify(customAvatars));
-      }
-
-      localStorage.setItem('ado_employees_v1', JSON.stringify(mapped));
-
-      // Aktif oturum açmış kullanıcı avatarını da güncelle
-      try {
-        const userRaw = localStorage.getItem('ado_current_user_v1');
-        if (userRaw && userRaw !== '"guest"') {
-          const u = JSON.parse(userRaw);
-          const found = mapped.find(m => (m.id && u.id && m.id === u.id) || (m.pin && u.pin && String(m.pin) === String(u.pin)) || (m.email && u.email && m.email.toLowerCase() === u.email.toLowerCase()));
-          if (found) {
-            localStorage.setItem('ado_current_user_v1', JSON.stringify({ ...u, ...found, avatar: found.avatar }));
+          if (m.avatar && (m.avatar.startsWith('data:image') || m.avatar.startsWith('http'))) {
+            // Supabase'de custom Base64 veya geçerli resim URL'si var, bunu kullan ve yerel haritaya kaydet
+            avatarVal = m.avatar;
+            if (m.id) customAvatars[m.id] = m.avatar;
+            if (m.pin) customAvatars[String(m.pin)] = m.avatar;
+            if (m.email) customAvatars[m.email] = m.avatar;
+            if (local.id) customAvatars[local.id] = m.avatar;
+            if (local.pin) customAvatars[String(local.pin)] = m.avatar;
+            customAvatarsUpdated = true;
+          } else if (customLocalAvatar) {
+            // Yerelde özel avatar var ancak Supabase'de boş veri var -> Yerel özel avatarı koru!
+            avatarVal = customLocalAvatar;
+          } else {
+            // Özel avatar yoksa Supabase avatarını veya local avatarını kullan
+            avatarVal = (m.avatar && m.avatar.length > 5) ? m.avatar : (local.avatar || '');
           }
+
+          return {
+            ...local,                          // local alanları önce yay
+            id:           m.id || local.id,
+            name:         m.name || local.name,
+            pin:          String(m.pin || local.pin || ''),
+            role:         m.rolle === 'admin' ? 'admin' : (local.role || 'employee'),
+            hourlyRate:   Number(m.stundenlohn) || local.hourlyRate || 25,
+            pensum:       m.pensum || local.pensum || 100,
+            email:        m.email || local.email || '',
+            phone:        m.telefon || local.phone || '',
+            ahv:          m.ahv_nummer || local.ahv || '',
+            iban:         m.iban || local.iban || '',
+            bankName:     m.bank_name || local.bankName || 'UBS Switzerland AG',
+            avatar:       avatarVal,
+            contractType: m.lohnart === 'monatslohn'
+                            ? 'Festanstellung 100%'
+                            : `Stundenlohn (${m.pensum || 100}%)`,
+            vacationTotal: Number(m.urlaubsanspruch_tage) || local.vacationTotal || 25,
+            vacationUsed:  Number(m.urlaub_bezogen_tage)  || local.vacationUsed  || 0,
+            joinedDate:   m.eintrittsdatum || local.joinedDate || '2024-01-01',
+            status:       m.aktiv !== false ? 'active' : 'inactive',
+            password:     local.password || '1234',
+            department:   m.abteilung || local.department || 'kuche',
+            jobTitle:     local.jobTitle || m.rolle || '',
+            onboardingChecks: local.onboardingChecks || {}
+          };
+        });
+
+        // Local'de var olan ama Supabase'de henüz olmayan çalışanları koru
+        localList.forEach(loc => {
+          if (!mapped.some(m => (loc.pin && m.pin && String(m.pin) === String(loc.pin)) || (loc.id && m.id && loc.id === m.id))) {
+            mapped.push(loc);
+          }
+        });
+
+        if (customAvatarsUpdated) {
+          localStorage.setItem('ado_custom_avatars_v1', JSON.stringify(customAvatars));
         }
-      } catch (_) {}
+
+        localStorage.setItem('ado_employees_v1', JSON.stringify(mapped));
+
+        // Aktif oturum açmış kullanıcı avatarını da güncelle
+        try {
+          const userRaw = localStorage.getItem('ado_current_user_v1');
+          if (userRaw && userRaw !== '"guest"') {
+            const u = JSON.parse(userRaw);
+            const found = mapped.find(m => (m.id && u.id && m.id === u.id) || (m.pin && u.pin && String(m.pin) === String(u.pin)) || (m.email && u.email && m.email.toLowerCase() === u.email.toLowerCase()));
+            if (found) {
+              localStorage.setItem('ado_current_user_v1', JSON.stringify({ ...u, ...found, avatar: found.avatar }));
+            }
+          }
+        } catch (_) {}
+      }
+    } catch (err) {
+      console.warn('syncEmployees error:', err);
     }
   },
 
 
   pushEmployee: async (emp) => {
-    if (!SyncService.isLive() || !emp.pin || !emp.email) return;
+    if (!SyncService.isLive() || (!emp.pin && !emp.email)) return;
     try {
       let avatarToPush = emp.avatar;
       if (!avatarToPush || !avatarToPush.startsWith('data:image')) {
@@ -152,10 +156,10 @@ export const SyncService = {
         if (custom) avatarToPush = custom;
       }
 
-      await supabase.from('mitarbeiter').upsert({
+      const payload = {
         name: emp.name,
-        pin: emp.pin,
-        email: emp.email,
+        pin: String(emp.pin || ''),
+        email: emp.email || '',
         password: emp.password || null,
         rolle: emp.role === 'admin' ? 'admin' : 'mitarbeiter',
         stundenlohn: emp.hourlyRate || 25,
@@ -170,9 +174,24 @@ export const SyncService = {
         urlaubsanspruch_tage: emp.vacationTotal || 25,
         urlaub_bezogen_tage: emp.vacationUsed || 0,
         aktiv: emp.status !== 'inactive'
-      }, { onConflict: 'email' });
+      };
+
+      // 1. Önce e-posta veya PIN ile doğrudan UPDATE dene (OnConflict kısıtlaması gerektirmez)
+      let filter = [];
+      if (emp.email) filter.push(`email.eq.${emp.email}`);
+      if (emp.pin) filter.push(`pin.eq.${emp.pin}`);
+      
+      const { error: updateError } = await supabase
+        .from('mitarbeiter')
+        .update(payload)
+        .or(filter.join(','));
+
+      if (updateError) {
+        console.warn('pushEmployee update error, attempting upsert:', updateError);
+        await supabase.from('mitarbeiter').upsert(payload);
+      }
     } catch (err) {
-      console.warn('pushEmployee error:', err);
+      console.warn('pushEmployee catch error:', err);
     }
   },
 
@@ -188,7 +207,7 @@ export const SyncService = {
         customAvatars = rawCustom ? JSON.parse(rawCustom) : {};
       } catch (_) {}
       for (const emp of employees) {
-        if (emp.email) {
+        if (emp.email || emp.pin) {
           const custom = customAvatars[emp.id] || customAvatars[String(emp.pin)] || customAvatars[emp.email] || emp.avatar;
           await SyncService.pushEmployee({ ...emp, avatar: custom });
         }

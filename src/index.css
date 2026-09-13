@@ -152,7 +152,6 @@ button.card-inner,
 [aria-selected="true"] {
   background-color: var(--brand) !important;
   color: #FFFFFF !important;
-  border-radius: 0.75rem;
 }
 
 .btn-ghost {

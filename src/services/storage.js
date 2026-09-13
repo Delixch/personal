@@ -25,7 +25,8 @@ const STORAGE_KEYS = {
   APP_LANG: 'ado_app_lang_v1',
   HACCP_CHECKLISTS: 'ado_haccp_checklists_v1',
   TEMPERATURE_LOGS: 'ado_temperature_logs_v1',
-  BULLETINS: 'ado_bulletins_v1'
+  BULLETINS: 'ado_bulletins_v1',
+  CUSTOM_AVATARS: 'ado_custom_avatars_v1'
 };
 
 export const initializeDatabase = () => {
@@ -210,9 +211,33 @@ export const StorageService = {
     return list;
   },
 
-  getEmployees: () => getStoredItem(STORAGE_KEYS.EMPLOYEES, SEED_EMPLOYEES),
+  setCustomAvatar: (empIdOrPin, base64Data) => {
+    const map = getStoredItem(STORAGE_KEYS.CUSTOM_AVATARS, {});
+    if (empIdOrPin) {
+      map[String(empIdOrPin)] = base64Data;
+      setStoredItem(STORAGE_KEYS.CUSTOM_AVATARS, map);
+    }
+  },
+
+  getEmployees: () => {
+    const list = getStoredItem(STORAGE_KEYS.EMPLOYEES, SEED_EMPLOYEES);
+    const customAvatars = getStoredItem(STORAGE_KEYS.CUSTOM_AVATARS, {});
+    return list.map(emp => {
+      const custom = customAvatars[emp.id] || customAvatars[String(emp.pin)] || customAvatars[emp.email];
+      return custom ? { ...emp, avatar: custom } : emp;
+    });
+  },
+
   saveEmployee: (employee) => {
-    const list = StorageService.getEmployees();
+    if (employee.avatar && employee.avatar.startsWith('data:image')) {
+      const map = getStoredItem(STORAGE_KEYS.CUSTOM_AVATARS, {});
+      if (employee.id) map[employee.id] = employee.avatar;
+      if (employee.pin) map[String(employee.pin)] = employee.avatar;
+      if (employee.email) map[employee.email] = employee.avatar;
+      setStoredItem(STORAGE_KEYS.CUSTOM_AVATARS, map);
+    }
+
+    const list = getStoredItem(STORAGE_KEYS.EMPLOYEES, SEED_EMPLOYEES);
     const idx = list.findIndex(e => e.id === employee.id || (e.pin && employee.pin && String(e.pin) === String(employee.pin)));
     if (idx >= 0) {
       list[idx] = { ...list[idx], ...employee };
@@ -422,7 +447,9 @@ export const StorageService = {
   getCurrentUser: () => {
     const user = getStoredItem(STORAGE_KEYS.CURRENT_USER, null);
     if (!user || user === 'guest') return null;
-    return user;
+    const customAvatars = getStoredItem(STORAGE_KEYS.CUSTOM_AVATARS, {});
+    const custom = customAvatars[user.id] || customAvatars[String(user.pin)] || customAvatars[user.email];
+    return custom ? { ...user, avatar: custom } : user;
   },
   setCurrentUser: (user) => setStoredItem(STORAGE_KEYS.CURRENT_USER, user),
   logout: () => {

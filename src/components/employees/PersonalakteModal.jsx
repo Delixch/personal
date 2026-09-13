@@ -42,12 +42,16 @@ import { formatCurrency, formatDate } from '../../utils/formatters';
 
 export const PersonalakteModal = ({
   employee: initialEmployee,
+  currentUser,
   onClose,
   onSave,
   onSwitchUser,
   lang = 'de'
 }) => {
   if (!initialEmployee) return null;
+
+  const activeUser = currentUser || StorageService.getCurrentUser();
+  const isAdmin = activeUser?.role === 'admin';
 
   const allEmployees = StorageService.getEmployees();
   const [currentEmployeeId, setCurrentEmployeeId] = useState(initialEmployee.id);
@@ -298,48 +302,52 @@ export const PersonalakteModal = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-2 self-end sm:self-auto">
-            {/* Quick Switch Employee Dropdown right in the modal */}
-            <select
-              value={currentEmployeeId}
-              onChange={(e) => {
-                setCurrentEmployeeId(e.target.value);
-                const emp = allEmployees.find(x => x.id === e.target.value);
-                if (emp) {
-                  setFormData({
-                    ...formData,
-                    name: emp.name,
-                    jobTitle: emp.jobTitle,
-                    department: emp.department,
-                    hourlyRate: emp.hourlyRate,
-                    email: emp.email,
-                    password: emp.password,
-                    pin: emp.pin || '1001',
-                    phone: emp.phone,
-                    ahv: emp.ahv
-                  });
-                }
-              }}
-              className="px-3 py-2 rounded-xl bg-subtle text-ink text-xs font-bold border border-line focus:outline-none hover:border-brand transition"
-            >
-              {allEmployees.map(e => (
-                <option key={e.id} value={e.id}>
-                  {e.role === 'admin' ? '👑 ' : '👤 '} {e.name}
-                </option>
-              ))}
-            </select>
+            {/* Quick Switch Employee Dropdown right in the modal (Admin Only) */}
+            {isAdmin && (
+              <select
+                value={currentEmployeeId}
+                onChange={(e) => {
+                  setCurrentEmployeeId(e.target.value);
+                  const emp = allEmployees.find(x => x.id === e.target.value);
+                  if (emp) {
+                    setFormData({
+                      ...formData,
+                      name: emp.name,
+                      jobTitle: emp.jobTitle,
+                      department: emp.department,
+                      hourlyRate: emp.hourlyRate,
+                      email: emp.email,
+                      password: emp.password,
+                      pin: emp.pin || '1001',
+                      phone: emp.phone,
+                      ahv: emp.ahv
+                    });
+                  }
+                }}
+                className="px-3 py-2 rounded-xl bg-subtle text-ink text-xs font-bold border border-line focus:outline-none hover:border-brand transition"
+              >
+                {allEmployees.map(e => (
+                  <option key={e.id} value={e.id}>
+                    {e.role === 'admin' ? '👑 ' : '👤 '} {e.name}
+                  </option>
+                ))}
+              </select>
+            )}
 
-            {/* Quick Switch User */}
-            <button
-              onClick={() => {
-                onSwitchUser(employee);
-                onClose();
-              }}
-              className="px-3 py-2 rounded-xl bg-subtle text-ink text-xs font-black transition flex items-center gap-1.5 border border-line hover:bg-brand hover:text-white"
-              title="Bu personelin ekranına geç"
-            >
-              <Fingerprint className="w-3.5 h-3.5" />
-              <span>{lang === 'tr' ? 'Bu Hesaba Geç' : 'Einloggen'}</span>
-            </button>
+            {/* Quick Switch User (Admin Only) */}
+            {isAdmin && onSwitchUser && (
+              <button
+                onClick={() => {
+                  onSwitchUser(employee);
+                  onClose();
+                }}
+                className="px-3 py-2 rounded-xl bg-subtle text-ink text-xs font-black transition flex items-center gap-1.5 border border-line hover:bg-brand hover:text-white"
+                title="Bu personelin ekranına geç"
+              >
+                <Fingerprint className="w-3.5 h-3.5" />
+                <span>{lang === 'tr' ? 'Bu Hesaba Geç' : 'Einloggen'}</span>
+              </button>
+            )}
 
             <button
               onClick={onClose}
@@ -992,17 +1000,19 @@ export const PersonalakteModal = ({
                   </p>
                 </div>
 
-                <button
-                  onClick={() => setIsEditing(!isEditing)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                    isEditing
-                      ? 'btn-ghost text-ink'
-                      : 'btn-brand text-white font-bold'
-                  }`}
-                >
-                  <Edit3 className="w-3.5 h-3.5" />
-                  <span>{isEditing ? (lang === 'tr' ? 'Vazgeç' : 'Abbrechen') : (lang === 'tr' ? 'Bilgileri Düzenle' : 'Daten bearbeiten')}</span>
-                </button>
+                {isAdmin && (
+                  <button
+                    onClick={() => setIsEditing(!isEditing)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                      isEditing
+                        ? 'btn-ghost text-ink'
+                        : 'btn-brand text-white font-bold'
+                    }`}
+                  >
+                    <Edit3 className="w-3.5 h-3.5" />
+                    <span>{isEditing ? (lang === 'tr' ? 'Vazgeç' : 'Abbrechen') : (lang === 'tr' ? 'Bilgileri Düzenle' : 'Daten bearbeiten')}</span>
+                  </button>
+                )}
               </div>
 
               {isEditing ? (
@@ -1203,14 +1213,16 @@ export const PersonalakteModal = ({
         <div className="p-3 sm:p-4 card-inner border-t border-line flex items-center justify-between gap-2">
           
           <div className="flex items-center gap-3">
-            <button
-              onClick={handleDeactivate}
-              className="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-red-500/10 text-red-500 text-[11px] sm:text-xs font-bold hover:bg-red-500/20 transition flex items-center gap-1.5"
-            >
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-              <span className="hidden sm:inline">{lang === 'tr' ? 'İşten Çıkar (Pasife Al)' : 'Deaktivieren'}</span>
-              <span className="sm:hidden">{lang === 'tr' ? 'Pasife Al' : 'Deaktivieren'}</span>
-            </button>
+            {isAdmin && (
+              <button
+                onClick={handleDeactivate}
+                className="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-red-500/10 text-red-500 text-[11px] sm:text-xs font-bold hover:bg-red-500/20 transition flex items-center gap-1.5"
+              >
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                <span className="hidden sm:inline">{lang === 'tr' ? 'İşten Çıkar (Pasife Al)' : 'Deaktivieren'}</span>
+                <span className="sm:hidden">{lang === 'tr' ? 'Pasife Al' : 'Deaktivieren'}</span>
+              </button>
+            )}
             
             <div className="hidden sm:flex items-center gap-2 text-[11px] text-ink-soft">
               <ShieldCheck className="w-3.5 h-3.5 text-ink" />

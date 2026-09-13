@@ -235,6 +235,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
       {selectedEmployee && (
         <PersonalakteModal
           employee={selectedEmployee}
+          currentUser={currentUser}
           lang={lang}
           onClose={() => setSelectedEmployee(null)}
           onSave={(updated) => {

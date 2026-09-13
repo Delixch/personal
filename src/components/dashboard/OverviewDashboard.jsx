@@ -595,6 +595,7 @@ export const OverviewDashboard = ({
       {showChefModal && (
         <PersonalakteModal
           employee={currentUser}
+          currentUser={currentUser}
           lang={lang}
           onClose={() => setShowChefModal(false)}
           onSave={(updated) => {

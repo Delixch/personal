@@ -28,6 +28,17 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
     { value: '2026-07', label: 'Juli 2026' }
   ];
 
+  const activeEmployeesForMonth = employees.filter(emp => {
+    const joined = emp.joinedDate || '2024-01-01';
+    const [year, month] = selectedMonth.split('-').map(Number);
+    const lastDayOfMonth = new Date(year, month, 0).getDate();
+    const monthEndStr = `${selectedMonth}-${String(lastDayOfMonth).padStart(2, '0')}`;
+    
+    if (joined > monthEndStr) return false;
+    if (emp.austrittsdatum && emp.austrittsdatum < `${selectedMonth}-01`) return false;
+    return true;
+  });
+
   const getEmployeeStats = (emp) => {
     const empLogs = timeLogs.filter(
       l => l.employeeId === emp.id && l.date.startsWith(selectedMonth) && l.clockOut
@@ -71,13 +82,14 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
     };
   };
 
-  const totalGrossPayroll = employees.reduce((sum, e) => sum + getEmployeeStats(e).grossBase, 0);
-  const totalHoursWorked = employees.reduce((sum, e) => sum + getEmployeeStats(e).workedHours, 0);
+  const totalGrossPayroll = activeEmployeesForMonth.reduce((sum, e) => sum + getEmployeeStats(e).grossBase, 0);
+  const totalHoursWorked = activeEmployeesForMonth.reduce((sum, e) => sum + getEmployeeStats(e).workedHours, 0);
 
   const exportTreuhandCSV = () => {
     const headers = [
       'Personalnummer',
       'Name',
+      'Eintrittsdatum',
       'AHV-Nummer',
       'Abteilung',
       'Pensum',
@@ -90,13 +102,14 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
       'Nettolohn_CHF'
     ];
 
-    const rows = employees.map(emp => {
+    const rows = activeEmployeesForMonth.map(emp => {
       const stats = getEmployeeStats(emp);
       return [
         emp.id,
         `"${emp.name}"`,
+        emp.joinedDate || '2024-01-01',
         emp.ahv || '756.0000.0000.00',
-        emp.department,
+        emp.department || 'kuche',
         `${stats.contractPercentage}%`,
         emp.hourlyRate.toFixed(2),
         stats.targetHours,
@@ -166,7 +179,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
             {formatCurrency(totalGrossPayroll)}
           </div>
           <p className="text-[11px] text-ink-soft mt-1">
-            {employees.length} {lang === 'tr' ? 'Mitarbeiter için hesaplandı' : 'Mitarbeiter erfasst'}
+            {activeEmployeesForMonth.length} {lang === 'tr' ? 'Mitarbeiter için hesaplandı' : 'Mitarbeiter erfasst'}
           </p>
         </div>
 
@@ -179,7 +192,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
             {totalHoursWorked.toFixed(1)} Std
           </div>
           <p className="text-[11px] text-ink font-semibold mt-1">
-            Ø {(totalHoursWorked / employees.length).toFixed(1)} Std / Person
+            Ø {(activeEmployeesForMonth.length > 0 ? totalHoursWorked / activeEmployeesForMonth.length : 0).toFixed(1)} Std / Person
           </p>
         </div>
 
@@ -224,7 +237,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-line">
-              {employees.map((emp) => {
+              {activeEmployeesForMonth.map((emp) => {
                 const stats = getEmployeeStats(emp);
                 const isPositiveOvertime = stats.overtime >= 0;
 

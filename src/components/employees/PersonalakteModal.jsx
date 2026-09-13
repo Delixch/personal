@@ -271,10 +271,17 @@ export const PersonalakteModal = ({
                 {/* Live working badge */}
                 <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full flex items-center gap-1.5 ${
                   isCurrentlyWorking 
-                    ? 'card-inner text-emerald-400 border border-emerald-500/40' 
+                    ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/40' 
                     : 'card-inner text-ink-muted border border-line'
                 }`}>
-                  <span className={`w-2 h-2 rounded-full ${isCurrentlyWorking ? 'bg-emerald-400' : 'bg-ink-muted'}`}></span>
+                  {isCurrentlyWorking ? (
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                  ) : (
+                    <span className="w-2 h-2 rounded-full bg-ink-muted"></span>
+                  )}
                   <span>{isCurrentlyWorking ? (lang === 'tr' ? 'ŞU AN GÖREVDE' : 'IM DIENST') : (lang === 'tr' ? 'SERBEST / ÇIKTI' : 'FEIERABEND')}</span>
                 </span>
               </div>

@@ -374,9 +374,12 @@ export const TimeTracker = ({ lang, currentUser }) => {
                 </p>
                 {currentLog ? (
                   <div>
-                    <span className="badge badge-brand text-xs py-1 px-3 mb-2">
-                      <span className="w-2 h-2 rounded-full bg-brand"></span>
-                      {lang === 'tr' ? 'ÇALIŞIYOR (GİRİŞ YAPILDI)' : 'EINGESTEMPELT / IM DIENST'}
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-xs font-extrabold mb-2">
+                      <span className="relative flex h-2.5 w-2.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                      </span>
+                      <span>{lang === 'tr' ? 'ÇALIŞIYOR (GİRİŞ YAPILDI)' : 'EINGESTEMPELT / IM DIENST'}</span>
                     </span>
                     <p className="text-xs text-ink">
                       {lang === 'tr' ? 'Giriş Saati:' : 'Eingestempelt um:'}{' '}
@@ -472,8 +475,12 @@ export const TimeTracker = ({ lang, currentUser }) => {
                     <div className="shrink-0 text-right">
                       {activeLog ? (
                         <div>
-                          <span className="badge badge-brand text-[9px] py-0 px-1.5">
-                            ● IM DIENST
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[10px] font-extrabold tracking-wide">
+                            <span className="relative flex h-2 w-2">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                            </span>
+                            <span>{lang === 'tr' ? 'ÇALIŞIYOR' : 'IM DIENST'}</span>
                           </span>
                           <p className="text-[10px] font-mono text-subhead mt-0.5">
                             Seit {activeLog.clockIn}
@@ -529,7 +536,13 @@ export const TimeTracker = ({ lang, currentUser }) => {
                           <td className="py-2.5 font-mono font-bold text-brand">{hours} h</td>
                           <td className="py-2.5">
                             {log.status === 'working' ? (
-                              <span className="badge badge-brand py-0 px-1.5 text-[9px]">Laufend</span>
+                              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[10px] font-extrabold">
+                                <span className="relative flex h-1.5 w-1.5">
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                                </span>
+                                <span>{lang === 'tr' ? 'Devam Ediyor' : 'Laufend'}</span>
+                              </span>
                             ) : (
                               <span className="badge badge-neutral py-0 px-1.5 text-[9px]">Abgeschlossen</span>
                             )}

@@ -68,7 +68,7 @@ export const Navbar = ({
             <Building2 className="w-5 h-5" />
             
             <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-brand opacity-60"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand"></span>
             </span>
           </div>

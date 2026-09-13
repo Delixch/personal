@@ -62,18 +62,20 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
           <X className="w-5 h-5" />
         </button>
 
-        <div className="text-center mb-5">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl card-inner text-brand mb-2 border border-line">
-            <KeyRound className="w-6 h-6 icon-brand" />
+        <div className="flex items-center gap-3 mb-5">
+          <div className="flex items-center justify-center w-10 h-10 rounded-2xl card-inner text-brand border border-line shrink-0">
+            <KeyRound className="w-5 h-5 icon-brand" />
           </div>
-          <h2 className="text-xl font-black text-ink">
-            {lang === 'tr' ? 'Sisteme Giriş' : 'Mitarbeiter & Chef Login'}
-          </h2>
-          <p className="text-xs text-subhead mt-0.5">
-            {lang === 'tr'
-              ? 'PIN kodunuzla veya e-posta ile giriş yapın'
-              : 'Wählen Sie Ihren Zugang per PIN oder E-Mail'}
-          </p>
+          <div>
+            <h2 className="text-lg font-black text-ink leading-snug">
+              {lang === 'tr' ? 'Sisteme Giriş' : 'Mitarbeiter & Chef Login'}
+            </h2>
+            <p className="text-xs text-subhead mt-0.5">
+              {lang === 'tr'
+                ? 'PIN kodunuzla veya e-posta ile giriş yapın'
+                : 'Wählen Sie Ihren Zugang per PIN oder E-Mail'}
+            </p>
+          </div>
         </div>
 
         <div className="flex card-inner p-1 rounded-2xl mb-4 border border-line">
@@ -119,7 +121,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
         {authMethod === 'pin' ? (
           <form onSubmit={handlePinLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-subhead mb-1 text-center">
+              <label className="block text-xs font-bold text-subhead mb-1 text-left">
                 {lang === 'tr' ? '4 Haneli Çalışan PIN Kodunuz:' : 'Ihr 4-stelliger Mitarbeiter-PIN:'}
               </label>
               <input
@@ -187,7 +189,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
         )}
 
         <div className="mt-6 pt-4 border-t border-line-soft">
-          <p className="text-[11px] font-bold text-subhead uppercase tracking-wider mb-2.5 text-center">
+          <p className="text-[11px] font-bold text-subhead uppercase tracking-wider mb-2.5 text-left">
             {lang === 'tr' ? 'Tek Tıkla Hızlı Test Girişi' : 'Direkte Schnell-Auswahl:'}
           </p>
 

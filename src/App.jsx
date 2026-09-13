@@ -214,23 +214,30 @@ export function App() {
           onGoHome={() => navigateToTab('dashboard')}
         />
         <main className="flex-1 flex items-center justify-center p-4">
-          <div className="max-w-md w-full p-8 rounded-3xl bg-surface border border-line text-center card-inner space-y-4 shadow-2xl">
-            <div className="w-16 h-16 mx-auto rounded-2xl btn-brand flex items-center justify-center text-white font-black text-2xl shadow-lg">
-              ADO
+          <div className="max-w-md w-full p-7 sm:p-8 rounded-3xl bg-surface border border-line text-left card-inner space-y-5 shadow-2xl">
+            <div className="flex items-center gap-3.5 border-b border-line-soft pb-4">
+              <div className="w-12 h-12 rounded-2xl btn-brand flex items-center justify-center text-white font-black text-xl shadow-md shrink-0">
+                ADO
+              </div>
+              <div>
+                <h1 className="text-xl font-black text-ink leading-tight">
+                  {lang === 'tr' ? 'Oturum Kapatıldı' : 'Abgemeldet'}
+                </h1>
+                <span className="text-[11px] font-semibold text-brand block mt-0.5">
+                  ADO Gastro System
+                </span>
+              </div>
             </div>
-            <h1 className="text-2xl font-black text-ink">
-              {lang === 'tr' ? 'Oturum Kapatıldı' : 'Abgemeldet'}
-            </h1>
-            <p className="text-xs text-subhead max-w-sm mx-auto">
+            <p className="text-xs text-subhead leading-relaxed">
               {lang === 'tr'
                 ? 'Sisteme erişmek için lütfen 4 haneli PIN kodunuz veya e-postanız ile giriş yapınız.'
-                : 'Bitte melden Sie sich mit Ihrem 4-stelligen PIN-Code oder E-Mail an.'}
+                : 'Bitte mit Ihrem 4-stelligen PIN-Code oder per E-Mail anmelden.'}
             </p>
             <button
               onClick={() => setIsLoginModalOpen(true)}
-              className="w-full py-3 rounded-2xl btn-brand text-white font-bold text-sm transition shadow-md"
+              className="w-full py-3 rounded-2xl btn-brand text-white font-bold text-xs transition shadow-md flex items-center justify-center gap-2"
             >
-              {lang === 'tr' ? '🔑 Giriş Yap / PIN Tuşla' : '🔑 Jetzt Anmelden / PIN'}
+              <span>{lang === 'tr' ? '🔑 Giriş Yap / PIN Tuşla' : '🔑 Jetzt Anmelden / PIN'}</span>
             </button>
           </div>
         </main>

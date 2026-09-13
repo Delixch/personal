@@ -203,7 +203,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
     <div className="space-y-5">
 
       <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="space-y-2">
             <h1 className="page-title text-ink">
               {t.supplierTitle}
@@ -215,29 +215,46 @@ export const SupplierManagement = ({ lang, currentUser }) => {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-1.5 shrink-0 items-center">
-            {categories.map(cat => (
+          <div className="w-full md:w-[380px] shrink-0">
+            <div className="grid grid-cols-3 gap-2">
+              {isAdmin && (
+                <button
+                  onClick={openAddModal}
+                  className="py-2.5 rounded-md btn-brand font-black text-xs flex items-center justify-center gap-1 transition text-center col-span-1"
+                  title={lang === 'tr' ? 'Yeni Tedarikçi Ekle' : 'Neuer Lieferant'}
+                >
+                  <UserPlus className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">{lang === 'tr' ? '+ Neu' : '+ Neu'}</span>
+                </button>
+              )}
+
               <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border ${
-                  selectedCategory === cat.id
+                onClick={() => setSelectedCategory('all')}
+                className={`py-2.5 rounded-md font-extrabold text-xs flex items-center justify-center transition text-center ${
+                  !isAdmin ? 'col-span-3' : 'col-span-2'
+                } ${
+                  selectedCategory === 'all'
                     ? 'btn-brand font-black'
-                    : 'card-inner border-line text-ink'
+                    : 'bg-[#1e1514] text-ink hover:bg-[#2a1d1b]'
                 }`}
               >
-                {cat.label}
+                <span>{lang === 'tr' ? 'Tümü (Alle)' : 'Alle (Tümü)'}</span>
               </button>
-            ))}
-            {isAdmin && (
-              <button
-                onClick={openAddModal}
-                className="px-3 py-1.5 rounded-xl btn-brand font-black text-xs flex items-center gap-1.5 transition ml-2"
-              >
-                <UserPlus className="w-3.5 h-3.5" />
-                <span>{lang === 'tr' ? 'Yeni Ekle' : 'Neuer Lieferant'}</span>
-              </button>
-            )}
+
+              {categories.filter(c => c.id !== 'all').map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`py-2.5 rounded-md font-bold text-xs flex items-center justify-center transition px-1 text-center truncate ${
+                    selectedCategory === cat.id
+                      ? 'btn-brand font-black'
+                      : 'bg-[#1e1514] text-ink-soft hover:text-ink hover:bg-[#2a1d1b]'
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

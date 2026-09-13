@@ -73,12 +73,13 @@ export const Navbar = ({
             </span>
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-lg tracking-tight text-ink font-sans">
-                ADO <span className="text-brand">MANAGEMENT</span>
+            <div className="flex items-center gap-2 relative">
+              <div className="absolute -inset-1.5 bg-gradient-to-r from-brand/30 via-brand/15 to-transparent rounded-xl blur-md opacity-80 group-hover:opacity-100 transition pointer-events-none"></div>
+              <span className="relative font-extrabold text-lg tracking-tight text-ink font-sans drop-shadow-[0_0_10px_rgba(255,85,34,0.35)]">
+                ADO <span className="text-brand drop-shadow-[0_0_14px_rgba(255,85,34,0.6)]">MANAGEMENT</span>
               </span>
             </div>
-            <p className="text-[11px] text-ink-muted hidden sm:block">
+            <p className="text-[11px] text-ink-muted hidden sm:block relative z-10">
               {lang === 'tr' ? 'Merkezi Firma & Personel Yönetimi' : 'Zentrales Betriebs- & Personalmanagement'}
             </p>
           </div>

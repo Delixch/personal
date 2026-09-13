@@ -213,13 +213,19 @@ export const StorageService = {
   getEmployees: () => getStoredItem(STORAGE_KEYS.EMPLOYEES, SEED_EMPLOYEES),
   saveEmployee: (employee) => {
     const list = StorageService.getEmployees();
-    const idx = list.findIndex(e => e.id === employee.id);
+    const idx = list.findIndex(e => e.id === employee.id || (e.pin && employee.pin && String(e.pin) === String(employee.pin)));
     if (idx >= 0) {
-      list[idx] = employee;
+      list[idx] = { ...list[idx], ...employee };
     } else {
       list.push({ ...employee, id: employee.id || `emp-${Date.now()}` });
     }
     setStoredItem(STORAGE_KEYS.EMPLOYEES, list);
+
+    const currentUser = StorageService.getCurrentUser();
+    if (currentUser && (currentUser.id === employee.id || (currentUser.pin && employee.pin && String(currentUser.pin) === String(employee.pin)))) {
+      StorageService.setCurrentUser({ ...currentUser, ...employee });
+    }
+
     SyncService.pushEmployee(employee);
     return list;
   },

@@ -40,14 +40,21 @@ export const SyncService = {
       } catch (_) {}
 
       const mapped = data.map(m => {
-        // Aynı PIN veya ID'li local kaydı bul
-        const local = localList.find(e => e.pin === m.pin || e.id === m.id) || {};
+        // Aynı PIN, ID veya E-posta'lı local kaydı bul (tip uyuşmazlığını önlemek için String karşılaştırma)
+        const local = localList.find(e =>
+          (e.pin && m.pin && String(e.pin) === String(m.pin)) ||
+          (e.id && m.id && e.id === m.id) ||
+          (e.email && m.email && e.email.toLowerCase() === m.email.toLowerCase())
+        ) || {};
+
+        const avatarVal = (m.avatar && m.avatar.length > 5) ? m.avatar : (local.avatar || '');
+
         return {
-          ...local,                          // local alanları önce yay (password, department, jobTitle vb.)
+          ...local,                          // local alanları önce yay
           id:           m.id || local.id,
-          name:         m.name,
-          pin:          m.pin,
-          role:         m.rolle || local.role || 'employee',
+          name:         m.name || local.name,
+          pin:          String(m.pin || local.pin || ''),
+          role:         m.rolle === 'admin' ? 'admin' : (local.role || 'employee'),
           hourlyRate:   Number(m.stundenlohn) || local.hourlyRate || 25,
           pensum:       m.pensum || local.pensum || 100,
           email:        m.email || local.email || '',
@@ -55,21 +62,28 @@ export const SyncService = {
           ahv:          m.ahv_nummer || local.ahv || '',
           iban:         m.iban || local.iban || '',
           bankName:     m.bank_name || local.bankName || 'UBS Switzerland AG',
-          avatar:       (m.avatar && m.avatar.length > 5) ? m.avatar : (local.avatar || ''),
+          avatar:       avatarVal,
           contractType: m.lohnart === 'monatslohn'
                           ? 'Festanstellung 100%'
                           : `Stundenlohn (${m.pensum || 100}%)`,
           vacationTotal: Number(m.urlaubsanspruch_tage) || local.vacationTotal || 25,
           vacationUsed:  Number(m.urlaub_bezogen_tage)  || local.vacationUsed  || 0,
           joinedDate:   m.eintrittsdatum || local.joinedDate || '2024-01-01',
-          status:       m.aktiv ? 'active' : 'inactive',
-          // Local & Supabase departman eşleşmesi:
+          status:       m.aktiv !== false ? 'active' : 'inactive',
           password:     local.password || '1234',
           department:   m.abteilung || local.department || 'kuche',
           jobTitle:     local.jobTitle || m.rolle || '',
           onboardingChecks: local.onboardingChecks || {}
         };
       });
+
+      // Local'de var olan ama Supabase'de henüz olmayan çalışanları koru
+      localList.forEach(loc => {
+        if (!mapped.some(m => (loc.pin && m.pin && String(m.pin) === String(loc.pin)) || (loc.id && m.id && loc.id === m.id))) {
+          mapped.push(loc);
+        }
+      });
+
       localStorage.setItem('ado_employees_v1', JSON.stringify(mapped));
     }
   },

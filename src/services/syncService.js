@@ -165,7 +165,6 @@ export const SyncService = {
         name: emp.name,
         pin: String(emp.pin || ''),
         email: emp.email || '',
-        password: emp.password || null,
         rolle: emp.role === 'admin' ? 'admin' : 'mitarbeiter',
         stundenlohn: emp.hourlyRate || 25,
         pensum: emp.pensum || 100,

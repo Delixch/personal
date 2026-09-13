@@ -109,7 +109,9 @@ export const Navbar = ({
             <button
               onClick={() => {
                 const adminUser = employees.find(e => e.role === 'admin') || employees[0];
-                handleSelectUser(adminUser);
+                const cleanAdmin = { ...adminUser };
+                delete cleanAdmin.isImpersonated;
+                handleSelectUser(cleanAdmin);
               }}
               className="flex items-center gap-1.5 px-3 h-[32px] rounded-md bg-brand text-white font-bold text-xs transition"
               title="Patron / Yönetici Ekranına Geç"

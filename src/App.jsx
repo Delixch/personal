@@ -78,7 +78,9 @@ export function App() {
             (prev && (e.pin === prev.pin || e.id === prev.id)) ||
             (storedUser && (e.pin === storedUser.pin || e.id === storedUser.id))
           );
-          return refreshed || prev || storedUser;
+          const wasImpersonated = Boolean(prev?.isImpersonated || storedUser?.isImpersonated);
+          const baseUser = refreshed || prev || storedUser;
+          return wasImpersonated ? { ...baseUser, isImpersonated: true } : baseUser;
         });
       }
       setNotifications(StorageService.getNotifications());

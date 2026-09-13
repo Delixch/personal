@@ -55,7 +55,7 @@ export const SyncService = {
           ahv:          m.ahv_nummer || local.ahv || '',
           iban:         m.iban || local.iban || '',
           bankName:     m.bank_name || local.bankName || 'UBS Switzerland AG',
-          avatar:       m.avatar || local.avatar || '',
+          avatar:       (m.avatar && m.avatar.length > 5) ? m.avatar : (local.avatar || ''),
           contractType: m.lohnart === 'monatslohn'
                           ? 'Festanstellung 100%'
                           : `Stundenlohn (${m.pensum || 100}%)`,

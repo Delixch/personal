@@ -602,7 +602,6 @@ export const OverviewDashboard = ({
             StorageService.saveEmployee(updated);
             StorageService.setCurrentUser(updated);
             setShowChefModal(false);
-            window.location.reload();
           }}
           onSwitchUser={(emp) => {
             StorageService.setCurrentUser(emp);

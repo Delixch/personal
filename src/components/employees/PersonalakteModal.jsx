@@ -61,6 +61,11 @@ export const PersonalakteModal = ({
   const [activeTab, setActiveTab] = useState('360');
   const [isEditing, setIsEditing] = useState(false);
   const [previewDoc, setPreviewDoc] = useState(null);
+  const [currentAvatar, setCurrentAvatar] = useState(employee.avatar);
+
+  useEffect(() => {
+    setCurrentAvatar(employee.avatar);
+  }, [employee.avatar, employee.id]);
 
   const handleAvatarChange = (e) => {
     const file = e.target.files && e.target.files[0];
@@ -83,6 +88,7 @@ export const PersonalakteModal = ({
         ctx.drawImage(img, startX, startY, minDim, minDim, 0, 0, targetSize, targetSize);
         const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
 
+        setCurrentAvatar(compressedBase64);
         const updated = { ...employee, avatar: compressedBase64 };
         StorageService.saveEmployee(updated);
         if (currentUser?.id === employee.id) {
@@ -296,7 +302,7 @@ export const PersonalakteModal = ({
           <div className="flex items-center gap-4">
             <div className="relative group cursor-pointer" title={lang === 'tr' ? 'Fotoğraf Yükle / Değiştir' : 'Foto hochladen / ändern'}>
               <img
-                src={employee.avatar}
+                src={currentAvatar || employee.avatar}
                 alt={employee.name}
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover ring-2 ring-brand/40 group-hover:brightness-90 transition"
               />

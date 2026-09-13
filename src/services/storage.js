@@ -29,17 +29,7 @@ const STORAGE_KEYS = {
 };
 
 export const initializeDatabase = () => {
-  const currentSuppliers = localStorage.getItem(STORAGE_KEYS.SUPPLIERS);
-  // Force reseed if suppliers are missing, or any supplier is missing its catalog
-  const needsReseed = !currentSuppliers ||
-    !currentSuppliers.includes('sup-prodega') ||
-    (() => {
-      try {
-        const parsed = JSON.parse(currentSuppliers);
-        return parsed.some(s => !s.catalog || s.catalog.length === 0);
-      } catch { return true; }
-    })();
-  if (needsReseed) {
+  if (!localStorage.getItem(STORAGE_KEYS.SUPPLIERS)) {
     localStorage.setItem(STORAGE_KEYS.SUPPLIERS, JSON.stringify(SEED_SUPPLIERS));
   }
   if (!localStorage.getItem(STORAGE_KEYS.EMPLOYEES)) {

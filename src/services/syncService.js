@@ -280,7 +280,20 @@ export const SyncService = {
       .order('created_at', { ascending: true });
     if (error) throw error;
     if (data && data.length > 0) {
-      const mapped = data.map(l => ({
+      // Supabase'deki eski boş/legacy kayıtları süz (slug'ı veya adresi veya kataloğu olanları al)
+      const validData = data.filter(l => Boolean(l.slug) || Boolean(l.adresse) || (l.lieferanten_katalog && l.lieferanten_katalog.length > 0));
+
+      const parseDeliveryDays = (val) => {
+        if (Array.isArray(val)) return val;
+        if (typeof val === 'string') {
+          const cleaned = val.replace(/[\{\}\"\\`]/g, '').trim();
+          if (!cleaned) return [];
+          return cleaned.split(',').map(s => s.trim()).filter(Boolean);
+        }
+        return [];
+      };
+
+      const mapped = validData.map(l => ({
         id:            l.slug || String(l.id),
         name:          l.name,
         category:      l.kategorie || '',
@@ -291,7 +304,7 @@ export const SyncService = {
         address:       l.adresse || '',
         notes:         l.notizen || (l.bestellfrist ? `Bestellfrist: ${l.bestellfrist}` : ''),
         rating:        Number(l.rating) || 4.5,
-        deliveryDays:  Array.isArray(l.liefertage) ? l.liefertage : (l.liefertage ? [l.liefertage] : []),
+        deliveryDays:  parseDeliveryDays(l.liefertage),
         catalog:       (l.lieferanten_katalog || [])
                          .sort((a, b) => a.reihenfolge - b.reihenfolge)
                          .map(k => ({ id: k.id, name: k.name, price: Number(k.preis), unit: k.einheit }))

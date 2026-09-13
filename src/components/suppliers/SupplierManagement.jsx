@@ -15,9 +15,11 @@ import {
   Pencil,
   Trash2,
   Save,
-  UserPlus
+  UserPlus,
+  Building2
 } from 'lucide-react';
 import { StorageService } from '../../services/storage';
+import { SyncService } from '../../services/syncService';
 import { TRANSLATIONS } from '../../utils/translations';
 import { formatCurrency } from '../../utils/formatters';
 
@@ -42,20 +44,27 @@ export const SupplierManagement = ({ lang, currentUser }) => {
   const [editingSupplier, setEditingSupplier] = useState(null);
   const [deleteConfirm, setDeleteConfirm]   = useState(null); // supplier to delete
   const [deliveryDayInput, setDeliveryDayInput] = useState('');
+  const [newCatalogItem, setNewCatalogItem] = useState({ name: '', price: '', unit: 'Stück' });
+  const [editModalTab, setEditModalTab]     = useState('info'); // 'info' | 'catalog'
 
-  // Listen for Supabase background sync database updates
+  // Listen for Supabase background sync database updates and initial sync
   useEffect(() => {
+    const initSuppliers = async () => {
+      if (SyncService.isLive()) {
+        await SyncService.syncSuppliers();
+      }
+      setSuppliers(StorageService.getSuppliers());
+    };
+    initSuppliers();
+
     const handleDbUpdate = () => {
       const updatedList = StorageService.getSuppliers();
       setSuppliers(updatedList);
-      if (selectedSupplierForOrder) {
-        const refreshed = updatedList.find(s => s.id === selectedSupplierForOrder.id);
-        if (refreshed) setSelectedSupplierForOrder(refreshed);
-      }
     };
+
     window.addEventListener('ado_db_update', handleDbUpdate);
     return () => window.removeEventListener('ado_db_update', handleDbUpdate);
-  }, [selectedSupplierForOrder]);
+  }, []);
 
   const categories = [
     { id: 'all',        label: lang === 'tr' ? 'Tümü' : 'Alle' },
@@ -105,7 +114,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
 
   const handleSubmitOrder = (supplier) => {
     const total = calculateOrderTotal(supplier);
-    const orderItems = supplier.catalog
+    const orderItems = (supplier.catalog || [])
       .filter(item => (orderQuantities[item.id] || 0) > 0)
       .map(item => ({
         id: item.id,
@@ -115,8 +124,8 @@ export const SupplierManagement = ({ lang, currentUser }) => {
         quantity: orderQuantities[item.id]
       }));
 
-    if (orderItems.length === 0) {
-      alert(lang === 'tr' ? 'Lütfen en az 1 ürün seçin!' : 'Bitte wählen Sie mindestens 1 Artikel aus!');
+    if (orderItems.length === 0 && !orderNotes?.trim()) {
+      alert(lang === 'tr' ? 'Lütfen en az 1 ürün seçin veya sipariş notu girin!' : 'Bitte wählen Sie mindestens 1 Artikel aus oder geben Sie eine Notiz ein!');
       return;
     }
 
@@ -131,10 +140,42 @@ export const SupplierManagement = ({ lang, currentUser }) => {
       notes: orderNotes
     });
 
+    // WhatsApp / Mail Yönlendirmesi
+    let rawPhone = (supplier.whatsapp || supplier.phone || '').replace(/[^0-9]/g, '');
+    if (rawPhone.startsWith('0')) {
+      rawPhone = '41' + rawPhone.slice(1);
+    }
+
+    let msg = `*BESTELLUNG / SİPARİŞ*\n`;
+    msg += `*Tedarikçi / Lieferant:* ${supplier.name}\n`;
+    msg += `*Tarih / Datum:* ${new Date().toLocaleDateString('de-CH')}\n\n`;
+    
+    if (orderItems.length > 0) {
+      msg += `*Ürünler / Artikel:*\n`;
+      orderItems.forEach(item => {
+        msg += `• ${item.quantity}x ${item.name} (${item.unit || 'stk'}) - CHF ${(item.price * item.quantity).toFixed(2)}\n`;
+      });
+      msg += `\n*Toplam Tutar / Gesamt:* CHF ${total.toFixed(2)}\n`;
+    }
+    
+    if (orderNotes?.trim()) {
+      msg += `\n*Sipariş Notu / Notiz:*\n${orderNotes.trim()}\n`;
+    }
+
+    if (rawPhone) {
+      const waUrl = `https://wa.me/${rawPhone}?text=${encodeURIComponent(msg)}`;
+      window.open(waUrl, '_blank');
+    } else if (supplier.email) {
+      const mailUrl = `mailto:${supplier.email}?subject=${encodeURIComponent(`Sipariş / Bestellung - ${supplier.name}`)}&body=${encodeURIComponent(msg)}`;
+      window.open(mailUrl, '_blank');
+    }
+
     setOrderSentSuccess(true);
     setTimeout(() => {
       setSelectedSupplierForOrder(null);
       setOrderSentSuccess(false);
+      setOrderQuantities({});
+      setOrderNotes('');
     }, 1600);
   };
 
@@ -158,6 +199,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
   const openAddModal = () => {
     setEditingSupplier({ ...EMPTY_SUPPLIER, id: `sup-${Date.now()}` });
     setDeliveryDayInput('');
+    setEditModalTab('info');
     setShowEditModal(true);
   };
 
@@ -165,12 +207,16 @@ export const SupplierManagement = ({ lang, currentUser }) => {
     if (e) e.stopPropagation();
     setEditingSupplier({ ...supplier });
     setDeliveryDayInput('');
+    setEditModalTab('info');
     setShowEditModal(true);
   };
 
-  const handleSaveSupplier = () => {
+  const handleSaveSupplier = async () => {
     if (!editingSupplier?.name?.trim()) return;
     StorageService.saveSupplier(editingSupplier);
+    if (SyncService.isLive()) {
+      await SyncService.syncSuppliers();
+    }
     setSuppliers(StorageService.getSuppliers());
     setShowEditModal(false);
     setEditingSupplier(null);
@@ -196,6 +242,28 @@ export const SupplierManagement = ({ lang, currentUser }) => {
     setEditingSupplier(prev => ({
       ...prev,
       deliveryDays: prev.deliveryDays.filter((_, i) => i !== idx)
+    }));
+  };
+
+  const handleAddCatalogItem = () => {
+    if (!newCatalogItem.name?.trim()) return;
+    const itemToAdd = {
+      id: `item-${Date.now()}`,
+      name: newCatalogItem.name.trim(),
+      price: parseFloat(newCatalogItem.price) || 0,
+      unit: newCatalogItem.unit.trim() || 'Stück'
+    };
+    setEditingSupplier(prev => ({
+      ...prev,
+      catalog: [...(prev?.catalog || []), itemToAdd]
+    }));
+    setNewCatalogItem({ name: '', price: '', unit: 'Stück' });
+  };
+
+  const handleRemoveCatalogItem = (index) => {
+    setEditingSupplier(prev => ({
+      ...prev,
+      catalog: (prev?.catalog || []).filter((_, i) => i !== index)
     }));
   };
 
@@ -525,7 +593,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
       {/* ── Admin: Tedarikçi Ekle / Düzenle Modalı ── */}
       {showEditModal && editingSupplier && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs modal-backdrop">
-          <div className="w-full max-w-lg max-h-[90vh] rounded-3xl bg-surface border border-line p-6 overflow-y-auto space-y-4 modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
+          <div className="w-full max-w-xl max-h-[90vh] rounded-3xl bg-surface border border-line p-6 sm:p-7 overflow-y-auto space-y-5 modal-container text-ink shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
             <div className="flex items-center justify-between pb-3 border-b border-line">
               <h2 className="font-black text-base text-ink">
                 {editingSupplier.name ? (lang === 'tr' ? 'Tedarikçi Düzenle' : 'Lieferant bearbeiten') : (lang === 'tr' ? 'Yeni Tedarikçi' : 'Neuer Lieferant')}
@@ -535,57 +603,189 @@ export const SupplierManagement = ({ lang, currentUser }) => {
               </button>
             </div>
 
-            {[
-              { key: 'name',          label: lang === 'tr' ? 'Firma Adı *' : 'Firmenname *' },
-              { key: 'category',      label: lang === 'tr' ? 'Kategori' : 'Kategorie' },
-              { key: 'contactPerson', label: lang === 'tr' ? 'İletişim Kişisi' : 'Kontaktperson' },
-              { key: 'phone',         label: 'Telefon' },
-              { key: 'whatsapp',      label: 'WhatsApp' },
-              { key: 'email',         label: 'E-Mail' },
-              { key: 'address',       label: lang === 'tr' ? 'Adres' : 'Adresse' },
-              { key: 'notes',         label: lang === 'tr' ? 'Notlar' : 'Notizen' },
-            ].map(field => (
-              <div key={field.key} className="space-y-1">
-                <label className="text-[11px] font-bold text-ink-muted uppercase tracking-wider">{field.label}</label>
-                <input
-                  type="text"
-                  value={editingSupplier[field.key] || ''}
-                  onChange={e => setEditingSupplier(prev => ({ ...prev, [field.key]: e.target.value }))}
-                  className="w-full px-3 py-2.5 rounded-xl card-inner border border-line text-xs text-ink placeholder:text-ink-muted focus:outline-none focus:border-brand"
-                />
-              </div>
-            ))}
+            {/* ── Modal Üst Sekme Butonları (Firma Bearbeiten / Ürün Bearbeiten) ── */}
+            <div className="flex items-center gap-2 border-b border-line-soft pb-3">
+              <button
+                type="button"
+                onClick={() => setEditModalTab('info')}
+                className={`px-4 py-2.5 rounded-md text-xs font-bold transition flex items-center gap-2 ${
+                  editModalTab === 'info'
+                    ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black shadow-xs'
+                    : 'card-inner border border-line-soft text-ink-soft hover:text-ink'
+                }`}
+              >
+                <Building2 className="w-4 h-4" />
+                <span>{lang === 'tr' ? '1. Firma Bilgileri (Firma Bearbeiten)' : '1. Firma bearbeiten'}</span>
+              </button>
 
-            <div className="space-y-2">
-              <label className="text-[11px] font-bold text-ink-muted uppercase tracking-wider block">
-                {lang === 'tr' ? 'Teslimat Günleri' : 'Liefertage'}
-              </label>
-              <div className="flex flex-wrap gap-1.5">
-                {(editingSupplier.deliveryDays || []).map((d, i) => (
-                  <span key={i} className="flex items-center gap-1 px-2 py-1 rounded-lg card-inner border border-line text-xs font-semibold text-ink">
-                    {d}
-                    <button onClick={() => removeDeliveryDay(i)} className="text-ink-muted hover:text-brand ml-1">
-                      <X className="w-3 h-3" />
-                    </button>
-                  </span>
-                ))}
-              </div>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={deliveryDayInput}
-                  onChange={e => setDeliveryDayInput(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && addDeliveryDay()}
-                  placeholder={lang === 'tr' ? 'Pazartesi... Enter' : 'Montag... Enter'}
-                  className="flex-1 px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink placeholder:text-ink-muted focus:outline-none"
-                />
-                <button onClick={addDeliveryDay} className="px-3 py-2 rounded-xl btn-brand text-xs font-black">
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => setEditModalTab('catalog')}
+                className={`px-4 py-2.5 rounded-md text-xs font-bold transition flex items-center gap-2 ${
+                  editModalTab === 'catalog'
+                    ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black shadow-xs'
+                    : 'card-inner border border-line-soft text-ink-soft hover:text-ink'
+                }`}
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>
+                  {lang === 'tr' ? '2. Ürün Kataloğu (Produkte Bearbeiten)' : '2. Produkte bearbeiten'} ({editingSupplier.catalog?.length || 0})
+                </span>
+              </button>
             </div>
 
-            <div className="flex gap-2 pt-2 border-t border-line">
+            {/* ── Tab 1: Firma Bilgileri ── */}
+            {editModalTab === 'info' && (
+              <div className="space-y-4">
+                {[
+                  { key: 'name',          label: lang === 'tr' ? 'Firma Adı *' : 'Firmenname *' },
+                  { key: 'category',      label: lang === 'tr' ? 'Kategori' : 'Kategorie' },
+                  { key: 'contactPerson', label: lang === 'tr' ? 'İletişim Kişisi' : 'Kontaktperson' },
+                  { key: 'phone',         label: 'Telefon' },
+                  { key: 'whatsapp',      label: 'WhatsApp' },
+                  { key: 'email',         label: 'E-Mail' },
+                  { key: 'address',       label: lang === 'tr' ? 'Adres' : 'Adresse' },
+                  { key: 'notes',         label: lang === 'tr' ? 'Notlar' : 'Notizen' },
+                ].map(field => (
+                  <div key={field.key} className="space-y-1">
+                    <label className="text-[11px] font-bold text-ink-muted uppercase tracking-wider">{field.label}</label>
+                    <input
+                      type="text"
+                      value={editingSupplier[field.key] || ''}
+                      onChange={e => setEditingSupplier(prev => ({ ...prev, [field.key]: e.target.value }))}
+                      className="w-full px-3 py-2.5 rounded-xl card-inner border border-line text-xs text-ink placeholder:text-ink-muted focus:outline-none focus:border-brand"
+                    />
+                  </div>
+                ))}
+
+                <div className="space-y-2">
+                  <label className="text-[11px] font-bold text-ink-muted uppercase tracking-wider block">
+                    {lang === 'tr' ? 'Teslimat Günleri' : 'Liefertage'}
+                  </label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {(editingSupplier.deliveryDays || []).map((d, i) => (
+                      <span key={i} className="flex items-center gap-1 px-2 py-1 rounded-lg card-inner border border-line text-xs font-semibold text-ink">
+                        {d}
+                        <button type="button" onClick={() => removeDeliveryDay(i)} className="text-ink-muted hover:text-brand ml-1">
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={deliveryDayInput}
+                      onChange={e => setDeliveryDayInput(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addDeliveryDay())}
+                      placeholder={lang === 'tr' ? 'Pazartesi... Enter' : 'Montag... Enter'}
+                      className="flex-1 px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink placeholder:text-ink-muted focus:outline-none"
+                    />
+                    <button type="button" onClick={addDeliveryDay} className="px-3 py-2 rounded-xl btn-brand text-xs font-black">
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── Tab 2: Ürün Kataloğu Ekle / Yönet ── */}
+            {editModalTab === 'catalog' && (
+              <div className="space-y-4">
+                <label className="text-[11px] font-black text-ink-muted uppercase tracking-wider block">
+                  {lang === 'tr' ? 'Firma Ürün Kataloğu' : 'Artikelkatalog der Firma'} ({editingSupplier.catalog?.length || 0})
+                </label>
+
+                {/* Mevcut Ürün Listesi */}
+                <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                  {(editingSupplier.catalog || []).length === 0 ? (
+                    <p className="text-xs text-ink-muted italic p-4 card-inner border border-line-soft rounded-xl text-center">
+                      {lang === 'tr' ? 'Henüz eklenmiş ürün bulunmuyor. Aşağıdaki formu kullanarak yeni ürün ekleyebilirsiniz.' : 'Noch keine Artikel hinzugefügt. Nutze das Formular unten.'}
+                    </p>
+                  ) : (
+                    editingSupplier.catalog.map((item, idx) => (
+                      <div key={item.id || idx} className="flex items-center justify-between gap-3 p-3 rounded-xl card-inner border border-line text-xs">
+                        <div className="flex-1 min-w-0">
+                          <span className="font-bold text-ink truncate block">{item.name}</span>
+                          <span className="text-[11px] text-subhead">CHF {Number(item.price).toFixed(2)} / {item.unit}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveCatalogItem(idx)}
+                          className="p-1.5 rounded-lg text-rose-400 hover:bg-rose-500/10 transition"
+                          title={lang === 'tr' ? 'Ürünü Sil' : 'Artikel löschen'}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                {/* Yeni Ürün Ekleme Formu */}
+                <div className="p-4 rounded-2xl card-inner border border-line space-y-3">
+                  <span className="text-[11px] font-bold text-brand block">
+                    {lang === 'tr' ? '+ Kataloğa Yeni Ürün Ekle (Neuen Artikel hinzufügen)' : '+ Neuen Artikel hinzufügen'}
+                  </span>
+                  <div className="space-y-3">
+                    {/* Satır 1: Ürün Adı (Artikelname) - Tam Genişlik */}
+                    <div>
+                      <label className="text-[10px] font-bold text-ink-muted uppercase block mb-1">
+                        {lang === 'tr' ? 'Ürün Adı *' : 'Artikelname *'}
+                      </label>
+                      <input
+                        type="text"
+                        placeholder={lang === 'tr' ? 'Örn: Süt 1L' : 'z.B. Milch 1L'}
+                        value={newCatalogItem.name}
+                        onChange={(e) => setNewCatalogItem(prev => ({ ...prev, name: e.target.value }))}
+                        className="w-full px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
+                      />
+                    </div>
+
+                    {/* Satır 2: Fiyat (daha dar) ve Birim + Ekle Butonu */}
+                    <div className="grid grid-cols-12 gap-2.5">
+                      <div className="col-span-4">
+                        <label className="text-[10px] font-bold text-ink-muted uppercase block mb-1">
+                          {lang === 'tr' ? 'Fiyat (CHF)' : 'Preis (CHF)'}
+                        </label>
+                        <input
+                          type="number"
+                          step="0.01"
+                          placeholder="2.50"
+                          value={newCatalogItem.price}
+                          onChange={(e) => setNewCatalogItem(prev => ({ ...prev, price: e.target.value }))}
+                          className="w-full px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
+                        />
+                      </div>
+                      <div className="col-span-8">
+                        <label className="text-[10px] font-bold text-ink-muted uppercase block mb-1">
+                          {lang === 'tr' ? 'Birim' : 'Einheit'}
+                        </label>
+                        <div className="flex gap-1.5">
+                          <input
+                            type="text"
+                            placeholder={lang === 'tr' ? 'Örn: Flasche, kg' : 'z.B. Flasche, kg'}
+                            value={newCatalogItem.unit}
+                            onChange={(e) => setNewCatalogItem(prev => ({ ...prev, unit: e.target.value }))}
+                            className="flex-1 px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand min-w-0"
+                          />
+                          <button
+                            type="button"
+                            onClick={handleAddCatalogItem}
+                            className="px-4 py-2 rounded-xl btn-brand text-white font-black text-xs shrink-0 flex items-center justify-center gap-1 shadow-md"
+                          >
+                            <Plus className="w-4 h-4 text-white" />
+                            <span>{lang === 'tr' ? 'Ekle' : 'Hinzufügen'}</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="flex gap-2 pt-3 border-t border-line">
               <button onClick={() => setShowEditModal(false)} className="flex-1 py-2.5 rounded-xl card-inner border border-line text-xs font-bold text-ink">
                 {lang === 'tr' ? 'İptal' : 'Abbrechen'}
               </button>

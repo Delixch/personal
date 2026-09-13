@@ -1,4 +1,5 @@
 import { supabase, isSupabaseConfigured } from './supabase';
+import { SEED_SUPPLIERS } from './seedData';
 
 export const SyncService = {
   isLive: () => isSupabaseConfigured && Boolean(supabase),
@@ -294,8 +295,11 @@ export const SyncService = {
       const suppliersData = suppliersRes.data || [];
       const catalogData = catalogRes.data || [];
 
-      // Supabase'deki eski boş/legacy kayıtları süz (slug'ı veya adresi olanları al)
-      const validSuppliers = suppliersData.filter(l => Boolean(l.slug) || Boolean(l.adresse));
+      let localList = [];
+      try {
+        const raw = localStorage.getItem('ado_suppliers_v1');
+        localList = raw ? JSON.parse(raw) : [];
+      } catch (_) {}
 
       const parseDeliveryDays = (val) => {
         if (Array.isArray(val)) return val;
@@ -307,33 +311,114 @@ export const SyncService = {
         return [];
       };
 
-      const mapped = validSuppliers.map(l => {
+      const normalizeStr = (str) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      const mapped = suppliersData.map(l => {
         const matchingCatalog = catalogData
           .filter(k => k.lieferant_slug === l.slug)
           .sort((a, b) => (a.reihenfolge || 0) - (b.reihenfolge || 0))
           .map(k => ({ id: k.id, name: k.name, price: Number(k.preis), unit: k.einheit }));
 
-        return {
+        const lNorm = normalizeStr(l.name);
+        const local = localList.find(s => s.id === l.slug || (lNorm && normalizeStr(s.name).includes(lNorm))) || {};
+        const seed = SEED_SUPPLIERS.find(s => s.id === l.slug || (lNorm && (normalizeStr(s.name).includes(lNorm) || lNorm.includes(normalizeStr(s.name))))) || {};
+
+        const whatsappVal = (l.whatsapp !== null && l.whatsapp !== undefined)
+          ? l.whatsapp
+          : (local.whatsapp || seed.whatsapp || '');
+
+        const phoneVal = (l.telefon !== null && l.telefon !== undefined)
+          ? l.telefon
+          : (local.phone || seed.phone || '');
+
+        const emailVal = (l.email !== null && l.email !== undefined)
+          ? l.email
+          : (local.email || seed.email || '');
+
+        const addressVal = (l.adresse !== null && l.adresse !== undefined)
+          ? l.adresse
+          : (local.address || seed.address || '');
+
+        const contactVal = (l.kontakt_person !== null && l.kontakt_person !== undefined)
+          ? l.kontakt_person
+          : (local.contactPerson || seed.contactPerson || '');
+
+        const mergedSupplier = {
           id:            l.slug || String(l.id),
           name:          l.name,
-          category:      l.kategorie || '',
-          contactPerson: l.kontakt_person || '',
-          phone:         l.telefon || '',
-          whatsapp:      l.whatsapp || '',
-          email:         l.email || '',
-          address:       l.adresse || '',
-          notes:         l.notizen || (l.bestellfrist ? `Bestellfrist: ${l.bestellfrist}` : ''),
-          rating:        Number(l.rating) || 4.5,
-          deliveryDays:  parseDeliveryDays(l.liefertage),
-          catalog:       matchingCatalog
+          category:      l.kategorie || local.category || seed.category || '',
+          contactPerson: contactVal,
+          phone:         phoneVal,
+          whatsapp:      whatsappVal,
+          email:         emailVal,
+          address:       addressVal,
+          notes:         l.notizen || local.notes || seed.notes || (l.bestellfrist ? `Bestellfrist: ${l.bestellfrist}` : ''),
+          rating:        Number(l.rating) || local.rating || seed.rating || 4.5,
+          deliveryDays:  (parseDeliveryDays(l.liefertage).length > 0 ? parseDeliveryDays(l.liefertage) : (local.deliveryDays || seed.deliveryDays || [])),
+          catalog:       matchingCatalog.length > 0 ? matchingCatalog : (local.catalog || seed.catalog || [])
         };
+
+        // Eğer Supabase'deki kayıtta numara null kalmışsa ve varsayılanda numara varsa Supabase'i de güncelle
+        if (l.whatsapp === null && whatsappVal) {
+          SyncService.pushSupplier(mergedSupplier);
+        }
+
+        return mergedSupplier;
       });
 
       if (mapped.length > 0) {
         localStorage.setItem('ado_suppliers_v1', JSON.stringify(mapped));
+        window.dispatchEvent(new Event('ado_db_update'));
       }
     } catch (err) {
       console.warn('syncSuppliers error:', err);
+    }
+  },
+
+  pushSupplier: async (sup) => {
+    if (!SyncService.isLive() || !sup.name) return;
+    try {
+      const slug = sup.id || `sup-${Date.now()}`;
+      const { error } = await supabase.from('lieferanten').upsert({
+        slug: slug,
+        name: sup.name,
+        kategorie: sup.category || 'Lebensmittel',
+        kontakt_person: sup.contactPerson || null,
+        telefon: sup.phone && sup.phone.trim() ? sup.phone.trim() : null,
+        whatsapp: sup.whatsapp && sup.whatsapp.trim() ? sup.whatsapp.trim() : null,
+        email: sup.email && sup.email.trim() ? sup.email.trim() : null,
+        adresse: sup.address && sup.address.trim() ? sup.address.trim() : null,
+        liefertage: Array.isArray(sup.deliveryDays) ? sup.deliveryDays : [],
+        rating: Number(sup.rating) || 4.5,
+        notizen: sup.notes || null,
+        aktiv: true
+      }, { onConflict: 'slug' });
+      if (error) console.warn('pushSupplier error:', error);
+
+      if (Array.isArray(sup.catalog)) {
+        for (let i = 0; i < sup.catalog.length; i++) {
+          const catItem = sup.catalog[i];
+          await supabase.from('lieferanten_katalog').upsert({
+            id: catItem.id || `item-${slug}-${i}`,
+            lieferant_slug: slug,
+            name: catItem.name,
+            preis: Number(catItem.price) || 0,
+            einheit: catItem.unit || 'Stück',
+            reihenfolge: i
+          }, { onConflict: 'id' });
+        }
+      }
+    } catch (err) {
+      console.warn('pushSupplier error:', err);
+    }
+  },
+
+  deleteSupplierInDb: async (supplierId) => {
+    if (!SyncService.isLive()) return;
+    try {
+      await supabase.from('lieferanten').update({ aktiv: false }).eq('slug', supplierId);
+    } catch (err) {
+      console.warn('deleteSupplierInDb error:', err);
     }
   },
 
@@ -341,18 +426,23 @@ export const SyncService = {
   syncBulletins: async () => {
     if (!SyncService.isLive()) return;
     const { data, error } = await supabase.from('bulletins').select('*').order('created_at', { ascending: false });
-    if (error) throw error;
-    if (data && data.length > 0) {
+    if (error) {
+      console.warn('syncBulletins error:', error);
+      return;
+    }
+    if (data) {
       const mapped = data.map(b => ({
         id: b.id,
         title: b.titel,
         content: b.text,
+        category: b.kategorie || (b.dringend ? 'urgent' : 'info'),
         priority: b.dringend ? 'urgent' : 'normal',
         author: b.ersteller,
         date: b.datum,
         views: b.views || 1
       }));
       localStorage.setItem('ado_bulletins_v1', JSON.stringify(mapped));
+      window.dispatchEvent(new Event('ado_db_update'));
     }
   },
 
@@ -362,7 +452,8 @@ export const SyncService = {
       await supabase.from('bulletins').insert({
         titel: bul.title,
         text: bul.content,
-        dringend: bul.priority === 'urgent',
+        kategorie: bul.category || 'info',
+        dringend: bul.category === 'urgent' || bul.priority === 'urgent',
         ersteller: bul.author || 'Geschäftsleitung',
         datum: bul.date || new Date().toISOString().split('T')[0]
       });

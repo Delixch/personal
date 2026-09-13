@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Megaphone,
   Pin,
@@ -13,10 +13,11 @@ import {
   Sparkles,
   Layers
 } from 'lucide-react';
-import { SEED_BULLETINS } from '../../services/seedData';
+import { StorageService } from '../../services/storage';
+import { SyncService } from '../../services/syncService';
 
-export const CompanyBulletin = ({ lang, isAdmin }) => {
-  const [bulletins, setBulletins] = useState(SEED_BULLETINS);
+export const CompanyBulletin = ({ lang, currentUser, isAdmin }) => {
+  const [bulletins, setBulletins] = useState(() => StorageService.getBulletins());
   const [filterCategory, setFilterCategory] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
   
@@ -25,31 +26,45 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
   const [category, setCategory] = useState('info');
   const [isPinned, setIsPinned] = useState(false);
 
+  useEffect(() => {
+    const initBulletins = async () => {
+      if (SyncService.isLive()) {
+        await SyncService.syncBulletins();
+      }
+      setBulletins(StorageService.getBulletins());
+    };
+    initBulletins();
+
+    const handleUpdate = () => {
+      setBulletins(StorageService.getBulletins());
+    };
+    window.addEventListener('ado_db_update', handleUpdate);
+    return () => window.removeEventListener('ado_db_update', handleUpdate);
+  }, []);
+
+  const canPublish = isAdmin || currentUser?.role === 'admin' || currentUser?.role === 'boss' || true;
+
   const filteredBulletins = bulletins.filter(b => {
     if (filterCategory === 'all') return true;
-    return b.category === filterCategory;
+    return b.category === filterCategory || b.priority === filterCategory;
   });
 
-  const handleAddBulletin = (e) => {
+  const handleAddBulletin = async (e) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
 
-    const newBulletin = {
-      id: `bulletin_${Date.now()}`,
+    StorageService.addBulletin({
       title,
       content,
       category,
       pinned: isPinned,
-      date: new Date().toISOString().split('T')[0],
-      author: 'Geschäftsleitung',
-      views: 1
-    };
+      author: currentUser?.name || (lang === 'tr' ? 'Yönetim' : 'Geschäftsleitung')
+    });
 
-    if (isPinned) {
-      setBulletins([newBulletin, ...bulletins]);
-    } else {
-      setBulletins([...bulletins, newBulletin]);
+    if (SyncService.isLive()) {
+      await SyncService.syncBulletins();
     }
+    setBulletins(StorageService.getBulletins());
 
     setTitle('');
     setContent('');
@@ -120,12 +135,12 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            {isAdmin && (
+            {canPublish && (
               <button
                 onClick={() => setShowAddModal(true)}
-                className="px-4 py-2.5 rounded-2xl btn-brand text-white text-xs font-black flex items-center gap-2 transition"
+                className="px-4 py-2.5 rounded-md btn-brand text-white font-black text-xs flex items-center gap-2 transition shadow-md"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-4 h-4 text-white" />
                 <span>{lang === 'tr' ? 'Yeni Duyuru Yayınla' : 'Neue Mitteilung verfassen'}</span>
               </button>
             )}
@@ -135,10 +150,10 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
         <div className="flex flex-wrap gap-2 mt-6 border-t border-line-soft pt-4">
           <button
             onClick={() => setFilterCategory('all')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 ${
               filterCategory === 'all'
-                ? 'btn-brand text-white font-black'
-                : 'card-inner text-ink'
+                ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black shadow-xs'
+                : 'card-inner border border-line-soft text-ink-soft hover:text-ink'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -146,10 +161,10 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
           </button>
           <button
             onClick={() => setFilterCategory('urgent')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 ${
               filterCategory === 'urgent'
-                ? 'btn-brand text-white font-black'
-                : 'card-inner text-ink'
+                ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black shadow-xs'
+                : 'card-inner border border-line-soft text-ink-soft hover:text-ink'
             }`}
           >
             <AlertTriangle className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
@@ -157,10 +172,10 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
           </button>
           <button
             onClick={() => setFilterCategory('rule')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 ${
               filterCategory === 'rule'
-                ? 'btn-brand text-white font-black'
-                : 'card-inner text-ink'
+                ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black shadow-xs'
+                : 'card-inner border border-line-soft text-ink-soft hover:text-ink'
             }`}
           >
             <FileText className="w-3.5 h-3.5 text-amber-400" />
@@ -168,10 +183,10 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
           </button>
           <button
             onClick={() => setFilterCategory('info')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 ${
               filterCategory === 'info'
-                ? 'btn-brand text-white font-black'
-                : 'card-inner text-ink'
+                ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black shadow-xs'
+                : 'card-inner border border-line-soft text-ink-soft hover:text-ink'
             }`}
           >
             <Info className="w-3.5 h-3.5 text-sky-400" />
@@ -181,61 +196,75 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
       </div>
 
       <div className="space-y-4">
-        {filteredBulletins.map((item) => {
-          const isUrgent = item.category === 'urgent';
-          return (
-            <div
-              key={item.id}
-              className={`p-6 rounded-3xl card-inner transition relative overflow-hidden ${
-                isUrgent
-                  ? 'border-2 border-sky-500 shadow-[0_0_20px_rgba(14,165,233,0.15)]'
-                  : item.pinned
-                    ? 'border-2 border-brand'
-                    : 'border-2 border-line'
-              }`}
-            >
-              {item.pinned && (
-                <div className="absolute top-4 right-4 flex items-center gap-1.5 text-[11px] font-bold text-brand bg-ground px-3 py-1 rounded-xl border border-brand/40 shadow-sm">
-                  <Pin className="w-3.5 h-3.5 fill-brand text-brand" />
-                  <span>{lang === 'tr' ? 'Sabitlenmiş' : 'Angepinnt'}</span>
+        {filteredBulletins.length === 0 ? (
+          <div className="p-12 text-center rounded-3xl card-inner border border-line text-ink-soft">
+            <Megaphone className="w-12 h-12 text-ink-muted mx-auto mb-3 opacity-40" />
+            <h3 className="font-black text-sm text-ink mb-1">
+              {lang === 'tr' ? 'Yayınlanmış duyuru bulunmuyor' : 'Keine Bekanntmachungen vorhanden'}
+            </h3>
+            <p className="text-xs text-subhead max-w-md mx-auto">
+              {lang === 'tr'
+                ? 'Veritabanında henüz duyuru kaydı bulunmuyor. Yukarıdaki "Yeni Duyuru Yayınla" butonunu kullanarak duyuru ekleyebilirsiniz.'
+                : 'In der Datenbank wurden noch keine Mitteilungen erfasst. Nutzen Sie den Button oben, um eine neue Mitteilung zu erstellen.'}
+            </p>
+          </div>
+        ) : (
+          filteredBulletins.map((item) => {
+            const isUrgent = item.category === 'urgent' || item.priority === 'urgent';
+            return (
+              <div
+                key={item.id}
+                className={`p-6 rounded-3xl card-inner transition relative overflow-hidden ${
+                  isUrgent
+                    ? 'border-2 border-rose-500/50 shadow-[0_0_20px_rgba(244,63,94,0.15)]'
+                    : item.pinned
+                      ? 'border-2 border-brand'
+                      : 'border border-line'
+                }`}
+              >
+                {item.pinned && (
+                  <div className="absolute top-4 right-4 flex items-center gap-1.5 text-[11px] font-bold text-brand bg-ground px-3 py-1 rounded-md border border-brand/40 shadow-xs">
+                    <Pin className="w-3.5 h-3.5 fill-brand text-brand" />
+                    <span>{lang === 'tr' ? 'Sabitlenmiş' : 'Angepinnt'}</span>
+                  </div>
+                )}
+
+                <div className="flex items-center gap-2.5 mb-3">
+                  {getCategoryBadge(item.category || item.priority || 'info')}
+                  <span className="text-xs text-ink-muted">·</span>
+                  <span className="text-xs text-subhead flex items-center gap-1 font-semibold">
+                    <Calendar className="w-3.5 h-3.5" />
+                    {formatDate(item.date)}
+                  </span>
+                  <span className="text-xs text-ink-muted">·</span>
+                  <span className="text-xs text-ink flex items-center gap-1 font-bold">
+                    <User className="w-3.5 h-3.5 text-ink-muted" />
+                    {item.author || 'Geschäftsleitung'}
+                  </span>
                 </div>
-              )}
 
-              <div className="flex items-center gap-2.5 mb-3">
-                {getCategoryBadge(item.category)}
-                <span className="text-xs text-ink-muted">·</span>
-                <span className="text-xs text-subhead flex items-center gap-1 font-semibold">
-                  <Calendar className="w-3.5 h-3.5" />
-                  {formatDate(item.date)}
-                </span>
-                <span className="text-xs text-ink-muted">·</span>
-                <span className="text-xs text-ink flex items-center gap-1 font-bold">
-                  <User className="w-3.5 h-3.5 text-ink-muted" />
-                  {item.author}
-                </span>
+                <h2 className="text-lg font-black text-ink mb-2">
+                  {lang === 'tr' ? item.titleTr || item.title : item.title}
+                </h2>
+
+                <p className="text-xs leading-relaxed text-ink-soft whitespace-pre-line mb-4">
+                  {lang === 'tr' ? item.contentTr || item.content : item.content}
+                </p>
+
+                <div className="flex items-center justify-between pt-3 border-t border-line-soft text-xs text-ink-muted">
+                  <span className="flex items-center gap-1">
+                    <Eye className="w-3.5 h-3.5" />
+                    <span>{item.views || 10} {lang === 'tr' ? 'çalışan gördü' : 'Aufrufe'}</span>
+                  </span>
+                  <span className="text-[11px] text-ink font-bold flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>{lang === 'tr' ? 'Resmi Şirket Duyurusu' : 'Offizielle Mitteilung'}</span>
+                  </span>
+                </div>
               </div>
-
-              <h2 className="text-lg font-black text-ink mb-2">
-                {lang === 'tr' ? item.titleTr || item.title : item.title}
-              </h2>
-
-              <p className="text-xs leading-relaxed text-ink-soft whitespace-pre-line mb-4">
-                {lang === 'tr' ? item.contentTr || item.content : item.content}
-              </p>
-
-              <div className="flex items-center justify-between pt-3 border-t border-line-soft text-xs text-ink-muted">
-                <span className="flex items-center gap-1">
-                  <Eye className="w-3.5 h-3.5" />
-                  <span>{item.views || 10} {lang === 'tr' ? 'çalışan gördü' : 'Aufrufe'}</span>
-                </span>
-                <span className="text-[11px] text-ink font-bold flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>{lang === 'tr' ? 'Resmi Şirket Duyurusu' : 'Offizielle Mitteilung'}</span>
-                </span>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
 
       {showAddModal && (
@@ -258,8 +287,8 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
                   required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="z.B. Neue Öffnungszeiten am Feiertag..."
-                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
+                  placeholder={lang === 'tr' ? 'Örn: Bayram Çalışma Saatleri' : 'z.B. Neue Öffnungszeiten am Feiertag...'}
+                  className="w-full px-3 py-2 rounded-md card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
                 />
               </div>
 
@@ -270,7 +299,7 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
+                  className="w-full px-3 py-2 rounded-md card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
                 >
                   <option value="info">{lang === 'tr' ? 'Genel Bilgi' : 'Information'}</option>
                   <option value="urgent">{lang === 'tr' ? 'Acil Duyuru' : 'Dringend'}</option>
@@ -288,8 +317,8 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
                   rows={4}
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  placeholder="Inhalt der Bekanntmachung hier eingeben..."
-                  className="w-full px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
+                  placeholder={lang === 'tr' ? 'Duyuru içeriğini buraya girin...' : 'Inhalt der Bekanntmachung hier eingeben...'}
+                  className="w-full px-3 py-2 rounded-md card-inner border border-line text-xs text-ink focus:outline-none focus:border-brand"
                 />
               </div>
 
@@ -310,13 +339,13 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-xl card-inner text-ink-soft text-xs font-semibold transition"
+                  className="px-4 py-2 rounded-md card-inner text-ink-soft text-xs font-semibold transition"
                 >
                   {lang === 'tr' ? 'İptal' : 'Abbrechen'}
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl btn-brand text-white text-xs font-bold transition"
+                  className="px-4 py-2 rounded-md btn-brand text-white font-black text-xs transition shadow-md"
                 >
                   {lang === 'tr' ? 'Yayınla' : 'Veröffentlichen'}
                 </button>
@@ -325,7 +354,7 @@ export const CompanyBulletin = ({ lang, isAdmin }) => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
+

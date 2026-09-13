@@ -93,7 +93,7 @@ export const initializeDatabase = () => {
     localStorage.setItem(STORAGE_KEYS.TEMPERATURE_LOGS, JSON.stringify(SEED_TEMPERATURE_LOGS));
   }
   if (!localStorage.getItem(STORAGE_KEYS.BULLETINS)) {
-    localStorage.setItem(STORAGE_KEYS.BULLETINS, JSON.stringify(SEED_BULLETINS));
+    localStorage.setItem(STORAGE_KEYS.BULLETINS, JSON.stringify([]));
   }
 
   SyncService.syncAll()
@@ -126,18 +126,22 @@ export const StorageService = {
   saveSupplier: (supplier) => {
     const list = StorageService.getSuppliers();
     const existingIndex = list.findIndex(s => s.id === supplier.id);
+    let targetSupplier = supplier;
     if (existingIndex >= 0) {
       list[existingIndex] = supplier;
     } else {
-      list.push({ ...supplier, id: supplier.id || `sup-${Date.now()}` });
+      targetSupplier = { ...supplier, id: supplier.id || `sup-${Date.now()}` };
+      list.push(targetSupplier);
     }
     setStoredItem(STORAGE_KEYS.SUPPLIERS, list);
+    SyncService.pushSupplier(targetSupplier);
     return list;
   },
 
   deleteSupplier: (supplierId) => {
     const list = StorageService.getSuppliers().filter(s => s.id !== supplierId);
     setStoredItem(STORAGE_KEYS.SUPPLIERS, list);
+    SyncService.deleteSupplierInDb(supplierId);
     return list;
   },
 
@@ -463,7 +467,7 @@ export const StorageService = {
     return list;
   },
 
-  getBulletins: () => getStoredItem(STORAGE_KEYS.BULLETINS, SEED_BULLETINS),
+  getBulletins: () => getStoredItem(STORAGE_KEYS.BULLETINS, []),
   addBulletin: (bulletin) => {
     const list = StorageService.getBulletins();
     const newBul = {

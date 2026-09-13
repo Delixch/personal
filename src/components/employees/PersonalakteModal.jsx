@@ -78,7 +78,7 @@ export const PersonalakteModal = ({
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        const targetSize = 200; // 200x200 px - ultra light (~15 KB) & crisp
+        const targetSize = 120; // 120x120 px - ultra light (~5-8 KB) & crisp thumbnail
         canvas.width = targetSize;
         canvas.height = targetSize;
         const ctx = canvas.getContext('2d');
@@ -88,7 +88,7 @@ export const PersonalakteModal = ({
         const startY = (img.height - minDim) / 2;
 
         ctx.drawImage(img, startX, startY, minDim, minDim, 0, 0, targetSize, targetSize);
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
 
         setCurrentAvatar(compressedBase64);
         const updated = { ...employee, avatar: compressedBase64 };

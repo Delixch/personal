@@ -173,7 +173,6 @@ export const SyncService = {
         iban: emp.iban || null,
         bank_name: emp.bankName || null,
         avatar: avatarToPush || null,
-        abteilung: emp.department || 'kuche',
         lohnart: emp.contractType?.includes('Fest') ? 'monatslohn' : 'stundenlohn',
         urlaubsanspruch_tage: emp.vacationTotal || 25,
         urlaub_bezogen_tage: emp.vacationUsed || 0,

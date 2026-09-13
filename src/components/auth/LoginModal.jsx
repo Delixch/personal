@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { KeyRound, Mail, X, ShieldCheck, Check, AlertCircle, Hash, Sparkles } from 'lucide-react';
+import { KeyRound, Mail, X, ShieldCheck, Check, AlertCircle, Hash, Sparkles, Building2 } from 'lucide-react';
 import { StorageService } from '../../services/storage';
 
 export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
@@ -40,13 +40,14 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
     } else {
       setError(
         lang === 'tr'
-          ? 'Hatalı PIN! (Demo PIN: 1001-1006 veya patron için 9999)'
-          : 'Ungültige PIN! (Demo: 1001-1006 oder Chef: 9999)'
+          ? 'PIN hatalı! (Demo PIN: 1001 - 1006 / Admin: 9999)'
+          : 'Ungültige PIN! (Demo: 1001-1006 / Admin: 9999)'
       );
     }
   };
 
-  const handleQuickSelect = (emp) => {
+  const handleQuickUserLogin = (emp) => {
+    StorageService.setCurrentUser(emp);
     onLoginSuccess(emp);
     onClose();
   };
@@ -57,23 +58,36 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
 
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-xl text-subhead transition"
+          className="absolute top-4 right-4 p-2 rounded-xl text-subhead transition hover:text-ink"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="flex items-center gap-3 mb-5">
-          <div className="flex items-center justify-center w-10 h-10 rounded-2xl card-inner text-brand border border-line shrink-0">
-            <KeyRound className="w-5 h-5 icon-brand" />
+        {/* ANİMASYONLU ADO MANAGEMENT LOGOSU - GİRİŞ MODAL BAŞLIĞI */}
+        <div className="flex items-center gap-3 mb-5 select-none pb-4 border-b border-line/60">
+          <div className="relative flex items-center justify-center w-11 h-11 rounded-xl icon-box font-black shrink-0 transition-all duration-300 hover:scale-105 hover:border-brand/60 hover:shadow-[0_0_20px_rgba(255,90,31,0.5)] animate-icon-float">
+            <Building2 className="w-5 h-5 text-brand hover:rotate-6 transition-transform duration-300" />
+            
+            {/* Canlı Turuncu/Altın Nabız Atan Nokta */}
+            <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 z-10">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff5522] opacity-90"></span>
+              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-gradient-to-r from-orange-500 to-amber-400 ring-2 ring-black/70 shadow-[0_0_10px_#ff5522]"></span>
+            </span>
           </div>
-          <div>
-            <h2 className="text-lg font-black text-ink leading-snug">
-              {lang === 'tr' ? 'Sisteme Giriş' : 'Mitarbeiter & Chef Login'}
-            </h2>
-            <p className="text-xs text-subhead mt-0.5">
-              {lang === 'tr'
-                ? 'PIN kodunuzla veya e-posta ile giriş yapın'
-                : 'Wählen Sie Ihren Zugang per PIN oder E-Mail'}
+
+          <div className="relative">
+            <div className="flex items-center gap-2 relative group/logo">
+              {/* Arkadaki Süzülen Neon Işık Hüzmesi */}
+              <div className="absolute -inset-3 bg-gradient-to-r from-brand/60 via-amber-500/30 to-brand/40 rounded-2xl animate-logo-glow pointer-events-none"></div>
+              
+              <span className="relative font-extrabold text-lg sm:text-xl tracking-tight text-ink font-sans flex items-center gap-1.5 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+                <span className="text-white font-black tracking-wider">ADO</span>
+                <span className="animate-text-shimmer font-black tracking-widest text-transparent">MANAGEMENT</span>
+              </span>
+            </div>
+            <p className="text-[11px] text-ink-muted flex items-center gap-1.5 relative z-10 mt-0.5 font-medium tracking-wide">
+              <KeyRound className="w-3.5 h-3.5 text-brand shrink-0" />
+              <span>{lang === 'tr' ? 'Personel & Yönetici Giriş Portalı' : 'Mitarbeiter & Chef Login-Portal'}</span>
             </p>
           </div>
         </div>

@@ -288,7 +288,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
               {isAdmin && (
                 <button
                   onClick={openAddModal}
-                  className="py-2.5 rounded-md btn-brand font-black text-xs flex items-center justify-center gap-1 transition text-center col-span-1"
+                  className="py-2.5 rounded-md btn-brand font-black text-xs flex items-center justify-center gap-1 transition text-center col-span-1 shadow-md"
                   title={lang === 'tr' ? 'Yeni Tedarikçi Ekle' : 'Neuer Lieferant'}
                 >
                   <UserPlus className="w-3.5 h-3.5 shrink-0" />
@@ -302,8 +302,8 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                   !isAdmin ? 'col-span-3' : 'col-span-2'
                 } ${
                   selectedCategory === 'all'
-                    ? 'btn-brand font-black'
-                    : 'bg-[#1e1514] text-ink hover:bg-[#2a1d1b]'
+                    ? 'bg-[#2a1d1b] border border-white text-white font-black shadow-xs'
+                    : 'card-inner border border-line-soft text-ink-soft hover:text-ink hover:bg-[#2a1d1b]'
                 }`}
               >
                 <span>{lang === 'tr' ? 'Tümü (Alle)' : 'Alle (Tümü)'}</span>
@@ -315,8 +315,8 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`py-2.5 rounded-md font-bold text-xs flex items-center justify-center transition px-1 text-center truncate ${
                     selectedCategory === cat.id
-                      ? 'btn-brand font-black'
-                      : 'bg-[#1e1514] text-ink-soft hover:text-ink hover:bg-[#2a1d1b]'
+                      ? 'bg-[#2a1d1b] border border-white text-white font-black shadow-xs'
+                      : 'card-inner border border-line-soft text-ink-soft hover:text-ink hover:bg-[#2a1d1b]'
                   }`}
                 >
                   {cat.label}

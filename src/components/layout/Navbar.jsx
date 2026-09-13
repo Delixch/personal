@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Building2,
   Bell,
@@ -30,6 +30,28 @@ export const Navbar = ({
 }) => {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showNotifDropdown, setShowNotifDropdown] = useState(false);
+  const userDropdownRef = useRef(null);
+  const notifDropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
+        setShowUserDropdown(false);
+      }
+      if (notifDropdownRef.current && !notifDropdownRef.current.contains(event.target)) {
+        setShowNotifDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
+
   const employees = StorageService.getEmployees();
 
   const unreadCount = notifications.filter(n => !n.read).length;
@@ -139,7 +161,7 @@ export const Navbar = ({
             <span className="text-body-sm">{lang.toUpperCase()}</span>
           </button>
 
-          <div className="relative">
+          <div className="relative" ref={notifDropdownRef}>
             <button
               onClick={() => {
                 setShowNotifDropdown(!showNotifDropdown);
@@ -201,7 +223,7 @@ export const Navbar = ({
           </div>
 
           {currentUser ? (
-            <div className="relative">
+            <div className="relative" ref={userDropdownRef}>
               <button
                 onClick={() => setShowUserDropdown(!showUserDropdown)}
                 className="flex items-center gap-2.5 px-3.5 py-2 rounded-md transition text-left hover:bg-surface"

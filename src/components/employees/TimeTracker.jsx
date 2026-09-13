@@ -134,7 +134,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
     <div className="space-y-6">
 
       <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="space-y-2">
             <h1 className="page-title text-ink">
               {t.timeTrackerTitle}
@@ -146,39 +146,37 @@ export const TimeTracker = ({ lang, currentUser }) => {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 shrink-0">
-            
-            <div className="flex card-inner p-1 rounded-2xl border border-line">
-              <button
-                onClick={() => setTrackerMode('personal')}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-                  trackerMode === 'personal'
-                    ? 'bg-surface text-ink border border-line shadow-xs font-black'
-                    : 'text-ink-soft  font-semibold'
-                }`}
-              >
-                <Smartphone className="w-4 h-4" />
-                <span>{lang === 'tr' ? 'Profilim' : 'Persönlich'}</span>
-              </button>
-              <button
-                onClick={() => setTrackerMode('kiosk')}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-                  trackerMode === 'kiosk'
-                    ? 'btn-brand font-black'
-                    : 'text-ink-soft  font-semibold'
-                }`}
-              >
-                <Tablet className="w-4 h-4" />
-                <span>{lang === 'tr' ? 'Tablet PIN Terminali' : 'PIN Terminal (Kiosk)'}</span>
-              </button>
-            </div>
-
-            <div className="card-inner border border-line px-4 py-2.5 rounded-2xl flex items-center gap-2.5">
+          <div className="w-full md:w-[240px] flex flex-col gap-2 shrink-0">
+            <div className="bg-[#1e1514] py-2.5 px-4 rounded-md flex items-center justify-center gap-2.5 text-ink">
               <Clock className="w-4 h-4 text-brand icon-brand" />
-              <div className="font-mono text-lg md:text-xl font-black tracking-wider text-ink">
+              <div className="font-mono text-base font-black tracking-wider">
                 {formattedHours}:{formattedMins}:<span className="text-brand">{formattedSecs}</span>
               </div>
             </div>
+
+            <button
+              onClick={() => setTrackerMode('personal')}
+              className={`w-full py-2.5 rounded-md text-xs font-bold transition flex items-center justify-center gap-2 ${
+                trackerMode === 'personal'
+                  ? 'btn-brand font-black'
+                  : 'bg-[#1e1514] text-ink-soft hover:text-ink hover:bg-[#2a1d1b]'
+              }`}
+            >
+              <Smartphone className="w-4 h-4" />
+              <span>{lang === 'tr' ? 'Profilim' : 'Persönlich'}</span>
+            </button>
+
+            <button
+              onClick={() => setTrackerMode('kiosk')}
+              className={`w-full py-2.5 rounded-md text-xs font-bold transition flex items-center justify-center gap-2 ${
+                trackerMode === 'kiosk'
+                  ? 'btn-brand font-black'
+                  : 'bg-[#1e1514] text-ink-soft hover:text-ink hover:bg-[#2a1d1b]'
+              }`}
+            >
+              <Tablet className="w-4 h-4" />
+              <span>{lang === 'tr' ? 'Tablet PIN Terminali' : 'PIN Terminal (Kiosk)'}</span>
+            </button>
           </div>
         </div>
       </div>

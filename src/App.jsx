@@ -288,13 +288,13 @@ export function App() {
               </div>
             </div>
 
-            <div className="bg-surface p-2 md:p-2.5 rounded-2xl border border-line">
-              <div className="flex items-start sm:items-center gap-2">
+            <div className="bg-surface p-6 rounded-3xl border border-line">
+              <div className="flex items-start sm:items-center gap-3">
                 
                 <button
                   onClick={() => handleCategorySelect('all')}
                   title={lang === 'tr' ? 'Tüm Bölümleri Göster' : 'Alle Bereiche anzeigen'}
-                  className={`p-2 rounded-lg text-xs font-bold transition flex items-center justify-center shrink-0 ${
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center shrink-0 ${
                     activeCategoryFilter === 'all'
                       ? 'btn-brand font-black'
                       : 'card-inner text-ink border border-line'

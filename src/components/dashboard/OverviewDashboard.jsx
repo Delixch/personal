@@ -309,7 +309,7 @@ export const OverviewDashboard = ({
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
 
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden">
+      <div className="p-6 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden">
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
@@ -432,13 +432,13 @@ export const OverviewDashboard = ({
       {isAdmin ? (
         <div className="space-y-4">
           
-          <div className="bg-surface p-2 sm:p-2.5 rounded-2xl border border-line">
-            <div className="flex items-start sm:items-center gap-2">
+          <div className="bg-surface p-6 rounded-3xl border border-line">
+            <div className="flex items-start sm:items-center gap-3">
               
               <button
                 onClick={() => setActiveCategoryFilter('all')}
                 title={lang === 'tr' ? 'Tüm Bölümleri Göster' : 'Alle Bereiche anzeigen'}
-                className={`p-2 rounded-lg text-xs font-bold transition flex items-center justify-center shrink-0 ${
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center shrink-0 ${
                   activeCategoryFilter === 'all'
                     ? 'btn-brand font-black'
                     : 'card-inner text-ink border border-line'
@@ -450,7 +450,7 @@ export const OverviewDashboard = ({
               <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
                 <button
                   onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'hr' ? 'all' : 'hr')}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
                     activeCategoryFilter === 'hr'
                       ? 'btn-brand font-black'
                       : 'card-inner text-ink border border-line'
@@ -462,7 +462,7 @@ export const OverviewDashboard = ({
 
                 <button
                   onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'finance' ? 'all' : 'finance')}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
                     activeCategoryFilter === 'finance'
                       ? 'btn-brand font-black'
                       : 'card-inner text-ink border border-line'
@@ -474,7 +474,7 @@ export const OverviewDashboard = ({
 
                 <button
                   onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'operations' ? 'all' : 'operations')}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
                     activeCategoryFilter === 'operations'
                       ? 'btn-brand font-black'
                       : 'card-inner text-ink border border-line'
@@ -493,7 +493,7 @@ export const OverviewDashboard = ({
               return (
                 <div
                   key={category.id}
-                  className="bg-surface rounded-3xl border border-line p-4 md:p-5 flex flex-col gap-4"
+                  className="bg-surface rounded-3xl border border-line p-6 flex flex-col gap-4"
                 >
                   
                   <div className="space-y-3.5">
@@ -503,7 +503,7 @@ export const OverviewDashboard = ({
                         <div
                           key={mod.id + mod.title}
                           onClick={() => onNavigate(mod.id)}
-                          className={`p-4 rounded-2xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} card-inner group`}
+                          className={`p-3.5 rounded-2xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} card-inner group`}
                         >
                           <div>
                             <div className="flex items-start justify-between gap-3 mb-2.5">

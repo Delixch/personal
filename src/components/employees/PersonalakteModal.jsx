@@ -372,78 +372,84 @@ export const PersonalakteModal = ({
           </div>
 
           {/* Desktop Tabs */}
-          <div className="hidden sm:flex flex-wrap items-center gap-2 text-xs font-bold py-1">
+          <div className="hidden sm:flex items-start gap-2 text-xs font-bold py-1">
             <button
               onClick={() => setActiveTab('360')}
               className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
                 activeTab === '360'
                   ? 'btn-brand font-black'
-                  : 'text-ink-soft'
+                  : 'card-inner text-ink border border-line'
               }`}
             >
               <Layers className="w-4 h-4" />
               <span>{lang === 'tr' ? '⭐ 360° Sicil Özeti' : '⭐ 360° Chef-Übersicht'}</span>
             </button>
 
-            <button
-              onClick={() => setActiveTab('zeiterfassung')}
-              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-                activeTab === 'zeiterfassung'
-                  ? 'btn-brand font-black'
-                  : 'text-ink-soft'
-              }`}
-            >
-              <Clock className="w-4 h-4" />
-              <span>{lang === 'tr' ? 'Saatler & Stempeluhr' : 'Stempeluhr & Stunden'}</span>
-            </button>
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  onClick={() => setActiveTab('zeiterfassung')}
+                  className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                    activeTab === 'zeiterfassung'
+                      ? 'btn-brand font-black'
+                      : 'card-inner text-ink border border-line'
+                  }`}
+                >
+                  <Clock className="w-4 h-4" />
+                  <span>{lang === 'tr' ? 'Saatler & Stempeluhr' : 'Stempeluhr & Stunden'}</span>
+                </button>
 
-            <button
-              onClick={() => setActiveTab('schichten')}
-              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-                activeTab === 'schichten'
-                  ? 'btn-brand font-black'
-                  : 'text-ink-soft'
-              }`}
-            >
-              <Calendar className="w-4 h-4" />
-              <span>{lang === 'tr' ? 'Vardiya Planı' : 'Schichtplan'}</span>
-            </button>
+                <button
+                  onClick={() => setActiveTab('schichten')}
+                  className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                    activeTab === 'schichten'
+                      ? 'btn-brand font-black'
+                      : 'card-inner text-ink border border-line'
+                  }`}
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>{lang === 'tr' ? 'Vardiya Planı' : 'Schichtplan'}</span>
+                </button>
 
-            <button
-              onClick={() => setActiveTab('lohn')}
-              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-                activeTab === 'lohn'
-                  ? 'btn-brand font-black'
-                  : 'text-ink-soft'
-              }`}
-            >
-              <DollarSign className="w-4 h-4" />
-              <span>{lang === 'tr' ? 'Maaş, Bordro & Senelik' : 'Lohn & Abrechnung'}</span>
-            </button>
+                <button
+                  onClick={() => setActiveTab('lohn')}
+                  className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                    activeTab === 'lohn'
+                      ? 'btn-brand font-black'
+                      : 'card-inner text-ink border border-line'
+                  }`}
+                >
+                  <DollarSign className="w-4 h-4" />
+                  <span>{lang === 'tr' ? 'Maaş, Bordro & Senelik' : 'Lohn & Abrechnung'}</span>
+                </button>
+              </div>
 
-            <button
-              onClick={() => setActiveTab('absenzen')}
-              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-                activeTab === 'absenzen'
-                  ? 'btn-brand font-black'
-                  : 'text-ink-soft'
-              }`}
-            >
-              <HeartPulse className="w-4 h-4" />
-              <span>{lang === 'tr' ? 'Hastalık & İzin Geçmişi' : 'Urlaub & Absenzen'}</span>
-            </button>
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  onClick={() => setActiveTab('absenzen')}
+                  className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                    activeTab === 'absenzen'
+                      ? 'btn-brand font-black'
+                      : 'card-inner text-ink border border-line'
+                  }`}
+                >
+                  <HeartPulse className="w-4 h-4" />
+                  <span>{lang === 'tr' ? 'Hastalık & İzin Geçmişi' : 'Urlaub & Absenzen'}</span>
+                </button>
 
-            <button
-              onClick={() => setActiveTab('stammdaten')}
-              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
-                activeTab === 'stammdaten'
-                  ? 'btn-brand font-black'
-                  : 'text-ink-soft'
-              }`}
-            >
-              <FileText className="w-4 h-4 text-ink" />
-              <span>{lang === 'tr' ? 'Sözleşme, AHV & Evraklar' : 'Vertrag & Dokumente'}</span>
-            </button>
+                <button
+                  onClick={() => setActiveTab('stammdaten')}
+                  className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                    activeTab === 'stammdaten'
+                      ? 'btn-brand font-black'
+                      : 'card-inner text-ink border border-line'
+                  }`}
+                >
+                  <FileText className="w-4 h-4 text-ink" />
+                  <span>{lang === 'tr' ? 'Sözleşme, AHV & Evraklar' : 'Vertrag & Dokumente'}</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 

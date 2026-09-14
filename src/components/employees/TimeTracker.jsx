@@ -21,6 +21,71 @@ import { StorageService } from '../../services/storage';
 import { formatDate, calculateHoursWorked } from '../../utils/formatters';
 import { TRANSLATIONS } from '../../utils/translations';
 
+export const RoundClock = ({ currentTime, className = "" }) => {
+  const hours = currentTime.getHours();
+  const mins = currentTime.getMinutes();
+  const secs = currentTime.getSeconds();
+
+  const hourDeg = (hours % 12) * 30 + mins * 0.5;
+  const minDeg = mins * 6 + secs * 0.1;
+  const secDeg = secs * 6;
+
+  const formattedHours = String(hours).padStart(2, '0');
+  const formattedMins = String(mins).padStart(2, '0');
+  const formattedSecs = String(secs).padStart(2, '0');
+
+  return (
+    <div className={`flex flex-col items-center justify-center gap-3 ${className}`}>
+      {/* Sleek Circular Swiss Analog Clock Face */}
+      <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-b from-[#241715] to-[#140c0b] border-2 border-brand/40 shadow-[0_0_30px_rgba(249,115,22,0.25)] flex items-center justify-center group hover:border-brand transition-all duration-300">
+        
+        {/* Outer Ring Ticks */}
+        <div className="absolute inset-1.5 rounded-full border border-brand/20" />
+        
+        {/* Cardinal Hour Numbers */}
+        <span className="absolute top-2 text-[10px] font-mono font-black text-brand">12</span>
+        <span className="absolute right-2 text-[10px] font-mono font-black text-ink-muted">3</span>
+        <span className="absolute bottom-2 text-[10px] font-mono font-black text-ink-muted">6</span>
+        <span className="absolute left-2 text-[10px] font-mono font-black text-ink-muted">9</span>
+
+        {/* Center Pivot Point */}
+        <div className="w-3 h-3 rounded-full bg-brand z-30 shadow-[0_0_10px_#f97316]" />
+
+        {/* Hour Hand */}
+        <div
+          className="absolute top-1/2 left-1/2 w-1.5 h-7 bg-ink rounded-full origin-bottom z-10 transition-transform duration-300"
+          style={{
+            transform: `translate(-50%, -100%) rotate(${hourDeg}deg)`,
+          }}
+        />
+
+        {/* Minute Hand */}
+        <div
+          className="absolute top-1/2 left-1/2 w-1 h-10 bg-slate-300 rounded-full origin-bottom z-20 transition-transform duration-300"
+          style={{
+            transform: `translate(-50%, -100%) rotate(${minDeg}deg)`,
+          }}
+        />
+
+        {/* Second Hand (Glowing Neon Orange) */}
+        <div
+          className="absolute top-1/2 left-1/2 w-0.5 h-11 bg-brand rounded-full origin-bottom z-25 transition-transform duration-100 shadow-[0_0_8px_#f97316]"
+          style={{
+            transform: `translate(-50%, -100%) rotate(${secDeg}deg)`,
+          }}
+        />
+      </div>
+
+      {/* Digital Time Display Below */}
+      <div className="font-mono text-sm sm:text-base font-black tracking-widest text-ink px-4 py-1.5 rounded-full bg-subtle border border-brand/30 flex items-center justify-center gap-1 shadow-sm">
+        <Clock className="w-3.5 h-3.5 text-brand" />
+        <span>{formattedHours}:{formattedMins}</span>
+        <span className="text-brand text-xs font-bold animate-pulse">:{formattedSecs}</span>
+      </div>
+    </div>
+  );
+};
+
 export const TimeTracker = ({ lang, currentUser }) => {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.de;
   const [timeLogs, setTimeLogs] = useState(StorageService.getTimeLogs());
@@ -126,20 +191,17 @@ export const TimeTracker = ({ lang, currentUser }) => {
     l => l.employeeId === kioskEmp.id && l.date === todayStr && !l.clockOut
   ) : null;
 
-  const formattedHours = String(currentTime.getHours()).padStart(2, '0');
-  const formattedMins = String(currentTime.getMinutes()).padStart(2, '0');
-  const formattedSecs = String(currentTime.getSeconds()).padStart(2, '0');
-
   return (
     <div className="space-y-6">
 
       <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
-          <div className="space-y-2">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 items-center justify-between gap-6">
+          {/* Left Column: Title */}
+          <div className="space-y-2 text-center lg:text-left">
             <h1 className="page-title text-ink">
               {t.timeTrackerTitle}
             </h1>
-            <p className="text-subhead text-ink-soft max-w-xl leading-relaxed mt-1">
+            <p className="text-subhead text-ink-soft leading-relaxed mt-1">
               {lang === 'tr' ? (
                 <>
                   Dokunmatik PIN terminali ile kartsız & e-postasız saniyelik giriş-çıkış.
@@ -156,20 +218,19 @@ export const TimeTracker = ({ lang, currentUser }) => {
             </p>
           </div>
 
-          <div className="w-full md:w-[240px] flex flex-col gap-2 shrink-0">
-            <div className="bg-[#1e1514] py-2.5 px-4 rounded-md flex items-center justify-center gap-2.5 text-ink">
-              <Clock className="w-4 h-4 text-brand icon-brand" />
-              <div className="font-mono text-base font-black tracking-wider">
-                {formattedHours}:{formattedMins}:<span className="text-brand">{formattedSecs}</span>
-              </div>
-            </div>
+          {/* Center Column: Round Clock Right in the Middle of the Card */}
+          <div className="flex items-center justify-center my-2 lg:my-0">
+            <RoundClock currentTime={currentTime} />
+          </div>
 
+          {/* Right Column: Mode Switchers */}
+          <div className="w-full max-w-xs mx-auto lg:max-w-none lg:w-[180px] lg:ml-auto flex flex-col gap-2 shrink-0">
             <button
               onClick={() => setTrackerMode('personal')}
-              className={`w-full py-2.5 rounded-md text-xs font-bold transition flex items-center justify-center gap-2 ${
+              className={`w-full py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
                 trackerMode === 'personal'
                   ? 'btn-brand font-black'
-                  : 'bg-[#1e1514] text-ink-soft hover:text-ink hover:bg-[#2a1d1b]'
+                  : 'card-inner text-ink-soft hover:text-ink hover:border-brand border border-line'
               }`}
             >
               <Smartphone className="w-4 h-4" />
@@ -178,10 +239,10 @@ export const TimeTracker = ({ lang, currentUser }) => {
 
             <button
               onClick={() => setTrackerMode('kiosk')}
-              className={`w-full py-2.5 rounded-md text-xs font-bold transition flex items-center justify-center gap-2 ${
+              className={`w-full py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
                 trackerMode === 'kiosk'
                   ? 'btn-brand font-black'
-                  : 'bg-[#1e1514] text-ink-soft hover:text-ink hover:bg-[#2a1d1b]'
+                  : 'card-inner text-ink-soft hover:text-ink hover:border-brand border border-line'
               }`}
             >
               <Tablet className="w-4 h-4" />

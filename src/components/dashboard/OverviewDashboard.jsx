@@ -234,7 +234,7 @@ export const OverviewDashboard = ({
       subtitle: lang === 'tr' ? 'Tek tıkla işe başla, mola ver veya mesaiyi bitir' : 'Arbeitsbeginn, Pause erfassen & Feierabend',
       icon: Clock,
       badge: activeTimeLogs.find(l => l.employeeId === currentUser?.id) ? '● IM DIENST' : 'Bereit',
-      cardBg: 'bg-surface border-line ',
+      cardBg: 'card-inner border-line ',
       iconBg: 'icon-box',
       badgeBg: 'badge-neutral',
       textColor: 'text-ink',
@@ -246,7 +246,7 @@ export const OverviewDashboard = ({
       subtitle: lang === 'tr' ? 'Bu haftaki çalışma gün ve saatleriniz' : 'Ihre Einsatzzeiten für die aktuelle Woche',
       icon: CalendarDays,
       badge: '2 Schichten',
-      cardBg: 'bg-surface border-line ',
+      cardBg: 'card-inner border-line ',
       iconBg: 'icon-box',
       badgeBg: 'badge-neutral',
       textColor: 'text-ink',
@@ -258,7 +258,7 @@ export const OverviewDashboard = ({
       subtitle: lang === 'tr' ? 'Dolap sıcaklıkları ve açılış/kapanış temizlik kontrolleri' : 'Temperatur messen & tägliche Checklisten abhaken',
       icon: ShieldCheck,
       badge: 'Täglich',
-      cardBg: 'bg-surface border-line ',
+      cardBg: 'card-inner border-line ',
       iconBg: 'icon-box',
       badgeBg: 'badge-neutral',
       textColor: 'text-ink',
@@ -270,7 +270,7 @@ export const OverviewDashboard = ({
       subtitle: lang === 'tr' ? 'Şirket içi önemli duyuruları ve mesajları görün' : 'Wichtige Mitteilungen der Geschäftsleitung lesen',
       icon: Megaphone,
       badge: 'Aushang',
-      cardBg: 'bg-surface border-line ',
+      cardBg: 'card-inner border-line ',
       iconBg: 'icon-box',
       badgeBg: 'badge-neutral',
       textColor: 'text-ink',
@@ -282,7 +282,7 @@ export const OverviewDashboard = ({
       subtitle: lang === 'tr' ? 'Gerekçe seçimi ve doktor raporu (Attest) yükleme' : 'Absenzgrund mitteilen & Arztzeugnis hochladen',
       icon: HeartPulse,
       badge: 'Schnellmeldung',
-      cardBg: 'bg-surface border-line ',
+      cardBg: 'card-inner border-line ',
       iconBg: 'icon-box',
       badgeBg: 'badge-neutral',
       textColor: 'text-ink',
@@ -294,7 +294,7 @@ export const OverviewDashboard = ({
       subtitle: lang === 'tr' ? 'Kalan izin günlerinizi görün ve talep oluşturun' : 'Resturlaub einsehen & freie Tage beantragen',
       icon: Palmtree,
       badge: 'Urlaubskonto',
-      cardBg: 'bg-surface border-line ',
+      cardBg: 'card-inner border-line ',
       iconBg: 'icon-box',
       badgeBg: 'badge-neutral',
       textColor: 'text-ink',
@@ -542,7 +542,7 @@ export const OverviewDashboard = ({
           </div>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="bg-surface rounded-3xl border border-line p-6 space-y-4">
           <div className="flex items-center justify-between px-1">
             <h2 className="text-sm font-black text-ink uppercase tracking-wider">
               {lang === 'tr' ? 'Görev & İşlemlerim' : 'Meine Aufgaben & Schnellzugriff'}
@@ -556,11 +556,11 @@ export const OverviewDashboard = ({
                 <div
                   key={mod.id + mod.title}
                   onClick={() => onNavigate(mod.id)}
-                  className={`p-5 rounded-3xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} card-inner group`}
+                  className={`p-5 rounded-3xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} card-inner group transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98`}
                 >
                   <div>
                     <div className="flex items-start justify-between gap-3 mb-3">
-                      <div className={`w-11 h-11 rounded-2xl flex items-center justify-center border ${mod.iconBg} transition`}>
+                      <div className={`w-11 h-11 rounded-2xl flex items-center justify-center border ${mod.iconBg} transition-transform duration-200 group-hover:scale-110`}>
                         <Icon className="w-5 h-5" />
                       </div>
                       {mod.badge && (

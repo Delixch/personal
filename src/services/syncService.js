@@ -210,10 +210,10 @@ export const SyncService = {
   // GİRİŞ-ÇIKIŞ (STEMPELUHR) SENKRONİZASYONU
   syncTimeLogs: async () => {
     if (!SyncService.isLive()) return;
-    const { data, error } = await supabase.from('stempelungen').select('*').order('created_at', { ascending: false }).limit(200);
-    if (error) throw error;
-    if (data && data.length > 0) {
-      const mapped = data.map(s => {
+    try {
+      const { data, error } = await supabase.from('stempelungen').select('*').order('created_at', { ascending: false }).limit(200);
+      if (error) throw error;
+      const mapped = (data || []).map(s => {
         const inTime = s.start_zeit ? new Date(s.start_zeit).toTimeString().substring(0, 5) : '08:00';
         const outTime = s.ende_zeit ? new Date(s.ende_zeit).toTimeString().substring(0, 5) : null;
         return {
@@ -227,6 +227,19 @@ export const SyncService = {
         };
       });
       localStorage.setItem('ado_timelogs_v1', JSON.stringify(mapped));
+      window.dispatchEvent(new Event('ado_db_update'));
+    } catch (err) {
+      console.warn('syncTimeLogs error:', err);
+    }
+  },
+
+  clearAllTimeLogsInDb: async () => {
+    if (!SyncService.isLive()) return;
+    try {
+      await supabase.from('stempelungen').delete().not('id', 'is', null);
+      await supabase.from('stempelungen').delete().neq('id', '___none___');
+    } catch (err) {
+      console.warn('clearAllTimeLogsInDb error:', err);
     }
   },
 

@@ -102,7 +102,7 @@ export const initializeDatabase = () => {
     localStorage.setItem(STORAGE_KEYS.BULLETINS, JSON.stringify([]));
   }
 
-  SyncService.clearAllShiftsInDb().then(() => SyncService.pushAllEmployees()).then(() => SyncService.syncAll()).catch(() => {});
+  SyncService.clearAllShiftsInDb().then(() => SyncService.clearAllTimeLogsInDb()).then(() => SyncService.pushAllEmployees()).then(() => SyncService.syncAll()).catch(() => {});
 };
 
 export const getStoredItem = (key, fallback = []) => {

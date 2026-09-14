@@ -223,13 +223,13 @@ export const TimeTracker = ({ lang, currentUser }) => {
             <RoundClock currentTime={currentTime} />
           </div>
 
-          {/* Right Column: Mode Switchers */}
-          <div className="w-full max-w-xs mx-auto lg:max-w-none lg:w-[180px] lg:ml-auto flex flex-col gap-2 shrink-0">
+          {/* Right Column: Mode Switchers (Flush Right) */}
+          <div className="w-full lg:w-auto flex flex-col lg:items-end justify-center gap-2.5 shrink-0 lg:ml-auto">
             <button
               onClick={() => setTrackerMode('personal')}
-              className={`w-full py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
+              className={`w-full lg:w-48 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
                 trackerMode === 'personal'
-                  ? 'btn-brand font-black'
+                  ? 'btn-brand font-black shadow-md'
                   : 'card-inner text-ink-soft hover:text-ink hover:border-brand border border-line'
               }`}
             >
@@ -239,9 +239,9 @@ export const TimeTracker = ({ lang, currentUser }) => {
 
             <button
               onClick={() => setTrackerMode('kiosk')}
-              className={`w-full py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
+              className={`w-full lg:w-48 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
                 trackerMode === 'kiosk'
-                  ? 'btn-brand font-black'
+                  ? 'btn-brand font-black shadow-md'
                   : 'card-inner text-ink-soft hover:text-ink hover:border-brand border border-line'
               }`}
             >

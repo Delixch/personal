@@ -355,7 +355,7 @@ export const PersonalakteModal = ({
                 </span>
               </h2>
               <p className="text-xs sm:text-sm text-ink-soft font-semibold">
-                {formData.jobTitle} • {formData.department.toUpperCase()} • {formatCurrency(formData.hourlyRate)}/h
+                {formData.jobTitle || 'Mitarbeiter'} • {(formData.department || 'staff').toUpperCase()} • {formatCurrency(formData.hourlyRate || 30)}/h
               </p>
             </div>
           </div>
@@ -364,26 +364,27 @@ export const PersonalakteModal = ({
             {/* Quick Switch Employee Dropdown right in the modal (Admin Only) */}
             {isAdmin && (
               <select
-                value={currentEmployeeId}
+                value={employee?.id || ''}
                 onChange={(e) => {
-                  setCurrentEmployeeId(e.target.value);
-                  const emp = allEmployees.find(x => x.id === e.target.value);
+                  const newId = e.target.value;
+                  setCurrentEmployeeId(newId);
+                  const emp = allEmployees.find(m => m.id === newId);
                   if (emp) {
                     setFormData({
-                      ...formData,
-                      name: emp.name,
-                      jobTitle: emp.jobTitle,
-                      department: emp.department,
-                      hourlyRate: emp.hourlyRate,
-                      email: emp.email,
-                      password: emp.password,
+                      name: emp.name || '',
+                      jobTitle: emp.jobTitle || 'Mitarbeiter',
+                      department: emp.department || 'staff',
+                      hourlyRate: emp.hourlyRate || 30.0,
+                      email: emp.email || '',
+                      password: emp.password || '1234',
+                      role: emp.role || 'staff',
                       pin: emp.pin || '1001',
-                      phone: emp.phone,
-                      ahv: emp.ahv
+                      phone: emp.phone || '',
+                      ahv: emp.ahv || ''
                     });
                   }
                 }}
-                className="px-3 py-2 rounded-xl bg-subtle text-ink text-xs font-bold border border-line focus:outline-none hover:border-brand transition"
+                className="pl-3 pr-8 py-2 rounded-md card-inner text-ink text-xs font-bold border border-line focus:outline-none focus:border-brand cursor-pointer"
               >
                 {allEmployees.map(e => (
                   <option key={e.id} value={e.id}>
@@ -400,20 +401,20 @@ export const PersonalakteModal = ({
                   onSwitchUser(employee);
                   onClose();
                 }}
-                className="px-3 py-2 rounded-xl bg-subtle text-ink text-xs font-black transition flex items-center gap-1.5 border border-line hover:bg-brand hover:text-white"
+                className="px-3.5 py-2 rounded-md card-inner text-ink text-xs font-bold transition flex items-center gap-1.5 border border-line hover:border-brand cursor-pointer"
                 title="Bu personelin ekranına geç"
               >
-                <Fingerprint className="w-3.5 h-3.5" />
+                <Fingerprint className="w-3.5 h-3.5 shrink-0" />
                 <span>{lang === 'tr' ? 'Bu Hesaba Geç' : 'Einloggen'}</span>
               </button>
             )}
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl bg-subtle text-ink transition border border-line hover:bg-brand hover:text-white"
+              className="p-2 rounded-md card-inner text-ink transition border border-line hover:border-brand cursor-pointer"
               title="Schliessen"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4 shrink-0" />
             </button>
           </div>
         </div>
@@ -427,7 +428,7 @@ export const PersonalakteModal = ({
             <select
               value={activeTab}
               onChange={(e) => setActiveTab(e.target.value)}
-              className="w-full pl-3.5 pr-11 py-2.5 rounded-2xl bg-surface text-ink text-xs font-bold border border-line focus:outline-none focus:border-brand appearance-none cursor-pointer tracking-wide"
+              className="w-full pl-3.5 pr-11 py-2 rounded-md card-inner text-ink text-xs font-bold border border-line focus:outline-none focus:border-brand appearance-none cursor-pointer tracking-wide"
             >
               <option value="360">{lang === 'tr' ? '⭐ 360° Sicil Özeti' : '⭐ 360° Chef-Übersicht'}</option>
               <option value="zeiterfassung">{lang === 'tr' ? 'Saatler & Stempeluhr' : 'Stempeluhr & Stunden'}</option>
@@ -447,7 +448,7 @@ export const PersonalakteModal = ({
           <div className="hidden sm:flex items-start gap-2 text-xs font-bold py-1">
             <button
               onClick={() => setActiveTab('360')}
-              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+              className={`px-3.5 py-2 rounded-md transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
                 activeTab === '360'
                   ? 'btn-brand font-black'
                   : 'card-inner text-ink border border-line'
@@ -461,7 +462,7 @@ export const PersonalakteModal = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setActiveTab('zeiterfassung')}
-                  className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                  className={`px-3.5 py-2 rounded-md transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
                     activeTab === 'zeiterfassung'
                       ? 'btn-brand font-black'
                       : 'card-inner text-ink border border-line'
@@ -473,7 +474,7 @@ export const PersonalakteModal = ({
 
                 <button
                   onClick={() => setActiveTab('schichten')}
-                  className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                  className={`px-3.5 py-2 rounded-md transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
                     activeTab === 'schichten'
                       ? 'btn-brand font-black'
                       : 'card-inner text-ink border border-line'
@@ -485,7 +486,7 @@ export const PersonalakteModal = ({
 
                 <button
                   onClick={() => setActiveTab('lohn')}
-                  className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                  className={`px-3.5 py-2 rounded-md transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
                     activeTab === 'lohn'
                       ? 'btn-brand font-black'
                       : 'card-inner text-ink border border-line'
@@ -499,7 +500,7 @@ export const PersonalakteModal = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setActiveTab('absenzen')}
-                  className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                  className={`px-3.5 py-2 rounded-md transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
                     activeTab === 'absenzen'
                       ? 'btn-brand font-black'
                       : 'card-inner text-ink border border-line'
@@ -511,13 +512,13 @@ export const PersonalakteModal = ({
 
                 <button
                   onClick={() => setActiveTab('stammdaten')}
-                  className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 ${
+                  className={`px-3.5 py-2 rounded-md transition flex items-center gap-1.5 shrink-0 cursor-pointer ${
                     activeTab === 'stammdaten'
                       ? 'btn-brand font-black'
                       : 'card-inner text-ink border border-line'
                   }`}
                 >
-                  <FileText className="w-4 h-4 text-ink" />
+                  <FileText className="w-4 h-4" />
                   <span>{lang === 'tr' ? 'Sözleşme, AHV & Evraklar' : 'Vertrag & Dokumente'}</span>
                 </button>
               </div>
@@ -537,13 +538,13 @@ export const PersonalakteModal = ({
                 <Clock className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-[10px] text-ink font-black block uppercase tracking-wider">
+                <span className="text-[10px] text-ink font-normal block uppercase tracking-wider">
                   {lang === 'tr' ? 'Bu Ayki Mesai' : 'Arbeitszeit'}
                 </span>
-                <span className="font-mono font-black text-sm text-ink block">
+                <span className="font-mono font-normal text-sm text-ink block">
                   {effectiveHours} Std.
                 </span>
-                <span className={`block text-[10px] font-bold ${overtime === 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                <span className={`block text-[10px] font-normal ${overtime === 0 ? 'text-emerald-400' : 'text-red-400'}`}>
                   {overtime === 0 ? '0h Denk' : overtime > 0 ? `+${overtime}h Fazla` : `${overtime}h Eksik`} (Soll: <span className="text-emerald-400">{targetMonthlyHours}h</span>)
                 </span>
               </div>
@@ -555,13 +556,13 @@ export const PersonalakteModal = ({
                 <Palmtree className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-[10px] text-ink font-black block uppercase tracking-wider">
+                <span className="text-[10px] text-ink font-normal block uppercase tracking-wider">
                   {lang === 'tr' ? 'Kalan İzin' : 'Resturlaub'}
                 </span>
-                <span className="font-mono font-black text-sm text-brand block">
+                <span className="font-mono font-normal text-sm text-brand block">
                   {vacationRemaining} Gün
                 </span>
-                <span className="block text-[10px] text-ink font-extrabold">
+                <span className="block text-[10px] text-ink font-normal">
                   {vacationTotal} / {vacationUsed} Kullanıldı
                 </span>
               </div>
@@ -573,13 +574,13 @@ export const PersonalakteModal = ({
                 <DollarSign className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-[10px] text-ink font-black block uppercase tracking-wider">
+                <span className="text-[10px] text-ink font-normal block uppercase tracking-wider">
                   {lang === 'tr' ? 'Net Maaş' : 'Nettolohn'}
                 </span>
-                <span className="font-mono font-black text-sm text-ink block">
+                <span className="font-mono font-normal text-sm text-ink block">
                   {formatCurrency(netMonthlySalary)}
                 </span>
-                <span className="block text-[10px] text-ink font-extrabold">
+                <span className="block text-[10px] text-ink font-normal">
                   Bankaya Yatırıldı (ZKB)
                 </span>
               </div>
@@ -591,13 +592,13 @@ export const PersonalakteModal = ({
                 <TrendingUp className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-[10px] text-ink font-black block uppercase tracking-wider">
+                <span className="text-[10px] text-ink font-normal block uppercase tracking-wider">
                   {lang === 'tr' ? 'Yıllık Maaş' : 'Jahreslohn'}
                 </span>
-                <span className="font-mono font-black text-sm text-ink block">
+                <span className="font-mono font-normal text-sm text-ink block">
                   {formatCurrency(annualGrossEstimate)}
                 </span>
-                <span className="block text-[10px] text-ink font-extrabold">
+                <span className="block text-[10px] text-ink font-normal">
                   13. Maaş Dahil • AHV✓
                 </span>
               </div>
@@ -1421,7 +1422,7 @@ export const PersonalakteModal = ({
                   AHV-Nummer <strong>{formData.ahv}</strong>, wohnhaft in {formData.address}.
                 </p>
                 <p className="leading-relaxed">
-                  <strong>Funktion:</strong> {formData.jobTitle} ({formData.department.toUpperCase()})<br />
+                  <strong>Funktion:</strong> {formData.jobTitle || 'Mitarbeiter'} ({(formData.department || 'staff').toUpperCase()})<br />
                   <strong>Pensum:</strong> {pensumPercent}% ({weeklyHours} Std./Woche)<br />
                   <strong>Stundenansatz / Lohn:</strong> CHF {formData.hourlyRate} brutto pro Stunde<br />
                   <strong>13. Monatslohn:</strong> 8.33% gemäss Art. 12 L-GAV gewährleistet.

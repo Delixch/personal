@@ -71,7 +71,7 @@ export const DatabaseManager = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
 
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <h1 className="page-title text-ink">
@@ -84,12 +84,12 @@ export const DatabaseManager = ({ lang, currentUser }) => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 md:ml-auto">
             <button
               onClick={handleExportBackup}
-              className="px-4 py-2.5 rounded-md btn-brand font-black text-xs flex items-center gap-1.5 transition"
+              className="px-3.5 py-2 rounded-md btn-brand font-black text-xs flex items-center gap-2 transition cursor-pointer"
             >
-              <Download className="w-4 h-4" />
+              <Download className="w-4 h-4 shrink-0" />
               <span>{lang === 'tr' ? 'Veritabanı Yedeği İndir (JSON)' : 'Backup herunterladen (JSON)'}</span>
             </button>
           </div>

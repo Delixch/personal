@@ -119,7 +119,7 @@ export const CompanyBulletin = ({ lang, currentUser, isAdmin }) => {
 
   return (
     <div className="space-y-6">
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -135,11 +135,11 @@ export const CompanyBulletin = ({ lang, currentUser, isAdmin }) => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 sm:ml-auto">
             {canPublish && (
               <button
                 onClick={() => setShowAddModal(true)}
-                className="px-4 py-2.5 rounded-md btn-brand text-white font-black text-xs flex items-center gap-2 transition shadow-md"
+                className="px-3.5 py-2 rounded-md btn-brand text-white font-black text-xs flex items-center gap-2 transition cursor-pointer"
               >
                 <Plus className="w-4 h-4 text-white" />
                 <span>{lang === 'tr' ? 'Yeni Duyuru Yayınla' : 'Neue Mitteilung verfassen'}</span>
@@ -148,13 +148,13 @@ export const CompanyBulletin = ({ lang, currentUser, isAdmin }) => {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 mt-6 border-t border-line-soft pt-4">
+        <div className="flex flex-wrap gap-2 mt-6 border-t border-line pt-4">
           <button
             onClick={() => setFilterCategory('all')}
-            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
               filterCategory === 'all'
-                ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black shadow-xs'
-                : 'card-inner border border-line-soft text-ink-soft hover:text-ink'
+                ? 'btn-brand font-black'
+                : 'card-inner text-ink border border-line'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -162,21 +162,21 @@ export const CompanyBulletin = ({ lang, currentUser, isAdmin }) => {
           </button>
           <button
             onClick={() => setFilterCategory('urgent')}
-            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
               filterCategory === 'urgent'
-                ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black shadow-xs'
-                : 'card-inner border border-line-soft text-ink-soft hover:text-ink'
+                ? 'btn-brand font-black'
+                : 'card-inner text-ink border border-line'
             }`}
           >
-            <AlertTriangle className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
-            <span className="animate-pulse">{lang === 'tr' ? 'Acil Duyurular' : 'Dringend'}</span>
+            <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+            <span>{lang === 'tr' ? 'Acil Duyurular' : 'Dringend'}</span>
           </button>
           <button
             onClick={() => setFilterCategory('rule')}
-            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
               filterCategory === 'rule'
-                ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black shadow-xs'
-                : 'card-inner border border-line-soft text-ink-soft hover:text-ink'
+                ? 'btn-brand font-black'
+                : 'card-inner text-ink border border-line'
             }`}
           >
             <FileText className="w-3.5 h-3.5 text-amber-400" />
@@ -184,10 +184,10 @@ export const CompanyBulletin = ({ lang, currentUser, isAdmin }) => {
           </button>
           <button
             onClick={() => setFilterCategory('info')}
-            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
               filterCategory === 'info'
-                ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black shadow-xs'
-                : 'card-inner border border-line-soft text-ink-soft hover:text-ink'
+                ? 'btn-brand font-black'
+                : 'card-inner text-ink border border-line'
             }`}
           >
             <Info className="w-3.5 h-3.5 text-sky-400" />

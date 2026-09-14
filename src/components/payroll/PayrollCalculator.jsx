@@ -134,7 +134,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
 
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <h1 className="page-title text-ink">
@@ -147,11 +147,11 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 md:ml-auto">
             <select
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
-              className="px-3 py-2.5 rounded-2xl card-inner border border-line text-ink text-xs font-bold focus:outline-none focus:border-brand"
+              className="px-3.5 py-2 rounded-md card-inner border border-line text-ink text-xs font-bold focus:outline-none focus:border-brand cursor-pointer"
             >
               {months.map(m => (
                 <option key={m.value} value={m.value}>{m.label}</option>
@@ -160,9 +160,9 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
 
             <button
               onClick={exportTreuhandCSV}
-              className="px-4 py-2.5 rounded-2xl btn-brand text-white text-xs font-black flex items-center gap-2 transition"
+              className="px-3.5 py-2 rounded-md btn-brand font-black text-xs flex items-center gap-2 transition cursor-pointer"
             >
-              <FileSpreadsheet className="w-4 h-4" />
+              <FileSpreadsheet className="w-4 h-4 shrink-0" />
               <span>{lang === 'tr' ? 'Treuhand CSV İndir' : 'Treuhand CSV Export'}</span>
             </button>
           </div>

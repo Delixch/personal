@@ -236,8 +236,7 @@ export const SyncService = {
   clearAllTimeLogsInDb: async () => {
     if (!SyncService.isLive()) return;
     try {
-      await supabase.from('stempelungen').delete().not('id', 'is', null);
-      await supabase.from('stempelungen').delete().neq('id', '___none___');
+      await supabase.from('stempelungen').delete().gt('created_at', '1970-01-01T00:00:00Z');
     } catch (err) {
       console.warn('clearAllTimeLogsInDb error:', err);
     }
@@ -337,8 +336,7 @@ export const SyncService = {
   clearAllShiftsInDb: async () => {
     if (!SyncService.isLive()) return;
     try {
-      await supabase.from('schichten').delete().not('id', 'is', null);
-      await supabase.from('schichten').delete().neq('id', '___none___');
+      await supabase.from('schichten').delete().gt('created_at', '1970-01-01T00:00:00Z');
     } catch (err) {
       console.warn('clearAllShiftsInDb error:', err);
     }

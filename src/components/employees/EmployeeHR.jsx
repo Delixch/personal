@@ -66,13 +66,13 @@ export const EmployeeHR = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
 
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <h1 className="page-title text-ink">
               {lang === 'tr' ? 'Personel Dosyaları, Sözleşmeler & Girişler' : 'Mitarbeiterakten, Verträge & Zugänge'}
             </h1>
-            <p className="text-subhead text-ink-soft max-w-2xl leading-relaxed mt-1">
+            <p className="text-subhead text-ink max-w-2xl leading-relaxed mt-1">
               {lang === 'tr'
                 ? 'Her personele özel e-posta & şifre erişimi, dijital sigorta, sözleşme ve onboarding takibi.'
                 : 'Zentrale Verwaltung aller Mitarbeiter-Zugänge, Stundenansätze, AHV-Nummern und Arbeitsverträge.'}
@@ -81,9 +81,9 @@ export const EmployeeHR = ({ lang, currentUser }) => {
 
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 rounded-xl btn-brand font-black text-xs flex items-center gap-1.5 transition self-start md:self-auto shrink-0"
+            className="px-3.5 py-2 rounded-md btn-brand font-black text-xs flex items-center gap-2 transition shrink-0 md:ml-auto cursor-pointer"
           >
-            <UserPlus className="w-4 h-4" />
+            <UserPlus className="w-4 h-4 shrink-0" />
             <span>{lang === 'tr' ? 'Yeni Personel Ekle' : 'Neuen Mitarbeiter erfassen'}</span>
           </button>
         </div>
@@ -96,7 +96,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
               <Sparkles className="w-4 h-4 text-brand" />
               <span>{lang === 'tr' ? 'Personel 360° Hızlı Sicil Seçici (Chef Kolaylığı)' : '360° Mitarbeiter-Schnellzugriff (Chef-Modus)'}</span>
             </h3>
-            <p className="text-[11px] text-ink-muted mt-0.5">
+            <p className="text-[11px] text-ink mt-0.5">
               {lang === 'tr'
                 ? 'Bölüm bölüm gezmeden tek tıkla çalışanın çalıştığı saatleri, kalan iznini, maaşını ve tüm evraklarını açın:'
                 : 'Klicken Sie auf einen Mitarbeiter, um alle Arbeitszeiten, Resturlaub, Lohnabrechnungen und Akten sofort zu sehen:'}
@@ -146,73 +146,77 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                       className="w-12 h-12 rounded-full object-cover ring-2 ring-brand/30 transition"
                     />
                     <div>
-                      <h3 className="font-bold text-sm text-ink group-hover:text-brand transition">{emp.name}</h3>
-                      <p className="text-xs text-ink-soft font-semibold">{emp.jobTitle}</p>
-                      <span className="badge badge-slate text-[10px] py-0 px-2 mt-1 font-bold">
-                        {(emp.department || 'staff').toUpperCase()}
-                      </span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="font-normal text-sm text-ink">{emp.name}</span>
+                        <span className="font-normal text-xs uppercase tracking-wide" style={{ color: '#FF5A1F' }}>
+                          {(emp.department || 'staff').toUpperCase()}
+                        </span>
+                      </div>
+                      <p className="text-xs text-ink font-normal mt-0.5">
+                        {emp.jobTitle ? (emp.jobTitle.charAt(0).toUpperCase() + emp.jobTitle.slice(1)) : (emp.role === 'admin' ? 'Geschäftsführer & Inhaber' : 'Mitarbeiter')}
+                      </p>
                     </div>
                   </div>
 
                   {emp.role === 'admin' && (
-                    <span className="badge badge-emerald text-[9px] py-0.5 px-2 font-black">
+                    <span className="badge badge-emerald text-[9px] py-0.5 px-2 font-normal">
                       👑 CHEF
                     </span>
                   )}
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 mb-3 text-center">
-                  <div className="p-2 rounded-xl bg-subtle border border-line flex flex-col justify-center">
-                    <span className="text-[10px] text-ink-soft block uppercase font-bold">{lang === 'tr' ? 'Mesai' : 'Sollzeit'}</span>
-                    <span className="font-mono text-xs font-bold text-ink mt-0.5">42.0h/W</span>
+                  <div className="p-2 rounded-md bg-subtle border border-line flex flex-col justify-center">
+                    <span className="text-[10px] text-ink block uppercase font-normal">{lang === 'tr' ? 'Mesai' : 'Sollzeit'}</span>
+                    <span className="font-mono text-xs font-light text-ink mt-0.5">42.0h/W</span>
                   </div>
-                  <div className="p-2 rounded-xl bg-subtle border border-line flex flex-col justify-center">
-                    <span className="text-[10px] text-ink-soft block uppercase font-bold">{lang === 'tr' ? 'Kalan İzin' : 'Resturlaub'}</span>
-                    <span className="font-mono text-xs font-black text-brand mt-0.5">{vacationRest} {lang === 'tr' ? 'Gün' : 'Tage'}</span>
+                  <div className="p-2 rounded-md bg-subtle border border-line flex flex-col justify-center">
+                    <span className="text-[10px] text-ink block uppercase font-normal">{lang === 'tr' ? 'Kalan İzin' : 'Resturlaub'}</span>
+                    <span className="font-mono text-xs font-light mt-0.5" style={{ color: '#FF5A1F' }}>{vacationRest} {lang === 'tr' ? 'Gün' : 'Tage'}</span>
                   </div>
-                  <div className="p-2 rounded-xl bg-subtle border border-line flex flex-col justify-center">
-                    <span className="text-[10px] text-ink-soft block uppercase font-bold">{lang === 'tr' ? 'Saatlik' : 'Stundenlohn'}</span>
-                    <span className="font-mono text-xs font-bold text-emerald-400 mt-0.5">{formatCurrency(emp.hourlyRate)}</span>
+                  <div className="p-2 rounded-md bg-subtle border border-line flex flex-col justify-center">
+                    <span className="text-[10px] text-ink block uppercase font-normal">{lang === 'tr' ? 'Saatlik' : 'Stundenlohn'}</span>
+                    <span className="font-mono text-xs font-light text-emerald-400 mt-0.5">{formatCurrency(emp.hourlyRate)}</span>
                   </div>
                 </div>
 
-                <div className="space-y-2 text-xs text-ink-soft bg-subtle p-3.5 rounded-2xl border border-line my-2.5">
+                <div className="space-y-2 text-xs text-ink bg-subtle p-3.5 rounded-2xl border border-line my-2.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-ink-soft flex items-center gap-1.5">
-                      <Mail className="w-3.5 h-3.5 text-ink-muted" />
+                    <span className="text-ink flex items-center gap-1.5">
+                      <Mail className="w-3.5 h-3.5 text-ink" />
                       <span>E-Mail:</span>
                     </span>
-                    <span className="font-mono text-ink font-semibold text-[11px] truncate max-w-[150px]">
+                    <span className="font-mono text-ink font-normal text-[11px] truncate max-w-[150px]">
                       {emp.email}
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-ink-soft flex items-center gap-1.5">
-                      <KeyRound className="w-3.5 h-3.5 text-ink-muted" />
+                    <span className="text-ink flex items-center gap-1.5">
+                      <KeyRound className="w-3.5 h-3.5 text-ink" />
                       <span>Passwort / PIN:</span>
                     </span>
                     <div className="flex items-center gap-1.5 font-mono text-xs">
-                      <span className="text-ink-soft">{emp.password}</span>
+                      <span className="text-ink">{emp.password}</span>
                       <span className="text-ink-muted">|</span>
-                      <span className="px-2 py-0.5 rounded-md card-inner text-brand font-bold border border-brand/30 text-[11px]">
+                      <span className="px-2 py-0.5 rounded-md card-inner text-brand font-normal border border-brand/30 text-[11px]">
                         PIN: {emp.pin || '1001'}
                       </span>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-ink-soft">AHV / AVS:</span>
-                    <span className="font-mono text-[11px] text-ink font-semibold">{emp.ahv || (lang === 'tr' ? 'İncelemede' : 'In Prüfung')}</span>
+                    <span className="text-ink">AHV / AVS:</span>
+                    <span className="font-mono text-[11px] text-ink font-normal">{emp.ahv || (lang === 'tr' ? 'İncelemede' : 'In Prüfung')}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 text-[11px]">
-                  <span className="badge badge-emerald text-[10px] py-0.5 px-2 flex items-center gap-1 font-bold">
+                  <span className="badge badge-emerald text-[10px] py-0.5 px-2 flex items-center gap-1 font-normal">
                     <BadgeCheck className="w-3.5 h-3.5" />
                     <span>{lang === 'tr' ? 'Sözleşme Aktif' : 'Vertrag aktiv'}</span>
                   </span>
-                  <span className="badge badge-indigo text-[10px] py-0.5 px-2 flex items-center gap-1 font-bold">
+                  <span className="badge badge-indigo text-[10px] py-0.5 px-2 flex items-center gap-1 font-normal">
                     <ShieldCheck className="w-3.5 h-3.5" />
                     <span>UVG / Kasse</span>
                   </span>
@@ -224,7 +228,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                   e.stopPropagation();
                   setSelectedEmployee(emp);
                 }}
-                className="mt-4 w-full py-2.5 rounded-xl btn-ghost text-xs font-bold text-ink hover:border-brand hover:text-brand transition flex items-center justify-center gap-2 shadow-xs"
+                className="mt-4 w-full py-2.5 rounded-xl btn-ghost text-xs font-normal text-ink hover:border-brand hover:text-brand transition flex items-center justify-center gap-2 shadow-xs"
               >
                 <FileText className="w-4 h-4 text-brand" />
                 <span>{lang === 'tr' ? '360° Sicil & Tüm Bilgileri Aç →' : '360° Akte & Alle Daten öffnen →'}</span>

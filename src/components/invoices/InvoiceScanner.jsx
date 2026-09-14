@@ -201,7 +201,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
 
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <h1 className="page-title text-ink">
@@ -216,14 +216,14 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
 
           <button
             onClick={() => setShowScanModal(true)}
-            className="px-5 py-2.5 rounded-md btn-brand font-black text-xs flex items-center gap-2 transition self-start md:self-auto shrink-0"
+            className="px-3.5 py-2 rounded-md btn-brand font-black text-xs flex items-center gap-2 transition shrink-0 md:ml-auto cursor-pointer"
           >
-            <Camera className="w-4 h-4" />
+            <Camera className="w-4 h-4 shrink-0" />
             <span>{t.scanInvoice}</span>
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 pt-4 border-t border-line-soft">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 pt-4 border-t border-line">
           <div className="p-3.5 rounded-2xl card-inner border border-line">
             <p className="text-[11px] text-subhead">{lang === 'tr' ? 'Ödenen Faturalar' : 'Bezahlte Rechnungen'}</p>
             <p className="text-lg font-black font-mono text-emerald-400">
@@ -256,10 +256,10 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
           <button
             key={tab.id}
             onClick={() => setActiveFilter(tab.id)}
-            className={`px-4 py-2 rounded-md text-xs transition border ${
+            className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center justify-center cursor-pointer ${
               activeFilter === tab.id
-                ? 'bg-[#2e1f1c] border-brand/50 text-brand font-black'
-                : 'bg-[#1e1514] border-transparent text-ink-soft hover:text-ink font-bold'
+                ? 'btn-brand font-black'
+                : 'card-inner text-ink border border-line'
             }`}
           >
             {tab.label}

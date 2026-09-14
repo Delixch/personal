@@ -194,7 +194,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
 
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 items-center justify-between gap-6">
           {/* Left Column: Title */}
           <div className="space-y-2 text-center lg:text-left">
@@ -224,28 +224,28 @@ export const TimeTracker = ({ lang, currentUser }) => {
           </div>
 
           {/* Right Column: Mode Switchers (Flush Right) */}
-          <div className="w-full lg:w-auto flex flex-col lg:items-end justify-center gap-2.5 shrink-0 lg:ml-auto">
+          <div className="w-full lg:w-fit flex flex-col gap-2 shrink-0 lg:items-end lg:ml-auto">
             <button
               onClick={() => setTrackerMode('personal')}
-              className={`w-full lg:w-48 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
+              className={`w-full px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
                 trackerMode === 'personal'
-                  ? 'btn-brand font-black shadow-md'
-                  : 'card-inner text-ink-soft hover:text-ink hover:border-brand border border-line'
+                  ? 'btn-brand font-black'
+                  : 'card-inner text-ink border border-line'
               }`}
             >
-              <Smartphone className="w-4 h-4" />
+              <Smartphone className="w-4 h-4 shrink-0" />
               <span>{lang === 'tr' ? 'Profilim' : 'Persönlich'}</span>
             </button>
 
             <button
               onClick={() => setTrackerMode('kiosk')}
-              className={`w-full lg:w-48 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
+              className={`w-full px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
                 trackerMode === 'kiosk'
-                  ? 'btn-brand font-black shadow-md'
-                  : 'card-inner text-ink-soft hover:text-ink hover:border-brand border border-line'
+                  ? 'btn-brand font-black'
+                  : 'card-inner text-ink border border-line'
               }`}
             >
-              <Tablet className="w-4 h-4" />
+              <Tablet className="w-4 h-4 shrink-0" />
               <span>{lang === 'tr' ? 'Tablet PIN Terminali' : 'PIN Terminal (Kiosk)'}</span>
             </button>
           </div>

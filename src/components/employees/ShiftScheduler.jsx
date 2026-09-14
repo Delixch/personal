@@ -182,7 +182,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
 
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <h1 className="page-title text-ink">
@@ -193,20 +193,20 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 md:ml-auto">
             <button
               onClick={() => setWeekOffset(prev => prev - 1)}
-              className="p-2.5 rounded-md bg-[#1e1514] text-ink hover:bg-[#2a1d1b] transition"
+              className="p-2 rounded-md card-inner text-ink border border-line hover:border-brand transition cursor-pointer"
               title={lang === 'tr' ? 'Önceki Hafta' : 'Vorherige Woche'}
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => setWeekOffset(0)}
-              className={`px-3.5 py-2.5 rounded-md text-xs font-bold transition ${
+              className={`px-3.5 py-2 rounded-md text-xs font-bold transition cursor-pointer ${
                 weekOffset === 0
-                  ? 'bg-[#1e1514] text-ink border border-line-soft'
-                  : 'bg-[#2e1f1c] border border-brand/50 text-brand font-black'
+                  ? 'card-inner text-ink border border-line'
+                  : 'btn-brand font-black'
               }`}
               title={lang === 'tr' ? 'Mevcut haftaya dön' : 'Zur aktuellen Woche zurückkehren'}
             >
@@ -214,7 +214,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
             </button>
             <button
               onClick={() => setWeekOffset(prev => prev + 1)}
-              className="p-2.5 rounded-md bg-[#1e1514] text-ink hover:bg-[#2a1d1b] transition"
+              className="p-2 rounded-md card-inner text-ink border border-line hover:border-brand transition cursor-pointer"
               title={lang === 'tr' ? 'Gelecek Hafta' : 'Nächste Woche'}
             >
               <ChevronRight className="w-4 h-4" />
@@ -222,7 +222,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
 
             <button
               onClick={() => setShowAddModal(true)}
-              className="ml-2 px-4 py-2.5 rounded-md btn-brand font-black text-xs flex items-center gap-1.5 transition"
+              className="ml-2 px-3.5 py-2 rounded-md btn-brand font-black text-xs flex items-center gap-1.5 transition cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>{t.addShift}</span>
@@ -243,13 +243,13 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
           </div>
         )}
 
-        <div className="flex flex-wrap items-center gap-2 mt-6 pt-4 border-t border-line-soft">
+        <div className="flex flex-wrap items-center gap-2 mt-6 pt-4 border-t border-line">
           <button
             onClick={() => setSelectedDept('all')}
-            className={`px-3.5 py-2 rounded-md text-xs font-bold whitespace-nowrap transition border ${
+            className={`px-3.5 py-2 rounded-md text-xs font-bold whitespace-nowrap transition cursor-pointer ${
               selectedDept === 'all'
-                ? 'bg-[#2e1f1c] border-brand/50 text-brand font-black'
-                : 'bg-[#1e1514] border-transparent text-ink-soft hover:text-ink'
+                ? 'btn-brand font-black'
+                : 'card-inner text-ink border border-line'
             }`}
           >
             {lang === 'tr' ? 'Tüm Departmanlar' : 'Alle Abteilungen'}
@@ -258,10 +258,10 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
             <button
               key={dept.id}
               onClick={() => setSelectedDept(dept.id)}
-              className={`px-3.5 py-2 rounded-md text-xs font-bold whitespace-nowrap transition border flex items-center gap-1.5 ${
+              className={`px-3.5 py-2 rounded-md text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 cursor-pointer ${
                 selectedDept === dept.id
-                  ? 'bg-[#2e1f1c] border-brand/50 text-brand font-black'
-                  : 'bg-[#1e1514] border-transparent text-ink-soft hover:text-ink'
+                  ? 'btn-brand font-black'
+                  : 'card-inner text-ink border border-line'
               }`}
             >
               {getDepartmentIcon(dept.id)}

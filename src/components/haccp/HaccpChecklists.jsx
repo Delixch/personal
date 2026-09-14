@@ -12,7 +12,9 @@ import {
   Calendar,
   RotateCcw,
   CheckSquare,
-  Square
+  Square,
+  Sun,
+  Moon
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { StorageService } from '../../services/storage';
@@ -97,7 +99,7 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
     <div className="space-y-6">
       
       {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-xl">
             <h1 className="page-title text-ink">
@@ -110,36 +112,36 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
             </p>
           </div>
 
-          <div className="w-full md:w-[260px] flex flex-col gap-2 shrink-0">
+          <div className="w-full md:w-fit flex flex-col gap-2 shrink-0 md:items-end">
             <button
               onClick={exportHaccpReport}
-              className="w-full py-2.5 rounded-md bg-[#1e1514] text-ink hover:bg-[#2a1d1b] font-bold text-xs flex items-center justify-center gap-2 transition"
+              className="w-full px-3.5 py-2 rounded-md card-inner text-ink border border-line hover:border-brand font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer"
             >
-              <Download className="w-4 h-4 text-brand icon-brand" />
+              <Download className="w-4 h-4 text-brand icon-brand shrink-0" />
               <span>{lang === 'tr' ? 'HACCP Raporu İndir' : 'HACCP Protokoll Export'}</span>
             </button>
 
             <button
               onClick={() => setActiveTab('temp')}
-              className={`w-full py-2.5 rounded-md font-bold text-xs flex items-center justify-center gap-2 transition ${
+              className={`w-full px-3.5 py-2 rounded-md text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
                 activeTab === 'temp'
                   ? 'btn-brand font-black'
-                  : 'bg-[#1e1514] text-ink-soft hover:text-ink hover:bg-[#2a1d1b]'
+                  : 'card-inner text-ink border border-line'
               }`}
             >
-              <Thermometer className="w-4 h-4" />
+              <Thermometer className="w-4 h-4 shrink-0" />
               <span>{lang === 'tr' ? 'Soğuk Oda Sıcaklıkları' : 'Temperaturkontrolle'}</span>
             </button>
 
             <button
               onClick={() => setActiveTab('checklists')}
-              className={`w-full py-2.5 rounded-md font-bold text-xs flex items-center justify-center gap-2 transition ${
+              className={`w-full px-3.5 py-2 rounded-md text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
                 activeTab === 'checklists'
                   ? 'btn-brand font-black'
-                  : 'bg-[#1e1514] text-ink-soft hover:text-ink hover:bg-[#2a1d1b]'
+                  : 'card-inner text-ink border border-line'
               }`}
             >
-              <CheckCircle2 className="w-4 h-4" />
+              <CheckCircle2 className="w-4 h-4 shrink-0" />
               <span>{lang === 'tr' ? 'Açılış & Kapanış Listeleri' : 'Tägliche Checklisten'}</span>
             </button>
           </div>
@@ -274,23 +276,25 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setSelectedShift('morning')}
-                className={`px-4 py-2 rounded-2xl text-xs font-bold transition border ${
+                className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
                   selectedShift === 'morning'
                     ? 'btn-brand font-black'
-                    : 'bg-ground border-line text-ink '
+                    : 'card-inner text-ink border border-line'
                 }`}
               >
-                🌅 {lang === 'tr' ? 'Sabah / Açılış Kontrolü (Frühschicht)' : 'Morgenkontrolle (Frühschicht)'}
+                <Sun className="w-4 h-4 shrink-0 text-amber-400" />
+                <span>{lang === 'tr' ? 'Sabah / Açılış Kontrolü (Frühschicht)' : 'Morgenkontrolle (Frühschicht)'}</span>
               </button>
               <button
                 onClick={() => setSelectedShift('evening')}
-                className={`px-4 py-2 rounded-2xl text-xs font-bold transition border ${
+                className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
                   selectedShift === 'evening'
                     ? 'btn-brand font-black'
-                    : 'bg-ground border-line text-ink '
+                    : 'card-inner text-ink border border-line'
                 }`}
               >
-                🌙 {lang === 'tr' ? 'Akşam / Kapanış Kontrolü (Spätschicht)' : 'Abendkontrolle (Spätschicht)'}
+                <Moon className="w-4 h-4 shrink-0 text-indigo-400" />
+                <span>{lang === 'tr' ? 'Akşam / Kapanış Kontrolü (Spätschicht)' : 'Abendkontrolle (Spätschicht)'}</span>
               </button>
             </div>
 
@@ -299,19 +303,19 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                 <span className="text-xs font-bold text-ink">
                   {completedCount} / {filteredTasks.length} {lang === 'tr' ? 'Tamamlandı' : 'Erledigt'}
                 </span>
-                <div className="w-36 h-2 rounded-full bg-ground border border-line overflow-hidden mt-1">
+                <div className="w-36 h-2.5 rounded-md bg-ground border border-line overflow-hidden mt-1 p-0.5">
                   <div
-                    className="h-full bg-brand rounded-full"
-                    style={{ width: `${progressPercent}%` }}
+                    className="h-full rounded-sm transition-all duration-300 shadow-sm"
+                    style={{ width: `${progressPercent}%`, backgroundColor: '#FF5A1F' }}
                   />
                 </div>
               </div>
 
               <button
                 onClick={() => setShowAddModal(true)}
-                className="px-3 py-2 rounded-xl bg-surface card-inner text-ink border border-line text-xs font-bold flex items-center gap-1.5 transition"
+                className="px-3.5 py-2 rounded-md card-inner text-ink border border-line text-xs font-bold flex items-center gap-1.5 transition cursor-pointer hover:border-brand"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-4 h-4 text-brand icon-brand shrink-0" />
                 <span>{lang === 'tr' ? 'Görev Ekle' : 'Prüfpunkt hinzufügen'}</span>
               </button>
             </div>

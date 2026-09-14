@@ -91,7 +91,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
 
-      <div className="p-6 sm:p-8 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
         <div className="relative z-10 flex flex-col md:flex-row justify-between gap-6">
           
           <div className="space-y-6 flex-1">
@@ -106,7 +106,7 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
               </p>
             </div>
 
-            <div className="flex items-center gap-3 pt-4 border-t border-line-soft">
+            <div className="flex items-center gap-3 pt-4 border-t border-line">
               <div className="w-9 h-9 rounded-xl icon-box flex items-center justify-center">
                 <Palmtree className="w-4 h-4" />
               </div>
@@ -125,32 +125,32 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 shrink-0 w-full md:w-[240px]">
+          <div className="flex flex-col gap-2 shrink-0 w-full md:w-fit md:ml-auto">
             {/* Action Buttons (Modals) */}
             <button
               onClick={() => setShowSickModal(true)}
-              className="w-full px-4 py-2.5 rounded-md btn-brand font-black text-xs flex items-center justify-center gap-2 transition"
+              className="w-full px-3.5 py-2 rounded-md btn-brand font-black text-xs flex items-center justify-center gap-2 transition cursor-pointer"
             >
-              <HeartPulse className="w-4 h-4" />
+              <HeartPulse className="w-4 h-4 shrink-0" />
               <span>{t.reportSick}</span>
             </button>
 
             <button
               onClick={() => setShowLeaveModal(true)}
-              className="w-full px-4 py-2.5 rounded-md btn-brand font-black text-xs flex items-center justify-center gap-2 transition"
+              className="w-full px-3.5 py-2 rounded-md btn-brand font-black text-xs flex items-center justify-center gap-2 transition cursor-pointer"
             >
-              <Palmtree className="w-4 h-4" />
+              <Palmtree className="w-4 h-4 shrink-0" />
               <span>{t.leaveRequest}</span>
             </button>
 
-            <div className="border-t border-line-soft pt-1 flex flex-col gap-1.5">
+            <div className="border-t border-line pt-2 flex flex-col gap-2">
               {/* View Switcher Tabs */}
               <button
                 onClick={() => setActiveTab('sick')}
-                className={`w-full px-4 py-2.5 rounded-md text-xs transition flex items-center justify-center gap-2 ${
+                className={`w-full px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
                   activeTab === 'sick'
-                    ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black'
-                    : 'bg-[#1e1514] border border-transparent text-ink-soft hover:text-ink font-bold'
+                    ? 'btn-brand font-black'
+                    : 'card-inner text-ink border border-line'
                 }`}
               >
                 <span>{lang === 'tr' ? 'Hastalık Bildirimleri' : 'Krankmeldungen'} ({sickReports.length})</span>
@@ -158,10 +158,10 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
 
               <button
                 onClick={() => setActiveTab('leave')}
-                className={`w-full px-4 py-2.5 rounded-md text-xs transition flex items-center justify-center gap-2 ${
+                className={`w-full px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
                   activeTab === 'leave'
-                    ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black'
-                    : 'bg-[#1e1514] border border-transparent text-ink-soft hover:text-ink font-bold'
+                    ? 'btn-brand font-black'
+                    : 'card-inner text-ink border border-line'
                 }`}
               >
                 <span>{lang === 'tr' ? 'İzin Talepleri' : 'Urlaubsanträge'} ({leaveRequests.length})</span>

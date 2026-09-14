@@ -174,7 +174,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
         <div className="p-5 rounded-3xl card-inner border border-line">
           <div className="flex items-center justify-between text-ink-soft mb-2">
             <span className="text-xs font-semibold">{lang === 'tr' ? 'Toplam Brüt Bordro' : 'Gesamte Bruttolohnsumme'}</span>
-            <Coins className="w-4 h-4 text-indigo-600" />
+            <Coins className="w-4 h-4 text-ink-soft" />
           </div>
           <div className="font-mono text-2xl font-black text-ink">
             {formatCurrency(totalGrossPayroll)}
@@ -200,7 +200,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
         <div className="p-5 rounded-3xl card-inner border border-line">
           <div className="flex items-center justify-between text-ink-soft mb-2">
             <span className="text-xs font-semibold">{lang === 'tr' ? 'Sozialabzüge (~11.5%)' : 'Sozialabzüge (AHV/ALV/BVG)'}</span>
-            <Percent className="w-4 h-4 text-brand" />
+            <Percent className="w-4 h-4 text-ink-soft" />
           </div>
           <div className="font-mono text-2xl font-black text-ink">
             {formatCurrency(totalGrossPayroll * 0.115)}

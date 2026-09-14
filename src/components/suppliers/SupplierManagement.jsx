@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { StorageService } from '../../services/storage';
 import { SyncService } from '../../services/syncService';
-import { TRANSLATIONS } from '../../utils/translations';
+import { TRANSLATIONS, translateDay } from '../../utils/translations';
 import { formatCurrency } from '../../utils/formatters';
 
 const EMPTY_SUPPLIER = {
@@ -68,12 +68,12 @@ export const SupplierManagement = ({ lang, currentUser }) => {
 
   const categories = [
     { id: 'all',        label: lang === 'tr' ? 'Tümü' : 'Alle' },
-    { id: 'metzgerei',  label: 'Metzgerei' },
-    { id: 'grosshandel',label: 'Grosshandel' },
-    { id: 'gemuese',    label: 'Gemüse & Früchte' },
-    { id: 'getraenke',  label: 'Getränke' },
-    { id: 'baeckerei',  label: 'Bäckerei' },
-    { id: 'hygiene',    label: 'Hygiene' }
+    { id: 'metzgerei',  label: lang === 'tr' ? 'Kasap & Et' : 'Metzgerei' },
+    { id: 'grosshandel',label: lang === 'tr' ? 'Toptan Grossmarket' : 'Grosshandel' },
+    { id: 'gemuese',    label: lang === 'tr' ? 'Sebze & Meyve' : 'Gemüse & Früchte' },
+    { id: 'getraenke',  label: lang === 'tr' ? 'İçecekler' : 'Getränke' },
+    { id: 'baeckerei',  label: lang === 'tr' ? 'Fırın & Unlu Mamüller' : 'Bäckerei' },
+    { id: 'hygiene',    label: lang === 'tr' ? 'Temizlik & Hijyen' : 'Hygiene' }
   ];
 
   const filteredSuppliers = suppliers.filter(s => {
@@ -292,7 +292,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                   title={lang === 'tr' ? 'Yeni Tedarikçi Ekle' : 'Neuer Lieferant'}
                 >
                   <UserPlus className="w-3.5 h-3.5 shrink-0" />
-                  <span className="truncate">{lang === 'tr' ? '+ Neu' : '+ Neu'}</span>
+                  <span className="truncate">{lang === 'tr' ? '+ Yeni' : '+ Neu'}</span>
                 </button>
               )}
 
@@ -355,7 +355,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                   {lang === 'tr' ? 'Teslimat Günleri' : 'Liefertage'}
                 </span>
                 <span className="text-xs font-normal text-ink">
-                  {(supplier.deliveryDays || []).join(' · ')}
+                  {(supplier.deliveryDays || []).map(day => translateDay(day, lang)).join(' · ')}
                 </span>
               </div>
             </div>
@@ -473,7 +473,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                       <span>
                         <strong>{lang === 'tr' ? 'Teslimat Günleri:' : 'Liefertage:'}</strong>{' '}
                         {selectedSupplierForOrder.deliveryDays?.length 
-                          ? selectedSupplierForOrder.deliveryDays.join(', ') 
+                          ? selectedSupplierForOrder.deliveryDays.map(day => translateDay(day, lang)).join(', ') 
                           : <span className="text-ink-muted italic">{lang === 'tr' ? 'Belirtilmedi' : 'Nicht angegeben'}</span>}
                       </span>
                     </div>
@@ -760,7 +760,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                   <div className="flex flex-wrap gap-1.5">
                     {(editingSupplier.deliveryDays || []).map((day, idx) => (
                       <span key={idx} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface border border-line text-xs font-semibold">
-                        {day}
+                        {translateDay(day, lang)}
                         <button onClick={() => removeDeliveryDay(idx)} className="text-ink-muted hover:text-red-400">
                           <X className="w-3 h-3" />
                         </button>

@@ -134,3 +134,52 @@ export const TRANSLATIONS = {
     localDbStatus: 'Offline-First Yerel Veritabanı Aktif'
   }
 };
+
+export const translateDay = (day, lang = 'de') => {
+  if (!day) return '';
+  let str = String(day).trim();
+
+  if (lang === 'tr') {
+    str = str.replace(/Täglich/gi, 'Her gün');
+    str = str.replace(/frühmorgens/gi, 'sabah erken');
+    str = str.replace(/früh/gi, 'sabah');
+    str = str.replace(/Montag/gi, 'Pazartesi');
+    str = str.replace(/Dienstag/gi, 'Salı');
+    str = str.replace(/Mittwoch/gi, 'Çarşamba');
+    str = str.replace(/Donnerstag/gi, 'Perşembe');
+    str = str.replace(/Freitag/gi, 'Cuma');
+    str = str.replace(/Samstag/gi, 'Cumartesi');
+    str = str.replace(/Sonntag/gi, 'Pazar');
+    str = str.replace(/\bMo\b/g, 'Pzt');
+    str = str.replace(/\bDi\b/g, 'Sal');
+    str = str.replace(/\bMi\b/g, 'Çar');
+    str = str.replace(/\bDo\b/g, 'Per');
+    str = str.replace(/\bFr\b/g, 'Cum');
+    str = str.replace(/\bSa\b/g, 'Cmt');
+    str = str.replace(/\bSo\b/g, 'Paz');
+    return str;
+  } else {
+    str = str.replace(/Her gün/gi, 'Täglich');
+    str = str.replace(/sabah erken/gi, 'frühmorgens');
+    str = str.replace(/sabah/gi, 'früh');
+    str = str.replace(/Pazartesi/gi, 'Montag');
+    str = str.replace(/Salı/gi, 'Dienstag');
+    str = str.replace(/Sali/gi, 'Dienstag');
+    str = str.replace(/Çarşamba/gi, 'Mittwoch');
+    str = str.replace(/Carsamba/gi, 'Mittwoch');
+    str = str.replace(/Perşembe/gi, 'Donnerstag');
+    str = str.replace(/Persembe/gi, 'Donnerstag');
+    str = str.replace(/Cuma/gi, 'Freitag');
+    str = str.replace(/Cumartesi/gi, 'Samstag');
+    str = str.replace(/Pazar/gi, 'Sonntag');
+    str = str.replace(/\bPzt\b/g, 'Mo');
+    str = str.replace(/\bSal\b/g, 'Di');
+    str = str.replace(/\bÇar\b/g, 'Mi');
+    str = str.replace(/\bCar\b/g, 'Mi');
+    str = str.replace(/\bPer\b/g, 'Do');
+    str = str.replace(/\bCum\b/g, 'Fr');
+    str = str.replace(/\bCmt\b/g, 'Sa');
+    str = str.replace(/\bPaz\b/g, 'So');
+    return str;
+  }
+};

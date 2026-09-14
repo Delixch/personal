@@ -272,13 +272,13 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
           <table className="w-full text-left text-xs text-ink">
             <thead className="border-b border-line text-[11px] text-subhead uppercase tracking-wider">
               <tr>
-                <th className="pb-3">Beleg / Foto</th>
-                <th className="pb-3">Lieferant & Nr</th>
-                <th className="pb-3">Datum & Fälligkeit</th>
-                <th className="pb-3">MwSt Satz</th>
-                <th className="pb-3">Betrag (CHF)</th>
-                <th className="pb-3">Status & Konto</th>
-                <th className="pb-3 text-right">Aktion</th>
+                <th className="pb-3">{lang === 'tr' ? 'Fatura / Foto' : 'Beleg / Foto'}</th>
+                <th className="pb-3">{lang === 'tr' ? 'Firma & No' : 'Lieferant & Nr'}</th>
+                <th className="pb-3">{lang === 'tr' ? 'Tarih & Vade' : 'Datum & Fälligkeit'}</th>
+                <th className="pb-3">{lang === 'tr' ? 'KDV Oranı' : 'MwSt Satz'}</th>
+                <th className="pb-3">{lang === 'tr' ? 'Tutar (CHF)' : 'Betrag (CHF)'}</th>
+                <th className="pb-3">{lang === 'tr' ? 'Durum & Hesap' : 'Status & Konto'}</th>
+                <th className="pb-3 text-right">{lang === 'tr' ? 'İşlem' : 'Aktion'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-line-soft">
@@ -307,8 +307,8 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                   </td>
 
                   <td className="py-3">
-                    <p className="text-ink">Ausgestellt: {formatDate(inv.date)}</p>
-                    <p className="text-[11px] text-brand font-semibold">Fällig: {formatDate(inv.dueDate)}</p>
+                    <p className="text-ink">{lang === 'tr' ? 'Tarih:' : 'Ausgestellt:'} {formatDate(inv.date)}</p>
+                    <p className="text-[11px] text-brand font-semibold">{lang === 'tr' ? 'Vade:' : 'Fällig:'} {formatDate(inv.dueDate)}</p>
                   </td>
 
                   <td className="py-3 font-mono">
@@ -324,7 +324,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       <div>
                         <span className="badge badge-brand py-0.5 px-2 text-[10px] flex items-center gap-1 w-max">
                           <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                          <span>✓ BEZAHLT</span>
+                          <span>{lang === 'tr' ? '✓ ÖDENDİ' : '✓ BEZAHLT'}</span>
                         </span>
                         <p className="text-[10px] text-subhead mt-1 font-mono">
                           {inv.paidDate ? formatDate(inv.paidDate) : ''} {inv.paymentAccount ? `• ${inv.paymentAccount.split(' ')[0]}` : ''}
@@ -332,7 +332,7 @@ export const InvoiceScanner = ({ lang, currentUser }) => {
                       </div>
                     ) : (
                       <span className="badge badge-neutral py-0.5 px-2 text-[10px]">
-                        ● OFFEN
+                        {lang === 'tr' ? '● AÇIK' : '● OFFEN'}
                       </span>
                     )}
                   </td>

@@ -168,7 +168,7 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                       <span className={`text-[11px] font-extrabold whitespace-nowrap ${
                         isOk ? 'text-emerald-400' : 'text-rose-400'
                       }`}>
-                        {isOk ? '● IN DER NORM' : '⚠️ GRENZWERT!'}
+                        {isOk ? (lang === 'tr' ? '● NORMDA' : '● IN DER NORM') : (lang === 'tr' ? '⚠️ SIZINTI / LİMİT AŞIMI!' : '⚠️ GRENZWERT!')}
                       </span>
                       <span className="text-[11px] text-subhead font-mono">
                         {item.targetRange}
@@ -222,7 +222,7 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                     <div className="text-[11px] text-subhead mb-3 flex items-center justify-between">
                       <span className="flex items-center gap-1">
                         <UserCheck className="w-3.5 h-3.5 text-brand icon-brand" />
-                        <span>{item.checkedBy || 'Noch offen'}</span>
+                        <span>{item.checkedBy || (lang === 'tr' ? 'Henüz Ölçülmedi' : 'Noch offen')}</span>
                       </span>
                       <span className="text-subhead">{item.checkedAt || '-'}</span>
                     </div>

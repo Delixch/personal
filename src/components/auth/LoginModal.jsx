@@ -212,7 +212,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess, lang }) => {
               <button
                 key={emp.id}
                 type="button"
-                onClick={() => handleQuickSelect(emp)}
+                onClick={() => handleQuickUserLogin(emp)}
                 className="p-2 rounded-lg border border-line card-inner text-left flex items-center gap-2.5 transition text-xs"
               >
                 <img

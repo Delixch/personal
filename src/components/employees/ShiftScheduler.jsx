@@ -295,7 +295,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                   <p className="text-[11px] text-subhead">{formatDate(dateStr)}</p>
                 </div>
                 {isToday && (
-                  <span className="badge badge-brand py-0 px-1.5 text-[9px]">HEUTE</span>
+                  <span className="badge badge-brand py-0 px-1.5 text-[9px]">{lang === 'tr' ? 'BUGÜN' : 'HEUTE'}</span>
                 )}
               </div>
 
@@ -354,7 +354,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
                           <div className="mt-2 pt-2 border-t border-line-soft">
                             <div className="flex items-center gap-1 text-[10px] font-bold text-brand mb-1">
                               <AlertTriangle className="w-3 h-3 icon-brand text-brand" />
-                              <span>KRANK: {shift.sickReason || 'Absenz'}</span>
+                              <span>{lang === 'tr' ? 'HASTA:' : 'KRANK:'} {shift.sickReason || (lang === 'tr' ? 'Raporlu' : 'Absenz')}</span>
                             </div>
                             <button
                               onClick={() => setShowReplaceModal(shift)}

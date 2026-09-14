@@ -169,11 +169,11 @@ export const Navbar = ({
 
           <button
             onClick={() => onLangChange(lang === 'de' ? 'tr' : 'de')}
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md navbar-btn icon-brand sub-title transition text-[11px] sm:text-xs"
-            title="Sprache wechseln / Dil Değiştir"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md navbar-btn icon-brand sub-title transition text-[11px] sm:text-xs font-bold"
+            title={lang === 'de' ? 'Auf Türkisch wechseln (Türkçe\'ye Geç)' : 'Auf Deutsch wechseln (Almanca\'ya Geç)'}
           >
             <Globe className="w-3.5 h-3.5" />
-            <span>{lang.toUpperCase()}</span>
+            <span>{lang === 'de' ? 'TR' : 'DE'}</span>
           </button>
 
           <div className="relative" ref={notifDropdownRef}>

@@ -194,28 +194,28 @@ export const SickLeaveManager = ({ lang, currentUser }) => {
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-sm text-ink">{report.employeeName}</span>
-                      <span className="badge badge-rose text-[10px] py-0 px-2">KRANK</span>
+                      <span className="badge badge-rose text-[10px] py-0 px-2">{lang === 'tr' ? 'HASTA' : 'KRANK'}</span>
                       {report.hasAttest && (
                         <span className="badge badge-emerald text-[10px] py-0 px-2 flex items-center gap-1">
                           <FileText className="w-3 h-3" />
-                          <span>ATTEST VORHANDEN</span>
+                          <span>{lang === 'tr' ? 'RAPOR MEVCUT' : 'ATTEST VORHANDEN'}</span>
                         </span>
                       )}
                     </div>
 
                     <div className="text-xs font-semibold text-brand">
-                      Grund: {report.reason}
+                      {lang === 'tr' ? 'Sebep:' : 'Grund:'} {report.reason}
                     </div>
 
                     <div className="flex items-center gap-3 text-xs text-ink-soft">
-                      <span>Dauer: {formatDate(report.startDate)} bis {formatDate(report.endDate)}</span>
-                      {report.notes && <span>· Notiz: {report.notes}</span>}
+                      <span>{lang === 'tr' ? 'Süre:' : 'Dauer:'} {formatDate(report.startDate)} {lang === 'tr' ? 'ila' : 'bis'} {formatDate(report.endDate)}</span>
+                      {report.notes && <span>· {lang === 'tr' ? 'Not:' : 'Notiz:'} {report.notes}</span>}
                     </div>
                   </div>
 
                   <div className="self-end md:self-auto flex items-center gap-2">
                     <div className="text-right text-[11px] text-ink-muted">
-                      Gemeldet am {formatDate(report.createdAt)}
+                      {lang === 'tr' ? 'Bildirim tarihi:' : 'Gemeldet am'} {formatDate(report.createdAt)}
                     </div>
                   </div>
                 </div>

@@ -97,23 +97,23 @@ export const DatabaseManager = ({ lang, currentUser }) => {
 
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-6 pt-4 border-t border-line-soft">
           <div className="p-3.5 rounded-2xl card-inner border border-line text-center">
-            <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">Lieferanten</p>
+            <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">{lang === 'tr' ? 'Tedarikçiler' : 'Lieferanten'}</p>
             <p className="text-lg font-bold text-ink font-mono">{dbState.suppliersCount}</p>
           </div>
           <div className="p-3.5 rounded-2xl card-inner border border-line text-center">
-            <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">Mitarbeiter</p>
+            <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">{lang === 'tr' ? 'Personel' : 'Mitarbeiter'}</p>
             <p className="text-lg font-bold text-ink font-mono">{dbState.employeesCount}</p>
           </div>
           <div className="p-3.5 rounded-2xl card-inner border border-line text-center">
-            <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">Schichten</p>
+            <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">{lang === 'tr' ? 'Vardiyalar' : 'Schichten'}</p>
             <p className="text-lg font-bold text-ink font-mono">{dbState.shiftsCount}</p>
           </div>
           <div className="p-3.5 rounded-2xl card-inner border border-line text-center">
-            <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">Rechnungen</p>
+            <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">{lang === 'tr' ? 'Faturalar' : 'Rechnungen'}</p>
             <p className="text-lg font-bold text-ink font-mono">{dbState.invoicesCount}</p>
           </div>
           <div className="p-3.5 rounded-2xl card-inner border border-line text-center col-span-2 sm:col-span-1">
-            <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">Stempelzeiten</p>
+            <p className="text-[10px] text-subhead uppercase tracking-wider font-semibold">{lang === 'tr' ? 'Mesai Girişleri' : 'Stempelzeiten'}</p>
             <p className="text-lg font-bold text-ink font-mono">{dbState.timeLogsCount}</p>
           </div>
         </div>

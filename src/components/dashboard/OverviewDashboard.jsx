@@ -321,7 +321,7 @@ export const OverviewDashboard = ({
               </h1>
               </div>
 
-            <p className="text-subhead text-ink-soft max-w-xl leading-relaxed">
+            <p className="text-subhead text-ink-soft max-w-2xl md:max-w-3xl leading-relaxed">
               {isAdmin
                 ? (lang === 'tr'
                     ? 'İsviçre L-GAV Gastgewerbe ve HACCP gıda hijyen standartlarına tam uyumlu dijital yönetim platformu.'

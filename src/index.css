@@ -65,8 +65,8 @@
   /* ── İkon Renkleri (MERKEZİ TANIM) ────────────────────────────── */
   --icon-bg: #160A0B;
   /* İkon Kutusu Arka Planı (#160A0B) */
-  --icon-color: #FAF4E9;
-  /* İkonun Kendi Rengi / İçindeki Şekil (#FAF4E9) */
+  --icon-color: #FFFFFF;
+  /* İkonun Kendi Rengi / İçindeki Şekil (#FFFFFF) */
   --icon-border: #524946;
   /* İkon Kutusu Kenarlık Rengi (#524946) */
 }
@@ -323,7 +323,7 @@ svg.lucide,
 
 .badge-neutral {
   background: transparent !important;
-  color: #FAF4E9 !important;
+  color: #FFFFFF !important;
   border: none !important;
 }
 
@@ -451,7 +451,7 @@ select:focus {
 
 .card-inner .text-ink,
 .card-inner .text-ink * {
-  color: #FAF4E9 !important;
+  color: #FFFFFF !important;
 }
 
 /* BAŞLIKLAR (HER ZAMAN TEXT-INK'I VE DİĞER SINIFLARI EZER) */

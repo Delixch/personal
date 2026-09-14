@@ -13,12 +13,12 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   /* ── Yazı Renkleri ───────────────────────────────────────────── */
-  --h1: #FDFEFD;
-  /* Tüm H1 Başlıklar (#FDFEFD) */
-  --ink: #FAF4E9;
-  /* Ana Yazı / Sağ Taraf (#FAF4E9) */
-  --ink-heading: #FAF4E9;
-  /* Başlıklar (#FAF4E9) */
+  --h1: #FFFFFF;
+  /* Tüm H1 Başlıklar (#FFFFFF) */
+  --ink: #FFFFFF;
+  /* Ana Yazı / Sağ Taraf (#FFFFFF - 100% Saf Beyaz) */
+  --ink-heading: #FFFFFF;
+  /* Başlıklar (#FFFFFF) */
   --ink-soft: #C8C8C8;
   /* İkincil Yazı (#C8C8C8) */
   --ink-muted: #C8C8C8;

@@ -38,14 +38,22 @@ export const initializeDatabase = () => {
   if (!rawEmps) {
     localStorage.setItem(STORAGE_KEYS.EMPLOYEES, JSON.stringify(SEED_EMPLOYEES));
   } else {
-    const cleaned = rawEmps.map(emp => ({ ...emp, vacationUsed: 0 }));
+    const cleaned = rawEmps.map(emp => ({ ...emp, vacationUsed: emp.vacationUsed ?? 0 }));
     localStorage.setItem(STORAGE_KEYS.EMPLOYEES, JSON.stringify(cleaned));
   }
 
-  localStorage.setItem(STORAGE_KEYS.SHIFTS, JSON.stringify([]));
-  localStorage.setItem(STORAGE_KEYS.TIME_LOGS, JSON.stringify([]));
-  localStorage.setItem(STORAGE_KEYS.SICK_REPORTS, JSON.stringify([]));
-  localStorage.setItem(STORAGE_KEYS.LEAVE_REQUESTS, JSON.stringify([]));
+  if (!localStorage.getItem(STORAGE_KEYS.SHIFTS)) {
+    localStorage.setItem(STORAGE_KEYS.SHIFTS, JSON.stringify(SEED_SHIFTS));
+  }
+  if (!localStorage.getItem(STORAGE_KEYS.TIME_LOGS)) {
+    localStorage.setItem(STORAGE_KEYS.TIME_LOGS, JSON.stringify(SEED_TIME_LOGS));
+  }
+  if (!localStorage.getItem(STORAGE_KEYS.SICK_REPORTS)) {
+    localStorage.setItem(STORAGE_KEYS.SICK_REPORTS, JSON.stringify([]));
+  }
+  if (!localStorage.getItem(STORAGE_KEYS.LEAVE_REQUESTS)) {
+    localStorage.setItem(STORAGE_KEYS.LEAVE_REQUESTS, JSON.stringify([]));
+  }
 
   if (!localStorage.getItem(STORAGE_KEYS.INVOICES)) {
     localStorage.setItem(STORAGE_KEYS.INVOICES, JSON.stringify(SEED_INVOICES));
@@ -67,12 +75,6 @@ export const initializeDatabase = () => {
         notes: 'Bitte vakuumieren in 1kg Paketen'
       }
     ]));
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.SICK_REPORTS)) {
-    localStorage.setItem(STORAGE_KEYS.SICK_REPORTS, JSON.stringify([]));
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.LEAVE_REQUESTS)) {
-    localStorage.setItem(STORAGE_KEYS.LEAVE_REQUESTS, JSON.stringify([]));
   }
   if (!localStorage.getItem(STORAGE_KEYS.NOTIFICATIONS)) {
     localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify([
@@ -102,7 +104,7 @@ export const initializeDatabase = () => {
     localStorage.setItem(STORAGE_KEYS.BULLETINS, JSON.stringify([]));
   }
 
-  SyncService.clearAllShiftsInDb().then(() => SyncService.clearAllTimeLogsInDb()).then(() => SyncService.pushAllEmployees()).then(() => SyncService.syncAll()).catch(() => {});
+  SyncService.pushAllEmployees().then(() => SyncService.syncAll()).catch(() => {});
 };
 
 export const getStoredItem = (key, fallback = []) => {
@@ -550,11 +552,12 @@ export const StorageService = {
     const list = StorageService.getTemperatureLogs();
     const log = list.find(l => l.id === id);
     if (log) {
-      log.currentTemp = parseFloat(temp);
+      const val = parseFloat(temp);
+      log.currentTemp = isNaN(val) ? 0 : val;
       log.checkedBy = employeeName;
       log.checkedAt = new Date().toTimeString().substring(0, 5);
       log.date = new Date().toISOString().split('T')[0];
-      if (log.location.includes('Tiefkühler')) {
+      if (log.location && log.location.includes('Tiefkühler')) {
         log.status = log.currentTemp <= -17 ? 'ok' : 'warning';
       } else {
         log.status = (log.currentTemp >= 1.0 && log.currentTemp <= 6.0) ? 'ok' : 'warning';

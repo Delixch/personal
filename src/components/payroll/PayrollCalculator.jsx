@@ -46,8 +46,9 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
 
     let totalWorkedMinutes = 0;
     empLogs.forEach(l => {
-      const [hIn, mIn] = l.clockIn.split(':').map(Number);
-      const [hOut, mOut] = l.clockOut.split(':').map(Number);
+      if (!l.clockIn || !l.clockOut) return;
+      const [hIn, mIn] = String(l.clockIn).split(':').map(Number);
+      const [hOut, mOut] = String(l.clockOut).split(':').map(Number);
       let diff = (hOut * 60 + mOut) - (hIn * 60 + mIn);
       if (diff < 0) diff += 24 * 60;
       const net = Math.max(0, diff - (l.breakMinutes || 0));

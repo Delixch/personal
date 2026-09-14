@@ -134,8 +134,8 @@ export const PersonalakteModal = ({
   let totalWorkedMinutes = 0;
   empLogs.forEach(l => {
     if (l.clockIn && l.clockOut) {
-      const [hIn, mIn] = l.clockIn.split(':').map(Number);
-      const [hOut, mOut] = l.clockOut.split(':').map(Number);
+      const [hIn, mIn] = String(l.clockIn).split(':').map(Number);
+      const [hOut, mOut] = String(l.clockOut).split(':').map(Number);
       let diff = (hOut * 60 + mOut) - (hIn * 60 + mIn);
       if (diff < 0) diff += 24 * 60;
       const net = Math.max(0, diff - (l.breakMinutes || 0));

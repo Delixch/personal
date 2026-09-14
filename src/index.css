@@ -265,16 +265,45 @@ div.bg-brand,
 }
 
 /* 2. PROJEDEKİ İSTİSNASIZ TÜM İKONLAR (#32312F) */
-svg,
-svg *,
-svg.lucide,
+svg.icon-default,
 .icon-brand,
 .icon-soft,
 .icon-muted,
-.icon-dark,
+.icon-dark {
+  color: var(--icon-color);
+  stroke: var(--icon-color);
+}
+
 .icon-white {
-  color: var(--icon-color) !important;
-  stroke: var(--icon-color) !important;
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
+/* STATUS BADGE UTILITY CLASSES */
+.badge-emerald {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+.badge-amber {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+.badge-rose {
+  background-color: rgba(244, 63, 94, 0.12);
+  color: #e11d48;
+  border: 1px solid rgba(244, 63, 94, 0.25);
+}
+.badge-purple {
+  background-color: rgba(147, 51, 234, 0.12);
+  color: #7e22ce;
+  border: 1px solid rgba(147, 51, 234, 0.25);
+}
+.badge-indigo {
+  background-color: rgba(79, 70, 229, 0.12);
+  color: #4338ca;
+  border: 1px solid rgba(79, 70, 229, 0.25);
 }
 
 /* ================================================================

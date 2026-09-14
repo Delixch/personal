@@ -8,7 +8,10 @@ export const PageHeader = ({ icon: Icon, label, title, subtitle, actions, childr
 
         <div className="space-y-2">
           {label && (
-            )}
+            <span className="text-subhead text-xs px-2.5 py-1 rounded-md bg-subtle text-ink-muted inline-block font-medium">
+              {label}
+            </span>
+          )}
           <h1 className="page-title text-ink">
             {title}
           </h1>

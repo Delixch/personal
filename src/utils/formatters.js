@@ -32,7 +32,9 @@ export const formatDateTime = (dateStr) => {
 };
 
 export const getWeekdayName = (dateStr, lang = 'de') => {
+  if (!dateStr) return '-';
   const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return '-';
   if (lang === 'tr') {
     const days = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
     return days[d.getDay()];
@@ -52,7 +54,9 @@ export const calculateHoursWorked = (clockIn, clockOut, breakMins = 0) => {
     [outH, outM] = clockOut.split(':').map(Number);
   }
 
-  let totalMinutes = (outH * 60 + outM) - (inH * 60 + inM) - breakMins;
+  let diffMins = (outH * 60 + outM) - (inH * 60 + inM);
+  if (diffMins < 0) diffMins += 24 * 60;
+  let totalMinutes = diffMins - breakMins;
   if (totalMinutes < 0) totalMinutes = 0;
   return Number((totalMinutes / 60).toFixed(2));
 };

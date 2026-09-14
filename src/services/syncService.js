@@ -547,18 +547,16 @@ export const SyncService = {
       }, { onConflict: 'slug' });
       if (error) console.warn('pushSupplier error:', error);
 
-      if (Array.isArray(sup.catalog)) {
-        for (let i = 0; i < sup.catalog.length; i++) {
-          const catItem = sup.catalog[i];
-          await supabase.from('lieferanten_katalog').upsert({
-            id: catItem.id || `item-${slug}-${i}`,
-            lieferant_slug: slug,
-            name: catItem.name,
-            preis: Number(catItem.price) || 0,
-            einheit: catItem.unit || 'Stück',
-            reihenfolge: i
-          }, { onConflict: 'id' });
-        }
+      if (Array.isArray(sup.catalog) && sup.catalog.length > 0) {
+        const catalogItems = sup.catalog.map((catItem, i) => ({
+          id: catItem.id || `item-${slug}-${i}`,
+          lieferant_slug: slug,
+          name: catItem.name,
+          preis: Number(catItem.price) || 0,
+          einheit: catItem.unit || 'Stück',
+          reihenfolge: i
+        }));
+        await supabase.from('lieferanten_katalog').upsert(catalogItems, { onConflict: 'id' });
       }
     } catch (err) {
       console.warn('pushSupplier error:', err);

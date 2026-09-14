@@ -103,7 +103,10 @@ export const TimeTracker = ({ lang, currentUser }) => {
     return () => clearInterval(timer);
   }, []);
 
-  const todayStr = currentTime.toISOString().split('T')[0];
+  const year = currentTime.getFullYear();
+  const month = String(currentTime.getMonth() + 1).padStart(2, '0');
+  const day = String(currentTime.getDate()).padStart(2, '0');
+  const todayStr = `${year}-${month}-${day}`;
 
   const currentLog = timeLogs.find(
     l => l.employeeId === currentUser?.id && l.date === todayStr && !l.clockOut

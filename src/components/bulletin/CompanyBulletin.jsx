@@ -43,7 +43,7 @@ export const CompanyBulletin = ({ lang, currentUser, isAdmin }) => {
     return () => window.removeEventListener('ado_db_update', handleUpdate);
   }, []);
 
-  const canPublish = isAdmin || currentUser?.role === 'admin' || currentUser?.role === 'boss' || true;
+  const canPublish = isAdmin || currentUser?.role === 'admin' || currentUser?.role === 'boss';
 
   const filteredBulletins = bulletins.filter(b => {
     if (filterCategory === 'all') return true;

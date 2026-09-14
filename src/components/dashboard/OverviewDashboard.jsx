@@ -362,74 +362,87 @@ export const OverviewDashboard = ({
         {isAdmin && (
           <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-6 pt-5 border-t border-line">
             
+            {/* CARD 1: LIEFERANTEN */}
             <div
               onClick={() => onNavigate('suppliers')}
-              className="p-4 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group flex flex-col justify-between"
+              className="p-4 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-white hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group flex flex-col justify-between"
             >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-bold text-ink-soft uppercase tracking-wider">
-                  {lang === 'tr' ? 'Tedarikçiler' : 'Lieferanten'}
-                </span>
-                <div className="w-8 h-8 rounded-xl icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:text-brand shrink-0">
+              <div className="flex items-center gap-2.5 mb-2.5">
+                <div className="w-8 h-8 rounded-xl icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 shrink-0">
                   <Truck className="w-4 h-4 text-ink" />
                 </div>
+                <span className="text-[11px] font-bold text-brand uppercase tracking-wider">
+                  {lang === 'tr' ? 'Tedarikçiler' : 'Lieferanten'}
+                </span>
               </div>
               <div>
-                <p className="text-xl font-extrabold text-ink tracking-tight">{suppliers.length} {lang === 'tr' ? 'Firma' : 'Partner'}</p>
+                <p className="text-xl font-black tracking-tight" style={{ color: '#10b981' }}>
+                  {suppliers.length} {lang === 'tr' ? 'Firma' : 'Partner'}
+                </p>
                 <p className="text-xs text-ink leading-relaxed mt-0.5 truncate font-normal">Prodega, Hiestand, Pistor</p>
               </div>
             </div>
 
+            {/* CARD 2: MITARBEITER */}
             <div
               onClick={() => onNavigate('employees')}
-              className="p-4 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group flex flex-col justify-between"
+              className="p-4 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-white hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group flex flex-col justify-between"
             >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-bold text-ink-soft uppercase tracking-wider">
-                  {lang === 'tr' ? 'Personel' : 'Mitarbeiter'}
-                </span>
-                <div className="w-8 h-8 rounded-xl icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:text-brand shrink-0">
+              <div className="flex items-center gap-2.5 mb-2.5">
+                <div className="w-8 h-8 rounded-xl icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 shrink-0">
                   <Users2 className="w-4 h-4 text-ink" />
                 </div>
+                <span className="text-[11px] font-bold text-brand uppercase tracking-wider">
+                  {lang === 'tr' ? 'Personel' : 'Mitarbeiter'}
+                </span>
               </div>
               <div>
-                <p className="text-xl font-extrabold text-ink tracking-tight">{employees.length} {lang === 'tr' ? 'Kişi' : 'Personen'}</p>
+                <p className="text-xl font-black tracking-tight" style={{ color: '#10b981' }}>
+                  {employees.length} {lang === 'tr' ? 'Kişi' : 'Personen'}
+                </p>
                 <p className="text-xs text-ink leading-relaxed mt-0.5 font-normal">{lang === 'tr' ? '5 Departman Aktif' : '5 Abteilungen aktiv'}</p>
               </div>
             </div>
 
+            {/* CARD 3: STEMPELUHR */}
             <div
               onClick={() => onNavigate('timeTracker')}
-              className="p-4 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group flex flex-col justify-between"
+              className="p-4 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-white hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group flex flex-col justify-between"
             >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-bold text-ink-soft uppercase tracking-wider">
-                  {lang === 'tr' ? 'Canlı Mesai' : 'Stempeluhr'}
-                </span>
-                <div className="w-8 h-8 rounded-xl icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:text-brand shrink-0">
+              <div className="flex items-center gap-2.5 mb-2.5">
+                <div className="w-8 h-8 rounded-xl icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 shrink-0">
                   <Clock className="w-4 h-4 text-ink" />
                 </div>
+                <span className="text-[11px] font-bold text-brand uppercase tracking-wider">
+                  {lang === 'tr' ? 'Canlı Mesai' : 'Stempeluhr'}
+                </span>
               </div>
               <div>
-                <p className="text-xl font-extrabold text-ink tracking-tight">{activeTimeLogs.length} {lang === 'tr' ? 'Çalışıyor' : 'Im Dienst'}</p>
+                <p className="text-xl font-black tracking-tight flex items-center gap-2" style={{ color: '#10b981' }}>
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#10b981] inline-block animate-pulse shrink-0"></span>
+                  <span>{activeTimeLogs.length} {lang === 'tr' ? 'Çalışıyor' : 'Im Dienst'}</span>
+                </p>
                 <p className="text-xs text-ink leading-relaxed mt-0.5 font-normal">{lang === 'tr' ? 'Tablet Kiosk Terminali' : 'Digitales Kiosk-Terminal'}</p>
               </div>
             </div>
 
+            {/* CARD 4: OFFENE BELEGE */}
             <div
               onClick={() => onNavigate('invoices')}
-              className="p-4 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group flex flex-col justify-between"
+              className="p-4 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-white hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group flex flex-col justify-between"
             >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-bold text-ink-soft uppercase tracking-wider">
-                  {lang === 'tr' ? 'Açık Faturalar' : 'Offene Belege'}
-                </span>
-                <div className="w-8 h-8 rounded-xl icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:text-brand shrink-0">
+              <div className="flex items-center gap-2.5 mb-2.5">
+                <div className="w-8 h-8 rounded-xl icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 shrink-0">
                   <ReceiptText className="w-4 h-4 text-ink" />
                 </div>
+                <span className="text-[11px] font-bold text-brand uppercase tracking-wider">
+                  {lang === 'tr' ? 'Açık Faturalar' : 'Offene Belege'}
+                </span>
               </div>
               <div>
-                <p className="text-xl font-extrabold text-ink tracking-tight">{formatCurrency(totalUnpaid)}</p>
+                <p className="text-xl font-black tracking-tight font-mono" style={{ color: '#10b981' }}>
+                  {formatCurrency(totalUnpaid)}
+                </p>
                 <p className="text-xs text-ink leading-relaxed mt-0.5 font-normal">{unpaidInvoices.length} {lang === 'tr' ? 'Fatura bekliyor' : 'Belege offen'}</p>
               </div>
             </div>
@@ -511,32 +524,44 @@ export const OverviewDashboard = ({
                         <div
                           key={mod.id + mod.title}
                           onClick={() => onNavigate(mod.id)}
-                          className={`p-3.5 rounded-2xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} card-inner group transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98`}
+                          className={`p-4 rounded-2xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} card-inner group transition-all duration-200 hover:-translate-y-1 hover:border-white hover:shadow-lg hover:shadow-black/30 active:scale-98`}
                         >
                           <div>
-                            <div className="flex items-start justify-between gap-3 mb-2.5">
-                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${mod.iconBg} transition-transform duration-200 group-hover:scale-110`}>
+                            {/* İKON VE TURUNCU BAŞLIK YAN YANA */}
+                            <div className="flex items-center gap-3 mb-2.5">
+                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${mod.iconBg} shrink-0 transition-transform duration-200 group-hover:scale-110`}>
                                 <Icon className="w-5 h-5" />
                               </div>
-                              {mod.badge && (
-                                <span className="text-xs font-extrabold text-ink">
-                                  {mod.badge}
-                                </span>
-                              )}
+                              <h3 className="text-base font-bold tracking-tight text-brand card-title-orange leading-snug">
+                                {mod.title}
+                              </h3>
                             </div>
 
-                            <h3 className="text-base font-normal mb-1 tracking-tight text-brand card-title-orange">
-                              {mod.title}
-                            </h3>
-                            <p className="text-xs text-ink leading-relaxed">
+                            {/* BEYAZ ALT YAZI ONUN ALTINDA */}
+                            <p className="text-xs text-ink leading-relaxed mb-2">
                               {mod.subtitle}
                             </p>
                           </div>
 
-                          <div className="mt-3.5 pt-2.5 card-footer-action flex items-center justify-between text-xs font-bold text-ink">
-                            <span className="text-[11px] font-semibold text-ink-muted">{mod.stat || ''}</span>
-                            <div className="flex items-center gap-1 text-ink transition">
-                              <span className="font-extrabold">{lang === 'tr' ? 'Aç' : 'Öffnen'}</span>
+                          {/* FOOTER: BADGE VE STAT SOLDA (İNCE YAZI), ÖFFNEN SAĞDA (İNCE YAZI) */}
+                          <div className="mt-3 pt-2.5 border-t border-line-soft card-footer-action flex items-center justify-between text-xs font-normal text-ink-soft">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              {mod.badge && (
+                                <span
+                                  className="text-xs font-normal text-white flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/30"
+                                >
+                                  <span className="w-2 h-2 rounded-full bg-[#10b981] inline-block animate-pulse shrink-0"></span>
+                                  <span>{mod.badge}</span>
+                                </span>
+                              )}
+                              {mod.stat && (
+                                <span className="text-[11px] font-normal text-ink-soft">
+                                  {mod.stat}
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-1 text-ink-soft transition shrink-0 ml-2 animate-pulse">
+                              <span className="font-normal">{lang === 'tr' ? 'Aç' : 'Öffnen'}</span>
                               <ArrowRight className="w-3.5 h-3.5" />
                             </div>
                           </div>
@@ -564,32 +589,44 @@ export const OverviewDashboard = ({
                 <div
                   key={mod.id + mod.title}
                   onClick={() => onNavigate(mod.id)}
-                  className={`p-5 rounded-3xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} card-inner group transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98`}
+                  className={`p-4 rounded-2xl border cursor-pointer flex flex-col justify-between ${mod.cardBg} card-inner group transition-all duration-200 hover:-translate-y-1 hover:border-white hover:shadow-lg hover:shadow-black/30 active:scale-98`}
                 >
                   <div>
-                    <div className="flex items-start justify-between gap-3 mb-3">
-                      <div className={`w-11 h-11 rounded-2xl flex items-center justify-center border ${mod.iconBg} transition-transform duration-200 group-hover:scale-110`}>
+                    {/* İKON VE TURUNCU BAŞLIK YAN YANA */}
+                    <div className="flex items-center gap-3 mb-2.5">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${mod.iconBg} shrink-0 transition-transform duration-200 group-hover:scale-110`}>
                         <Icon className="w-5 h-5" />
                       </div>
-                      {mod.badge && (
-                        <span className="text-xs font-extrabold text-ink">
-                          {mod.badge}
-                        </span>
-                      )}
+                      <h3 className={`text-base font-black ${mod.textColor} tracking-tight leading-snug`}>
+                        {mod.title}
+                      </h3>
                     </div>
 
-                    <h3 className={`text-base font-black ${mod.textColor} mb-1 tracking-tight`}>
-                      {mod.title}
-                    </h3>
-                    <p className="text-xs text-ink-soft leading-relaxed">
+                    {/* BEYAZ ALT YAZI ONUN ALTINDA */}
+                    <p className="text-xs text-ink-soft leading-relaxed mb-2">
                       {mod.subtitle}
                     </p>
                   </div>
 
-                  <div className="mt-4 pt-3 card-footer-action flex items-center justify-between text-xs font-bold text-ink">
-                    <span className="text-[11px] font-semibold text-ink-muted">{mod.stat || ''}</span>
-                    <div className="flex items-center gap-1 text-ink transition">
-                      <span className="font-extrabold">{lang === 'tr' ? 'Aç' : 'Öffnen'}</span>
+                  {/* FOOTER: BADGE VE STAT SOLDA (İNCE YAZI), ÖFFNEN SAĞDA (İNCE YAZI) */}
+                  <div className="mt-3 pt-2.5 border-t border-line-soft card-footer-action flex items-center justify-between text-xs font-normal text-ink-soft">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {mod.badge && (
+                        <span
+                          className="text-xs font-normal text-white flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/30"
+                        >
+                          <span className="w-2 h-2 rounded-full bg-[#10b981] inline-block animate-pulse shrink-0"></span>
+                          <span>{mod.badge}</span>
+                        </span>
+                      )}
+                      {mod.stat && (
+                        <span className="text-[11px] font-normal text-ink-soft">
+                          {mod.stat}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1 text-ink-soft transition shrink-0 ml-2 animate-pulse">
+                      <span className="font-normal">{lang === 'tr' ? 'Aç' : 'Öffnen'}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </div>
                   </div>

@@ -452,6 +452,11 @@ select:focus {
   color: var(--ink) !important;
 }
 
+.card-inner:hover,
+[class*="card-inner"]:hover {
+  border-color: #FFFFFF !important;
+}
+
 .glass-modal {
   background-color: var(--surface) !important;
   border: 1px solid var(--line) !important;

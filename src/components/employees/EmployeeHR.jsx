@@ -216,7 +216,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                     <BadgeCheck className="w-3.5 h-3.5" />
                     <span>{lang === 'tr' ? 'Sözleşme Aktif' : 'Vertrag aktiv'}</span>
                   </span>
-                  <span className="badge badge-indigo text-[10px] py-0.5 px-2 flex items-center gap-1 font-normal">
+                  <span className="badge badge-neutral text-[10px] py-0.5 px-2 flex items-center gap-1 font-normal">
                     <ShieldCheck className="w-3.5 h-3.5" />
                     <span>UVG / Kasse</span>
                   </span>

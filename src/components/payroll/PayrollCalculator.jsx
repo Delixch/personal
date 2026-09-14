@@ -214,10 +214,10 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
       <div className="p-6 rounded-3xl card-inner border border-line overflow-hidden">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-base font-bold text-ink flex items-center gap-2">
-            <Users className="w-4 h-4 text-indigo-600" />
+            <Users className="w-4 h-4 text-ink-soft" />
             <span>{lang === 'tr' ? 'Personel Bazında Saat ve Hak Ediş Tablosu' : 'Mitarbeiter-Stunden & Lohnübersicht'}</span>
           </h2>
-          <span className="badge badge-indigo text-xs">
+          <span className="badge badge-neutral text-xs font-mono">
             {selectedMonth}
           </span>
         </div>

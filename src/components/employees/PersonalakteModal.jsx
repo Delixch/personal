@@ -324,15 +324,15 @@ export const PersonalakteModal = ({
               </label>
             </div>
             <div>
-              <div className="flex flex-wrap items-center gap-2 mb-1">
-                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full card-inner text-brand border border-brand/40">
+              <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                <span className="text-[10px] font-normal uppercase tracking-wider px-2.5 py-0.5 rounded-md card-inner text-brand border border-brand/30">
                   {employee.role === 'admin' ? '👑 CHEF / INHABER' : 'MITARBEITER / HR'}
                 </span>
-                <span className="text-[11px] font-mono font-bold text-ink-muted">
-                  ID: {employee.id.toUpperCase()}
+                <span className="text-[10px] font-mono font-normal text-ink-muted px-2 py-0.5 rounded-md card-inner border border-line">
+                  ID: #{employee.id.slice(0, 8).toUpperCase()}
                 </span>
                 {/* Live working badge */}
-                <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full flex items-center gap-1.5 ${
+                <span className={`text-[10px] font-normal px-2.5 py-0.5 rounded-md flex items-center gap-1.5 ${
                   isCurrentlyWorking 
                     ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/40' 
                     : 'card-inner text-ink-muted border border-line'
@@ -348,14 +348,26 @@ export const PersonalakteModal = ({
                   <span>{isCurrentlyWorking ? (lang === 'tr' ? 'ŞU AN GÖREVDE' : 'IM DIENST') : (lang === 'tr' ? 'SERBEST / ÇIKTI' : 'FEIERABEND')}</span>
                 </span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-ink flex items-center gap-2">
+
+              <h2 className="text-xl sm:text-2xl font-normal tracking-tight text-ink flex items-center gap-2">
                 <span>{formData.name}</span>
-                <span className="text-xs font-mono px-2 py-0.5 rounded-md card-inner text-brand border border-brand/30 font-bold">
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md card-inner text-brand border border-brand/30 font-normal">
                   PIN: {formData.pin}
                 </span>
               </h2>
-              <p className="text-xs sm:text-sm text-ink-soft font-semibold">
-                {formData.jobTitle || 'Mitarbeiter'} • {(formData.department || 'staff').toUpperCase()} • {formatCurrency(formData.hourlyRate || 30)}/h
+
+              <p className="text-xs sm:text-sm text-ink font-normal mt-1 flex items-center gap-2">
+                <span>
+                  {formData.jobTitle ? (formData.jobTitle.charAt(0).toUpperCase() + formData.jobTitle.slice(1)) : 'Mitarbeiter'}
+                </span>
+                <span className="text-ink-muted">•</span>
+                <span className="font-normal uppercase" style={{ color: '#FF5A1F' }}>
+                  {(formData.department || 'staff').toUpperCase()}
+                </span>
+                <span className="text-ink-muted">•</span>
+                <span className="font-mono text-emerald-400 font-normal">
+                  {formatCurrency(formData.hourlyRate || 30)}/h
+                </span>
               </p>
             </div>
           </div>

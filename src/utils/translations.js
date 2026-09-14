@@ -183,3 +183,24 @@ export const translateDay = (day, lang = 'de') => {
     return str;
   }
 };
+
+export const getDepartmentName = (dept, lang = 'de') => {
+  if (!dept) return '';
+  const d = String(dept).toLowerCase();
+
+  if (lang === 'tr') {
+    if (d.includes('küche') || d.includes('kuche') || d.includes('mutfak')) return 'Mutfak';
+    if (d.includes('service') || d.includes('servis')) return 'Servis';
+    if (d.includes('bar')) return 'Bar & Salon';
+    if (d.includes('lager') || d.includes('logistik') || d.includes('depo')) return 'Depo & Lojistik';
+    if (d.includes('reinigung') || d.includes('hygiene') || d.includes('temizlik')) return 'Temizlik & Hijyen';
+    return dept;
+  } else {
+    if (d.includes('küche') || d.includes('kuche') || d.includes('mutfak')) return 'Küche';
+    if (d.includes('service') || d.includes('servis')) return 'Service';
+    if (d.includes('bar')) return 'Bar & Lounge';
+    if (d.includes('lager') || d.includes('logistik') || d.includes('depo')) return 'Lager & Logistik';
+    if (d.includes('reinigung') || d.includes('hygiene') || d.includes('temizlik')) return 'Reinigung & Hygiene';
+    return dept;
+  }
+};

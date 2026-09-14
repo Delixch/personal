@@ -21,7 +21,7 @@ import confetti from 'canvas-confetti';
 import { StorageService } from '../../services/storage';
 import { SHIFT_TYPES, SEED_DEPARTMENTS } from '../../services/seedData';
 import { formatDate } from '../../utils/formatters';
-import { TRANSLATIONS } from '../../utils/translations';
+import { TRANSLATIONS, getDepartmentName } from '../../utils/translations';
 
 export const ShiftScheduler = ({ lang, currentUser }) => {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.de;
@@ -265,7 +265,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
               }`}
             >
               {getDepartmentIcon(dept.id)}
-              <span>{dept.name}</span>
+              <span>{getDepartmentName(dept.id, lang)}</span>
             </button>
           ))}
         </div>

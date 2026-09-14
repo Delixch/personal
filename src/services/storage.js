@@ -229,10 +229,15 @@ export const StorageService = {
       if (title) {
         title = title.replace(/\s*\([^)]*(mutfak|servis|depo|temizlik)[^)]*\)/gi, '').trim();
       }
+      if (!title || title.toLowerCase() === 'mitarbeiter' || title.toLowerCase() === 'staff' || title.toLowerCase() === 'employee') {
+        title = 'Mitarbeiter';
+      } else if (title.charAt(0) !== title.charAt(0).toUpperCase()) {
+        title = title.charAt(0).toUpperCase() + title.slice(1);
+      }
       const custom = customAvatars[emp.id] || customAvatars[String(emp.pin)] || customAvatars[emp.email];
       return {
         ...emp,
-        jobTitle: title || emp.jobTitle || emp.role,
+        jobTitle: title,
         avatar: custom || emp.avatar
       };
     });
@@ -462,11 +467,16 @@ export const StorageService = {
     if (title) {
       title = title.replace(/\s*\([^)]*(mutfak|servis|depo|temizlik)[^)]*\)/gi, '').trim();
     }
+    if (!title || title.toLowerCase() === 'mitarbeiter' || title.toLowerCase() === 'staff' || title.toLowerCase() === 'employee') {
+      title = 'Mitarbeiter';
+    } else if (title.charAt(0) !== title.charAt(0).toUpperCase()) {
+      title = title.charAt(0).toUpperCase() + title.slice(1);
+    }
     const customAvatars = getStoredItem(STORAGE_KEYS.CUSTOM_AVATARS, {});
     const custom = customAvatars[user.id] || customAvatars[String(user.pin)] || customAvatars[user.email];
     return {
       ...user,
-      jobTitle: title || user.jobTitle || user.role,
+      jobTitle: title,
       avatar: custom || user.avatar
     };
   },

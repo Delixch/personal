@@ -172,7 +172,7 @@ export const EmployeeHR = ({ lang, currentUser }) => {
                   </div>
                   <div className="p-2 rounded-md bg-subtle border border-line flex flex-col justify-center">
                     <span className="text-[10px] text-ink block uppercase font-normal">{lang === 'tr' ? 'Kalan İzin' : 'Resturlaub'}</span>
-                    <span className="font-mono text-xs font-light mt-0.5" style={{ color: '#FF5A1F' }}>{vacationRest} {lang === 'tr' ? 'Gün' : 'Tage'}</span>
+                    <span className="font-mono text-xs font-light mt-0.5" style={{ color: 'var(--brand)' }}>{vacationRest} {lang === 'tr' ? 'Gün' : 'Tage'}</span>
                   </div>
                   <div className="p-2 rounded-md bg-subtle border border-line flex flex-col justify-center">
                     <span className="text-[10px] text-ink block uppercase font-normal">{lang === 'tr' ? 'Saatlik' : 'Stundenlohn'}</span>

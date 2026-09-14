@@ -361,7 +361,7 @@ export const PersonalakteModal = ({
                   {formData.jobTitle ? (formData.jobTitle.charAt(0).toUpperCase() + formData.jobTitle.slice(1)) : 'Mitarbeiter'}
                 </span>
                 <span className="text-ink-muted">•</span>
-                <span className="font-normal uppercase" style={{ color: '#FF5A1F' }}>
+                <span className="font-normal uppercase" style={{ color: 'var(--brand)' }}>
                   {(formData.department || 'staff').toUpperCase()}
                 </span>
                 <span className="text-ink-muted">•</span>

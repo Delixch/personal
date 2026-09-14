@@ -179,7 +179,7 @@ export const PayrollCalculator = ({ lang, currentUser }) => {
             {formatCurrency(totalGrossPayroll)}
           </div>
           <p className="text-[11px] text-ink-soft mt-1">
-            {activeEmployeesForMonth.length} {lang === 'tr' ? 'Mitarbeiter için hesaplandı' : 'Mitarbeiter erfasst'}
+            {activeEmployeesForMonth.length} {lang === 'tr' ? 'Personel için hesaplandı' : 'Mitarbeiter erfasst'}
           </p>
         </div>
 

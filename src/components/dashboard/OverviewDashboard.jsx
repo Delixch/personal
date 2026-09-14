@@ -148,7 +148,7 @@ export const OverviewDashboard = ({
           iconBg: 'icon-box',
           badgeBg: 'badge-neutral',
           textColor: 'text-ink',
-          stat: `${suppliers.length} Tedarikçi Kayıtlı`
+          stat: lang === 'tr' ? `${suppliers.length} Tedarikçi Kayıtlı` : `${suppliers.length} Partner erfasst`
         },
         {
           id: 'invoices',
@@ -517,10 +517,10 @@ export const OverviewDashboard = ({
                               )}
                             </div>
 
-                            <h3 className={`text-base font-black ${mod.textColor} mb-1 tracking-tight`}>
+                            <h3 className="text-base font-normal mb-1 tracking-tight text-brand card-title-orange">
                               {mod.title}
                             </h3>
-                            <p className="text-xs text-ink-soft leading-relaxed">
+                            <p className="text-xs text-ink leading-relaxed">
                               {mod.subtitle}
                             </p>
                           </div>

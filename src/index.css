@@ -490,7 +490,14 @@ h6.text-ink,
   color: var(--ink-muted) !important;
 }
 
-.text-brand {
+.text-brand,
+h1.text-brand,
+h2.text-brand,
+h3.text-brand,
+h4.text-brand,
+h5.text-brand,
+h6.text-brand,
+.card-title-orange {
   color: var(--brand) !important;
 }
 

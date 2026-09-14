@@ -306,7 +306,7 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                 <div className="w-36 h-2.5 rounded-md bg-ground border border-line overflow-hidden mt-1 p-0.5">
                   <div
                     className="h-full rounded-sm transition-all duration-300 shadow-sm"
-                    style={{ width: `${progressPercent}%`, backgroundColor: '#FF5A1F' }}
+                    style={{ width: `${progressPercent}%`, backgroundColor: 'var(--brand)' }}
                   />
                 </div>
               </div>

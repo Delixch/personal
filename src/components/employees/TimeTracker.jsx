@@ -539,7 +539,15 @@ export const TimeTracker = ({ lang, currentUser }) => {
                       />
                       <div className="truncate">
                         <p className="text-xs font-bold text-ink truncate">{emp.name}</p>
-                        <p className="text-[10px] text-subhead truncate">{emp.jobTitle}</p>
+                        <p className="text-[10px] text-subhead truncate">
+                          {(() => {
+                            const rawTitle = emp.jobTitle || emp.role || '';
+                            if (!rawTitle || rawTitle.toLowerCase() === 'mitarbeiter' || rawTitle.toLowerCase() === 'staff' || rawTitle.toLowerCase() === 'employee') {
+                              return lang === 'tr' ? 'Personel' : 'Mitarbeiter';
+                            }
+                            return rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1);
+                          })()}
+                        </p>
                       </div>
                     </div>
 
@@ -554,21 +562,21 @@ export const TimeTracker = ({ lang, currentUser }) => {
                             <span>{lang === 'tr' ? 'ÇALIŞIYOR' : 'IM DIENST'}</span>
                           </span>
                           <p className="text-[10px] font-mono text-subhead mt-0.5">
-                            Seit {activeLog.clockIn}
+                            {lang === 'tr' ? 'Giriş:' : 'Seit'} {activeLog.clockIn}
                           </p>
                         </div>
                       ) : completedLog ? (
                         <div>
                           <span className="badge badge-neutral text-[9px] py-0 px-1.5">
-                            FEIERABEND
+                            {lang === 'tr' ? 'MESAİ BİTTİ' : 'FEIERABEND'}
                           </span>
                           <p className="text-[10px] font-mono text-subhead mt-0.5">
-                            {calculateHoursWorked(completedLog.clockIn, completedLog.clockOut, completedLog.breakMinutes)} Std
+                            {calculateHoursWorked(completedLog.clockIn, completedLog.clockOut, completedLog.breakMinutes)} {lang === 'tr' ? 'Saat' : 'Std'}
                           </p>
                         </div>
                       ) : (
                         <span className="badge badge-neutral text-[9px] py-0 px-1.5">
-                          ABWESEND
+                          {lang === 'tr' ? 'YOK' : 'ABWESEND'}
                         </span>
                       )}
                     </div>
@@ -586,12 +594,12 @@ export const TimeTracker = ({ lang, currentUser }) => {
                 <table className="w-full text-left text-xs text-ink">
                   <thead className="border-b border-line text-[11px] text-subhead">
                     <tr>
-                      <th className="pb-2">Mitarbeiter</th>
-                      <th className="pb-2">Kommen</th>
-                      <th className="pb-2">Gehen</th>
-                      <th className="pb-2">Pause</th>
-                      <th className="pb-2">Netto Std</th>
-                      <th className="pb-2">Status</th>
+                      <th className="pb-2">{lang === 'tr' ? 'Personel' : 'Mitarbeiter'}</th>
+                      <th className="pb-2">{lang === 'tr' ? 'Giriş' : 'Kommen'}</th>
+                      <th className="pb-2">{lang === 'tr' ? 'Çıkış' : 'Gehen'}</th>
+                      <th className="pb-2">{lang === 'tr' ? 'Mola' : 'Pause'}</th>
+                      <th className="pb-2">{lang === 'tr' ? 'Net Saat' : 'Netto Std'}</th>
+                      <th className="pb-2">{lang === 'tr' ? 'Durum' : 'Status'}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-line-soft">
@@ -600,11 +608,11 @@ export const TimeTracker = ({ lang, currentUser }) => {
                       const hours = calculateHoursWorked(log.clockIn, log.clockOut, log.breakMinutes);
                       return (
                         <tr key={log.id} className="">
-                          <td className="py-2.5 font-semibold text-ink">{emp?.name || 'Mitarbeiter'}</td>
+                          <td className="py-2.5 font-semibold text-ink">{emp?.name || (lang === 'tr' ? 'Personel' : 'Mitarbeiter')}</td>
                           <td className="py-2.5 font-mono">{log.clockIn}</td>
                           <td className="py-2.5 font-mono">{log.clockOut || '-'}</td>
-                          <td className="py-2.5 font-mono">{log.breakMinutes || 0} min</td>
-                          <td className="py-2.5 font-mono font-bold text-brand">{hours} h</td>
+                          <td className="py-2.5 font-mono">{log.breakMinutes || 0} {lang === 'tr' ? 'dk' : 'min'}</td>
+                          <td className="py-2.5 font-mono font-bold text-brand">{hours} {lang === 'tr' ? 'saat' : 'h'}</td>
                           <td className="py-2.5">
                             {log.status === 'working' ? (
                               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[10px] font-extrabold">
@@ -615,7 +623,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
                                 <span>{lang === 'tr' ? 'Devam Ediyor' : 'Laufend'}</span>
                               </span>
                             ) : (
-                              <span className="badge badge-neutral py-0 px-1.5 text-[9px]">Abgeschlossen</span>
+                              <span className="badge badge-neutral py-0 px-1.5 text-[9px]">{lang === 'tr' ? 'Tamamlandı' : 'Abgeschlossen'}</span>
                             )}
                           </td>
                         </tr>

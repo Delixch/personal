@@ -306,7 +306,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                     : 'card-inner text-ink border border-line'
                 }`}
               >
-                <span>{lang === 'tr' ? 'Tümü (Alle)' : 'Alle (Tümü)'}</span>
+                <span>{lang === 'tr' ? 'Tümü' : 'Alle'}</span>
               </button>
 
               {categories.filter(c => c.id !== 'all').map(cat => (
@@ -336,14 +336,14 @@ export const SupplierManagement = ({ lang, currentUser }) => {
           >
             
             <div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-ink-muted">
+              <span className="text-[10px] font-normal uppercase tracking-widest text-ink">
                 {supplier.category}
               </span>
-              <h3 className="font-extrabold text-base text-ink mt-0.5 leading-snug group- transition">
+              <h3 className="font-normal text-base text-ink mt-0.5 leading-snug group- transition">
                 {supplier.name}
               </h3>
-              <p className="text-xs text-subhead mt-1 flex items-center gap-1.5">
-                <MapPin className="w-3 h-3 text-ink-muted shrink-0" />
+              <p className="text-xs font-normal text-ink mt-1 flex items-center gap-1.5">
+                <MapPin className="w-3 h-3 text-ink shrink-0" />
                 {supplier.address}
               </p>
             </div>
@@ -351,10 +351,10 @@ export const SupplierManagement = ({ lang, currentUser }) => {
             <div className="flex items-start gap-2 card-inner border border-line-soft rounded-xl p-3">
               <Clock className="w-3.5 h-3.5 text-brand icon-brand shrink-0 mt-0.5" />
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-ink-muted block mb-0.5">
+                <span className="text-[10px] font-normal uppercase tracking-wider text-ink block mb-0.5">
                   {lang === 'tr' ? 'Teslimat Günleri' : 'Liefertage'}
                 </span>
-                <span className="text-xs font-semibold text-ink">
+                <span className="text-xs font-normal text-ink">
                   {(supplier.deliveryDays || []).join(' · ')}
                 </span>
               </div>
@@ -365,7 +365,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
               className="w-full py-2.5 rounded-xl btn-brand font-black text-xs flex items-center justify-center gap-2 transition"
             >
               <ShoppingBag className="w-4 h-4" />
-              <span>{lang === 'tr' ? 'Sipariş Ver (Bestellung aufgeben)' : 'Bestellung aufgeben'}</span>
+              <span>{lang === 'tr' ? 'Sipariş Ver' : 'Bestellung aufgeben'}</span>
             </button>
 
             <div className="flex gap-2 mt-auto pt-2 border-t border-line-soft">
@@ -432,14 +432,14 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                   <ShoppingBag className="w-6 h-6" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-ink-muted">
+                  <span className="text-[10px] font-normal uppercase tracking-wider text-ink">
                     {selectedSupplierForOrder.category}
                   </span>
-                  <h2 className="text-lg font-black text-ink leading-tight">
+                  <h2 className="text-lg font-normal text-ink leading-tight">
                     {selectedSupplierForOrder.name}
                   </h2>
-                  <p className="text-xs text-subhead mt-0.5">
-                    {lang === 'tr' ? 'Yeni Sipariş Listesi (Bestellung aufgeben)' : 'Neue Bestellung aufgeben'}
+                  <p className="text-xs font-normal text-ink mt-0.5">
+                    {lang === 'tr' ? 'Yeni Sipariş Listesi' : 'Neue Bestellung aufgeben'}
                   </p>
                 </div>
               </div>
@@ -585,7 +585,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                       className="flex-1 sm:flex-none px-6 py-2.5 rounded-xl btn-brand text-xs font-black flex items-center justify-center gap-2"
                     >
                       <ShoppingBag className="w-4 h-4" />
-                      <span>{lang === 'tr' ? 'Siparişi Ver (Bestellen)' : 'Bestellung aufgeben'}</span>
+                      <span>{lang === 'tr' ? 'Siparişi Ver' : 'Bestellung aufgeben'}</span>
                     </button>
                   </div>
                 </div>
@@ -627,75 +627,145 @@ export const SupplierManagement = ({ lang, currentUser }) => {
                 }`}
               >
                 <Building2 className="w-4 h-4" />
-                <span>{lang === 'tr' ? '1. Firma Bilgileri (Firma Bearbeiten)' : '1. Firma bearbeiten'}</span>
+                <span>{lang === 'tr' ? '1. Firma Bilgileri' : '1. Firma bearbeiten'}</span>
               </button>
-
               <button
-                type="button"
                 onClick={() => setEditModalTab('catalog')}
-                className={`px-4 py-2.5 rounded-md text-xs font-bold transition flex items-center gap-2 ${
+                className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition ${
                   editModalTab === 'catalog'
-                    ? 'bg-[#2e1f1c] border border-brand/50 text-brand font-black shadow-xs'
-                    : 'card-inner border border-line-soft text-ink-soft hover:text-ink'
+                    ? 'btn-brand font-black'
+                    : 'card-inner text-ink border border-line'
                 }`}
               >
-                <ShoppingBag className="w-4 h-4" />
-                <span>
-                  {lang === 'tr' ? '2. Ürün Kataloğu (Produkte Bearbeiten)' : '2. Produkte bearbeiten'} ({editingSupplier.catalog?.length || 0})
-                </span>
+                {lang === 'tr' ? '2. Ürün Kataloğu' : '2. Produkte bearbeiten'} ({editingSupplier.catalog?.length || 0})
               </button>
             </div>
 
             {/* ── Tab 1: Firma Bilgileri ── */}
             {editModalTab === 'info' && (
               <div className="space-y-4">
-                {[
-                  { key: 'name',          label: lang === 'tr' ? 'Firma Adı *' : 'Firmenname *' },
-                  { key: 'category',      label: lang === 'tr' ? 'Kategori' : 'Kategorie' },
-                  { key: 'contactPerson', label: lang === 'tr' ? 'İletişim Kişisi' : 'Kontaktperson' },
-                  { key: 'phone',         label: 'Telefon' },
-                  { key: 'whatsapp',      label: 'WhatsApp' },
-                  { key: 'email',         label: 'E-Mail' },
-                  { key: 'address',       label: lang === 'tr' ? 'Adres' : 'Adresse' },
-                  { key: 'notes',         label: lang === 'tr' ? 'Notlar' : 'Notizen' },
-                ].map(field => (
-                  <div key={field.key} className="space-y-1">
-                    <label className="text-[11px] font-bold text-ink-muted uppercase tracking-wider">{field.label}</label>
+                <div>
+                  <label className="block text-xs font-semibold text-subhead mb-1">
+                    {lang === 'tr' ? 'Tedarikçi Adı *' : 'Lieferant Name *'}
+                  </label>
+                  <input
+                    type="text"
+                    value={editingSupplier.name || ''}
+                    onChange={(e) => setEditingSupplier({ ...editingSupplier, name: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-line bg-subtle text-ink text-xs focus:border-brand focus:outline-hidden"
+                    placeholder="z.B. Prodega CC Dietikon"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-subhead mb-1">
+                    {lang === 'tr' ? 'Kategori' : 'Kategorie'}
+                  </label>
+                  <input
+                    type="text"
+                    value={editingSupplier.category || ''}
+                    onChange={(e) => setEditingSupplier({ ...editingSupplier, category: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-line bg-subtle text-ink text-xs focus:border-brand focus:outline-hidden"
+                    placeholder="z.B. Grosshandel & C&C"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-subhead mb-1">
+                      {lang === 'tr' ? 'İletişim Kişisi' : 'Ansprechpartner'}
+                    </label>
                     <input
                       type="text"
-                      value={editingSupplier[field.key] || ''}
-                      onChange={e => setEditingSupplier(prev => ({ ...prev, [field.key]: e.target.value }))}
-                      className="w-full px-3 py-2.5 rounded-xl card-inner border border-line text-xs text-ink placeholder:text-ink-muted focus:outline-none focus:border-brand"
+                      value={editingSupplier.contactPerson || ''}
+                      onChange={(e) => setEditingSupplier({ ...editingSupplier, contactPerson: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-line bg-subtle text-ink text-xs focus:border-brand focus:outline-hidden"
+                      placeholder="z.B. Marco Bellini"
                     />
                   </div>
-                ))}
+                  <div>
+                    <label className="block text-xs font-semibold text-subhead mb-1">
+                      {lang === 'tr' ? 'Telefon' : 'Telefon'}
+                    </label>
+                    <input
+                      type="text"
+                      value={editingSupplier.phone || ''}
+                      onChange={(e) => setEditingSupplier({ ...editingSupplier, phone: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-line bg-subtle text-ink text-xs focus:border-brand focus:outline-hidden"
+                      placeholder="+41 44 ..."
+                    />
+                  </div>
+                </div>
 
-                <div className="space-y-2">
-                  <label className="text-[11px] font-bold text-ink-muted uppercase tracking-wider block">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-subhead mb-1">
+                      {lang === 'tr' ? 'E-posta' : 'E-Mail'}
+                    </label>
+                    <input
+                      type="email"
+                      value={editingSupplier.email || ''}
+                      onChange={(e) => setEditingSupplier({ ...editingSupplier, email: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-line bg-subtle text-ink text-xs focus:border-brand focus:outline-hidden"
+                      placeholder="bestellung@..."
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-subhead mb-1">
+                      {lang === 'tr' ? 'WhatsApp No' : 'WhatsApp Numara'}
+                    </label>
+                    <input
+                      type="text"
+                      value={editingSupplier.whatsapp || ''}
+                      onChange={(e) => setEditingSupplier({ ...editingSupplier, whatsapp: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-line bg-subtle text-ink text-xs focus:border-brand focus:outline-hidden"
+                      placeholder="+4179..."
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-subhead mb-1">
+                    {lang === 'tr' ? 'Adres' : 'Adresse'}
+                  </label>
+                  <input
+                    type="text"
+                    value={editingSupplier.address || ''}
+                    onChange={(e) => setEditingSupplier({ ...editingSupplier, address: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-line bg-subtle text-ink text-xs focus:border-brand focus:outline-hidden"
+                    placeholder="Strasse, PLZ Ort"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-subhead mb-1">
                     {lang === 'tr' ? 'Teslimat Günleri' : 'Liefertage'}
                   </label>
+                  <div className="flex gap-2 mb-2">
+                    <input
+                      type="text"
+                      value={deliveryDayInput}
+                      onChange={(e) => setDeliveryDayInput(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addDeliveryDay(); } }}
+                      className="flex-1 p-2.5 rounded-xl border border-line bg-subtle text-ink text-xs focus:border-brand focus:outline-hidden"
+                      placeholder={lang === 'tr' ? 'gün ekle e.g. Pazartesi' : 'Tag hinzufügen z.B. Montag'}
+                    />
+                    <button
+                      onClick={addDeliveryDay}
+                      className="px-3.5 py-2.5 rounded-xl btn-brand text-xs font-bold"
+                    >
+                      {lang === 'tr' ? 'Ekle' : 'Hinzufügen'}
+                    </button>
+                  </div>
                   <div className="flex flex-wrap gap-1.5">
-                    {(editingSupplier.deliveryDays || []).map((d, i) => (
-                      <span key={i} className="flex items-center gap-1 px-2 py-1 rounded-lg card-inner border border-line text-xs font-semibold text-ink">
-                        {d}
-                        <button type="button" onClick={() => removeDeliveryDay(i)} className="text-ink-muted hover:text-brand ml-1">
+                    {(editingSupplier.deliveryDays || []).map((day, idx) => (
+                      <span key={idx} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface border border-line text-xs font-semibold">
+                        {day}
+                        <button onClick={() => removeDeliveryDay(idx)} className="text-ink-muted hover:text-red-400">
                           <X className="w-3 h-3" />
                         </button>
                       </span>
                     ))}
-                  </div>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={deliveryDayInput}
-                      onChange={e => setDeliveryDayInput(e.target.value)}
-                      onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addDeliveryDay())}
-                      placeholder={lang === 'tr' ? 'Pazartesi... Enter' : 'Montag... Enter'}
-                      className="flex-1 px-3 py-2 rounded-xl card-inner border border-line text-xs text-ink placeholder:text-ink-muted focus:outline-none"
-                    />
-                    <button type="button" onClick={addDeliveryDay} className="px-3 py-2 rounded-xl btn-brand text-xs font-black">
-                      <Plus className="w-4 h-4" />
-                    </button>
                   </div>
                 </div>
               </div>

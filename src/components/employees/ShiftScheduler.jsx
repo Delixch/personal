@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   CalendarDays,
   Plus,
@@ -32,6 +32,15 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
   const [showReplaceModal, setShowReplaceModal] = useState(null);
 
   const [weekOffset, setWeekOffset] = useState(0);
+
+  useEffect(() => {
+    const handleDbUpdate = () => {
+      setShifts(StorageService.getShifts());
+      setEmployees(StorageService.getEmployees());
+    };
+    window.addEventListener('ado_db_update', handleDbUpdate);
+    return () => window.removeEventListener('ado_db_update', handleDbUpdate);
+  }, []);
 
   const getWeekDays = () => {
     const today = new Date();

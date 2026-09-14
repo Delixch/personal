@@ -288,6 +288,7 @@ export const SyncService = {
         department: s.abteilung || s.department || null
       }));
       localStorage.setItem('ado_shifts_v1', JSON.stringify(mapped));
+      window.dispatchEvent(new Event('ado_db_update'));
     } catch (err) {
       console.warn('syncShifts error:', err);
     }
@@ -323,6 +324,7 @@ export const SyncService = {
   clearAllShiftsInDb: async () => {
     if (!SyncService.isLive()) return;
     try {
+      await supabase.from('schichten').delete().not('id', 'is', null);
       await supabase.from('schichten').delete().neq('id', '___none___');
     } catch (err) {
       console.warn('clearAllShiftsInDb error:', err);

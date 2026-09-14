@@ -146,11 +146,24 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
     }
   };
 
-  const getShiftBadge = (typeKey) => {
-    const info = SHIFT_TYPES[typeKey.toUpperCase()] || SHIFT_TYPES.FRUEH;
+  const getShiftBadge = (typeKey = 'frueh') => {
+    const safeKey = typeKey ? String(typeKey) : 'frueh';
+    const info = SHIFT_TYPES[safeKey] || SHIFT_TYPES[safeKey.toLowerCase()] || SHIFT_TYPES[safeKey.toUpperCase()] || SHIFT_TYPES.frueh || {
+      name: 'Frühschicht',
+      start: '08:00',
+      end: '16:30',
+      badgeColor: 'emerald',
+      label: 'Frühschicht',
+      color: 'emerald'
+    };
+    const badgeColor = info.badgeColor || info.color || 'emerald';
+    const nameStr = info.name || info.label || 'Schicht';
+    const startTime = info.start || (info.time ? info.time.split(' - ')[0] : '08:00');
+    const endTime = info.end || (info.time ? info.time.split(' - ')[1] : '16:30');
+
     return (
-      <span className={`badge badge-${info.badgeColor} text-[10px] py-0 px-1.5`}>
-        {info.name.split(' ')[0]} ({info.start} - {info.end})
+      <span className={`badge badge-${badgeColor} text-[10px] py-0 px-1.5`}>
+        {nameStr.split(' ')[0]} ({startTime}{endTime ? ` - ${endTime}` : ''})
       </span>
     );
   };

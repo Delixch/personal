@@ -33,17 +33,22 @@ export const initializeDatabase = () => {
   if (!localStorage.getItem(STORAGE_KEYS.SUPPLIERS)) {
     localStorage.setItem(STORAGE_KEYS.SUPPLIERS, JSON.stringify(SEED_SUPPLIERS));
   }
-  if (!localStorage.getItem(STORAGE_KEYS.EMPLOYEES)) {
+  
+  const rawEmps = getStoredItem(STORAGE_KEYS.EMPLOYEES, null);
+  if (!rawEmps) {
     localStorage.setItem(STORAGE_KEYS.EMPLOYEES, JSON.stringify(SEED_EMPLOYEES));
+  } else {
+    const cleaned = rawEmps.map(emp => ({ ...emp, vacationUsed: 0 }));
+    localStorage.setItem(STORAGE_KEYS.EMPLOYEES, JSON.stringify(cleaned));
   }
-  if (!localStorage.getItem(STORAGE_KEYS.SHIFTS)) {
-    localStorage.setItem(STORAGE_KEYS.SHIFTS, JSON.stringify(SEED_SHIFTS));
-  }
+
+  localStorage.setItem(STORAGE_KEYS.SHIFTS, JSON.stringify([]));
+  localStorage.setItem(STORAGE_KEYS.TIME_LOGS, JSON.stringify([]));
+  localStorage.setItem(STORAGE_KEYS.SICK_REPORTS, JSON.stringify([]));
+  localStorage.setItem(STORAGE_KEYS.LEAVE_REQUESTS, JSON.stringify([]));
+
   if (!localStorage.getItem(STORAGE_KEYS.INVOICES)) {
     localStorage.setItem(STORAGE_KEYS.INVOICES, JSON.stringify(SEED_INVOICES));
-  }
-  if (!localStorage.getItem(STORAGE_KEYS.TIME_LOGS)) {
-    localStorage.setItem(STORAGE_KEYS.TIME_LOGS, JSON.stringify(SEED_TIME_LOGS));
   }
   if (!localStorage.getItem(STORAGE_KEYS.ORDERS)) {
     localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify([
@@ -97,7 +102,7 @@ export const initializeDatabase = () => {
     localStorage.setItem(STORAGE_KEYS.BULLETINS, JSON.stringify([]));
   }
 
-  SyncService.syncAll().catch(() => {});
+  SyncService.pushAllEmployees().then(() => SyncService.syncAll()).catch(() => {});
 };
 
 export const getStoredItem = (key, fallback = []) => {

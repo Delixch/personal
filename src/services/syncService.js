@@ -105,8 +105,8 @@ export const SyncService = {
             contractType: m.lohnart === 'monatslohn'
                             ? 'Festanstellung 100%'
                             : `Stundenlohn (${m.pensum || 100}%)`,
-            vacationTotal: Number(m.urlaubsanspruch_tage) || local.vacationTotal || 25,
-            vacationUsed:  Number(m.urlaub_bezogen_tage)  || local.vacationUsed  || 0,
+            vacationTotal: (local.vacationTotal !== undefined && local.vacationTotal !== null) ? Number(local.vacationTotal) : ((m.urlaubsanspruch_tage !== undefined && m.urlaubsanspruch_tage !== null) ? Number(m.urlaubsanspruch_tage) : 25),
+            vacationUsed:  (local.vacationUsed !== undefined && local.vacationUsed !== null) ? Number(local.vacationUsed) : 0,
             joinedDate:   m.eintrittsdatum || local.joinedDate || '2024-01-01',
             status:       m.aktiv !== false ? 'active' : 'inactive',
             password:     local.password || '1234',
@@ -172,10 +172,13 @@ export const SyncService = {
         aktiv: emp.status !== 'inactive'
       };
 
+      if (emp.id) {
+        await supabase.from('mitarbeiter').update(payload).eq('id', emp.id);
+      }
       if (emp.email) {
         await supabase.from('mitarbeiter').update(payload).eq('email', emp.email);
       } else if (emp.pin) {
-        await supabase.from('mitarbeiter').update(payload).eq('pin', emp.pin);
+        await supabase.from('mitarbeiter').update(payload).eq('pin', String(emp.pin));
       }
     } catch (err) {
       console.warn('pushEmployee catch error:', err);

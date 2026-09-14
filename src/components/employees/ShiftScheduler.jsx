@@ -182,7 +182,7 @@ export const ShiftScheduler = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
 
-      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-static">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <h1 className="page-title text-ink">

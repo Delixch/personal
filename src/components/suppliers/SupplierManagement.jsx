@@ -270,7 +270,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
   return (
     <div className="space-y-5">
 
-      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-static">
         <div className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="space-y-2">
             <h1 className="page-title text-ink">
@@ -348,7 +348,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
               </p>
             </div>
 
-            <div className="flex items-start gap-2 card-inner border border-line-soft rounded-xl p-3">
+            <div className="flex items-start gap-2 card-static border border-line-soft rounded-xl p-3">
               <Clock className="w-3.5 h-3.5 text-brand icon-brand shrink-0 mt-0.5" />
               <div>
                 <span className="text-[10px] font-normal uppercase tracking-wider text-ink block mb-0.5">
@@ -466,7 +466,7 @@ export const SupplierManagement = ({ lang, currentUser }) => {
             ) : (
               <>
                 
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 rounded-2xl card-inner border border-line text-xs">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 rounded-2xl card-static border border-line text-xs">
                   <div className="flex flex-col gap-1.5 w-full">
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-ink shrink-0" />

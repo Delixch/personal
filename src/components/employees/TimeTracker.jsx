@@ -197,7 +197,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
   return (
     <div className="space-y-6">
 
-      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-static">
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 items-center justify-between gap-6">
           {/* Left Column: Title */}
           <div className="space-y-2 text-center lg:text-left">
@@ -230,7 +230,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
           <div className="w-full lg:w-fit flex flex-col gap-2 shrink-0 lg:items-end lg:ml-auto">
             <button
               onClick={() => setTrackerMode('personal')}
-              className={`w-full px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
+              className={`w-full px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center justify-start gap-2.5 cursor-pointer ${
                 trackerMode === 'personal'
                   ? 'btn-brand font-black'
                   : 'card-inner text-ink border border-line'
@@ -242,7 +242,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
 
             <button
               onClick={() => setTrackerMode('kiosk')}
-              className={`w-full px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
+              className={`w-full px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center justify-start gap-2.5 cursor-pointer ${
                 trackerMode === 'kiosk'
                   ? 'btn-brand font-black'
                   : 'card-inner text-ink border border-line'
@@ -256,7 +256,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
       </div>
 
       {trackerMode === 'kiosk' && (
-        <div className="max-w-xl mx-auto p-8 rounded-3xl bg-surface border border-line text-center card-inner">
+        <div className="max-w-xl mx-auto p-8 rounded-3xl bg-surface border border-line text-center card-static">
           
           <div className="mb-6">
             <span className="badge badge-brand text-xs px-3 py-1 mb-2">
@@ -284,7 +284,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
           )}
 
           {kioskEmp && !kioskFeedback ? (
-            <div className="p-6 rounded-3xl card-inner border border-line mb-6">
+            <div className="p-6 rounded-3xl card-static border border-line mb-6">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <img
                   src={kioskEmp.avatar}
@@ -428,7 +428,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
       {trackerMode === 'personal' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-          <div className="bg-surface border border-line rounded-3xl p-6 flex flex-col justify-between card-inner">
+          <div className="bg-surface border border-line rounded-3xl p-6 flex flex-col justify-between card-static">
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <img
@@ -442,7 +442,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
                 </div>
               </div>
 
-              <div className="p-4 rounded-2xl card-inner border border-line mb-6 text-center">
+              <div className="p-4 rounded-2xl card-static border border-line mb-6 text-center">
                 <p className="text-xs text-subhead mb-1">
                   {lang === 'tr' ? 'Şu Anki Durum' : 'Aktueller Status'}
                 </p>
@@ -491,7 +491,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
                 <div className="space-y-2">
                   <button
                     onClick={handleAddBreak}
-                    className="w-full py-2.5 rounded-2xl card-inner text-ink border border-line font-bold text-xs flex items-center justify-center gap-2 transition"
+                    className="w-full py-2.5 rounded-2xl card-static text-ink border border-line font-bold text-xs flex items-center justify-center gap-2 transition"
                   >
                     <Coffee className="w-4 h-4 text-brand icon-brand" />
                     <span>{t.breakStart}</span>
@@ -509,7 +509,7 @@ export const TimeTracker = ({ lang, currentUser }) => {
             </div>
           </div>
 
-          <div className="lg:col-span-2 bg-surface border border-line rounded-3xl p-6 card-inner">
+          <div className="lg:col-span-2 bg-surface border border-line rounded-3xl p-6 card-static">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-bold text-ink flex items-center gap-2">
                 <Users className="w-4 h-4 text-brand icon-brand" />

@@ -119,7 +119,7 @@ export const CompanyBulletin = ({ lang, currentUser, isAdmin }) => {
 
   return (
     <div className="space-y-6">
-      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-static">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">

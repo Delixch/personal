@@ -99,7 +99,7 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
     <div className="space-y-6">
       
       {/* Header Banner — Symmetrical Executive Header Card matching Dashboard (Image 2) */}
-      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-inner">
+      <div className="p-5 rounded-3xl bg-surface text-ink border border-line relative overflow-hidden mb-6 card-static">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-xl">
             <h1 className="page-title text-ink">
@@ -183,7 +183,7 @@ export const HaccpChecklists = ({ lang, currentUser }) => {
                     </p>
 
                     {/* Current Temp Display / Input */}
-                    <div className="p-4 rounded-2xl bg-surface card-inner border border-line text-center mb-4">
+                    <div className="p-4 rounded-2xl bg-surface card-static border border-line text-center mb-4">
                       {isEditing ? (
                         <div className="flex items-center justify-center gap-2">
                           <input

@@ -116,13 +116,6 @@ export const SyncService = {
           };
         });
 
-        // Local'de var olan ama Supabase'de henüz olmayan çalışanları koru
-        localList.forEach(loc => {
-          if (!mapped.some(m => (loc.pin && m.pin && String(m.pin) === String(loc.pin)) || (loc.id && m.id && loc.id === m.id))) {
-            mapped.push(loc);
-          }
-        });
-
         if (customAvatarsUpdated) {
           localStorage.setItem('ado_custom_avatars_v1', JSON.stringify(customAvatars));
         }

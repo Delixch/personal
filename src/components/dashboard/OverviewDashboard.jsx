@@ -450,7 +450,7 @@ export const OverviewDashboard = ({
               <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full">
                 <button
                   onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'hr' ? 'all' : 'hr')}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
+                  className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto cursor-pointer ${
                     activeCategoryFilter === 'hr'
                       ? 'btn-brand font-black'
                       : 'card-inner text-ink border border-line'
@@ -462,7 +462,7 @@ export const OverviewDashboard = ({
 
                 <button
                   onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'finance' ? 'all' : 'finance')}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
+                  className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto cursor-pointer ${
                     activeCategoryFilter === 'finance'
                       ? 'btn-brand font-black'
                       : 'card-inner text-ink border border-line'
@@ -474,7 +474,7 @@ export const OverviewDashboard = ({
 
                 <button
                   onClick={() => setActiveCategoryFilter(activeCategoryFilter === 'operations' ? 'all' : 'operations')}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto ${
+                  className={`px-3.5 py-2 rounded-md text-xs font-bold transition flex items-center gap-1.5 w-full sm:w-auto cursor-pointer ${
                     activeCategoryFilter === 'operations'
                       ? 'btn-brand font-black'
                       : 'card-inner text-ink border border-line'

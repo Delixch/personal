@@ -364,66 +364,74 @@ export const OverviewDashboard = ({
             
             <div
               onClick={() => onNavigate('suppliers')}
-              className="p-3.5 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group"
+              className="p-4 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group flex flex-col justify-between"
             >
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] font-bold text-ink-soft uppercase tracking-wider">
                   {lang === 'tr' ? 'Tedarikçiler' : 'Lieferanten'}
                 </span>
-                <div className="w-7 h-7 rounded-lg icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:text-brand">
-                  <Truck className="w-3.5 h-3.5" />
+                <div className="w-8 h-8 rounded-xl icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:text-brand shrink-0">
+                  <Truck className="w-4 h-4 text-ink" />
                 </div>
               </div>
-              <p className="text-lg font-black text-ink">{suppliers.length} Partner</p>
-              <p className="text-[10px] text-ink-muted mt-0.5">Prodega, Hiestand, Pistor</p>
+              <div>
+                <p className="text-xl font-extrabold text-ink tracking-tight">{suppliers.length} {lang === 'tr' ? 'Firma' : 'Partner'}</p>
+                <p className="text-xs text-ink leading-relaxed mt-0.5 truncate font-normal">Prodega, Hiestand, Pistor</p>
+              </div>
             </div>
 
             <div
               onClick={() => onNavigate('employees')}
-              className="p-3.5 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group"
+              className="p-4 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group flex flex-col justify-between"
             >
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] font-bold text-ink-soft uppercase tracking-wider">
                   {lang === 'tr' ? 'Personel' : 'Mitarbeiter'}
                 </span>
-                <div className="w-7 h-7 rounded-lg icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:text-brand">
-                  <Users2 className="w-3.5 h-3.5" />
+                <div className="w-8 h-8 rounded-xl icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:text-brand shrink-0">
+                  <Users2 className="w-4 h-4 text-ink" />
                 </div>
               </div>
-              <p className="text-lg font-black text-ink">{employees.length} {lang === 'tr' ? 'Çalışan' : 'Personen'}</p>
-              <p className="text-[10px] text-ink-muted mt-0.5">5 Departman Aktif</p>
+              <div>
+                <p className="text-xl font-extrabold text-ink tracking-tight">{employees.length} {lang === 'tr' ? 'Kişi' : 'Personen'}</p>
+                <p className="text-xs text-ink leading-relaxed mt-0.5 font-normal">{lang === 'tr' ? '5 Departman Aktif' : '5 Abteilungen aktiv'}</p>
+              </div>
             </div>
 
             <div
               onClick={() => onNavigate('timeTracker')}
-              className="p-3.5 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group"
+              className="p-4 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group flex flex-col justify-between"
             >
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] font-bold text-ink-soft uppercase tracking-wider">
                   {lang === 'tr' ? 'Canlı Mesai' : 'Stempeluhr'}
                 </span>
-                <div className="w-7 h-7 rounded-lg icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:text-brand">
-                  <Clock className="w-3.5 h-3.5" />
+                <div className="w-8 h-8 rounded-xl icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:text-brand shrink-0">
+                  <Clock className="w-4 h-4 text-ink" />
                 </div>
               </div>
-              <p className="text-lg font-black text-ink">{activeTimeLogs.length} {lang === 'tr' ? 'Görevde' : 'Im Dienst'}</p>
-              <p className="text-[10px] text-ink-muted mt-0.5">Tablet Kiosk Terminali</p>
+              <div>
+                <p className="text-xl font-extrabold text-ink tracking-tight">{activeTimeLogs.length} {lang === 'tr' ? 'Çalışıyor' : 'Im Dienst'}</p>
+                <p className="text-xs text-ink leading-relaxed mt-0.5 font-normal">{lang === 'tr' ? 'Tablet Kiosk Terminali' : 'Digitales Kiosk-Terminal'}</p>
+              </div>
             </div>
 
             <div
               onClick={() => onNavigate('invoices')}
-              className="p-3.5 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group"
+              className="p-4 rounded-2xl card-inner border border-line transition-all duration-200 hover:-translate-y-1 hover:border-brand/60 hover:shadow-lg hover:shadow-black/30 active:scale-98 cursor-pointer group flex flex-col justify-between"
             >
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] font-bold text-ink-soft uppercase tracking-wider">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] font-bold text-ink-soft uppercase tracking-wider">
                   {lang === 'tr' ? 'Açık Faturalar' : 'Offene Belege'}
                 </span>
-                <div className="w-7 h-7 rounded-lg icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:text-brand">
-                  <ReceiptText className="w-3.5 h-3.5" />
+                <div className="w-8 h-8 rounded-xl icon-box flex items-center justify-center transition-transform duration-200 group-hover:scale-110 group-hover:text-brand shrink-0">
+                  <ReceiptText className="w-4 h-4 text-ink" />
                 </div>
               </div>
-              <p className="text-lg font-black text-ink">{formatCurrency(totalUnpaid)}</p>
-              <p className="text-[10px] text-ink-muted mt-0.5">{unpaidInvoices.length} {lang === 'tr' ? 'Fatura bekliyor' : 'Belege offen'}</p>
+              <div>
+                <p className="text-xl font-extrabold text-ink tracking-tight">{formatCurrency(totalUnpaid)}</p>
+                <p className="text-xs text-ink leading-relaxed mt-0.5 font-normal">{unpaidInvoices.length} {lang === 'tr' ? 'Fatura bekliyor' : 'Belege offen'}</p>
+              </div>
             </div>
           </div>
         )}

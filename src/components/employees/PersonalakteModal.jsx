@@ -155,10 +155,8 @@ export const PersonalakteModal = ({
   const targetMonthlyHours = Math.round(182 * (pensumPercent / 100));
   const weeklyHours = ((42 * pensumPercent) / 100).toFixed(1);
   
-  const effectiveHours = calculatedHours > 0 
-    ? calculatedHours 
-    : (employee.role === 'admin' ? 182.5 : Math.round(targetMonthlyHours * 0.96));
-  const overtime = +(effectiveHours - targetMonthlyHours).toFixed(1);
+  const effectiveHours = calculatedHours;
+  const overtime = calculatedHours > 0 ? +(calculatedHours - targetMonthlyHours).toFixed(1) : 0;
 
   const hourlyRate = employee.hourlyRate || 30.0;
   const grossMonthlySalary = +(effectiveHours * hourlyRate).toFixed(2);
@@ -738,7 +736,9 @@ export const PersonalakteModal = ({
                     </div>
                     <div className="flex justify-between pt-1 border-t border-line text-[11px]">
                       <span className="text-ink-soft">Haftalık Vardiya:</span>
-                      <span className="font-bold text-ink">{empShifts.length || 5} Gün Görevli</span>
+                      <span className="font-bold text-ink">
+                        {empShifts.length > 0 ? `${empShifts.length} ${lang === 'tr' ? 'Vardiya Görevli' : 'Schichten'}` : (lang === 'tr' ? 'Vardiya Yok' : 'Keine Schichten')}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -838,54 +838,118 @@ export const PersonalakteModal = ({
           )}
 
           {/* TAB 3: SCHICHTPLAN & EINSÄTZE */}
-          {activeTab === 'schichten' && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-base font-black text-ink">
-                    {lang === 'tr' ? 'Vardiya Çizelgesi & Çalışma Günleri' : 'Dienstplan & Schichtübersicht'}
-                  </h3>
-                  <p className="text-xs text-ink-soft">
-                    {lang === 'tr' ? 'Bu haftaki ve gelecek haftaki çalışma vardiyaları (Früh/Spät).' : 'Einsatzplanung mit 2 Schichten gemäss Wochenplan.'}
-                  </p>
-                </div>
-                <span className="px-3 py-1 rounded-full bg-subtle text-ink text-xs font-bold">
-                  {empShifts.length || 5} Schichten geplant
-                </span>
-              </div>
+          {activeTab === 'schichten' && (() => {
+            const today = new Date();
+            const currentDay = today.getDay();
+            const diff = today.getDate() - currentDay + (currentDay === 0 ? -6 : 1);
+            const monday = new Date(today.setDate(diff));
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                {['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'].map((day, idx) => {
-                  const isOff = idx === 5 || idx === 6;
-                  return (
-                    <div 
-                      key={day} 
-                      className={`p-3.5 rounded-2xl border ${
-                        isOff 
-                          ? 'card-inner border-line text-ink-muted' 
-                          : 'card-inner border-line '
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="font-bold text-xs text-ink">{day}</span>
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          isOff ? 'card-inner text-ink-muted' : 'badge badge-brand'
-                        }`}>
-                          {isOff ? 'Ruhetag' : 'Frühschicht'}
-                        </span>
+            const dayNamesDe = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+            const dayNamesTr = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'];
+
+            const modalWeekDays = [];
+            for (let i = 0; i < 7; i++) {
+              const d = new Date(monday);
+              d.setDate(monday.getDate() + i);
+              const dateStr = d.toISOString().split('T')[0];
+              modalWeekDays.push({
+                dateStr,
+                dayName: lang === 'tr' ? dayNamesTr[i] : dayNamesDe[i],
+                formattedDate: `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}`
+              });
+            }
+
+            return (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-base font-black text-ink">
+                      {lang === 'tr' ? 'Vardiya Çizelgesi & Çalışma Günleri' : 'Dienstplan & Schichtübersicht'}
+                    </h3>
+                    <p className="text-xs text-ink-soft">
+                      {lang === 'tr' ? 'Bu haftaki çalışma vardiyaları ve görev durumları.' : 'Einsatzplanung für die aktuelle Woche.'}
+                    </p>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                    empShifts.length > 0 ? 'bg-brand-light text-brand border border-brand-border' : 'card-inner text-ink-muted'
+                  }`}>
+                    {empShifts.length} {lang === 'tr' ? 'Vardiya Planlandı' : 'Schichten geplant'}
+                  </span>
+                </div>
+
+                {empShifts.length === 0 && (
+                  <div className="p-4 rounded-2xl card-inner border border-line text-center space-y-1">
+                    <p className="text-xs font-bold text-ink">
+                      {lang === 'tr' ? 'Bu personel için sistemde kayıtlı aktif vardiya bulunmamaktadır.' : 'Keine Schichten für diese Woche im System erfasst.'}
+                    </p>
+                    <p className="text-[11px] text-ink-soft">
+                      {lang === 'tr' ? 'Tüm günler serbest (Ruhetag) olarak görüntülenmektedir.' : 'Alle Tage sind als wöchentlicher Ruhetag markiert.'}
+                    </p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                  {modalWeekDays.map((wDay) => {
+                    const shift = empShifts.find(s => s.date === wDay.dateStr);
+                    const isOff = !shift;
+
+                    let shiftLabel = 'Ruhetag';
+                    let shiftTime = 'Frei';
+                    let shiftBadgeClass = 'card-inner text-ink-muted';
+
+                    if (shift) {
+                      if (shift.shiftType === 'frueh') {
+                        shiftLabel = lang === 'tr' ? 'Sabah Vardiyası' : 'Frühschicht';
+                        shiftTime = '08:00 – 16:30';
+                        shiftBadgeClass = 'badge badge-brand';
+                      } else if (shift.shiftType === 'spaet') {
+                        shiftLabel = lang === 'tr' ? 'Akşam Vardiyası' : 'Spätschicht';
+                        shiftTime = '16:00 – 00:30';
+                        shiftBadgeClass = 'badge badge-sky';
+                      } else if (shift.shiftType === 'ganztag') {
+                        shiftLabel = lang === 'tr' ? 'Bölünmüş Vardiya' : 'Ganztag (Zimmerstunde)';
+                        shiftTime = '10:00 – 22:30';
+                        shiftBadgeClass = 'badge badge-purple';
+                      } else {
+                        shiftLabel = shift.shiftType || 'Schicht';
+                        shiftTime = shift.startTime && shift.endTime ? `${shift.startTime} – ${shift.endTime}` : '08:00 – 16:30';
+                        shiftBadgeClass = 'badge badge-brand';
+                      }
+                    }
+
+                    return (
+                      <div 
+                        key={wDay.dateStr} 
+                        className={`p-3.5 rounded-2xl border ${
+                          isOff 
+                            ? 'card-inner border-line opacity-75' 
+                            : 'card-inner border-brand/40 bg-surface'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="font-bold text-xs text-ink flex items-center gap-1.5">
+                            <span>{wDay.dayName}</span>
+                            <span className="text-[10px] text-ink-muted font-mono">({wDay.formattedDate})</span>
+                          </span>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${shiftBadgeClass}`}>
+                            {shiftLabel}
+                          </span>
+                        </div>
+                        <p className="font-mono text-xs font-black text-ink">
+                          {shiftTime}
+                        </p>
+                        <p className="text-[11px] text-ink-soft mt-0.5">
+                          {isOff 
+                            ? (lang === 'tr' ? 'Haftalık İzin Günü' : 'Wöchentlicher Ruhetag') 
+                            : `${lang === 'tr' ? 'Departman' : 'Abteilung'}: ${(shift.department || formData.department).toUpperCase()}`}
+                        </p>
                       </div>
-                      <p className="font-mono text-xs font-black text-ink">
-                        {isOff ? 'Frei' : '08:00 – 16:30'}
-                      </p>
-                      <p className="text-[11px] text-ink-soft mt-0.5">
-                        {isOff ? 'Wöchentlicher Ruhetag' : `Abteilung: ${formData.department.toUpperCase()}`}
-                      </p>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* TAB 4: LOHN, ABRECHNUNG & JAHRESGÖSTERGE */}
           {activeTab === 'lohn' && (

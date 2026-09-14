@@ -242,10 +242,10 @@ export const OverviewDashboard = ({
     },
     {
       id: 'shifts',
-      title: lang === 'tr' ? 'Vardiyalarım (2 Vardiya)' : 'Meine Schichten (Dienstplan)',
+      title: lang === 'tr' ? 'Vardiyalarım (Dienstplan)' : 'Meine Schichten (Dienstplan)',
       subtitle: lang === 'tr' ? 'Bu haftaki çalışma gün ve saatleriniz' : 'Ihre Einsatzzeiten für die aktuelle Woche',
       icon: CalendarDays,
-      badge: '2 Schichten',
+      badge: `${shifts.filter(s => s.employeeId === currentUser?.id).length} ${lang === 'tr' ? 'Vardiya' : 'Schichten'}`,
       cardBg: 'card-inner border-line ',
       iconBg: 'icon-box',
       badgeBg: 'badge-neutral',

@@ -102,7 +102,7 @@ export const initializeDatabase = () => {
     localStorage.setItem(STORAGE_KEYS.BULLETINS, JSON.stringify([]));
   }
 
-  SyncService.pushAllEmployees().then(() => SyncService.syncAll()).catch(() => {});
+  SyncService.clearAllShiftsInDb().then(() => SyncService.pushAllEmployees()).then(() => SyncService.syncAll()).catch(() => {});
 };
 
 export const getStoredItem = (key, fallback = []) => {
@@ -273,6 +273,7 @@ export const StorageService = {
   deleteShift: (shiftId) => {
     const list = StorageService.getShifts().filter(s => s.id !== shiftId);
     setStoredItem(STORAGE_KEYS.SHIFTS, list);
+    SyncService.deleteShiftInDb(shiftId);
     return list;
   },
 

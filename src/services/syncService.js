@@ -273,10 +273,10 @@ export const SyncService = {
   // VARDİYALAR (SCHICHTEN)
   syncShifts: async () => {
     if (!SyncService.isLive()) return;
-    const { data, error } = await supabase.from('schichten').select('*');
-    if (error) throw error;
-    if (data && data.length > 0) {
-      const mapped = data.map(s => ({
+    try {
+      const { data, error } = await supabase.from('schichten').select('*');
+      if (error) throw error;
+      const mapped = (data || []).map(s => ({
         id: s.id,
         employeeId: s.ma_id,
         date: s.datum,
@@ -288,6 +288,8 @@ export const SyncService = {
         department: s.abteilung || s.department || null
       }));
       localStorage.setItem('ado_shifts_v1', JSON.stringify(mapped));
+    } catch (err) {
+      console.warn('syncShifts error:', err);
     }
   },
 
@@ -306,6 +308,24 @@ export const SyncService = {
       }, { onConflict: 'ma_id,datum,von' });
     } catch (err) {
       console.warn('pushShift error:', err);
+    }
+  },
+
+  deleteShiftInDb: async (shiftId) => {
+    if (!SyncService.isLive() || !shiftId) return;
+    try {
+      await supabase.from('schichten').delete().eq('id', shiftId);
+    } catch (err) {
+      console.warn('deleteShiftInDb error:', err);
+    }
+  },
+
+  clearAllShiftsInDb: async () => {
+    if (!SyncService.isLive()) return;
+    try {
+      await supabase.from('schichten').delete().neq('id', '___none___');
+    } catch (err) {
+      console.warn('clearAllShiftsInDb error:', err);
     }
   },
 

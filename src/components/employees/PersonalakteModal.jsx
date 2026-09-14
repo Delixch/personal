@@ -572,10 +572,10 @@ export const PersonalakteModal = ({
                   {lang === 'tr' ? 'Kalan İzin' : 'Resturlaub'}
                 </span>
                 <span className="font-mono font-normal text-sm text-brand block">
-                  {vacationRemaining} Gün
+                  {vacationRemaining} {lang === 'tr' ? 'Gün' : 'Tage'}
                 </span>
                 <span className="block text-[10px] text-ink font-normal">
-                  {vacationTotal} / {vacationUsed} Kullanıldı
+                  {vacationTotal} / {vacationUsed} {lang === 'tr' ? 'Kullanıldı' : 'bezogen'}
                 </span>
               </div>
             </div>
@@ -593,7 +593,7 @@ export const PersonalakteModal = ({
                   {formatCurrency(netMonthlySalary)}
                 </span>
                 <span className="block text-[10px] text-ink font-normal">
-                  Bankaya Yatırıldı (ZKB)
+                  {lang === 'tr' ? 'Bankaya Yatırıldı (ZKB)' : 'Ausbezahlt via ZKB'}
                 </span>
               </div>
             </div>
@@ -611,7 +611,7 @@ export const PersonalakteModal = ({
                   {formatCurrency(annualGrossEstimate)}
                 </span>
                 <span className="block text-[10px] text-ink font-normal">
-                  13. Maaş Dahil • AHV✓
+                  {lang === 'tr' ? '13. Maaş Dahil • AHV✓' : 'Inkl. 13. Monatslohn • AHV✓'}
                 </span>
               </div>
             </div>
@@ -662,23 +662,23 @@ export const PersonalakteModal = ({
 
                   <div className="space-y-2 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-ink-soft">Hedef Saat (Soll):</span>
-                      <span className="font-mono font-bold text-emerald-400">{targetMonthlyHours} Std. / Ay</span>
+                      <span className="text-ink-soft">{lang === 'tr' ? 'Hedef Saat (Soll):' : 'Sollstunden (Monat):'}</span>
+                      <span className="font-mono font-bold text-emerald-400">{targetMonthlyHours} Std. / {lang === 'tr' ? 'Ay' : 'M'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-ink-soft">Çalışılan (Ist):</span>
+                      <span className="text-ink-soft">{lang === 'tr' ? 'Çalışılan (Ist):' : 'Geleistet (Ist):'}</span>
                       <span className="font-mono font-bold text-ink">{effectiveHours} Std.</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-ink-soft">Saldo / Fazla-Eksik:</span>
+                      <span className="text-ink-soft">{lang === 'tr' ? 'Saldo / Fazla-Eksik:' : 'Saldo / Überstunden:'}</span>
                       <span className={`font-mono font-black ${overtime === 0 ? 'text-emerald-400' : 'text-red-400'}`}>
                         {overtime > 0 ? `+${overtime} Std.` : `${overtime} Std.`}
                       </span>
                     </div>
                     <div className="flex justify-between pt-1 border-t border-line text-[11px]">
-                      <span className="text-ink-soft">Bugünkü Durum:</span>
+                      <span className="text-ink-soft">{lang === 'tr' ? 'Bugünkü Durum:' : 'Heutiger Status:'}</span>
                       <span className="font-bold text-ink">
-                        {isCurrentlyWorking ? `Giriş: ${todaysLog?.clockIn || '08:00'}` : 'Şu an görevde değil'}
+                        {isCurrentlyWorking ? (lang === 'tr' ? `Giriş: ${todaysLog?.clockIn || '08:00'}` : `Angestempelt: ${todaysLog?.clockIn || '08:00'}`) : (lang === 'tr' ? 'Şu an görevde değil' : 'Derzeit nicht im Dienst')}
                       </span>
                     </div>
                   </div>
@@ -701,19 +701,19 @@ export const PersonalakteModal = ({
 
                   <div className="space-y-2 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-ink-soft">Saatlik Brüt:</span>
+                      <span className="text-ink-soft">{lang === 'tr' ? 'Saatlik Brüt:' : 'Stundenlohn (Brutto):'}</span>
                       <span className="font-mono font-bold text-ink">{formatCurrency(hourlyRate)}/h</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-ink-soft">Aylık Brüt:</span>
+                      <span className="text-ink-soft">{lang === 'tr' ? 'Aylık Brüt:' : 'Monatslohn (Brutto):'}</span>
                       <span className="font-mono font-bold text-ink">{formatCurrency(grossMonthlySalary)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-ink-soft">Net Ele Geçen:</span>
+                      <span className="text-ink-soft">{lang === 'tr' ? 'Net Ele Geçen:' : 'Nettolohn (Auszahlung):'}</span>
                       <span className="font-mono font-black text-ink">{formatCurrency(netMonthlySalary)}</span>
                     </div>
                     <div className="flex justify-between pt-1 border-t border-line text-[11px]">
-                      <span className="text-ink-soft">Yıllık Brüt (13. dahil):</span>
+                      <span className="text-ink-soft">{lang === 'tr' ? 'Yıllık Brüt (13. dahil):' : 'Jahreslohn (inkl. 13.):'}</span>
                       <span className="font-mono font-bold text-ink">{formatCurrency(annualGrossEstimate)}</span>
                     </div>
                   </div>
@@ -736,19 +736,19 @@ export const PersonalakteModal = ({
 
                   <div className="space-y-2 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-ink-soft">Kalan İzin:</span>
-                      <span className="font-mono font-black text-brand">{vacationRemaining} Gün ({vacationRemaining / 5} Hafta)</span>
+                      <span className="text-ink-soft">{lang === 'tr' ? 'Kalan İzin:' : 'Resturlaub:'}</span>
+                      <span className="font-mono font-black text-brand">{vacationRemaining} {lang === 'tr' ? 'Gün' : 'Tage'} ({vacationRemaining / 5} {lang === 'tr' ? 'Hafta' : 'Wochen'})</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-ink-soft">Kullanılan İzin:</span>
-                      <span className="font-mono text-ink-soft">{vacationUsed} Gün</span>
+                      <span className="text-ink-soft">{lang === 'tr' ? 'Kullanılan İzin:' : 'Bezogener Urlaub:'}</span>
+                      <span className="font-mono text-ink-soft">{vacationUsed} {lang === 'tr' ? 'Gün' : 'Tage'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-ink-soft">Hastalık Raporu:</span>
-                      <span className="font-bold text-ink">{empSick.length} Bildirim (Attest ✓)</span>
+                      <span className="text-ink-soft">{lang === 'tr' ? 'Hastalık Raporu:' : 'Krankmeldungen:'}</span>
+                      <span className="font-bold text-ink">{empSick.length} {lang === 'tr' ? 'Bildirim (Attest ✓)' : 'Meldungen (Attest ✓)'}</span>
                     </div>
                     <div className="flex justify-between pt-1 border-t border-line text-[11px]">
-                      <span className="text-ink-soft">Haftalık Vardiya:</span>
+                      <span className="text-ink-soft">{lang === 'tr' ? 'Haftalık Vardiya:' : 'Schichten (Woche):'}</span>
                       <span className="font-bold text-ink">
                         {empShifts.length > 0 ? `${empShifts.length} ${lang === 'tr' ? 'Vardiya Görevli' : 'Schichten'}` : (lang === 'tr' ? 'Vardiya Yok' : 'Keine Schichten')}
                       </span>

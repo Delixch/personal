@@ -1,9 +1,9 @@
 export const SEED_DEPARTMENTS = [
-  { id: 'kuche', name: 'Küche (Mutfak)', icon: 'ChefHat', color: 'emerald' },
-  { id: 'service', name: 'Service (Servis)', icon: 'UtensilsCrossed', color: 'blue' },
+  { id: 'kuche', name: 'Küche', icon: 'ChefHat', color: 'emerald' },
+  { id: 'service', name: 'Service', icon: 'UtensilsCrossed', color: 'blue' },
   { id: 'bar', name: 'Bar & Lounge', icon: 'Wine', color: 'purple' },
-  { id: 'lager', name: 'Lager & Logistik (Depo)', icon: 'Boxes', color: 'amber' },
-  { id: 'reinigung', name: 'Reinigung & Hygiene (Temizlik)', icon: 'Sparkles', color: 'rose' }
+  { id: 'lager', name: 'Lager & Logistik', icon: 'Boxes', color: 'amber' },
+  { id: 'reinigung', name: 'Reinigung & Hygiene', icon: 'Sparkles', color: 'rose' }
 ];
 
 export const SEED_EMPLOYEES = [

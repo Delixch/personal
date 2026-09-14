@@ -225,8 +225,16 @@ export const StorageService = {
     const list = getStoredItem(STORAGE_KEYS.EMPLOYEES, SEED_EMPLOYEES);
     const customAvatars = getStoredItem(STORAGE_KEYS.CUSTOM_AVATARS, {});
     return list.map(emp => {
+      let title = emp.jobTitle || emp.role || '';
+      if (title) {
+        title = title.replace(/\s*\([^)]*(mutfak|servis|depo|temizlik)[^)]*\)/gi, '').trim();
+      }
       const custom = customAvatars[emp.id] || customAvatars[String(emp.pin)] || customAvatars[emp.email];
-      return custom ? { ...emp, avatar: custom } : emp;
+      return {
+        ...emp,
+        jobTitle: title || emp.jobTitle || emp.role,
+        avatar: custom || emp.avatar
+      };
     });
   },
 
@@ -450,9 +458,17 @@ export const StorageService = {
   getCurrentUser: () => {
     const user = getStoredItem(STORAGE_KEYS.CURRENT_USER, null);
     if (!user || user === 'guest') return null;
+    let title = user.jobTitle || user.role || '';
+    if (title) {
+      title = title.replace(/\s*\([^)]*(mutfak|servis|depo|temizlik)[^)]*\)/gi, '').trim();
+    }
     const customAvatars = getStoredItem(STORAGE_KEYS.CUSTOM_AVATARS, {});
     const custom = customAvatars[user.id] || customAvatars[String(user.pin)] || customAvatars[user.email];
-    return custom ? { ...user, avatar: custom } : user;
+    return {
+      ...user,
+      jobTitle: title || user.jobTitle || user.role,
+      avatar: custom || user.avatar
+    };
   },
   setCurrentUser: (user) => setStoredItem(STORAGE_KEYS.CURRENT_USER, user),
   logout: () => {

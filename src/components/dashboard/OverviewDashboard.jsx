@@ -360,7 +360,7 @@ export const OverviewDashboard = ({
         </div>
 
         {isAdmin && (
-          <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-3.5 mt-6 pt-5 border-t border-line">
+          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-6 pt-5 border-t border-line">
             
             <div
               onClick={() => onNavigate('suppliers')}

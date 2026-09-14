@@ -194,7 +194,7 @@ export const Navbar = ({
             </button>
 
             {showNotifDropdown && (
-              <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl bg-surface border border-line p-4 z-50 card-inner">
+              <div className="absolute right-0 mt-2 w-80 sm:w-96 max-w-[calc(100vw-1.5rem)] rounded-2xl bg-surface border border-line p-4 z-50 card-inner">
                 <div className="flex items-center justify-between border-b border-line-soft pb-3 mb-3">
                   <div className="flex items-center gap-2">
                     <Bell className="w-4 h-4 text-brand icon-brand" />
